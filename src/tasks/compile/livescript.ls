@@ -50,8 +50,7 @@ module.exports = (options, cb) !->
 
     compile-file current-source-path, current-target-path, cb
 
-  async.each paths, iterate-path, (error) ->
-    return cb error if error
+  error <-! async.each paths, iterate-path
+  return cb error if error
 
-    cb null
-
+  cb null
