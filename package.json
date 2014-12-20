@@ -1,0 +1,34 @@
+{
+  "name": "Builder",
+  "version": "0.0.0",
+  "description": "DRY project automation for Node.js and javascript frontend projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive --reporter spec --inline-diffs --no-exit --compilers ls:LiveScript test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Industrial/Builder"
+  },
+  "author": "Tom Wieland <tom.wieland@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Industrial/Builder/issues"
+  },
+  "homepage": "https://github.com/Industrial/Builder",
+  "dependencies": {
+    "async": "^0.9.0",
+    "coffee-script": "^1.8.0",
+    "highland": "^2.2.0",
+    "lsr": "^1.0.0",
+    "prelude-ls": "^1.1.1",
+    "rimraf": "^2.2.8"
+  },
+  "devDependencies": {
+    "LiveScript": "^1.3.1",
+    "chai": "^1.10.0",
+    "mkdirp": "^0.5.0",
+    "mocha": "^2.0.1",
+    "rimraf": "^2.2.8"
+  }
+}
