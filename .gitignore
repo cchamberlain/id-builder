@@ -1,5 +1,2 @@
-.idea
-bower_components
-db
-docs
+.tmp
 node_modules
