@@ -110,7 +110,7 @@ These tasks all compile an input language to HTML, JavaScript or CSS.
 
 ##### Browserify
 Compiles all Client code into one file. Uses
-[Browserify](https://github.com/substack/browserify).
+[Browserify](https://github.com/substack/node-browserify).
 
 ##### CoffeeScript
 Compiles CoffeeScript files to JavaScript.
