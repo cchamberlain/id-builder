@@ -1,3 +1,5 @@
+![Travis CI](https://travis-ci.org/Industrial/Builder.svg)
+
 # Builder
 Builder compiles your code, runs your tests and servers, recompiles on changes
 and reloads the browser for you.
