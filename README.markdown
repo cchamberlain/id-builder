@@ -147,3 +147,7 @@ processes and are started/stopped/restarted together.
 ##### Tests
 Runs all the tests. For now, the only output is to the console. Later this
 could include growl style desktop notifications, etc.
+
+#### Watch
+Watches for changes in the source and test directory and takes appropriate
+actions.
