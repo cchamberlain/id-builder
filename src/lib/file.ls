@@ -1,13 +1,6 @@
-fs   = require "fs"
-path = require "path"
+require! <[ fs path async lsr mkdirp ]>
 
-async  = require "async"
-lsr    = require "lsr"
-mkdirp = require "mkdirp"
-{
-  map
-  filter
-}      = require "prelude-ls"
+{ map, filter } = require "prelude-ls"
 
 export compile-file = (compile-chunk, source-path, target-path, cb) !-->
   error, chunk <-! fs.read-file source-path
@@ -30,7 +23,7 @@ export compile-all-files = (compile-file, source-extension, target-extension, so
   return cb error if error
 
   paths = map (.full-path), nodes
-    |> filter (.match new RegExp "\.#{source-extension}")
+    |> filter (.match //\.#{source-extension}//
 
   iterate-path = (current-source-path, cb) !->
     current-target-path = current-source-path
