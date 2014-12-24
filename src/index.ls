@@ -1,3 +1,2 @@
-builder = require "src"
-
-builder
+export lib   = require "./lib"
+export tasks = require "./tasks"

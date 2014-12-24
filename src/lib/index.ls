@@ -1,0 +1,5 @@
+export compile = require "./compile"
+export file    = require "./file"
+export options = require "./options"
+export test    = require "./test"
+export watch   = require "./watch"
