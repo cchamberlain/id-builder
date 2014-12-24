@@ -1,9 +1,4 @@
-LiveScript = require "LiveScript"
-
-{
-  map
-  filter
-} = require "prelude-ls"
+require! <[ LiveScript ]>
 
 file = require "../../lib/file"
 

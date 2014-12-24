@@ -1,19 +1,11 @@
-fs = require "fs"
+require! <[ fs chai mkdirp rimraf ]>
 
-chai   = require "chai"
-mkdirp = require "mkdirp"
-rmrf   = require "rimraf"
-
+test         = require "../../../../src/lib/test"
 coffeescript = require "../../../../src/tasks/compile/coffeescript"
 
-{ expect } = chai
-we         = it
-
-random-string = ->
-  Math
-    .random!
-    .toString 36
-    .substring 7
+we                = it
+{ expect }        = chai
+{ random-string } = test
 
 describe "integrarion", !->
   describe "tasks", !->
@@ -33,7 +25,7 @@ describe "integrarion", !->
         cb!
 
       after-each (cb) !->
-        rmrf @directory-path, cb
+        rimraf @directory-path, cb
 
       describe "When called on a directory with coffeescript files", !->
         we "should have compiled all coffeescript files", (cb) !->

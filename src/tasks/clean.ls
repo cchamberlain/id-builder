@@ -1,8 +1,6 @@
-fs = require "fs"
+require! <[ fs rimraf async ]>
 
 { map } = require "prelude-ls"
-rmrf    = require "rimraf"
-async   = require "async"
 
 module.exports = (path, cb) !->
   error, nodes <-! fs.readdir path
@@ -10,7 +8,7 @@ module.exports = (path, cb) !->
 
   paths = map (-> "#{path}/#{it}"), nodes
 
-  error <-! async.each paths, rmrf
+  error <-! async.each paths, rimraf
   return cb error if error
 
   cb null

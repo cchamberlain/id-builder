@@ -1,10 +1,10 @@
-coffeescript = require "coffee-script"
+require! <[ coffee-script ]>
 
 file = require "../../lib/file"
 
 export compile-chunk = (chunk, cb) !->
   try
-    cb null, coffeescript.compile chunk
+    cb null, coffee-script.compile chunk
   catch error
     return cb error
 

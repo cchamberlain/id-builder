@@ -1,9 +1,4 @@
-jade = require "jade"
-
-{
-  map
-  filter
-} = require "prelude-ls"
+require! <[ jade ]>
 
 file = require "../../lib/file"
 
