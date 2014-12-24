@@ -32,8 +32,8 @@ describe "integrarion", !->
 
         cb!
 
-      #after-each (cb) !->
-      #  rmrf @directory-path, cb
+      after-each (cb) !->
+        rmrf @directory-path, cb
 
       describe "When called on a directory with jade files", !->
         we "should have compiled all jade files", (cb) !->
