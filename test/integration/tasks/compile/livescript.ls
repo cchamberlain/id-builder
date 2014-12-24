@@ -7,7 +7,7 @@ we                = it
 { expect }        = chai
 { random-string } = test
 
-describe "integrarion", !->
+describe "integration", !->
   describe "tasks", !->
     describe "livescript", !->
       before-each (cb) !->
