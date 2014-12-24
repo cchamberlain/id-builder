@@ -43,10 +43,7 @@ describe "integrarion", !->
           error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.coffee", "-> console.log('456')"
           expect error .to.equal null
 
-          error <~! coffeescript do
-            source-path: "#{@directory-path}/src"
-            target-path: "#{@directory-path}/build"
-
+          error <~! coffeescript.compile-all-files "#{@directory-path}/src", "#{@directory-path}/build"
           expect error .to.equal null
 
           error, nodes <~! fs.readdir "#{@directory-path}/build"

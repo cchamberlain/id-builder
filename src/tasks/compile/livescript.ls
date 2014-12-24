@@ -11,13 +11,15 @@ lsr        = require "lsr"
   filter
 } = require "prelude-ls"
 
-compile-chunk = (chunk, cb) !->
+export compile-chunk = (chunk, cb) !->
   try
-    cb null, LiveScript.compile chunk
+    cb null, LiveScript.compile chunk,
+      bare: true
+
   catch error
     return cb error
 
-compile-file = (source-path, target-path, cb) !->
+export compile-file = (source-path, target-path, cb) !->
   error, chunk <-! fs.read-file source-path
   return cb error if error
 
@@ -33,10 +35,7 @@ compile-file = (source-path, target-path, cb) !->
 
   cb null
 
-module.exports = (options, cb) !->
-  source-path = options.source-path
-  target-path = options.target-path
-
+export compile-all-files = (source-path, target-path, cb) !->
   error, nodes <~! lsr source-path
   return cb error if error
 

@@ -4,9 +4,7 @@ fs = require "fs"
 rmrf    = require "rimraf"
 async   = require "async"
 
-module.exports = (options, cb) !->
-  path = options.path
-
+module.exports = (path, cb) !->
   error, nodes <-! fs.readdir path
   return cb error if error
 

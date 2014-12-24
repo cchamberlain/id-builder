@@ -4,7 +4,7 @@ chai   = require "chai"
 mkdirp = require "mkdirp"
 rmrf   = require "rimraf"
 
-livescript = require "../../../../src/tasks/compile/livescript"
+jade = require "../../../../src/tasks/compile/jade"
 
 { expect } = chai
 we         = it
@@ -17,7 +17,7 @@ random-string = ->
 
 describe "integrarion", !->
   describe "tasks", !->
-    describe "livescript", !->
+    describe "jade", !->
       before-each (cb) !->
         @directory-path = ".tmp/#{random-string!}"
 
@@ -32,18 +32,18 @@ describe "integrarion", !->
 
         cb!
 
-      after-each (cb) !->
-        rmrf @directory-path, cb
+      #after-each (cb) !->
+      #  rmrf @directory-path, cb
 
-      describe "When called on a directory with livescript files", !->
-        we "should have compiled all livescript files", (cb) !->
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.ls", "-> console.log('123')"
+      describe "When called on a directory with jade files", !->
+        we "should have compiled all jade files", (cb) !->
+          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.jade", "h1 WAT"
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.ls", "-> console.log('456')"
+          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.jade", "h2 SRSLY"
           expect error .to.equal null
 
-          error <~! livescript.compile-all-files "#{@directory-path}/src", "#{@directory-path}/build"
+          error <~! jade.compile-all-files "#{@directory-path}/src", "#{@directory-path}/build"
           expect error .to.equal null
 
           error, nodes <~! fs.readdir "#{@directory-path}/build"

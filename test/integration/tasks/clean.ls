@@ -33,7 +33,7 @@ describe "integrarion", !->
           error <~! fs.write-file "#{@directory-path}/#{random-string!}", "B"
           expect error .to.equal null
 
-          error <~! clean path: @directory-path
+          error <~! clean @directory-path
           expect error .to.equal null
 
           error, nodes <~! fs.readdir @directory-path
