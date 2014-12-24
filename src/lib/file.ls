@@ -23,7 +23,7 @@ export compile-all-files = (compile-file, source-extension, target-extension, so
   return cb error if error
 
   paths = map (.full-path), nodes
-    |> filter (.match //\.#{source-extension}//
+    |> filter (.match //\.#{source-extension}//)
 
   iterate-path = (current-source-path, cb) !->
     current-target-path = current-source-path
