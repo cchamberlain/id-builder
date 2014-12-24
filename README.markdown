@@ -1,11 +1,11 @@
 ![Travis CI](https://travis-ci.org/Industrial/Builder.svg)
 
 # Builder
-Builder compiles your code, runs your tests and servers, recompiles on changes
-and reloads the browser for you.
+Builder compiles your code, runs your tests and servers, recompiles and
+restarts on changes and reloads the browser for you.
 
 ## Getting Started
-1. Builder assumes the follwing directory structure:
+1. Builder assumes the follwing directory structure (but that can be changed):
   ```
   source/
     client/
