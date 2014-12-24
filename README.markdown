@@ -12,6 +12,7 @@ restarts on changes and reloads the browser for you.
       app.js/ls/coffee
     server/
       app.js/ls/coffee
+  docs/
   build/
   test/
   ```
@@ -41,60 +42,75 @@ builder({
   tasks: {
     clean: {
       enabled: true,
+      watch:   true,
       path:    "targetDirectory",
     },
     copy: {
       enabled:    true,
+      watch:      true,
       sourcePath: "sourceDirectory",
       targetPath: "targetDirectory"
     },
     compile: {
       browserify: {
         enabled:    true,
+        watch:      true,
         sourcePath: "sourceDirectory/client/app.js",
         targetPath: "targetDirectory/client"
       },
       coffeescript: {
         enabled:    true,
-        sourcePath: "sourceDirectory",
-        targetPath: "targetDirectory"
-      },
-      documentation: {
-        enabled:    true,
+        watch:      true,
         sourcePath: "sourceDirectory",
         targetPath: "targetDirectory"
       },
       jade: {
         enabled:    true,
+        watch:      true,
         sourcePath: "sourceDirectory",
         targetPath: "targetDirectory"
       },
       less: {
         enabled:    true,
+        watch:      true,
         sourcePath: "sourceDirectory",
         targetPath: "targetDirectory"
       },
       livescript: {
         enabled:    true,
+        watch:      true,
         sourcePath: "sourceDirectory",
         targetPath: "targetDirectory"
       },
       stylus: {
         enabled:    true,
+        watch:      true,
         sourcePath: "sourceDirectory",
         targetPath: "targetDirectory"
       },
     },
+    documentation: {
+      enabled:    true,
+      watch:      true,
+      sourcePath: "sourceDirectory",
+      targetPath: "docs"
+    },
     run: {
       servers: {
         enabled: true,
+        watch:   true,
         paths: [
           "targetDirectory/server/app.js"
         ]
       },
       tests: {
         enabled: true,
+        watch:   true,
       },
+    },
+    watch: {
+      enabled: true,
+      sourcePath: "sourceDirectory"
     }
   }
 });
@@ -106,6 +122,9 @@ async.auto?
 
 ### Clean
 Removes all files from the build directory.
+
+#### Copy
+Copies files that are not compiled to another format.
 
 #### Compile
 These tasks all compile an input language to HTML, JavaScript or CSS.
@@ -133,9 +152,6 @@ Compiles Stylus files to CSS.
 Currently, no documentation system has been chosen.
 TODO: Create a ticket about this to allow voting.
 TODO: or just reseach and pick one.
-
-#### Copy
-Copies files that are not compiled to another format.
 
 #### Run
 These tasks run one or more processes to facilitate the development process.
