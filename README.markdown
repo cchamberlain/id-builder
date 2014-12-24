@@ -134,6 +134,9 @@ Currently, no documentation system has been chosen.
 TODO: Create a ticket about this to allow voting.
 TODO: or just reseach and pick one.
 
+#### Copy
+Copies files that are not compiled to another format.
+
 #### Run
 These tasks run one or more processes to facilitate the development process.
 
