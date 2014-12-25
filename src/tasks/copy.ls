@@ -2,12 +2,26 @@ require! <[ fs mkdirp async lsr ]>
 
 { map, filter } = require "prelude-ls"
 
+compile-browserify   = require "./compile-browserify"
+compile-coffeescript = require "./compile-coffeescript"
+compile-jade         = require "./compile-jade"
+compile-less         = require "./compile-less"
+compile-livescript   = require "./compile-livescript"
+compile-stylus       = require "./compile-stylus"
+
 file = require "../lib/file"
 
 # TODO: return true if the path doesnt match any of the compile
 # source-file-path-matches.
-export source-file-path-matches = (source-file-path) ->
-  false
+export source-file-path-matches = (options, task, source-file-path) -->
+  answer = not (compile-browserify.source-file-path-matches options, task, source-file-path or
+    compile-coffeescript.source-file-path-matches options, task, source-file-path or
+    compile-jade.source-file-path-matches options, task, source-file-path or
+    compile-less.source-file-path-matches options, task, source-file-path or
+    compile-livescript.source-file-path-matches options, task, source-file-path or
+    compile-stylus.source-file-path-matches options, task, source-file-path)
+
+  answer
 
 export copy-file = (options, task, source-file-path, target-file-path, cb) !-->
   error, read-chunk <-! fs.read-file source-file-path
@@ -27,11 +41,9 @@ export copy-all-files = (options, task, cb) !-->
   error, nodes <~! lsr task.source-path
   return cb error if error
 
-  # TODO: filter not by regexp but use source-file-path-matches
-
   paths = filter (-> not it.is-directory!), nodes
     |> map (.full-path)
-    |> filter (-> not it.match /\.(styl|less|ls|coffee|jade)$/)
+    |> filter source-file-path-matches options, task
 
   iterate-path = (current-source-directory-path, cb) !->
     current-target-directory-path = current-source-directory-path

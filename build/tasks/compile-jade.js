@@ -8,9 +8,9 @@ ref$ = require("prelude-ls"), map = ref$.map, filter = ref$.filter;
 file = require("../lib/file");
 out$.sourceExtension = sourceExtension = "jade";
 out$.targetExtension = targetExtension = "js";
-out$.sourceFilePathMatches = sourceFilePathMatches = function(sourceFilePath){
-  return sourceFilePath.match(RegExp('\\.' + sourceExtension + '$'));
-};
+out$.sourceFilePathMatches = sourceFilePathMatches = curry$(function(options, task, sourceFilePath){
+  return sourceFilePath.match(RegExp('^' + options.tasks.compileJade.sourcePath + '.+\\.' + sourceExtension + '$'));
+});
 out$.compileChunk = compileChunk = function(options, task, chunk, sourceFilePath, cb){
   var error;
   try {
@@ -54,7 +54,7 @@ out$.compileAllFiles = compileAllFiles = curry$(function(options, task, cb){
     if (error) {
       return cb();
     }
-    paths = filter(sourceFilePathMatches)(
+    paths = filter(sourceFilePathMatches(options, task))(
     map(function(it){
       return it.fullPath;
     })(

@@ -33,8 +33,8 @@ default-options =
     compile-browserify:
       enabled:    true
       watch:      true
-      sourcePath: "client/app.js"
-      targetPath: "client"
+      sourcePath: "build/client/app.js"
+      targetPath: "build/client"
 
     compile-coffeescript:
       enabled:    true
@@ -45,7 +45,7 @@ default-options =
     compile-jade:
       enabled:    true
       watch:      true
-      sourcePath: "build/client"
+      sourcePath: "src/client"
       targetPath: "build/client"
 
     compile-less:
@@ -310,39 +310,45 @@ builder = (options = {}, cb) ->
 
     cb!
 
+
   error <-! clean
   return cb error if error
 
-  error <-! async.parallel [
-    (cb) ->
-      error <-! async.parallel [
-        compile-coffeescript
-        compile-livescript
-        compile-jade
-      ]
-      return cb error if error
 
-      error <-! compile-browserify
-      return cb error if error
-
-      cb!
-
-    (cb) ->
-      async.parallel [
-        compile-less
-        compile-stylus
-      ], cb
-
-    copy
-    documentation
-  ]
+  error <-! compile-coffeescript
   return cb error if error
 
-  error <-! async.parallel [
-    run-servers
-    run-tests
-  ]
+  error <-! compile-livescript
   return cb error if error
+
+  error <-! compile-jade
+  return cb error if error
+
+
+  error <-! compile-browserify
+  return cb error if error
+
+
+  error <-! compile-less
+  return cb error if error
+
+  error <-! compile-stylus
+  return cb error if error
+
+
+  error <-! copy
+  return cb error if error
+
+  error <-! documentation
+  return cb error if error
+
+
+  error <-! run-servers
+  return cb error if error
+
+  error <-! run-tests
+  return cb error if error
+
 
   error <-! done
   return cb error if error

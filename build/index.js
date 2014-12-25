@@ -29,8 +29,8 @@ defaultOptions = {
     compileBrowserify: {
       enabled: true,
       watch: true,
-      sourcePath: "client/app.js",
-      targetPath: "client"
+      sourcePath: "build/client/app.js",
+      targetPath: "build/client"
     },
     compileCoffeescript: {
       enabled: true,
@@ -41,7 +41,7 @@ defaultOptions = {
     compileJade: {
       enabled: true,
       watch: true,
-      sourcePath: "build/client",
+      sourcePath: "src/client",
       targetPath: "build/client"
     },
     compileLess: {
@@ -293,9 +293,15 @@ builder = function(options, cb){
     if (error) {
       return cb(error);
     }
-    async.parallel([
-      function(cb){
-        return async.parallel([compileCoffeescript, compileLivescript, compileJade], function(error){
+    compileCoffeescript(function(error){
+      if (error) {
+        return cb(error);
+      }
+      compileLivescript(function(error){
+        if (error) {
+          return cb(error);
+        }
+        compileJade(function(error){
           if (error) {
             return cb(error);
           }
@@ -303,25 +309,43 @@ builder = function(options, cb){
             if (error) {
               return cb(error);
             }
-            cb();
+            compileLess(function(error){
+              if (error) {
+                return cb(error);
+              }
+              compileStylus(function(error){
+                if (error) {
+                  return cb(error);
+                }
+                copy(function(error){
+                  if (error) {
+                    return cb(error);
+                  }
+                  documentation(function(error){
+                    if (error) {
+                      return cb(error);
+                    }
+                    runServers(function(error){
+                      if (error) {
+                        return cb(error);
+                      }
+                      runTests(function(error){
+                        if (error) {
+                          return cb(error);
+                        }
+                        done(function(error){
+                          if (error) {
+                            return cb(error);
+                          }
+                          cb();
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
           });
-        });
-      }, function(cb){
-        return async.parallel([compileLess, compileStylus], cb);
-      }, copy, documentation
-    ], function(error){
-      if (error) {
-        return cb(error);
-      }
-      async.parallel([runServers, runTests], function(error){
-        if (error) {
-          return cb(error);
-        }
-        done(function(error){
-          if (error) {
-            return cb(error);
-          }
-          cb();
         });
       });
     });

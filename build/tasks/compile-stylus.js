@@ -8,9 +8,10 @@ ref$ = require("prelude-ls"), map = ref$.map, filter = ref$.filter;
 file = require("../lib/file");
 out$.sourceExtension = sourceExtension = "styl";
 out$.targetExtension = targetExtension = "css";
-out$.sourceFilePathMatches = sourceFilePathMatches = function(sourceFilePath){
+out$.sourceFilePathMatches = sourceFilePathMatches = curry$(function(options, task, sourceFilePath){
+  sourceFilePath.match(RegExp('^' + options.tasks.compileStylus.sourcePath + '.+\\.' + sourceExtension + '$'));
   return sourceFilePath.match(RegExp('\\.' + sourceExtension + '$'));
-};
+});
 out$.compileChunk = compileChunk = function(options, task, chunk, cb){
   stylus.render(chunk, cb);
 };
@@ -45,7 +46,7 @@ out$.compileAllFiles = compileAllFiles = curry$(function(options, task, cb){
     if (error) {
       return cb();
     }
-    paths = filter(sourceFilePathMatches)(
+    paths = filter(sourceFilePathMatches(options, task))(
     map(function(it){
       return it.fullPath;
     })(

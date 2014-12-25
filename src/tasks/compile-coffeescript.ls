@@ -7,8 +7,8 @@ file = require "../lib/file"
 export source-extension = "coffee"
 export target-extension = "js"
 
-export source-file-path-matches = (source-file-path) ->
-  source-file-path.match //\.#{source-extension}$//
+export source-file-path-matches = (options, task, source-file-path) -->
+  source-file-path.match //^#{options.tasks.compile-coffeescript.source-path}.+\.#{source-extension}$//
 
 export compile-chunk = (options, task, chunk, cb) !->
   try
@@ -39,7 +39,7 @@ export compile-all-files = (options, task, cb) !-->
 
   paths = filter (-> not it.is-directory!), nodes
     |> map (.full-path)
-    |> filter source-file-path-matches
+    |> filter source-file-path-matches options, task
 
   iterate-path = (current-source-file-path, cb) !->
     current-target-file-path = current-source-file-path
