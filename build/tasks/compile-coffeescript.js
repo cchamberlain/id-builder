@@ -37,7 +37,7 @@ out$.compileFile = compileFile = curry$(function(options, task, sourceFilePath, 
           if (error) {
             return cb(error);
           }
-          console.log("| coffee:compile-file `" + sourceFilePath + "` > `" + targetFilePath + "`.");
+          console.log("| compile-coffeescript:compile-file `" + sourceFilePath + "` > `" + targetFilePath + "`.");
           cb(null);
         });
       });

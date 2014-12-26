@@ -29,8 +29,8 @@ defaultOptions = {
     compileBrowserify: {
       enabled: true,
       watch: true,
-      sourcePath: "build/client/app.js",
-      targetPath: "build/client"
+      sourcePath: "build/client/js/app.js",
+      targetPath: "build/client/js/app.bundle.js"
     },
     compileCoffeescript: {
       enabled: true,
@@ -108,10 +108,27 @@ builder = function(options, cb){
     });
   };
   compileBrowserify = function(cb){
+    var task;
     console.log("> compile-browserify");
-    console.log("! compile-browserify TODO: implement.");
-    console.log("< compile-browserify");
-    cb();
+    task = parsedOptions.tasks.compileBrowserify;
+    if (!task.enabled) {
+      return cb();
+    }
+    if (task.sourcePath === "") {
+      task.sourcePath = parsedOptions.sourceDirectory;
+    }
+    task.sourcePath = path.resolve(task.sourcePath);
+    if (task.targetPath === "") {
+      task.targetPath = parsedOptions.targetDirectory;
+    }
+    task.targetPath = path.resolve(task.targetPath);
+    tasks.compileBrowserify.compileAllFiles(parsedOptions, task, function(error){
+      if (error) {
+        return cb(error);
+      }
+      console.log("< compile-browserify");
+      cb();
+    });
   };
   compileCoffeescript = function(cb){
     var task;

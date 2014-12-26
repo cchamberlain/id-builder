@@ -32,7 +32,7 @@ export compile-file = (options, task, source-file-path, target-file-path, cb) !-
   error <-! fs.write-file target-file-path, compiled-chunk
   return cb error if error
 
-  console.log "| jade:compile-file `#{source-file-path}` > `#{target-file-path}`."
+  console.log "| compile-jade:compile-file `#{source-file-path}` > `#{target-file-path}`."
 
   cb null
 

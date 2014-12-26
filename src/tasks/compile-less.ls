@@ -1,4 +1,4 @@
-require! <[ fs coffee-script lsr async ]>
+require! <[ fs less lsr async ]>
 
 { map, filter } = require "prelude-ls"
 
@@ -26,7 +26,7 @@ export compile-file = (options, task, source-file-path, target-file-path, cb) !-
   error <-! fs.write-file target-file-path, compiled-chunk
   return cb error if error
 
-  console.log "| less:compile-file `#{source-file-path}` > `#{target-file-path}`."
+  console.log "| compile-less:compile-file `#{source-file-path}` > `#{target-file-path}`."
 
   cb null
 

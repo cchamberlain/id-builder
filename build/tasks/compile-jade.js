@@ -40,7 +40,7 @@ out$.compileFile = compileFile = curry$(function(options, task, sourceFilePath, 
           if (error) {
             return cb(error);
           }
-          console.log("| jade:compile-file `" + sourceFilePath + "` > `" + targetFilePath + "`.");
+          console.log("| compile-jade:compile-file `" + sourceFilePath + "` > `" + targetFilePath + "`.");
           cb(null);
         });
       });

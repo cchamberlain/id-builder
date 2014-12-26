@@ -33,8 +33,8 @@ default-options =
     compile-browserify:
       enabled:    true
       watch:      true
-      sourcePath: "build/client/app.js"
-      targetPath: "build/client"
+      sourcePath: "build/client/js/app.js"
+      targetPath: "build/client/js/app.bundle.js"
 
     compile-coffeescript:
       enabled:    true
@@ -115,7 +115,23 @@ builder = (options = {}, cb) ->
   compile-browserify = (cb) !->
     console.log "> compile-browserify"
 
-    console.log "! compile-browserify TODO: implement."
+    task = parsed-options.tasks.compile-browserify
+    return cb! unless task.enabled
+
+    # TODO: kinda weird here
+    if task.source-path is ""
+      task.source-path = parsed-options.source-directory
+
+    task.source-path = path.resolve task.source-path
+
+    # TODO: kinda weird here
+    if task.target-path is ""
+      task.target-path = parsed-options.target-directory
+
+    task.target-path = path.resolve task.target-path
+
+    error <-! tasks.compile-browserify.compile-all-files parsed-options, task
+    return cb error if error
 
     console.log "< compile-browserify"
 
