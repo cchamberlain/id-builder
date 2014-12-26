@@ -76,7 +76,7 @@ default-options =
       enabled: true
       watch:   true
       paths: [
-        "server/app.js"
+        "build/server/app.js"
       ]
 
     run-tests:
@@ -300,6 +300,12 @@ builder = (options = {}, cb) ->
 
   run-servers = (cb) !->
     console.log "> run-servers"
+
+    task = parsed-options.tasks.run-servers
+    return cb! unless task.enabled
+
+    error <-! tasks.run-servers parsed-options, task
+    return cb error if error
 
     console.log "< run-servers"
 

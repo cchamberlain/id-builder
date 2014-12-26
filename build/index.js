@@ -71,7 +71,7 @@ defaultOptions = {
     runServers: {
       enabled: true,
       watch: true,
-      paths: ["server/app.js"]
+      paths: ["build/server/app.js"]
     },
     runTests: {
       enabled: true,
@@ -287,9 +287,19 @@ builder = function(options, cb){
     cb();
   };
   runServers = function(cb){
+    var task;
     console.log("> run-servers");
-    console.log("< run-servers");
-    cb();
+    task = parsedOptions.tasks.runServers;
+    if (!task.enabled) {
+      return cb();
+    }
+    tasks.runServers(parsedOptions, task, function(error){
+      if (error) {
+        return cb(error);
+      }
+      console.log("< run-servers");
+      cb();
+    });
   };
   runTests = function(cb){
     console.log("> run-tests");
