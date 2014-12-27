@@ -1,5 +1,12 @@
 require! <[ fs LiveScript lsr async ]>
 
+log = require "id-debug"
+{
+  debug
+  info
+  warning
+} = log
+
 { map, filter } = require "prelude-ls"
 
 file = require "../lib/file"
@@ -21,6 +28,8 @@ export compile-file = (options, task, source-file-path, target-file-path, cb) !-
   error, chunk <-! fs.read-file source-file-path
   return cb error if error
 
+  info "| compile-livescript:compile-file > `#{source-file-path}`."
+
   error, compiled-chunk <-! compile-chunk options, task, chunk.to-string!
   return cb error if error
 
@@ -30,7 +39,7 @@ export compile-file = (options, task, source-file-path, target-file-path, cb) !-
   error <-! fs.write-file target-file-path, compiled-chunk
   return cb error if error
 
-  console.log "| compile-livescript:compile-file `#{source-file-path}` > `#{target-file-path}`."
+  info "| compile-livescript:compile-file < `#{target-file-path}`."
 
   cb null
 

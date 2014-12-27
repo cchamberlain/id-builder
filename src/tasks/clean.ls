@@ -1,5 +1,12 @@
 require! <[ fs rimraf async ]>
 
+log = require "id-debug"
+{
+  debug
+  info
+  warning
+} = log
+
 { each, map } = require "prelude-ls"
 
 module.exports = (options, task, cb) !->
@@ -8,7 +15,7 @@ module.exports = (options, task, cb) !->
 
   paths = map (-> "#{task.path}/#{it}"), nodes
 
-  each (-> console.log "| clean #{it}"), paths
+  each (-> info "| clean `#{it}`."), paths
 
   error <-! async.each paths, rimraf
   return cb error if error

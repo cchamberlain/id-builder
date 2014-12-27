@@ -1,23 +1,116 @@
-require! <[ fs path async forever-monitor ]>
+require! <[
+  async
+  forever-monitor
+  fs
+  id-debug
+  path
+  prelude-ls
+]>
 
-module.exports = (options, task, cb) !->
-  start-monitor = (file-path, cb) ->
-    absolute-path = path.resolve file-path
+p = path
 
-    exists <-! fs.exists absolute-path
+{
+  debug
+  info
+  warning
+} = id-debug
 
-    unless exists
-      console.log "| run-servers:skipping `#{absolute-path}`."
-      return cb!
+{ map } = prelude-ls
 
-    monitor = new forever-monitor.Monitor absolute-path,
-      command: "node"
+export monitors = {}
 
-    monitor.on "exit", ->
-      console.log "exited"
+export add-path = (path, cb) !->
+  monitor = new forever-monitor.Monitor path,
+    command: "node"
 
-    monitor.start!
+  monitors[path] = monitor
 
+  monitor.start!
+
+  cb!
+
+export remove-path = (path, cb) !->
+  monitor = monitors[path]
+
+  monitor.kill true
+
+  delete monitors[path]
+
+  cb!
+
+export restart-path = (path, cb) !->
+  monitor = monitors[path]
+
+  monitor.restart!
+
+  cb!
+
+export source-file-path-matches = (options, task, source-file-path, cb) ->
+  source-path = p.resolve options.tasks.run-servers.source-path
+
+  source-file-path.match //^#{source-path}//
+
+export start-server = (options, task, file-path, cb) !-->
+  absolute-path = path.resolve file-path
+
+  exists <-! fs.exists absolute-path
+
+  unless exists
+    info "| run-servers:start-server:skipping `#{absolute-path}` (Does not exist)."
+    return cb!
+
+  monitor = monitors[absolute-path]
+
+  if monitor
+    restart-path absolute-path, cb
+
+  else
+    add-path absolute-path, cb
+
+export stop-server = (options, task, file-path, cb) !-->
+  absolute-path = path.resolve file-path
+
+  exists <-! fs.exists absolute-path
+
+  unless exists
+    info "| run-servers:stop-server:skipping `#{absolute-path}` (Does not exist)."
+    return cb!
+
+  monitor = monitors[absolute-path]
+
+  if monitor
+    remove-path absolute-path, cb
+
+  else
+    info "| run-servers:stop-server:skipping `#{absolute-path}` (Monitor does not exist)."
     cb!
 
-  async.map task.paths, start-monitor, cb
+export restart-server = (options, task, file-path, cb) !-->
+  debug "run-servers restart-server", file-path
+
+  absolute-path = path.resolve file-path
+
+  exists <-! fs.exists absolute-path
+
+  unless exists
+    info "| run-servers:restart-server:skipping `#{absolute-path}` (Does not exist)."
+    return cb!
+
+  error <-! remove-path absolute-path
+  return cb error if error
+
+  add-path absolute-path, cb
+
+absolute-path = (task, path) -->
+  p.resolve "#{task.source-path}/#{path}"
+
+export run-servers = (options, task, cb) !->
+  absolute-paths = map (absolute-path task), task.paths
+  async.each absolute-paths, (start-server options, task), cb
+
+export restart-servers = (options, task, cb) !->
+  absolute-paths = [ p.resolve "#{options.tasks.run-servers.source-path}/#{path}" for path in options.tasks.run-servers.paths ]
+
+  debug "run-servers restart-servers absolute-paths", absolute-paths
+
+  async.map absolute-paths, (restart-server options, task), cb

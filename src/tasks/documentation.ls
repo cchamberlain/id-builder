@@ -1,2 +1,1 @@
-module.exports = (options, cb) !->
-  cb!
+export source-file-path-matches = -> false

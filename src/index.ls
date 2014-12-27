@@ -1,9 +1,15 @@
 path = require "path"
 
 async      = require "async"
-deep-merge = require "deep-merge"
 id-type    = require "id-type"
 prelude-ls = require "prelude-ls"
+
+log = require "id-debug"
+{
+  debug
+  info
+  warning
+} = log
 
 { each }         = prelude-ls
 { obj-to-pairs } = prelude-ls.Obj
@@ -15,6 +21,8 @@ default-source-directory = "src"
 default-target-directory = "build"
 
 default-options =
+  # TODO: Actually use these in the rest of the options so they are linked
+  # properly.
   source-directory: default-source-directory
   target-directory: default-target-directory
 
@@ -25,58 +33,59 @@ default-options =
       path:    ""
 
     copy:
-      enabled:    true
-      watch:      true
-      sourcePath: ""
-      targetPath: ""
+      enabled:     true
+      watch:       true
+      source-path: ""
+      target-path: ""
 
     compile-browserify:
-      enabled:    true
-      watch:      true
-      sourcePath: "build/client/js/app.js"
-      targetPath: "build/client/js/app.bundle.js"
+      enabled:     true
+      watch:       true
+      source-path: "build/client/js/app.js"
+      target-path: "build/client/js/app.bundle.js"
 
     compile-coffeescript:
-      enabled:    true
-      watch:      true
-      sourcePath: ""
-      targetPath: ""
+      enabled:     true
+      watch:       true
+      source-path: "src"
+      target-path: "build"
 
     compile-jade:
-      enabled:    true
-      watch:      true
-      sourcePath: "src/client"
-      targetPath: "build/client"
+      enabled:     true
+      watch:       true
+      source-path: "src/client"
+      target-path: "build/client"
 
     compile-less:
-      enabled:    true
-      watch:      true
-      sourcePath: ""
-      targetPath: ""
+      enabled:     true
+      watch:       true
+      source-path: "src/client"
+      target-path: "build/client"
 
     compile-livescript:
-      enabled:    true
-      watch:      true
-      sourcePath: ""
-      targetPath: ""
+      enabled:     true
+      watch:       true
+      source-path: "src"
+      target-path: "build"
 
     compile-stylus:
-      enabled:    true
-      watch:      true
-      sourcePath: ""
-      targetPath: ""
+      enabled:     true
+      watch:       true
+      source-path: "src/client"
+      target-path: "build/client"
 
     documentation:
-      enabled:    true
-      watch:      true
-      sourcePath: ""
-      targetPath: "docs"
+      enabled:     true
+      watch:       true
+      source-path: "src"
+      target-path: "docs"
 
     run-servers:
       enabled: true
       watch:   true
+      source-path: "build/server"
       paths: [
-        "build/server/app.js"
+        "app.js"
       ]
 
     run-tests:
@@ -85,20 +94,20 @@ default-options =
 
     watch:
       enabled: true
-      sourcePath: ""
+      paths: <[ src build test ]>
 
-
-parse-options = (defaults, options) ->
 
 builder = (options = {}, cb) ->
-  parsed-options = deep-merge! default-options, options
+  parsed-options = lib.parse-options.parse default-options, options
 
   clean = (cb) !->
-    console.log "> clean"
-
-    return cb! unless parsed-options.tasks.clean.enabled
-
     task = parsed-options.tasks.clean
+
+    unless task.enabled
+      info "| clean:disabled"
+      return cb!
+
+    info "> clean"
 
     if task.path is ""
       task.path = parsed-options.target-directory
@@ -108,12 +117,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.clean parsed-options, task
     return cb error if error
 
-    console.log "< clean"
+    info "< clean"
 
     cb!
 
   compile-browserify = (cb) !->
-    console.log "> compile-browserify"
+    task = parsed-options.tasks.compile-browserify
+
+    unless task.enabled
+      info "| compile-browserify:disabled"
+      return cb!
+
+    info "> compile-browserify"
 
     task = parsed-options.tasks.compile-browserify
     return cb! unless task.enabled
@@ -133,15 +148,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.compile-browserify.compile-all-files parsed-options, task
     return cb error if error
 
-    console.log "< compile-browserify"
+    info "< compile-browserify"
 
     cb!
 
   compile-coffeescript = (cb) !->
-    console.log "> compile-coffeescript"
-
     task = parsed-options.tasks.compile-coffeescript
-    return cb! unless task.enabled
+
+    unless task.enabled
+      info "| compile-coffeescript:disabled"
+      return cb!
+
+    info "> compile-coffeescript"
 
     if task.source-path is ""
       task.source-path = parsed-options.source-directory
@@ -156,15 +174,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.compile-coffeescript.compile-all-files parsed-options, task
     return cb error if error
 
-    console.log "< compile-coffeescript"
+    info "< compile-coffeescript"
 
     cb!
 
   compile-jade = (cb) !->
-    console.log "> compile-jade"
-
     task = parsed-options.tasks.compile-jade
-    return cb! unless task.enabled
+
+    unless task.enabled
+      info "| compile-jade:disabled"
+      return cb!
+
+    info "> compile-jade"
 
     if task.source-path is ""
       task.source-path = parsed-options.source-directory
@@ -179,15 +200,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.compile-jade.compile-all-files parsed-options, task
     return cb error if error
 
-    console.log "< compile-jade"
+    info "< compile-jade"
 
     cb!
 
   compile-less = (cb) !->
-    console.log "> compile-less"
-
     task = parsed-options.tasks.compile-less
-    return cb! unless task.enabled
+
+    unless task.enabled
+      info "| compile-less:disabled"
+      return cb!
+
+    info "> compile-less"
 
     if task.source-path is ""
       task.source-path = parsed-options.source-directory
@@ -202,15 +226,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.compile-less.compile-all-files parsed-options, task
     return cb error if error
 
-    console.log "< compile-less"
+    info "< compile-less"
 
     cb!
 
   compile-livescript = (cb) !->
-    console.log "> compile-livescript"
-
     task = parsed-options.tasks.compile-livescript
-    return cb! unless task.enabled
+
+    unless task.enabled
+      info "| compile-livescript:disabled"
+      return cb!
+
+    info "> compile-livescript"
 
     if task.source-path is ""
       task.source-path = parsed-options.source-directory
@@ -225,15 +252,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.compile-livescript.compile-all-files parsed-options, task
     return cb error if error
 
-    console.log "< compile-livescript"
+    info "< compile-livescript"
 
     cb!
 
   compile-stylus = (cb) !->
-    console.log "> compile-stylus"
-
     task = parsed-options.tasks.compile-stylus
-    return cb! unless task.enabled
+
+    unless task.enabled
+      info "| compile-stylus:disabled"
+      return cb!
+
+    info "> compile-stylus"
 
     if task.source-path is ""
       task.source-path = parsed-options.source-directory
@@ -248,15 +278,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.compile-stylus.compile-all-files parsed-options, task
     return cb error if error
 
-    console.log "< compile-stylus"
+    info "< compile-stylus"
 
     cb!
 
   copy = (cb) !->
-    console.log "> copy"
-
     task = parsed-options.tasks.copy
-    return cb! unless task.enabled
+
+    unless task.enabled
+      info "| copy:disabled"
+      return cb!
+
+    info "> copy"
 
     if task.source-path is ""
       task.source-path = parsed-options.source-directory
@@ -271,15 +304,18 @@ builder = (options = {}, cb) ->
     error <-! tasks.copy.copy-all-files parsed-options, task
     return cb error if error
 
-    console.log "< copy"
+    info "< copy"
 
     cb!
 
   documentation = (cb) !->
-    console.log "> documentation"
-
     task = parsed-options.tasks.documentation
-    return cb! unless task.enabled
+
+    unless task.enabled
+      info "| documentation:disabled"
+      return cb!
+
+    info "> documentation"
 
     if task.source-path is ""
       task.source-path = parsed-options.source-directory
@@ -294,41 +330,50 @@ builder = (options = {}, cb) ->
     #error <-! tasks.documentation.compile-all-files parsed-options, task
     #return cb error if error
 
-    console.log "< documentation"
+    info "< documentation"
 
     cb!
 
   run-servers = (cb) !->
-    console.log "> run-servers"
-
     task = parsed-options.tasks.run-servers
-    return cb! unless task.enabled
 
-    error <-! tasks.run-servers parsed-options, task
+    unless task.enabled
+      info "| run-servers:disabled"
+      return cb!
+
+    info "> run-servers"
+
+    error <-! tasks.run-servers.run-servers parsed-options, task
     return cb error if error
 
-    console.log "< run-servers"
+    info "< run-servers"
 
     cb!
 
   run-tests = (cb) !->
-    console.log "> run-tests"
+    info "> run-tests"
 
-    console.log "< run-tests"
+    info "< run-tests"
 
     cb!
 
   watch = (cb) !->
-    console.log "> watch"
+    task = parsed-options.tasks.watch
 
-    console.log "< watch"
+    unless task.enabled
+      info "| watch:disabled"
+      return cb!
+
+    info "> watch"
+
+    tasks.watch parsed-options, task
 
     cb!
 
   done = (cb) !->
-    console.log "> done"
+    info "> done"
 
-    console.log "< done"
+    info "< done"
 
     cb!
 
@@ -347,6 +392,10 @@ builder = (options = {}, cb) ->
   return cb error if error
 
 
+  error <-! copy
+  return cb error if error
+
+
   error <-! compile-browserify
   return cb error if error
 
@@ -357,9 +406,6 @@ builder = (options = {}, cb) ->
   error <-! compile-stylus
   return cb error if error
 
-
-  error <-! copy
-  return cb error if error
 
   error <-! documentation
   return cb error if error
@@ -372,7 +418,7 @@ builder = (options = {}, cb) ->
   return cb error if error
 
 
-  error <-! done
+  error <-! watch
   return cb error if error
 
   cb!

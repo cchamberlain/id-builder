@@ -1,5 +1,12 @@
 require! <[ fs mkdirp async lsr ]>
 
+log = require "id-debug"
+{
+  debug
+  info
+  warning
+} = log
+
 { map, filter } = require "prelude-ls"
 
 compile-browserify   = require "./compile-browserify"
@@ -14,14 +21,29 @@ file = require "../lib/file"
 # TODO: return true if the path doesnt match any of the compile
 # source-file-path-matches.
 export source-file-path-matches = (options, task, source-file-path) -->
-  answer = not (compile-browserify.source-file-path-matches options, task, source-file-path or
-    compile-coffeescript.source-file-path-matches options, task, source-file-path or
-    compile-jade.source-file-path-matches options, task, source-file-path or
-    compile-less.source-file-path-matches options, task, source-file-path or
-    compile-livescript.source-file-path-matches options, task, source-file-path or
-    compile-stylus.source-file-path-matches options, task, source-file-path)
+  if compile-browserify.source-file-path-matches options, task, source-file-path
+    false
 
-  answer
+  else if compile-coffeescript.source-file-path-matches options, task, source-file-path
+    false
+
+  else if compile-jade.source-file-path-matches options, task, source-file-path
+    false
+
+  else if compile-less.source-file-path-matches options, task, source-file-path
+    false
+
+  else if compile-livescript.source-file-path-matches options, task, source-file-path
+    false
+
+  else if compile-stylus.source-file-path-matches options, task, source-file-path
+    false
+
+  else if not not source-file-path.match //^#{task.source-path}//
+    true
+
+  else
+    false
 
 export copy-file = (options, task, source-file-path, target-file-path, cb) !-->
   error, read-chunk <-! fs.read-file source-file-path
@@ -33,7 +55,7 @@ export copy-file = (options, task, source-file-path, target-file-path, cb) !-->
   error <-! fs.write-file target-file-path, read-chunk
   return cb error if error
 
-  console.log "| copy:copy-file `#{target-file-path}`."
+  info "| copy:copy-file `#{target-file-path}`."
 
   cb null
 

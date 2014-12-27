@@ -1,5 +1,12 @@
 require! <[ fs jade lsr async ]>
 
+log = require "id-debug"
+{
+  debug
+  info
+  warning
+} = log
+
 { map, filter } = require "prelude-ls"
 
 file = require "../lib/file"
@@ -32,7 +39,7 @@ export compile-file = (options, task, source-file-path, target-file-path, cb) !-
   error <-! fs.write-file target-file-path, compiled-chunk
   return cb error if error
 
-  console.log "| compile-jade:compile-file `#{source-file-path}` > `#{target-file-path}`."
+  info "| compile-jade:compile-file `#{source-file-path}` > `#{target-file-path}`."
 
   cb null
 
