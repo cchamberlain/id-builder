@@ -1,5 +1,4 @@
 deepmerge = require "deepmerge"
 
-module.exports =
-  parse: (defaults, options) ->
-    deepmerge defaults, options
+module.exports = (defaults, options) ->
+  deepmerge defaults, options

@@ -1,5 +1,17 @@
+require! <[ id-debug ]>
+
+{
+  debug
+  error
+  info
+  warning
+} = id-debug
+
 builder = require "./src"
 
-error <-! builder {}
+builder {}, (e) !->
+  error e if e
 
-throw error if error
+#error <-! builder {}
+#
+#throw error if error

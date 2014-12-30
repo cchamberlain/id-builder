@@ -8,24 +8,24 @@ restarts on changes and reloads the browser for you.
 1. Builder assumes the follwing directory structure (but that can be changed):
   ```
   source/
-    client/
-      app.js/ls/coffee
-    server/
-      app.js/ls/coffee
   docs/
   build/
+    client/
+      app.js
+    server/
+      app.js
   test/
   ```
 
-2. Create a file with any name in your project for example `builder.js`.
+2. Create a file with any name in your project for example `Builder.js`.
    ```javascript
-   var builder = require("builder");
+   var Builder = require("Builder");
 
-   builder();
+   Builder();
    ```
 3. Run the file.
   ```bash
-  node builder.js
+  node Builder.js
 
   ```
 
@@ -36,81 +36,77 @@ Takes an optional options object. By default, all tasks are enabled.
 Default options:
 ```javascript
 builder({
-  sourceDirectory: "source", // Directory to compile from.
+  // At the moment, not really used. Fill it in anyway :P.
+  sourceDirectory: "src", // Directory to compile from.
   targetDirectory: "build",  // Directory to compile to.
 
   tasks: {
     clean: {
       enabled: true,
-      watch:   true,
-      path:    "targetDirectory",
+      watch: true,
+      path: "build"
     },
     copy: {
-      enabled:    true,
-      watch:      true,
-      sourcePath: "sourceDirectory",
-      targetPath: "targetDirectory"
+      enabled: true,
+      watch: true,
+      sourcePath: "src",
+      targetPath: "build"
     },
-    compile: {
-      browserify: {
-        enabled:    true,
-        watch:      true,
-        sourcePath: "sourceDirectory/client/app.js",
-        targetPath: "targetDirectory/client"
-      },
-      coffeescript: {
-        enabled:    true,
-        watch:      true,
-        sourcePath: "sourceDirectory",
-        targetPath: "targetDirectory"
-      },
-      jade: {
-        enabled:    true,
-        watch:      true,
-        sourcePath: "sourceDirectory",
-        targetPath: "targetDirectory"
-      },
-      less: {
-        enabled:    true,
-        watch:      true,
-        sourcePath: "sourceDirectory",
-        targetPath: "targetDirectory"
-      },
-      livescript: {
-        enabled:    true,
-        watch:      true,
-        sourcePath: "sourceDirectory",
-        targetPath: "targetDirectory"
-      },
-      stylus: {
-        enabled:    true,
-        watch:      true,
-        sourcePath: "sourceDirectory",
-        targetPath: "targetDirectory"
-      },
+    compileBrowserify: {
+      enabled: true,
+      watch: true,
+      sourcePath: "build/client/js/app.js",
+      targetPath: "build/client/js/app.bundle.js"
+    },
+    compileCoffeescript: {
+      enabled: true,
+      watch: true,
+      sourcePath: "src",
+      targetPath: "build"
+    },
+    compileJade: {
+      enabled: true,
+      watch: true,
+      sourcePath: "src/client",
+      targetPath: "build/client"
+    },
+    compileLess: {
+      enabled: true,
+      watch: true,
+      sourcePath: "src/client",
+      targetPath: "build/client"
+    },
+    compileLivescript: {
+      enabled: true,
+      watch: true,
+      sourcePath: "src",
+      targetPath: "build"
+    },
+    compileStylus: {
+      enabled: true,
+      watch: true,
+      sourcePath: "src/client",
+      targetPath: "build/client"
     },
     documentation: {
-      enabled:    true,
-      watch:      true,
-      sourcePath: "sourceDirectory",
+      enabled: true,
+      watch: true,
+      sourcePath: "src",
       targetPath: "docs"
     },
-    run: {
-      servers: {
-        enabled: true,
-        watch:   true,
-        paths: [
-          "targetDirectory/server/app.js"
-        ]
-      },
-      tests: {
-        enabled: true,
-        watch:   true,
-      },
+    runServers: {
+      enabled: true,
+      watch: true,
+      sourcePath: "build/server",
+      paths: ["app.js"]
+    },
+    runTests: {
+      enabled: true,
+      watch: true
     },
     watch: {
       enabled: true,
-      sourcePath: "sourceDirectory"
+      paths: ['src', 'build', 'test']
     }
   }
 });

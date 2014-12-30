@@ -1,63 +1,28 @@
-require! <[ fs LiveScript lsr async ]>
+require! <[
+  async
+  id-debug
+  prelude-ls
+]>
 
-log = require "id-debug"
+livescript = require "../lib/livescript"
+
 {
   debug
+  error
   info
   warning
-} = log
+} = id-debug
 
-{ map, filter } = require "prelude-ls"
+{
+  each
+  map
+} = prelude-ls
 
-file = require "../lib/file"
+export dependencies = [ "clean" ]
 
-export source-extension = "ls"
-export target-extension = "js"
+export run = (options, cb) !->
+  error <-! livescript.compile-all-files options
 
-export source-file-path-matches = (options, task, source-file-path) -->
-  source-file-path.match //^#{options.tasks.compile-livescript.source-path}.+\.#{source-extension}$//
-
-export compile-chunk = (options, task, chunk, cb) !->
-  try
-    cb null, LiveScript.compile chunk,
-      bare: true
-  catch error
-    return cb error
-
-export compile-file = (options, task, source-file-path, target-file-path, cb) !-->
-  error, chunk <-! fs.read-file source-file-path
   return cb error if error
 
-  info "| compile-livescript:compile-file > `#{source-file-path}`."
-
-  error, compiled-chunk <-! compile-chunk options, task, chunk.to-string!
-  return cb error if error
-
-  error <-! file.ensure-file-directory options, task, target-file-path
-  return cb error if error
-
-  error <-! fs.write-file target-file-path, compiled-chunk
-  return cb error if error
-
-  info "| compile-livescript:compile-file < `#{target-file-path}`."
-
-  cb null
-
-export compile-all-files = (options, task, cb) !-->
-  error, nodes <~! lsr task.source-path
-  return cb! if error
-
-  paths = filter (-> not it.is-directory!), nodes
-    |> map (.full-path)
-    |> filter source-file-path-matches options, task
-
-  iterate-path = (current-source-file-path, cb) !->
-    current-target-file-path = current-source-file-path
-      .replace task.source-path, task.target-path
-      .replace //\.#{source-extension}$//, ".#{target-extension}"
-
-    compile-file options, task, current-source-file-path, current-target-file-path, cb
-
-  error <-! async.each paths, iterate-path
-  return cb error if error
-  cb null
+  cb!

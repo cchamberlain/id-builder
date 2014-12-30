@@ -1,14 +1,30 @@
-require! <[ fs path ]>
+require! <[
+  async
+  id-debug
+  prelude-ls
+]>
 
-log = require "id-debug"
 {
   debug
+  error
   info
   warning
-} = log
+} = id-debug
 
-export source-file-path-matches = -> false
+{
+  each
+  map
+} = prelude-ls
 
-export run-test = (cb) !->
+export dependencies = <[
+  compileBrowserify
+  compileCoffeescript
+  compileCopy
+  compileJade
+  compileLess
+  compileLivescript
+  compileStylus
+]>
 
-export run-tests = (cb) !->
+export run = (options, cb) !->
+  cb null
