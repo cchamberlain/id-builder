@@ -2,8 +2,12 @@ require! <[
   id-debug
 ]>
 
-jade  = require "../lib/jade"
-watch = require "../lib/watch"
+servers = require "../lib/servers"
+watch   = require "../lib/watch"
+
+{
+  debug
+} = id-debug
 
 export dependencies = <[
   runTests
@@ -11,13 +15,9 @@ export dependencies = <[
 ]>
 
 handle-path = (options, path, stat) !-->
-  return unless jade.source-file-path-matches options, path
+  return unless servers.source-file-path-matches options, path
 
-  target-path = path
-    .replace options.source-path, options.target-path
-    .replace //\.#{jade.source-extension}$//, ".#{jade.target-extension}"
-
-  error <-! jade.compile-file options, path, target-path
+  error <-! servers.restart-servers options
   id-debug.error error if error
 
 handle-add = (options, path, stat) !-->

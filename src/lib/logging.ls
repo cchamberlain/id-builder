@@ -27,6 +27,10 @@ export task-error = (task, message) !-->
   info "#{task}: #{message}"
 
 # TODO: use UTF-8
+export disabled-task = (name) ->
+  info "#{name}: Disabled"
+
+# TODO: use UTF-8
 export start-task = (name) ->
   info "#{name}: Start"
 

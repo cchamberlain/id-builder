@@ -1,24 +1,9 @@
-require! <[
-  async
-  id-debug
-  prelude-ls
-]>
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
-
-{
-  each
-  map
-} = prelude-ls
+watch = require "../lib/watch"
 
 export dependencies = <[
   runTests
 ]>
 
 export run = (options, cb) !->
-  cb null
+  watch.start options
+  cb!

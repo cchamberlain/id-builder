@@ -23,7 +23,6 @@ require! <[
 default-options = require "./lib/default-options"
 logging         = require "./lib/logging"
 parse-options   = require "./lib/parse-options"
-tasks           = require "./tasks"
 
 log-info = (message) ->
   info "#{moment!.format!} #{message}"
@@ -31,10 +30,14 @@ log-info = (message) ->
 run-task-with-options = (options, task, name, cb) !-->
   task-options = options?.tasks[name]
 
-  return cb "No options found for task `#{task-options}`." unless task-options
+  unless task-options
+    return cb "No options found for task `#{task-options}`."
+
+  unless task-options.enabled
+    logging.disabled-task name
+    return cb!
 
   task-options.task-name = name
-  task-options.longest-task-name-length = fold1 ((m, x) -> m.length > x.length and m or x), keys tasks
 
   logging.start-task name
 
@@ -46,11 +49,15 @@ run-task-with-options = (options, task, name, cb) !-->
   cb!
 
 module.exports = (input-options = {}, cb) ->
-  options = parse-options default-options, input-options
+  # First set globals.
+  global.options = parse-options default-options, input-options
+
+  # Then require.
+  tasks = require "./tasks"
 
   auto-tasks = {}
   for let k, v of tasks
-    auto-tasks[k] = v.dependencies ++ run-task-with-options options, v, k
+    auto-tasks[k] = v.dependencies ++ run-task-with-options global.options, v, k
 
   error, results <-! async.auto auto-tasks
   return cb error if error

@@ -1,8 +1,8 @@
 require! <[
-  async
   id-debug
-  prelude-ls
 ]>
+
+servers = require "../lib/servers"
 
 {
   debug
@@ -10,11 +10,6 @@ require! <[
   info
   warning
 } = id-debug
-
-{
-  each
-  map
-} = prelude-ls
 
 export dependencies = <[
   compileBrowserify
@@ -27,4 +22,4 @@ export dependencies = <[
 ]>
 
 export run = (options, cb) !->
-  cb null
+  servers.run-servers options, cb

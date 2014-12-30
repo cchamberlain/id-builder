@@ -75,6 +75,11 @@ module.exports =
       source-path: "src"
       target-path: "build"
 
+    watch-servers:
+      enabled:     true
+      source-path: "build/server"
+      paths:       [ "app.js" ]
+
     watch-stylus:
       enabled:     true
       source-path: "src/client"
@@ -87,4 +92,4 @@ module.exports =
 
     watch:
       enabled:     true
-      paths:       <[ source build ]>
+      paths:       <[ src build ]>

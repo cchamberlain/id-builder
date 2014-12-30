@@ -18,25 +18,27 @@ livescript   = require "./livescript"
 logging      = require "./logging"
 stylus       = require "./stylus"
 
+global-options = global.options
+
 # TODO: return true if the path doesnt match any of the compile
 # source-file-path-matches.
 export source-file-path-matches = (options, source-file-path) -->
-  if browserify.source-file-path-matches options, source-file-path
+  if browserify.source-file-path-matches global-options.tasks.watch-browserify, source-file-path
     false
 
-  else if coffeescript.source-file-path-matches options, source-file-path
+  else if coffeescript.source-file-path-matches global-options.tasks.watch-coffeescript, source-file-path
     false
 
-  else if jade.source-file-path-matches options, source-file-path
+  else if jade.source-file-path-matches global-options.tasks.watch-jade, source-file-path
     false
 
-  else if less.source-file-path-matches options, source-file-path
+  else if less.source-file-path-matches global-options.tasks.watch-less, source-file-path
     false
 
-  else if livescript.source-file-path-matches options, source-file-path
+  else if livescript.source-file-path-matches global-options.tasks.watch-livescript, source-file-path
     false
 
-  else if stylus.source-file-path-matches options, source-file-path
+  else if stylus.source-file-path-matches global-options.tasks.watch-stylus, source-file-path
     false
 
   else if not not source-file-path.match //^#{options.source-path}//
