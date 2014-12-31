@@ -7,10 +7,14 @@ module.exports =
       enabled:     true
       path:        "build"
 
+    # TODO: use source-directory in the task
+    # TODO: rename source-path to entry-file-name and only the app.js part
+    # TODO: rename target-path to target-file-name and only the app.bundle.js part
     compile-browserify:
-      enabled:     true
-      source-path: "build/client/js/app.js"
-      target-path: "build/client/js/app.bundle.js"
+      enabled:          true
+      source-directory: "build/client/js"
+      source-path:      "build/client/js/app.js"
+      target-path:      "build/client/js/app.bundle.js"
 
     compile-coffeescript:
       enabled:     true
@@ -42,6 +46,9 @@ module.exports =
       source-path: "src"
       target-path: "build"
 
+    run-browsersync-server:
+      enabled:     true
+
     run-servers:
       enabled:     true
       source-path: "build/server"
@@ -50,10 +57,18 @@ module.exports =
     run-tests:
       enabled:     true
 
+    # TODO: use source-directory in the task
+    # TODO: rename source-path to entry-file-name and only the app.js part
+    # TODO: rename target-path to target-file-name and only the app.bundle.js part
     watch-browserify:
+      enabled:          true
+      source-directory: "build/client/js"
+      source-path:      "build/client/js/app.js"
+      target-path:      "build/client/js/app.bundle.js"
+
+    watch-browsersync:
       enabled:     true
-      source-path: "build/client/js/app.js"
-      target-path: "build/client/js/app.bundle.js"
+      source-path: "build/client"
 
     watch-coffeescript:
       enabled:     true

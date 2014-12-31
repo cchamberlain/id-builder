@@ -32,9 +32,13 @@ export start = (options) ->
   watcher := chokidar.watch options.paths[0],
     ignored: /[\/\/]\./
     persistent: true
+    ignore-initial: true
 
   for i in [ 1 ... options.paths.length ]
     watcher.add options.paths[i]
+
+  #watcher.on "change", (x) ->
+  #  console.log "general change!", x
 
   watcher
 

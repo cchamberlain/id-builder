@@ -35,6 +35,9 @@ e <-! Builder do
     compile-stylus:
       enabled: false
 
+    run-browsersync-server:
+      enabled: false
+
     run-servers:
       enabled: false
 
@@ -42,6 +45,9 @@ e <-! Builder do
       enabled: false
 
     watch-browserify:
+      enabled: false
+
+    watch-browsersync:
       enabled: false
 
     watch-coffeescript:

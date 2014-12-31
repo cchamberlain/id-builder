@@ -9,6 +9,7 @@ module.exports = {
     },
     compileBrowserify: {
       enabled: true,
+      sourceDirectory: "build/client/js",
       sourcePath: "build/client/js/app.js",
       targetPath: "build/client/js/app.bundle.js"
     },
@@ -42,6 +43,9 @@ module.exports = {
       sourcePath: "src",
       targetPath: "build"
     },
+    runBrowsersyncServer: {
+      enabled: true
+    },
     runServers: {
       enabled: true,
       sourcePath: "build/server",
@@ -52,8 +56,13 @@ module.exports = {
     },
     watchBrowserify: {
       enabled: true,
+      sourceDirectory: "build/client/js",
       sourcePath: "build/client/js/app.js",
       targetPath: "build/client/js/app.bundle.js"
+    },
+    watchBrowsersync: {
+      enabled: true,
+      sourcePath: "build/client"
     },
     watchCoffeescript: {
       enabled: true,

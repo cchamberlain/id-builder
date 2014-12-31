@@ -22,7 +22,8 @@ out$.start = start = function(options){
   }
   watcher = chokidar.watch(options.paths[0], {
     ignored: /[\/\/]\./,
-    persistent: true
+    persistent: true,
+    ignoreInitial: true
   });
   for (i$ = 0, len$ = (ref$ = [1].concat(slice$.call(options.paths.length))).length; i$ < len$; ++i$) {
     i = ref$[i$];

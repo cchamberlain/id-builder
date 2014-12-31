@@ -1,10 +1,9 @@
 require! <[
+  browser-sync
   id-debug
 ]>
 
-# TODO: before program exit clean up children.
-
-servers = require "../lib/servers"
+browsersync = require "../lib/browsersync"
 
 {
   debug
@@ -24,4 +23,4 @@ export dependencies = <[
 ]>
 
 export run = (options, cb) !->
-  servers.run-servers options, cb
+  browsersync.run-server options, cb

@@ -2,6 +2,13 @@ require! <[
   id-debug
 ]>
 
+{
+  debug
+  error
+  info
+  warning
+} = id-debug
+
 browserify = require "../lib/browserify"
 watch = require "../lib/watch"
 
@@ -12,6 +19,7 @@ export dependencies = <[
 
 handle-path = (options, path, stat) !-->
   return unless browserify.source-file-path-matches options, path
+
   error <-! browserify.compile-all-files options
   id-debug.error error if error
 
@@ -31,13 +39,15 @@ handle-error = (options, error) !-->
   console.error error
 
 export run = (options, cb) !->
-  watcher = watch.get-watcher!
+  browserify.watch options, cb
 
-  <-! watcher.on "ready"
+  #watcher = watch.get-watcher!
 
-  watcher.on "add",       handle-add        options
-  watcher.on "addDir",    handle-add-dir    options
-  watcher.on "change",    handle-change     options
-  watcher.on "unlink",    handle-unlink     options
-  watcher.on "unlinkDir", handle-unlink-dir options
-  watcher.on "error",     handle-error      options
+  #<-! watcher.on "ready"
+
+  #watcher.on "add",       handle-add        options
+  #watcher.on "addDir",    handle-add-dir    options
+  #watcher.on "change",    handle-change     options
+  #watcher.on "unlink",    handle-unlink     options
+  #watcher.on "unlinkDir", handle-unlink-dir options
+  #watcher.on "error",     handle-error      options
