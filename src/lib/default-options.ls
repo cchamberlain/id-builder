@@ -1,6 +1,7 @@
 module.exports =
   source-directory: "src"
-  target-directory: "src"
+  target-directory: "build"
+  tests-directory:  "build/tests"
 
   tasks:
     clean:
@@ -56,6 +57,8 @@ module.exports =
 
     run-tests:
       enabled:     true
+      source-path: "build/test"
+      reporter:    "spec"
 
     # TODO: use source-directory in the task
     # TODO: rename source-path to entry-file-name and only the app.js part
@@ -94,6 +97,11 @@ module.exports =
       enabled:     true
       source-path: "build/server"
       paths:       [ "app.js" ]
+
+    watch-tests:
+      enabled:     true
+      source-path: "build/test"
+      reporter:    "spec"
 
     watch-stylus:
       enabled:     true

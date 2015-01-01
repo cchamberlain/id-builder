@@ -21,7 +21,9 @@ export source-file-path-matches = (options, source-file-path) -->
   source-file-path.match //^#{options.source-path}.+\.#{source-extension}$//
 
 export compile-chunk = (options, chunk, cb) !->
-  less.render chunk, cb
+  error, { css } <-! less.render chunk
+
+  cb error, css
 
 export compile-file = file-system.compile-file compile-chunk
 

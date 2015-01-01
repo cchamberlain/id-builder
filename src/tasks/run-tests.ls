@@ -4,6 +4,8 @@ require! <[
   prelude-ls
 ]>
 
+tests = require "../lib/tests"
+
 {
   debug
   error
@@ -27,4 +29,4 @@ export dependencies = <[
 ]>
 
 export run = (options, cb) !->
-  cb null
+  tests.run-tests options, cb

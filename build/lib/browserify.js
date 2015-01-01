@@ -32,13 +32,19 @@ out$.compileAllFiles = compileAllFiles = function(options, cb){
       return cb();
     }
     fileSystem.ensureFileDirectory(options.targetPath, function(error){
-      var bundle;
+      var b;
       if (error) {
         return cb(error);
       }
-      bundle = browserify();
-      bundle.add(path.resolve(options.sourcePath));
-      bundle.on("bundle", function(bundleStream){
+      b = browserify({
+        cache: {},
+        debug: true,
+        fullPaths: true,
+        packageCache: {}
+      });
+      b.transform("reactify");
+      b.add(path.resolve(options.sourcePath));
+      b.on("bundle", function(bundleStream){
         var writeStream;
         writeStream = fs.createWriteStream(options.targetPath);
         writeStream.on("error", function(error){
@@ -50,7 +56,7 @@ out$.compileAllFiles = compileAllFiles = function(options, cb){
         });
         return bundleStream.pipe(writeStream);
       });
-      bundle.bundle();
+      b.bundle();
     });
   });
 };
@@ -59,10 +65,11 @@ out$.watch = watch = function(options, cb){
   cb();
   b = browserify({
     cache: {},
-    packageCache: {},
-    fullPaths: true
+    debug: true,
+    fullPaths: true,
+    packageCache: {}
   });
-  w = watchify(b);
+  b.transform("reactify");
   b.add(path.resolve(options.sourcePath));
   b.on("bundle", function(bundleStream){
     var data;
@@ -71,7 +78,6 @@ out$.watch = watch = function(options, cb){
       data = data + "" + d.toString();
     });
     return bundleStream.on("end", function(){
-      debug("bundle end", data.length);
       fs.writeFile(options.targetPath, data, function(e){
         if (e) {
           return error(e);
@@ -80,6 +86,7 @@ out$.watch = watch = function(options, cb){
       });
     });
   });
+  w = watchify(b);
   w.on("update", function(){
     b.bundle();
   });

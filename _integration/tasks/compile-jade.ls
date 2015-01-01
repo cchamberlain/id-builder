@@ -1,18 +1,18 @@
 require! <[ fs chai mkdirp rimraf ]>
 
-test = require "../../../src/lib/test"
-less = require "../../../src/tasks/compile-less"
+tests = require "../../../lib/tests"
+jade  = require "../../../tasks/compile-jade"
 
 we                = it
 { expect }        = chai
-{ random-string } = test
+{ tests.random-string } = tests
 
 describe "integration", !->
   describe "tasks", !->
     describe "compile", !->
-      describe "less", !->
+      describe "jade", !->
         before-each (cb) !->
-          @directory-path = ".tmp/#{random-string!}"
+          @directory-path = ".tmp/#{tests.random-string!}"
 
           error <~! mkdirp @directory-path
           return cb error if error
@@ -28,21 +28,21 @@ describe "integration", !->
         after-each (cb) !->
           rimraf @directory-path, cb
 
-        describe "When called on a directory with less files", !->
-          we "should have compiled all less files", (cb) !->
-            error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.less", ".class { width: (1 + 1) }"
+        describe "When called on a directory with jade files", !->
+          we "should have compiled all jade files", (cb) !->
+            error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.jade", "h1 WAT"
             expect error .to.equal null
 
-            error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.less", ".class { width: (2 + 2) }"
+            error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.jade", "h2 SRSLY"
             expect error .to.equal null
 
-            error <~! less.compile-all-files "#{@directory-path}/src", "#{@directory-path}/build"
+            error <~! jade.compile-all-files "#{@directory-path}/src", "#{@directory-path}/build"
             expect error .to.equal null
 
             error, nodes <~! fs.readdir "#{@directory-path}/build"
             expect error .to.equal null
             expect nodes .to.have.length 2
-            expect nodes[0] .to.match /\.css$/
-            expect nodes[1] .to.match /\.css$/
+            expect nodes[0] .to.match /\.js$/
+            expect nodes[1] .to.match /\.js$/
 
             cb!

@@ -12,7 +12,11 @@ out$.sourceFilePathMatches = sourceFilePathMatches = curry$(function(options, so
   return sourceFilePath.match(RegExp('^' + options.sourcePath + '.+\\.' + sourceExtension + '$'));
 });
 out$.compileChunk = compileChunk = function(options, chunk, cb){
-  less.render(chunk, cb);
+  less.render(chunk, function(error, arg$){
+    var css;
+    css = arg$.css;
+    cb(error, css);
+  });
 };
 out$.compileFile = compileFile = fileSystem.compileFile(compileChunk);
 out$.compileAllFiles = compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);

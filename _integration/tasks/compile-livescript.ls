@@ -1,18 +1,18 @@
 require! <[ fs chai mkdirp rimraf ]>
 
-test         = require "../../../src/lib/test"
-coffeescript = require "../../../src/tasks/compile-coffeescript"
+tests      = require "../../../lib/tests"
+livescript = require "../../../tasks/compile-livescript"
 
 we                = it
 { expect }        = chai
-{ random-string } = test
+{ tests.random-string } = tests
 
 describe "integration", !->
   describe "tasks", !->
     describe "compile", !->
-      describe "coffeescript", !->
+      describe "livescript", !->
         before-each (cb) !->
-          @directory-path = ".tmp/#{random-string!}"
+          @directory-path = ".tmp/#{tests.random-string!}"
 
           error <~! mkdirp @directory-path
           return cb error if error
@@ -28,15 +28,15 @@ describe "integration", !->
         after-each (cb) !->
           rimraf @directory-path, cb
 
-        describe "When called on a directory with coffeescript files", !->
-          we "should have compiled all coffeescript files", (cb) !->
-            error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.coffee", "-> console.log('123')"
+        describe "When called on a directory with livescript files", !->
+          we "should have compiled all livescript files", (cb) !->
+            error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.ls", "-> console.log('123')"
             expect error .to.equal null
 
-            error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.coffee", "-> console.log('456')"
+            error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.ls", "-> console.log('456')"
             expect error .to.equal null
 
-            error <~! coffeescript.compile-all-files "#{@directory-path}/src", "#{@directory-path}/build"
+            error <~! livescript.compile-all-files "#{@directory-path}/src", "#{@directory-path}/build"
             expect error .to.equal null
 
             error, nodes <~! fs.readdir "#{@directory-path}/build"

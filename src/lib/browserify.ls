@@ -48,11 +48,17 @@ export compile-all-files = (options, cb) !->
   error <-! file-system.ensure-file-directory options.target-path
   return cb error if error
 
-  bundle = browserify!
+  b = browserify do
+    cache:         {}
+    debug:         true
+    full-paths:    true
+    package-cache: {}
 
-  bundle.add path.resolve options.source-path
+  b.transform "reactify"
 
-  bundle.on "bundle", (bundle-stream) ->
+  b.add path.resolve options.source-path
+
+  b.on "bundle", (bundle-stream) ->
     write-stream = fs.create-write-stream options.target-path
 
     write-stream.on "error", (error) !->
@@ -65,17 +71,18 @@ export compile-all-files = (options, cb) !->
     bundle-stream
       .pipe write-stream
 
-  bundle.bundle!
+  b.bundle!
 
 export watch = (options, cb) !->
   cb!
 
   b = browserify do
     cache:         {}
-    package-cache: {}
+    debug:         true
     full-paths:    true
+    package-cache: {}
 
-  w = watchify b
+  b.transform "reactify"
 
   b.add path.resolve options.source-path
 
@@ -86,11 +93,12 @@ export watch = (options, cb) !->
       data := "#{data}#{d.to-string!}"
 
     bundle-stream.on "end", !->
-      debug "bundle end", data.length
       e <-! fs.write-file options.target-path, data
       return error e if e
 
       logging.task-info options.task-name, "`#{options.source-path}` => `#{options.target-path}`"
+
+  w = watchify b
 
   w.on "update", !->
     b.bundle!

@@ -1,17 +1,22 @@
-require! <[ fs chai mkdirp rimraf ]>
+require! <[
+  fs
+  chai
+  mkdirp
+  rimraf
+]>
 
-test  = require "../../../src/lib/test"
-clean = require "../../../src/tasks/clean"
+tests = require "../../../lib/tests"
+clean = require "../../../lib/clean"
 
 we                = it
 { expect }        = chai
-{ random-string } = test
+{ tests.random-string } = tests
 
 describe "integration", !->
   describe "tasks", !->
     describe "clean", !->
       before-each (cb) !->
-        @directory-path = ".tmp/#{random-string!}"
+        @directory-path = ".tmp/#{tests.random-string!}"
         mkdirp @directory-path, cb
 
       after-each (cb) !->
@@ -19,13 +24,13 @@ describe "integration", !->
 
       describe "When called on a directory with files", !->
         we "should have deleted all files", (cb) ->
-          error <~! fs.write-file "#{@directory-path}/#{random-string!}", "A"
+          error <~! fs.write-file "#{@directory-path}/#{tests.random-string!}", "A"
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/#{random-string!}", "B"
+          error <~! fs.write-file "#{@directory-path}/#{tests.random-string!}", "B"
           expect error .to.equal null
 
-          error <~! clean @directory-path
+          error <~! clean.directory @directory-path
           expect error .to.equal null
 
           error, nodes <~! fs.readdir @directory-path

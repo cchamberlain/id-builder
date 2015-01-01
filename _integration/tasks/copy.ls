@@ -1,17 +1,17 @@
 require! <[ fs chai mkdirp rimraf ]>
 
-test = require "../../../src/lib/test"
-copy = require "../../../src/tasks/copy"
+tests = require "../../../lib/tests"
+copy  = require "../../../tasks/copy"
 
 we                = it
 { expect }        = chai
-{ random-string } = test
+{ tests.random-string } = tests
 
 describe "integration", !->
   describe "tasks", !->
     describe "copy", !->
       before-each (cb) !->
-        @directory-path = ".tmp/#{random-string!}"
+        @directory-path = ".tmp/#{tests.random-string!}"
 
         error <~! mkdirp @directory-path
         return cb error if error
@@ -29,25 +29,25 @@ describe "integration", !->
 
       describe "When called on a directory with files other then compiled files", !->
         we "should have copied all files that were to be compiled", (cb) ->
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.styl", ""
+          error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.styl", ""
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.less", ""
+          error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.less", ""
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.ls", ""
+          error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.ls", ""
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.coffee", ""
+          error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.coffee", ""
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.jade", ""
+          error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.jade", ""
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.txt", "copy this"
+          error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.txt", "copy this"
           expect error .to.equal null
 
-          error <~! fs.write-file "#{@directory-path}/src/#{random-string!}.json", "{\"copy\": \"this\"}"
+          error <~! fs.write-file "#{@directory-path}/src/#{tests.random-string!}.json", "{\"copy\": \"this\"}"
           expect error .to.equal null
 
           error <~! fs.write-file "#{@directory-path}/src/.gitignore", "copythis"

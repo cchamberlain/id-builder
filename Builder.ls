@@ -42,7 +42,7 @@ e <-! Builder do
       enabled: false
 
     run-tests:
-      enabled: false
+      enabled: true
 
     watch-browserify:
       enabled: false
@@ -63,6 +63,9 @@ e <-! Builder do
       enabled: true
 
     watch-stylus:
+      enabled: false
+
+    watch-servers:
       enabled: false
 
     watch-copy:
