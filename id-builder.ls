@@ -7,9 +7,9 @@ require! <[ id-debug ]>
   warning
 } = id-debug
 
-Builder = require "./src"
+id-builder = require "./src"
 
-e <-! Builder do
+e <-! id-builder do
   tasks:
     clean:
       enabled: true

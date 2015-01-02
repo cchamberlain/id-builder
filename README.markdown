@@ -1,11 +1,11 @@
-![Travis CI](https://travis-ci.org/Industrial/Builder.svg)
+![Travis CI](https://travis-ci.org/Industrial/id-builder.svg)
 
-# Builder
-Builder compiles your code, runs your tests and servers, recompiles and
+# id-builder
+id-builder compiles your code, runs your tests and servers, recompiles and
 restarts on changes and reloads the browser for you.
 
 ## Getting Started
-1. Builder assumes the follwing directory structure (but that can be changed):
+1. id-builder assumes the follwing directory structure (but that can be changed):
   ```
   // Source Directory
   src/
@@ -26,22 +26,22 @@ restarts on changes and reloads the browser for you.
       anything.js
   ```
 
-2. Create a file with any name in your project for example `Builder.js`.
+2. Create a file with any name in your project for example `id-builder.js`.
    ```javascript
-   var Builder = require("Builder");
+   var idBuilder = require("id-builder");
 
-   Builder();
+   idBuilder();
    ```
 
    or just
 
    ```javascript
-   require("Builder")();
+   require("id-builder")();
    ```
 
 3. Run the file.
   ```bash
-  node Builder.js
+  node id-builder.js
 
   ```
 
@@ -51,7 +51,7 @@ Takes an optional options object. By default, all tasks are enabled.
 
 Default options:
 ```javascript
-builder({
+idBuilder({
   // These aren't used at the moment.
   sourceDirectory: "src",
   targetDirectory: "build",
