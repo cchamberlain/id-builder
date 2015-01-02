@@ -1,4 +1,4 @@
-![Travis CI](https://travis-ci.org/Industrial/id-builder.svg)
+[![Build Status](https://travis-ci.org/Industrial/id-builder.svg?branch=master)](https://travis-ci.org/Industrial/id-builder)
 
 # id-builder
 id-builder compiles your code, runs your tests and servers, recompiles and
