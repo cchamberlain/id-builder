@@ -7,7 +7,7 @@ require! <[
   watchify
 ]>
 
-p = path
+path = path
 
 {
   debug
@@ -31,12 +31,18 @@ export path-reloads = (options, path) -->
 # TODO: Find a better way to match paths then just on all writes.. e.g. to
 # discern wether a file is in a bundle so a recompile is needed.
 export source-file-path-matches = (options, source-file-path) -->
-  return if (p.resolve source-file-path) is (p.resolve options.target-path)
+  resolved-source-directory-path = path.resolve options.source-directory
+  resolved-source-file-path      = path.resolve source-file-path
+  resolved-target-path           = path.resolve options.target-path
 
-  resolved-source-file-path      = p.resolve source-file-path
-  resolved-source-directory-path = p.resolve options.source-directory
+  if resolved-source-file-path is resolved-target-path
+    false
 
-  (resolved-source-file-path.index-of resolved-source-directory-path) is 0
+  else if 0 is resolved-source-file-path.index-of resolved-source-directory-path
+    true
+
+  else
+    false
 
 export compile-all-files = (options, cb) !->
   exists <-! fs.exists options.source-path

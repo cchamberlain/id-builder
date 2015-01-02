@@ -27,8 +27,42 @@ describe("browserify", function(){
       cb();
     });
   });
-  describe("path-reloads", function(){});
-  describe("source-file-path-matches", function(){});
+  describe("path-reloads(options, path)", function(){});
+  describe("source-file-path-matches", function(){
+    describe("when the `source-file-path` is the `target-path`", function(){
+      we("should return `false`", function(cb){
+        var options;
+        options = {
+          targetPath: "x/y.js",
+          sourceDirectory: "x"
+        };
+        expect(browserify.sourceFilePathMatches(options, "x/y.js")).to.equal(false);
+        cb();
+      });
+    });
+    describe("when the `source-file-path` is in the the `source-directory`", function(){
+      we("should return `true`", function(cb){
+        var options;
+        options = {
+          targetPath: "x/y.js",
+          sourceDirectory: "x"
+        };
+        expect(browserify.sourceFilePathMatches(options, "x/q.js")).to.equal(true);
+        cb();
+      });
+    });
+    describe("when the `source-file-path` is not in the the `source-directory`", function(){
+      we("should return `false`", function(cb){
+        var options;
+        options = {
+          targetPath: "x/q.js",
+          sourceDirectory: "a"
+        };
+        expect(browserify.sourceFilePathMatches(options, "x/q.js")).to.equal(false);
+        cb();
+      });
+    });
+  });
   describe("compile-all-files", function(){});
   describe("watch", function(){});
 });
