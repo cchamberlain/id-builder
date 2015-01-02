@@ -46,7 +46,7 @@ restarts on changes and reloads the browser for you.
   ```
 
 ## API
-### builder([options]);
+### idBuilder([options]);
 Takes an optional options object. By default, all tasks are enabled.
 
 Default options:
