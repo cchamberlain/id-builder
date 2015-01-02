@@ -1,7 +1,6 @@
 require! <[
   async
   id-debug
-  id-type
   path
   prelude-ls
   moment
