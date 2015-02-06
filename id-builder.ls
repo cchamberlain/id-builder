@@ -12,7 +12,7 @@ e <-! id-builder do
       enabled: false
 
     compile-copy:
-      enabled: false
+      enabled: true
 
     compile-jade:
       enabled: false
@@ -60,7 +60,7 @@ e <-! id-builder do
       enabled: false
 
     watch-copy:
-      enabled: false
+      enabled: true
 
     watch:
       enabled: true
