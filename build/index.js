@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 let async = require("async");
 let moment = require("moment");
@@ -54,19 +54,3 @@ module.exports = function(inputOptions, cb) {
 
   async.auto(autoTasks, cb);
 };
-
-/*
-module.exports = (input-options = {}, cb) ->
-  # First set globals.
-  global.options = parse-options default-options, input-options
-
-  # Then require.
-  tasks = require "./tasks"
-
-  auto-tasks = {}
-  for let k, v of tasks
-    auto-tasks[k] = v.dependencies ++ run-task-with-options global.options, v, k
-
-  error, results <-! async.auto auto-tasks
-  return cb error if error
-*/

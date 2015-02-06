@@ -1,8 +1,10 @@
-var async = require("async");
+"use strict";
 
-var coffeescript = require("../lib/coffeescript")
+let async = require("async");
+
+let coffeescript = require("../lib/coffeescript")
 
 module.exports = {
   dependencies: [ "clean" ],
   run: coffeescript.compileAllFiles
-}
+};

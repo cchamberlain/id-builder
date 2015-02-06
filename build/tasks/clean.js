@@ -1,8 +1,10 @@
-var clean = require("../lib/clean");
+"use strict";
 
-var dependencies = []
+let clean = require("../lib/clean");
 
-var run = function (options, cb) {
+let dependencies = []
+
+let run = function (options, cb) {
   clean.directory(options, cb);
 };
 
