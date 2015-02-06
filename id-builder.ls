@@ -1,12 +1,3 @@
-require! <[ id-debug ]>
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
-
 id-builder = require "./src"
 
 e <-! id-builder do
