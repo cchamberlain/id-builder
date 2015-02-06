@@ -3,9 +3,9 @@
 let async = require("async");
 let moment = require("moment");
 
-let defaultOptions = require("./lib/default-options");
+let defaultOptions = require("./lib/defaultOptions");
 let logging = require("./lib/logging");
-let parseOptions = require("./lib/parse-options");
+let parseOptions = require("./lib/parseOptions");
 
 let logInfo = function(message) {
   console.log(`${moment().format()} ${message}`);

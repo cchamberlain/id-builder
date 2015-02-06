@@ -1,6 +1,6 @@
 "use strict";
 
-let fileSystem = require("../lib/file-system");
+let fileSystem = require("../lib/fileSystem");
 let browserify  = require("../lib/browserify");
 
 let dependencies = [

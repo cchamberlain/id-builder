@@ -6,7 +6,7 @@ require! <[
   child_process
 ]>
 
-file-system = require "./file-system"
+file-system = require "./fileSystem"
 logging     = require "./logging"
 
 {

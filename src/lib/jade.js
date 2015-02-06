@@ -1,7 +1,7 @@
 var jade = require("jade");
 var async = require("async");
 
-var fileSystem = require("./file-system");
+var fileSystem = require("./fileSystem");
 var logging = require("./logging");
 
 var sourceExtension = "jade";

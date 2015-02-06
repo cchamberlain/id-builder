@@ -2,7 +2,7 @@
 var less, async, fileSystem, logging, sourceExtension, targetExtension, sourceFilePathMatches, compileChunk, compileFile, compileAllFiles, out$ = typeof exports != 'undefined' && exports || this;
 less = require('less');
 async = require('async');
-fileSystem = require("./file-system");
+fileSystem = require("./fileSystem");
 logging = require("./logging");
 out$.sourceExtension = sourceExtension = "less";
 out$.targetExtension = targetExtension = "css";

@@ -2,7 +2,7 @@
 var stylus, async, fileSystem, logging, sourceExtension, targetExtension, sourceFilePathMatches, compileChunk, compileFile, compileAllFiles, out$ = typeof exports != 'undefined' && exports || this;
 stylus = require('stylus');
 async = require('async');
-fileSystem = require("./file-system");
+fileSystem = require("./fileSystem");
 logging = require("./logging");
 out$.sourceExtension = sourceExtension = "styl";
 out$.targetExtension = targetExtension = "css";

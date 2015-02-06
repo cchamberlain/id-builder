@@ -6,7 +6,7 @@ fs = require('fs');
 path = require('path');
 watchify = require('watchify');
 path = path;
-fileSystem = require("./file-system");
+fileSystem = require("./fileSystem");
 logging = require("./logging");
 out$.sourceExtension = sourceExtension = "coffee";
 out$.targetExtension = targetExtension = "js";

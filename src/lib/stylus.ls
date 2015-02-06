@@ -3,7 +3,7 @@ require! <[
   async
 ]>
 
-file-system = require "./file-system"
+file-system = require "./fileSystem"
 logging     = require "./logging"
 
 export source-extension = "styl"

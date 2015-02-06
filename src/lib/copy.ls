@@ -4,7 +4,7 @@ require! <[ fs mkdirp async lsr ]>
 
 browserify   = require "./browserify"
 coffeescript = require "./coffeescript"
-file-system  = require "./file-system"
+file-system  = require "./fileSystem"
 jade         = require "./jade"
 less         = require "./less"
 livescript   = require "./livescript"

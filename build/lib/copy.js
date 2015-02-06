@@ -7,7 +7,7 @@ lsr = require('lsr');
 ref$ = require("prelude-ls"), map = ref$.map, filter = ref$.filter;
 browserify = require("./browserify");
 coffeescript = require("./coffeescript");
-fileSystem = require("./file-system");
+fileSystem = require("./fileSystem");
 jade = require("./jade");
 less = require("./less");
 livescript = require("./livescript");
