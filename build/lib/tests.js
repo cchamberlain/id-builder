@@ -27,7 +27,7 @@ out$.runTests = runTests = function(options, cb){
       logging.taskInfo(options.taskName, "Skipping: Directory `" + options.sourcePath + "` not found.");
       return cb();
     }
-    childProcess = child_process.spawn(pathToMocha, ["--recursive", "--compilers", "coffee:coffee-script/register", "--colors", "--reporter", options.reporter, options.sourcePath]);
+    childProcess = child_process.spawn(pathToMocha, ["--recursive", "--colors", "--reporter", options.reporter, options.sourcePath]);
     childProcess.stdout.on("data", function(chunk){
       return process.stdout.write(chunk);
     });

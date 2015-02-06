@@ -1,4 +1,7 @@
-var idBuilder = require("./");
+// For now, while rewriting, require livescript.
+require("LiveScript");
+
+var idBuilder = require("./src");
 
 idBuilder({
   tasks: {

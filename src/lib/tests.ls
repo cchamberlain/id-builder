@@ -37,8 +37,6 @@ export run-tests = (options, cb) !->
 
   child-process = child_process.spawn path-to-mocha, [
     "--recursive"
-    "--compilers"
-    "coffee:coffee-script/register"
     "--colors"
     "--reporter"
     options.reporter
