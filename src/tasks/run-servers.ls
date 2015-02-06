@@ -1,17 +1,6 @@
-require! <[
-  id-debug
-]>
-
 # TODO: before program exit clean up children.
 
 servers = require "../lib/servers"
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 export dependencies = <[
   compileBrowserify

@@ -1,17 +1,9 @@
 require! <[
   async
-  id-debug
   prelude-ls
 ]>
 
 copy = require "../lib/copy"
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 {
   each

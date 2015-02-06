@@ -1,14 +1,3 @@
-require! <[
-  id-debug
-]>
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
-
 file-system = require "../lib/file-system"
 browserify  = require "../lib/browserify"
 

@@ -1,12 +1,5 @@
 require! <[ fs mkdirp async lsr ]>
 
-log = require "id-debug"
-{
-  debug
-  info
-  warning
-} = log
-
 { map, filter } = require "prelude-ls"
 
 browserify   = require "./browserify"

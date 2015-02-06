@@ -1,11 +1,10 @@
 require! <[
   async
   fs
-  id-debug
-  lsr
   mkdirp
   path
   prelude-ls
+  lsr
 ]>
 
 logging = require "./logging"
@@ -15,13 +14,6 @@ logging = require "./logging"
   reject
   filter
 } = prelude-ls
-
-{
-  debug
-  info
-  warning
-  error
-} = id-debug
 
 export get-files = (path, cb) !->
   error, nodes <-! lsr path

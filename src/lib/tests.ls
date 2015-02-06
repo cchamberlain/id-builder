@@ -1,6 +1,5 @@
 require! <[
   fs
-  id-debug
   os
   path
   prelude-ls
@@ -9,13 +8,6 @@ require! <[
 
 file-system = require "./file-system"
 logging     = require "./logging"
-
-{
-  debug
-  info
-  warning
-  error
-} = id-debug
 
 {
   each

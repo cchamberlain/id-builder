@@ -1,7 +1,3 @@
-require! <[
-  id-debug
-]>
-
 coffeescript = require "../lib/coffeescript"
 watch        = require "../lib/watch"
 
@@ -17,8 +13,8 @@ handle-path = (options, path, stat) !-->
     .replace options.source-path, options.target-path
     .replace //\.#{coffeescript.source-extension}$//, ".#{coffeescript.target-extension}"
 
-  error <-! coffeescript.compile-file options, task, path, target-path
-  id-debug.error error if error
+  e <-! coffeescript.compile-file options, task, path, target-path
+  console.error e if e
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat
@@ -32,7 +28,8 @@ handle-unlink = (options, path, stat) !-->
 
 handle-unlink-dir = (options, path, stat) !-->
 
-handle-error = (options, error) !-->
+handle-error = (options, e) !-->
+  console.error e
 
 export run = (options, cb) !->
   watcher = watch.get-watcher!

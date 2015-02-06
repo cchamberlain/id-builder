@@ -1,13 +1,5 @@
-require! <[
-  id-debug
-]>
-
 copy  = require "../lib/copy"
 watch = require "../lib/watch"
-
-{
-  debug
-} = id-debug
 
 export dependencies = <[
   runTests
@@ -21,7 +13,7 @@ handle-path = (options, path, stat) !-->
 
 
   error <-! copy.copy-file options, path, target-path
-  id-debug.error error if error
+  console.error error if error
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat

@@ -1,7 +1,3 @@
-require! <[
-  id-debug
-]>
-
 jade  = require "../lib/jade"
 watch = require "../lib/watch"
 
@@ -18,7 +14,7 @@ handle-path = (options, path, stat) !-->
     .replace //\.#{jade.source-extension}$//, ".#{jade.target-extension}"
 
   error <-! jade.compile-file options, path, target-path
-  id-debug.error error if error
+  console.error error if error
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat

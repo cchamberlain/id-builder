@@ -1,17 +1,8 @@
 require! <[
   async
-  id-debug
-  path
   prelude-ls
   moment
 ]>
-
-{
-  debug
-  info
-  warning
-  error
-} = id-debug
 
 {
   each
@@ -24,7 +15,7 @@ logging         = require "./lib/logging"
 parse-options   = require "./lib/parse-options"
 
 log-info = (message) ->
-  info "#{moment!.format!} #{message}"
+  console.log "#{moment!.format!} #{message}"
 
 run-task-with-options = (options, task, name, cb) !-->
   task-options = options?.tasks[name]

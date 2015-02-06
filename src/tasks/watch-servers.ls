@@ -1,13 +1,5 @@
-require! <[
-  id-debug
-]>
-
 servers = require "../lib/servers"
 watch   = require "../lib/watch"
-
-{
-  debug
-} = id-debug
 
 export dependencies = <[
   runTests
@@ -18,7 +10,7 @@ handle-path = (options, path, stat) !-->
   return unless servers.source-file-path-matches options, path
 
   error <-! servers.restart-servers options
-  id-debug.error error if error
+  console.error error if error
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat

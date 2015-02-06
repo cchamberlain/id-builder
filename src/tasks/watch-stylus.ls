@@ -1,7 +1,3 @@
-require! <[
-  id-debug
-]>
-
 stylus = require "../lib/stylus"
 watch  = require "../lib/watch"
 
@@ -18,7 +14,7 @@ handle-path = (options, path, stat) !-->
     .replace //\.#{stylus.source-extension}$//, ".#{stylus.target-extension}"
 
   error <-! stylus.compile-file options, path, target-path
-  id-debug.error error if error
+  console.error error if error
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat

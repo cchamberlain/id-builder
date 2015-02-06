@@ -1,14 +1,6 @@
 require! <[
   browser-sync
-  id-debug
 ]>
-
-{
-  debug
-  info
-  warning
-  error
-} = id-debug
 
 browserify  = require "../lib/browserify"
 browsersync = require "../lib/browsersync"
@@ -27,7 +19,7 @@ handle-path = (options, path, stat) !-->
   return unless browsersync.source-file-path-matches options, path
 
   e <-! browsersync.reload options, path
-  error e if e
+  console.error e if e
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat

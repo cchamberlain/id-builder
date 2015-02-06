@@ -1,16 +1,8 @@
 require! <[
   browser-sync
   async
-  id-debug
 ]>
 p = require "path"
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 logging = require "./logging"
 

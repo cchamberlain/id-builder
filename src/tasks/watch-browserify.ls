@@ -1,14 +1,3 @@
-require! <[
-  id-debug
-]>
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
-
 browserify = require "../lib/browserify"
 watch = require "../lib/watch"
 
@@ -21,7 +10,7 @@ handle-path = (options, path, stat) !-->
   return unless browserify.source-file-path-matches options, path
 
   error <-! browserify.compile-all-files options
-  id-debug.error error if error
+  console.error error if error
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat

@@ -1,17 +1,9 @@
 require! <[
   async
-  id-debug
   prelude-ls
 ]>
 
 coffeescript = require "../lib/coffeescript"
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 {
   each

@@ -1,19 +1,11 @@
 require! <[
   async
   fs
-  id-debug
-  prelude-ls
   rimraf
+  prelude-ls
 ]>
 
 logging = require "./logging"
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 {
   each

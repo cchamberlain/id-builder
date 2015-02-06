@@ -2,7 +2,6 @@ require! <[
   async
   forever-monitor
   fs
-  id-debug
   path
   prelude-ls
 ]>
@@ -10,12 +9,6 @@ require! <[
 logging = require "./logging"
 
 p = path
-
-{
-  debug
-  info
-  warning
-} = id-debug
 
 { map } = prelude-ls
 

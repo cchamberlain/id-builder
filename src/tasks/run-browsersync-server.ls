@@ -1,16 +1,8 @@
 require! <[
   browser-sync
-  id-debug
 ]>
 
 browsersync = require "../lib/browsersync"
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 export dependencies = <[
   compileBrowserify

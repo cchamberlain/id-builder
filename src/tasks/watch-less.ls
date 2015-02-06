@@ -1,7 +1,3 @@
-require! <[
-  id-debug
-]>
-
 watch = require "../lib/watch"
 less  = require "../lib/less"
 
@@ -18,7 +14,7 @@ handle-path = (options, path, stat) !-->
     .replace //\.#{less.source-extension}$//, ".#{less.target-extension}"
 
   error <-! less.compile-file options, path, target-path
-  id-debug.error error if error
+  console.error error if error
 
 handle-add = (options, path, stat) !-->
   handle-path options, path, stat

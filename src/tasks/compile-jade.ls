@@ -1,17 +1,9 @@
 require! <[
   async
-  id-debug
   prelude-ls
 ]>
 
 jade = require "../lib/jade"
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 {
   each

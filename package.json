@@ -25,7 +25,6 @@
     "forever-monitor": "^1.5.2",
     "gaze": "^0.6.4",
     "highland": "^2.2.0",
-    "id-debug": "^1.2.0",
     "jade": "^1.8.2",
     "less": "^2.1.2",
     "lsr": "^1.0.0",

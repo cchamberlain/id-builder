@@ -1,15 +1,7 @@
 require! <[
   LiveScript
   async
-  id-debug
 ]>
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 file-system = require "./file-system"
 logging     = require "./logging"

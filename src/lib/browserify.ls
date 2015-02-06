@@ -2,19 +2,11 @@ require! <[
   async
   browserify
   fs
-  id-debug
   path
   watchify
 ]>
 
 path = path
-
-{
-  debug
-  error
-  info
-  warning
-} = id-debug
 
 file-system = require "./file-system"
 logging     = require "./logging"
