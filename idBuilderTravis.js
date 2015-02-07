@@ -27,7 +27,7 @@ idBuilder({
     },
 
     compileLivescript: {
-      enabled: true
+      enabled: false
     },
 
     compileStylus: {
@@ -67,7 +67,7 @@ idBuilder({
     },
 
     watchLivescript: {
-      enabled: true
+      enabled: false
     },
 
     watchStylus: {
@@ -79,11 +79,11 @@ idBuilder({
     },
 
     watchCopy: {
-      enabled: true
+      enabled: false
     },
 
     watch: {
-      enabled: true
+      enabled: false
     }
   }
 }, function afterIdBuilder(e) {
