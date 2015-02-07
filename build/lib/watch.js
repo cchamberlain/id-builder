@@ -1,12 +1,12 @@
-var chokidar = require('chokidar');
+var chokidar = require("chokidar");
 
 var watcher = null;
 
-var getWatcher = function(){
+var getWatcher = function() {
   return watcher;
 };
 
-var start = function(options){
+var start = function(options) {
   if (!options.paths.length) {
     return;
   }

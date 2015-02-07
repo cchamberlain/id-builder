@@ -58,6 +58,10 @@ idBuilder({
       enabled: false
     },
 
+    watchCopy: {
+      enabled: false
+    },
+
     watchJade: {
       enabled: false
     },
@@ -78,7 +82,7 @@ idBuilder({
       enabled: false
     },
 
-    watchCopy: {
+    watchTests: {
       enabled: false
     },
 
@@ -91,5 +95,5 @@ idBuilder({
     console.error(e.stack || e.message || e);
   }
 
-  console.log("Done!")
+  process.exit();
 });

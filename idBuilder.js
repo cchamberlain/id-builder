@@ -27,7 +27,7 @@ idBuilder({
     },
 
     compileLivescript: {
-      enabled: true
+      enabled: false
     },
 
     compileStylus: {
@@ -58,6 +58,10 @@ idBuilder({
       enabled: false
     },
 
+    watchCopy: {
+      enabled: true
+    },
+
     watchJade: {
       enabled: false
     },
@@ -67,7 +71,7 @@ idBuilder({
     },
 
     watchLivescript: {
-      enabled: true
+      enabled: false
     },
 
     watchStylus: {
@@ -78,7 +82,7 @@ idBuilder({
       enabled: false
     },
 
-    watchCopy: {
+    watchTests: {
       enabled: true
     },
 
@@ -91,5 +95,5 @@ idBuilder({
     console.error(e.stack || e.message || e);
   }
 
-  console.log("Done!")
+  process.exit();
 });

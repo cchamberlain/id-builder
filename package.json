@@ -4,7 +4,7 @@
   "description": "DRY project automation for Node.js and javascript frontend projects.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/lsc id-builder-travis.ls"
+    "test": "iojs idBuilderTravis.js"
   },
   "repository": {
     "type": "git",
