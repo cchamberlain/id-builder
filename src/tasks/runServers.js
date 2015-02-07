@@ -2,7 +2,7 @@
 
 // TODO: before program exit clean up children.
 
-let servers = require("../lib/servers");
+const servers = require("../lib/servers");
 
 module.exports = {
   dependencies: [

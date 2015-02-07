@@ -1,11 +1,11 @@
 "use strict";
 
-let chai = require("chai");
-let mkdirp = require("mkdirp");
-let rimraf = require("rimraf");
-let browserify = require("../../../lib/browserify");
-let tests = require("../../../lib/tests");
-let expect = chai.expect;
+const chai = require("chai");
+const mkdirp = require("mkdirp");
+const rimraf = require("rimraf");
+const browserify = require("../../../lib/browserify");
+const tests = require("../../../lib/tests");
+const expect = chai.expect;
 
 describe("browserify", function() {
   beforeEach(function(cb) {
@@ -40,7 +40,7 @@ describe("browserify", function() {
   describe("source-file-path-matches", function() {
     describe("when the `source-file-path` is the `target-path`", function() {
       it("should return `false`", function(cb) {
-        let options = {
+        const options = {
           targetPath: "x/y.js",
           sourceDirectory: "x"
         };
@@ -53,7 +53,7 @@ describe("browserify", function() {
 
     describe("when the `source-file-path` is in the the `source-directory`", function() {
       it("should return `true`", function(cb) {
-        let options = {
+        const options = {
           targetPath: "x/y.js",
           sourceDirectory: "x"
         };
@@ -66,7 +66,7 @@ describe("browserify", function() {
 
     describe("when the `source-file-path` is not in the the `source-directory`", function() {
       it("should return `false`", function(cb) {
-        let options = {
+        const options = {
           targetPath: "x/q.js",
           sourceDirectory: "a"
         };

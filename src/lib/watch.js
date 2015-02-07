@@ -1,14 +1,14 @@
 "use strict";
 
-let chokidar = require("chokidar");
+const chokidar = require("chokidar");
 
-let watcher = null;
+var watcher = null;
 
-let getWatcher = function() {
+const getWatcher = function() {
   return watcher;
 };
 
-let start = function(options) {
+const start = function(options) {
   if (!options.paths.length) {
     return;
   }
@@ -23,7 +23,7 @@ let start = function(options) {
     ignoreInitial: true
   });
 
-  for (let i = 1, l = options.paths.length; i < l; i++) {
+  for (const i = 1, l = options.paths.length; i < l; i++) {
     watcher.add(options.paths[i]);
   }
 

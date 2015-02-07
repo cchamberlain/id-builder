@@ -1,8 +1,8 @@
 "use strict";
 
-let watch = require("../lib/watch");
+const watch = require("../lib/watch");
 
-let run = function(options, cb) {
+const run = function(options, cb) {
   watch.start(options);
   cb();
 };

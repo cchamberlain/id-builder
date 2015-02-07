@@ -1,6 +1,6 @@
 "use strict";
 
-let copy = require("../lib/copy");
+const copy = require("../lib/copy");
 
 module.exports = {
   dependencies: [ "clean" ],

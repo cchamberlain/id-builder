@@ -1,30 +1,31 @@
 "use strict";
 
-let fs = require("fs");
-let path = require("path");
+const fs = require("fs");
+const path = require("path");
 
-let browserify = require("browserify");
-let watchify = require("watchify");
+const _ = require("lodash");
+const browserify = require("browserify");
+const watchify = require("watchify");
 
-let fileSystem = require("./fileSystem");
-let logging = require("./logging");
+const fileSystem = require("./fileSystem");
+const logging = require("./logging");
 
-let sourceExtension = "coffee";
-let targetExtension = "js";
+const sourceExtension = "coffee";
+const targetExtension = "js";
 
-let globalOptions = global.options;
+const globalOptions = global.options;
 
 // Returns true if the path is the target path.
-let pathReloads = function(options, p) {
+const pathReloads = function(options, p) {
   return p === globalOptions.tasks.watchBrowserify.targetPath;
 };
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-let sourceFilePathMatches = function(options, sourceFilePath) {
-  let resolvedSourceDirectoryPath = path.resolve(options.sourceDirectory);
-  let resolvedSourceFilePath = path.resolve(sourceFilePath);
-  let resolvedTargetPath = path.resolve(options.targetPath);
+const sourceFilePathMatches = function(options, sourceFilePath) {
+  const resolvedSourceDirectoryPath = path.resolve(options.sourceDirectory);
+  const resolvedSourceFilePath = path.resolve(sourceFilePath);
+  const resolvedTargetPath = path.resolve(options.targetPath);
 
   if (resolvedSourceFilePath === resolvedTargetPath) {
     return false;
@@ -35,7 +36,7 @@ let sourceFilePathMatches = function(options, sourceFilePath) {
   }
 };
 
-let compileAllFiles = function(options, cb) {
+const compileAllFiles = function(options, cb) {
   fs.exists(options.sourcePath, function(exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
@@ -47,7 +48,7 @@ let compileAllFiles = function(options, cb) {
         return cb(e);
       }
 
-      let b = browserify({
+      const b = browserify({
         cache: {},
         debug: true,
         fullPaths: true,
@@ -59,7 +60,7 @@ let compileAllFiles = function(options, cb) {
       b.add(path.resolve(options.sourcePath));
 
       b.on("bundle", function(bundleStream) {
-        let writeStream = fs.create-writeStream(options.targetPath);
+        const writeStream = fs.create-writeStream(options.targetPath);
 
         writeStream.on("error", function(e) {
           if (e) {
@@ -81,10 +82,10 @@ let compileAllFiles = function(options, cb) {
   });
 };
 
-let watch = function(options, cb) {
+const watch = function(options, cb) {
   cb();
 
-  let b = browserify({
+  const b = browserify({
     cache: {},
     debug: true,
     fullPaths: true,
@@ -96,7 +97,7 @@ let watch = function(options, cb) {
   b.add(path.resolve(options.sourcePath));
 
   b.on("bundle", function(bundleStream) {
-    let data = "";
+    const data = "";
 
     bundleStream.on("data", function(d) {
       data += d;
@@ -113,7 +114,7 @@ let watch = function(options, cb) {
     });
   });
 
-  let w = watchify(b);
+  const w = watchify(b);
 
   w.on("update", function() {
     b.bundle()

@@ -1,18 +1,18 @@
 "use strict";
 
-let coffeeScript = require("coffee-script");
+const coffeeScript = require("coffee-script");
 
-let fileSystem = require("./fileSystem");
-let logging = require("./logging");
+const fileSystem = require("./fileSystem");
+const logging = require("./logging");
 
-let sourceExtension = "coffee";
-let targetExtension = "js";
+const sourceExtension = "coffee";
+const targetExtension = "js";
 
-let sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   return sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${options.sourceExtension}$`));
 };
 
-let compileChunk = function(options, chunk, cb) {
+const compileChunk = function(options, chunk, cb) {
   try {
     cb(null, coffeeScript.compile(chunk, {
       bare: true
@@ -22,9 +22,9 @@ let compileChunk = function(options, chunk, cb) {
   }
 };
 
-let compileFile = fileSystem.compileFile(compileChunk);
+const compileFile = fileSystem.compileFile(compileChunk);
 
-let compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
 
 module.exports = {
   sourceExtension: sourceExtension,

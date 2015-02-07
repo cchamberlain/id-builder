@@ -1,6 +1,6 @@
 "use strict";
 
-let deepmerge = require("deepmerge");
+const deepmerge = require("deepmerge");
 
 module.exports = function(defaults, options) {
   return deepmerge(defaults, options);

@@ -1,19 +1,21 @@
 "use strict";
 
-let async = require("async");
-let moment = require("moment");
+const _ = require("lodash");
+const async = require("async");
+const moment = require("moment");
 
-let defaultOptions = require("./lib/defaultOptions");
-let logging = require("./lib/logging");
-let parseOptions = require("./lib/parseOptions");
+const defaultOptions = require("./lib/defaultOptions");
+const logging = require("./lib/logging");
+const parseOptions = require("./lib/parseOptions");
+const tasks = require("./tasks");
 
-let logInfo = function(message) {
+const logInfo = function(message) {
   console.log(`${moment().format()} ${message}`);
 };
 
-let runTaskWithOptions = function(options, task, name) {
+const runTaskWithOptions = function(options, task, name) {
   return function(cb) {
-    let taskOptions = options.tasks[name];
+    const taskOptions = options.tasks[name];
 
     if (!taskOptions) {
       return cb `No options found for task ${name}.`
@@ -45,12 +47,11 @@ module.exports = function(inputOptions, cb) {
 
   global.options = parseOptions(defaultOptions, inputOptions);
 
-  let tasks = require("./tasks");
-  let autoTasks = {};
+  const autoTasks = _.reduce(tasks, function(m, v, k) {
+    m[k] = v.dependencies.concat(runTaskWithOptions(global.options, v, k));
 
-  for (let k in tasks) {
-    autoTasks[k] = tasks[k].dependencies.concat(runTaskWithOptions(global.options, tasks[k], k));
-  }
+    return m;
+  }, {});
 
   async.auto(autoTasks, cb);
 };

@@ -1,44 +1,44 @@
 "use strict";
 
-let moment = require("moment");
+const moment = require("moment");
 
-let getDate = function(){
+const getDate = function(){
   return moment().format();
 };
 
-let info = function(message){
+const info = function(message){
   console.log(getDate() + " " + message);
 };
 
-let warn = function(message){
+const warn = function(message){
   console.log(getDate() + " " + message);
 };
 
-let error = function(message){
+const error = function(message){
   console.log(getDate() + " error   " + message);
 };
 
-let taskInfo = function(task, message){
+const taskInfo = function(task, message){
   info(task + ": " + message);
 };
 
-let taskWarn = function(task, message){
+const taskWarn = function(task, message){
   info(task + ": " + message);
 };
 
-let taskError = function(task, message){
+const taskError = function(task, message){
   info(task + ": " + message);
 };
 
-let disabledTask = function(name){
+const disabledTask = function(name){
   return info(name + ": Disabled");
 };
 
-let startTask = function(name){
+const startTask = function(name){
   return info(name + ": Start");
 };
 
-let finishTask = function(name){
+const finishTask = function(name){
   return info(name + ": Finish");
 };
 

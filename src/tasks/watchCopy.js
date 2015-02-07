@@ -1,19 +1,19 @@
 "use strict";
 
-let copy = require("../lib/copy");
-let watch = require("../lib/watch");
+const copy = require("../lib/copy");
+const watch = require("../lib/watch");
 
-let dependencies = [
+const dependencies = [
   "runTests",
   "watch"
 ]
 
-let handlePath = function(options, path, stat) {
+const handlePath = function(options, path, stat) {
   if (!copy.sourceFilePathMatches(options, path)) {
     return;
   }
 
-  let targetPath = path
+  const targetPath = path
     .replace(options.sourcePath, options.targetPath);
 
   copy.copyFile(options, path, targetPath, function(e) {
@@ -23,28 +23,28 @@ let handlePath = function(options, path, stat) {
   });
 };
 
-let handleAdd = function(options, path, stat) {
+const handleAdd = function(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-let handleAddDir = function(options, path, stat) {
+const handleAddDir = function(options, path, stat) {
 };
 
-let handleChange = function(options, path, stat) {
+const handleChange = function(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-let handleUnlink = function(options, path, stat) {
+const handleUnlink = function(options, path, stat) {
 };
 
-let handleUnlinkDir = function(options, path, stat) {
+const handleUnlinkDir = function(options, path, stat) {
 };
 
-let handleError = function(options, e) {
+const handleError = function(options, e) {
 };
 
-let run = function(options, cb) {
-  let watcher = watch.getWatcher();
+const run = function(options, cb) {
+  const watcher = watch.getWatcher();
 
   watcher.on("ready", function() {
     watcher.on("add", handleAdd, options);

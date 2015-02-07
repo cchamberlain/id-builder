@@ -1,10 +1,10 @@
 "use strict";
 
-let clean = require("../lib/clean");
+const clean = require("../lib/clean");
 
-let dependencies = []
+const dependencies = []
 
-let run = function (options, cb) {
+const run = function (options, cb) {
   clean.directory(options, cb);
 };
 

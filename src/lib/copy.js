@@ -1,24 +1,25 @@
 "use strict";
 
-let fs = require("fs");
+const fs = require("fs");
 
-let mkdirp = require("mkdirp");
-let async = require("async");
-let lsr = require("lsr");
-let prelude = require("prelude-ls");
+const _ = require("lodash");
+const mkdirp = require("mkdirp");
+const async = require("async");
+const lsr = require("lsr");
+const prelude = require("prelude-ls");
 
-let browserify = require("./browserify");
-let coffeescript = require("./coffeescript");
-let fileSystem = require("./fileSystem");
-let jade = require("./jade");
-let less = require("./less");
-let livescript = require("./livescript");
-let logging = require("./logging");
-let stylus = require("./stylus");
+const browserify = require("./browserify");
+const coffeescript = require("./coffeescript");
+const fileSystem = require("./fileSystem");
+const jade = require("./jade");
+const less = require("./less");
+const livescript = require("./livescript");
+const logging = require("./logging");
+const stylus = require("./stylus");
 
-let globalOptions = global.options;
+const globalOptions = global.options;
 
-let sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   if (browserify.sourceFilePathMatches(globalOptions.tasks.watchBrowserify, sourceFilePath)) {
     return false;
   } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.watchCoffeescript, sourceFilePath)) {
@@ -38,7 +39,7 @@ let sourceFilePathMatches = function(options, sourceFilePath) {
   }
 };
 
-let copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   fs.readFile(sourceFilePath, function(e, readChunk){
     if (e) {
       return cb(e);
@@ -62,25 +63,22 @@ let copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   });
 };
 
-let copyAllFiles = function(options, cb) {
+const copyAllFiles = function(options, cb) {
   lsr(options.sourcePath, function(e, nodes){
     if (e) {
       return cb(e);
     }
 
-    let paths = [];
-    let i = nodes.length;
-    let v;
-    while (i--) {
-      v = nodes[i];
+    const paths = _(nodes)
+      .filter(function(v) {
+        return !v.isDirectory() && sourceFilePathMatches(options, v.fullPath);
+      })
+      .map(function(v) {
+        return v.fullPath;
+      });
 
-      if (!v.isDirectory() && sourceFilePathMatches(options, v.fullPath)) {
-        paths.push(v.fullPath);
-      }
-    }
-
-    let iteratePath = function(currentSourceDirectoryPath, cb){
-      let currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
+    const iteratePath = function(currentSourceDirectoryPath, cb){
+      const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };

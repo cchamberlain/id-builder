@@ -1,6 +1,6 @@
 "use strict";
 
-let tests = require("../lib/tests");
+const tests = require("../lib/tests");
 
 module.exports = {
   dependencies: [
