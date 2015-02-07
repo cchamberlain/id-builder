@@ -1,16 +1,16 @@
 "use strict";
 
-let fileSystem = require("../lib/fileSystem");
-let browserify  = require("../lib/browserify");
+var fileSystem = require("../lib/fileSystem");
+var browserify  = require("../lib/browserify");
 
-let dependencies = [
+var dependencies = [
   "clean",
   "compileCoffeescript",
   "compileJade",
   "compileLivescript"
 ];
 
-let run = browserify.compileAllFiles;
+var run = browserify.compileAllFiles;
 
 module.exports = {
   dependencies: dependencies,

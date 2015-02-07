@@ -1,15 +1,13 @@
 "use strict";
 
-let watch = require("../lib/watch");
+var watch = require("../lib/watch");
 
-let dependencies = [ "runTests" ]
-
-let run = function(options, cb) {
+var run = function(options, cb) {
   watch.start(options);
   cb();
 };
 
 module.exports = {
-  dependencies: dependencies,
+  dependencies: [ "runTests" ],
   run: run
 };

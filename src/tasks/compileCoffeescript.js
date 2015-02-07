@@ -1,8 +1,6 @@
 "use strict";
 
-let async = require("async");
-
-let coffeescript = require("../lib/coffeescript")
+var coffeescript = require("../lib/coffeescript")
 
 module.exports = {
   dependencies: [ "clean" ],

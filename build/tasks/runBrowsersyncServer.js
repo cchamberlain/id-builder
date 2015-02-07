@@ -1,6 +1,6 @@
 "use strict";
 
-let browsersync = require("../lib/browsersync");
+var browsersync = require("../lib/browsersync");
 
 module.exports = {
   dependencies: [

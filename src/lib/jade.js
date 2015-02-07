@@ -1,3 +1,5 @@
+"use strict";
+
 var jade = require("jade");
 var async = require("async");
 

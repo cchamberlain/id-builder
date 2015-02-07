@@ -1,6 +1,6 @@
 "use strict";
 
-let jade = require("../lib/jade");
+var jade = require("../lib/jade");
 
 module.exports = {
   dependencies: [ "clean" ],

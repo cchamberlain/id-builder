@@ -1,14 +1,14 @@
 "use strict";
 
-let browserify = require("../lib/browserify");
-let watch = require("../lib/watch");
+var browserify = require("../lib/browserify");
+var watch = require("../lib/watch");
 
-let dependencies = [
+var dependencies = [
   "runTests",
   "watch"
 ];
 
-let handlePath = function(options, path, stat) {
+var handlePath = function(options, path, stat) {
   if (!browserify.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -20,28 +20,28 @@ let handlePath = function(options, path, stat) {
   })
 };
 
-let handleAdd = function(options, path, stat) {
+var handleAdd = function(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-let handleAddDir = function(options, path, stat) {
+var handleAddDir = function(options, path, stat) {
 };
 
-let handleChange = function(options, path, stat) {
+var handleChange = function(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-let handleUnlink = function(options, path, stat) {
+var handleUnlink = function(options, path, stat) {
 };
 
-let handleUnlinkDir = function(options, path, stat) {
+var handleUnlinkDir = function(options, path, stat) {
 };
 
-let handleError = function(options, e) {
+var handleError = function(options, e) {
   console.error(e);
 };
 
-let run = function(options, cb) {
+var run = function(options, cb) {
   browserify.watch(options, cb);
 };
 
