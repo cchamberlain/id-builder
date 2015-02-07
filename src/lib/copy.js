@@ -1,22 +1,24 @@
-var fs = require("fs");
+"use strict";
 
-var mkdirp = require("mkdirp");
-var async = require("async");
-var lsr = require("lsr");
-var prelude = require("prelude-ls");
+let fs = require("fs");
 
-var browserify = require("./browserify");
-var coffeescript = require("./coffeescript");
-var fileSystem = require("./fileSystem");
-var jade = require("./jade");
-var less = require("./less");
-var livescript = require("./livescript");
-var logging = require("./logging");
-var stylus = require("./stylus");
+let mkdirp = require("mkdirp");
+let async = require("async");
+let lsr = require("lsr");
+let prelude = require("prelude-ls");
 
-var globalOptions = global.options;
+let browserify = require("./browserify");
+let coffeescript = require("./coffeescript");
+let fileSystem = require("./fileSystem");
+let jade = require("./jade");
+let less = require("./less");
+let livescript = require("./livescript");
+let logging = require("./logging");
+let stylus = require("./stylus");
 
-var sourceFilePathMatches = sourceFilePathMatches = function(options, sourceFilePath) {
+let globalOptions = global.options;
+
+let sourceFilePathMatches = function(options, sourceFilePath) {
   if (browserify.sourceFilePathMatches(globalOptions.tasks.watchBrowserify, sourceFilePath)) {
     return false;
   } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.watchCoffeescript, sourceFilePath)) {
@@ -36,7 +38,7 @@ var sourceFilePathMatches = sourceFilePathMatches = function(options, sourceFile
   }
 };
 
-var copyFile = copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+let copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   fs.readFile(sourceFilePath, function(e, readChunk){
     if (e) {
       return cb(e);
@@ -60,15 +62,15 @@ var copyFile = copyFile = function(options, sourceFilePath, targetFilePath, cb) 
   });
 };
 
-var copyAllFiles = copyAllFiles = function(options, cb) {
+let copyAllFiles = function(options, cb) {
   lsr(options.sourcePath, function(e, nodes){
     if (e) {
       return cb(e);
     }
 
-    var paths = [];
-    var i = nodes.length;
-    var v;
+    let paths = [];
+    let i = nodes.length;
+    let v;
     while (i--) {
       v = nodes[i];
 
@@ -77,8 +79,8 @@ var copyAllFiles = copyAllFiles = function(options, cb) {
       }
     }
 
-    var iteratePath = function(currentSourceDirectoryPath, cb){
-      var currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
+    let iteratePath = function(currentSourceDirectoryPath, cb){
+      let currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };

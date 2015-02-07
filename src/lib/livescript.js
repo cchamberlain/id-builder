@@ -1,18 +1,18 @@
 "use strict";
 
-var liveScript = require("LiveScript");
+let liveScript = require("LiveScript");
 
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+let fileSystem = require("./fileSystem");
+let logging = require("./logging");
 
-var sourceExtension = "ls";
-var targetExtension = "js";
+let sourceExtension = "ls";
+let targetExtension = "js";
 
-var sourceFilePathMatches = function(options, sourceFilePath) {
+let sourceFilePathMatches = function(options, sourceFilePath) {
   return sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
 };
 
-var compileChunk = function(options, chunk, cb) {
+let compileChunk = function(options, chunk, cb) {
   try {
     cb(null, liveScript.compile(chunk, {
       bare: true
@@ -22,9 +22,9 @@ var compileChunk = function(options, chunk, cb) {
   }
 };
 
-var compileFile = fileSystem.compileFile(compileChunk);
+let compileFile = fileSystem.compileFile(compileChunk);
 
-var compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+let compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
 
 module.exports = {
   sourceExtension: sourceExtension,

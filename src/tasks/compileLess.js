@@ -1,6 +1,6 @@
 "use strict";
 
-var less = require("../lib/less");
+let less = require("../lib/less");
 
 module.exports = {
   dependencies: [ "clean" ],

@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
   sourceDirectory: "src",
   targetDirectory: "build",
@@ -130,7 +132,7 @@ module.exports = {
 
     watch: {
       enabled: true,
-      paths: ['src', 'build']
+      paths: ["src", "build"]
     }
   }
 };

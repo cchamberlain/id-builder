@@ -1,20 +1,22 @@
-var fs = require('fs');
-var path = require('path');
+"use strict";
 
-var async = require('async');
-var mkdirp = require('mkdirp');
-var preludeLs = require('prelude-ls');
-var lsr = require('lsr');
-var logging = require("./logging");
-var map = preludeLs.map, reject = preludeLs.reject, filter = preludeLs.filter;
+let fs = require("fs");
+let path = require("path");
 
-var getFiles = function(path, cb) {
+let async = require("async");
+let mkdirp = require("mkdirp");
+let preludeLs = require("prelude-ls");
+let lsr = require("lsr");
+let logging = require("./logging");
+let map = preludeLs.map, reject = preludeLs.reject, filter = preludeLs.filter;
+
+let getFiles = function(path, cb) {
   lsr(path, function(error, nodes) {
     if (error) {
       return cb(error);
     }
 
-    var paths = nodes
+    let paths = nodes
       .filter(function(v) {
         return v.isFile();
       });
@@ -23,13 +25,13 @@ var getFiles = function(path, cb) {
   });
 };
 
-var getDirectories = function(path, cb) {
+let getDirectories = function(path, cb) {
   lsr(path, function(error, nodes) {
     if (error) {
       return cb(error);
     }
 
-    var paths = nodes
+    let paths = nodes
       .filter(function(v) {
         return v.isDirectory();
       });
@@ -38,13 +40,13 @@ var getDirectories = function(path, cb) {
   });
 };
 
-var getTargetPath = function(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
+let getTargetPath = function(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
   return sourcePath
     .replace(sourceDirectory, targetDirectory)
-    .replace(RegExp('\\.' + sourceExtension + '$'), "." + targetExtension);
+    .replace(RegExp("\\." + sourceExtension + "$"), "." + targetExtension);
 };
 
-var readFile = function(path, cb) {
+let readFile = function(path, cb) {
   fs.readFile(path, function(error, chunk) {
     if (error) {
       return cb(error);
@@ -54,15 +56,15 @@ var readFile = function(path, cb) {
   });
 };
 
-var writeFile = function(path, string, cb) {
+let writeFile = function(path, string, cb) {
   fs.writeFile(path, string, cb);
 };
 
-var ensureFileDirectory = function(targetFilePath, cb) {
+let ensureFileDirectory = function(targetFilePath, cb) {
   mkdirp(path.dirname(targetFilePath), cb);
 };
 
-var compileFile = function(compileChunk) {
+let compileFile = function(compileChunk) {
   return function(options, sourceFilePath, targetFilePath, cb) {
     readFile(sourceFilePath, function(error, fileContent) {
       if (error) {
@@ -94,14 +96,14 @@ var compileFile = function(compileChunk) {
   };
 };
 
-var compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
+let compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function(options, cb) {
     getFiles(options.sourcePath, function(error, sourceFilePaths) {
       if (error) {
         return cb();
       }
 
-      var paths = sourceFilePaths
+      let paths = sourceFilePaths
         .map(function(v) {
           return v.fullPath;
         })
@@ -109,8 +111,8 @@ var compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtensi
           return sourceFilePathMatches(options, v);
         })
 
-      var iteratePath = function(currentSourceFilePath, cb) {
-        var currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);
+      let iteratePath = function(currentSourceFilePath, cb) {
+        let currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);
 
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
       };

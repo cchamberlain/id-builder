@@ -1,30 +1,30 @@
 "use strict";
 
-var fs = require("fs");
-var path = require("path");
+let fs = require("fs");
+let path = require("path");
 
-var browserify = require("browserify");
-var watchify = require("watchify");
+let browserify = require("browserify");
+let watchify = require("watchify");
 
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+let fileSystem = require("./fileSystem");
+let logging = require("./logging");
 
-var sourceExtension = "coffee";
-var targetExtension = "js";
+let sourceExtension = "coffee";
+let targetExtension = "js";
 
-var globalOptions = global.options;
+let globalOptions = global.options;
 
 // Returns true if the path is the target path.
-var pathReloads = function(options, p) {
+let pathReloads = function(options, p) {
   return p === globalOptions.tasks.watchBrowserify.targetPath;
 };
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-var sourceFilePathMatches = function(options, sourceFilePath) {
-  var resolvedSourceDirectoryPath = path.resolve(options.sourceDirectory);
-  var resolvedSourceFilePath = path.resolve(sourceFilePath);
-  var resolvedTargetPath = path.resolve(options.targetPath);
+let sourceFilePathMatches = function(options, sourceFilePath) {
+  let resolvedSourceDirectoryPath = path.resolve(options.sourceDirectory);
+  let resolvedSourceFilePath = path.resolve(sourceFilePath);
+  let resolvedTargetPath = path.resolve(options.targetPath);
 
   if (resolvedSourceFilePath === resolvedTargetPath) {
     return false;
@@ -35,7 +35,7 @@ var sourceFilePathMatches = function(options, sourceFilePath) {
   }
 };
 
-var compileAllFiles = function(options, cb) {
+let compileAllFiles = function(options, cb) {
   fs.exists(options.sourcePath, function(exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
@@ -47,7 +47,7 @@ var compileAllFiles = function(options, cb) {
         return cb(e);
       }
 
-      var b = browserify({
+      let b = browserify({
         cache: {},
         debug: true,
         fullPaths: true,
@@ -59,7 +59,7 @@ var compileAllFiles = function(options, cb) {
       b.add(path.resolve(options.sourcePath));
 
       b.on("bundle", function(bundleStream) {
-        var writeStream = fs.create-writeStream(options.targetPath);
+        let writeStream = fs.create-writeStream(options.targetPath);
 
         writeStream.on("error", function(e) {
           if (e) {
@@ -81,10 +81,10 @@ var compileAllFiles = function(options, cb) {
   });
 };
 
-var watch = function(options, cb) {
+let watch = function(options, cb) {
   cb();
 
-  var b = browserify({
+  let b = browserify({
     cache: {},
     debug: true,
     fullPaths: true,
@@ -96,7 +96,7 @@ var watch = function(options, cb) {
   b.add(path.resolve(options.sourcePath));
 
   b.on("bundle", function(bundleStream) {
-    var data = "";
+    let data = "";
 
     bundleStream.on("data", function(d) {
       data += d;
@@ -113,7 +113,7 @@ var watch = function(options, cb) {
     });
   });
 
-  var w = watchify(b);
+  let w = watchify(b);
 
   w.on("update", function() {
     b.bundle()

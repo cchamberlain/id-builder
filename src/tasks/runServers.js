@@ -2,7 +2,7 @@
 
 // TODO: before program exit clean up children.
 
-var servers = require("../lib/servers");
+let servers = require("../lib/servers");
 
 module.exports = {
   dependencies: [

@@ -1,19 +1,19 @@
 "use strict";
 
-var less = require("../lib/less");
-var watch = require("../lib/watch");
+let less = require("../lib/less");
+let watch = require("../lib/watch");
 
-var dependencies = [
+let dependencies = [
   "runTests",
   "watch"
 ]
 
-var handlePath = function(options, path, stat) {
+let handlePath = function(options, path, stat) {
   if (!less.sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path
+  let targetPath = path
     .replace(options.sourcePath, options.targetPath)
     .replace(new RegExp(`^\.${less.sourceExtension}$`), `.${less.targetExtension}`);
 
@@ -24,28 +24,28 @@ var handlePath = function(options, path, stat) {
   });
 };
 
-var handleAdd = function(options, path, stat) {
+let handleAdd = function(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-var handleAddDir = function(options, path, stat) {
+let handleAddDir = function(options, path, stat) {
 };
 
-var handleChange = function(options, path, stat) {
+let handleChange = function(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-var handleUnlink = function(options, path, stat) {
+let handleUnlink = function(options, path, stat) {
 };
 
-var handleUnlinkDir = function(options, path, stat) {
+let handleUnlinkDir = function(options, path, stat) {
 };
 
-var handleError = function(options, e) {
+let handleError = function(options, e) {
 };
 
-var run = function(options, cb) {
-  var watcher = watch.getWatcher();
+let run = function(options, cb) {
+  let watcher = watch.getWatcher();
 
   watcher.on("ready", function() {
     watcher.on("add", handleAdd, options);

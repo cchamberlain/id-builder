@@ -1,19 +1,19 @@
 "use strict";
 
-var async = require("async");
-var moment = require("moment");
+let async = require("async");
+let moment = require("moment");
 
-var defaultOptions = require("./lib/defaultOptions");
-var logging = require("./lib/logging");
-var parseOptions = require("./lib/parseOptions");
+let defaultOptions = require("./lib/defaultOptions");
+let logging = require("./lib/logging");
+let parseOptions = require("./lib/parseOptions");
 
-var logInfo = function(message) {
+let logInfo = function(message) {
   console.log(`${moment().format()} ${message}`);
 };
 
-var runTaskWithOptions = function(options, task, name) {
+let runTaskWithOptions = function(options, task, name) {
   return function(cb) {
-    var taskOptions = options.tasks[name];
+    let taskOptions = options.tasks[name];
 
     if (!taskOptions) {
       return cb `No options found for task ${name}.`
@@ -45,8 +45,8 @@ module.exports = function(inputOptions, cb) {
 
   global.options = parseOptions(defaultOptions, inputOptions);
 
-  var tasks = require("./tasks");
-  var autoTasks = {};
+  let tasks = require("./tasks");
+  let autoTasks = {};
 
   for (let k in tasks) {
     autoTasks[k] = tasks[k].dependencies.concat(runTaskWithOptions(global.options, tasks[k], k));

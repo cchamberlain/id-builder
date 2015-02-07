@@ -1,9 +1,11 @@
-var chai = require('chai');
-var mkdirp = require('mkdirp');
-var rimraf = require('rimraf');
-var browserify = require("../../../lib/browserify");
-var tests = require("../../../lib/tests");
-var expect = chai.expect;
+"use strict";
+
+let chai = require("chai");
+let mkdirp = require("mkdirp");
+let rimraf = require("rimraf");
+let browserify = require("../../../lib/browserify");
+let tests = require("../../../lib/tests");
+let expect = chai.expect;
 
 describe("browserify", function() {
   beforeEach(function(cb) {
@@ -18,7 +20,7 @@ describe("browserify", function() {
 
   describe("source-extension", function() {
     it("should be defined", function(cb) {
-      expect(browserify.sourceExtension).to.be.a("string")['with'].length.above(0);
+      expect(browserify.sourceExtension).to.be.a("string")["with"].length.above(0);
 
       cb();
     });
@@ -26,7 +28,7 @@ describe("browserify", function() {
 
   describe("target-extension", function() {
     it("should be defined", function(cb) {
-      expect(browserify.targetExtension).to.be.a("string")['with'].length.above(0);
+      expect(browserify.targetExtension).to.be.a("string")["with"].length.above(0);
 
       cb();
     });
@@ -38,7 +40,7 @@ describe("browserify", function() {
   describe("source-file-path-matches", function() {
     describe("when the `source-file-path` is the `target-path`", function() {
       it("should return `false`", function(cb) {
-        var options = {
+        let options = {
           targetPath: "x/y.js",
           sourceDirectory: "x"
         };
@@ -51,7 +53,7 @@ describe("browserify", function() {
 
     describe("when the `source-file-path` is in the the `source-directory`", function() {
       it("should return `true`", function(cb) {
-        var options = {
+        let options = {
           targetPath: "x/y.js",
           sourceDirectory: "x"
         };
@@ -64,7 +66,7 @@ describe("browserify", function() {
 
     describe("when the `source-file-path` is not in the the `source-directory`", function() {
       it("should return `false`", function(cb) {
-        var options = {
+        let options = {
           targetPath: "x/q.js",
           sourceDirectory: "a"
         };

@@ -1,21 +1,21 @@
 "use strict";
 
-var browserSync = require("browser-sync");
+let browserSync = require("browser-sync");
 
-var p = require("path");
+let p = require("path");
 
-var logging = require("./logging");
+let logging = require("./logging");
 
-var sync = null;
+let sync = null;
 
-var sourceFilePathMatches = function(options, sourceFilePath) {
-  var resolvedSourceFilePath = p.resolve(sourceFilePath);
-  var resolvedSourcePath      = p.resolve(options.sourcePath);
+let sourceFilePathMatches = function(options, sourceFilePath) {
+  let resolvedSourceFilePath = p.resolve(sourceFilePath);
+  let resolvedSourcePath      = p.resolve(options.sourcePath);
 
   return (resolvedSourceFilePath.indexOf(resolvedSourcePath)) === 0;
 };
 
-var reload = function(options, updatedPath, cb) {
+let reload = function(options, updatedPath, cb) {
   browserSync.reload(updatedPath);
 
   logging.taskInfo(options.taskName, "Reloaded `#{path}`");
@@ -23,12 +23,12 @@ var reload = function(options, updatedPath, cb) {
   cb();
 };
 
-var runServer = function(options, cb) {
-  var options = {
+let runServer = function(_options, cb) {
+  let options = {
     //files: [],
     //minify: false,
     //open: true,
-    //host: 'localhost',
+    //host: "localhost",
     port: 9001,
     logLevel: "silent",
     logFileChanges: false,
