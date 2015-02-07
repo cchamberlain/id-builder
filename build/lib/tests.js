@@ -52,6 +52,7 @@ var runTests = function(options, cb) {
 };
 
 module.exports = {
+  randomString: randomString,
   sourceFilePathMatches: sourceFilePathMatches,
   runTests: runTests
 };
