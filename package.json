@@ -1,6 +1,6 @@
 {
   "name": "id-builder",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "DRY project automation for Node.js and javascript frontend projects.",
   "main": "index.js",
   "scripts": {
