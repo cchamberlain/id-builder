@@ -108,26 +108,14 @@ const restartServer = function(options, filePath, cb){
 };
 
 const runServers = function(options, cb){
-  const absolutePaths = _(options.paths)
-    .map(function(v) {
-      return path.resolve(`${options.sourcePath}/${path}`);
-    })
-    .value();
-
-  async.each(absolutePaths, function(v, cb) {
-    startServer(options, v, cb);
+  async.each(options.paths, function(v, cb) {
+    startServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };
 
 const restartServers = function(options, cb){
-  const absolutePaths = _(options.paths)
-    .map(function(v) {
-      return path.resolve(`${options.sourcePath}/${path}`);
-    })
-    .value();
-
-  async.each(absolutePaths, function(v, cb) {
-    restartServer(options, v, cb);
+  async.each(options.paths, function(v, cb) {
+    restartServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };
 

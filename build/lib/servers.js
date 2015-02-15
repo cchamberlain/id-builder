@@ -106,22 +106,14 @@ var restartServer = function (options, filePath, cb) {
 };
 
 var runServers = function (options, cb) {
-  var absolutePaths = _(options.paths).map(function (v) {
-    return path.resolve("" + options.sourcePath + "/" + path);
-  }).value();
-
-  async.each(absolutePaths, function (v, cb) {
-    startServer(options, v, cb);
+  async.each(options.paths, function (v, cb) {
+    startServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };
 
 var restartServers = function (options, cb) {
-  var absolutePaths = _(options.paths).map(function (v) {
-    return path.resolve("" + options.sourcePath + "/" + path);
-  }).value();
-
-  async.each(absolutePaths, function (v, cb) {
-    restartServer(options, v, cb);
+  async.each(options.paths, function (v, cb) {
+    restartServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };
 
