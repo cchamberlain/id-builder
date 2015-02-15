@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-const sixToFive = require("../lib/sixToFive")
+const sixToFive = require('../lib/sixToFive')
 
 module.exports = {
-  dependencies: [ "clean" ],
+  dependencies: [ 'clean' ],
   run: sixToFive.compileAllFiles
 };

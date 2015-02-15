@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const clean = require("../lib/clean");
+const clean = require('../lib/clean');
 
 const dependencies = []
 

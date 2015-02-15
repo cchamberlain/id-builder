@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-const copy = require("../lib/copy");
-const watch = require("../lib/watch");
+const copy = require('../lib/copy');
+const watch = require('../lib/watch');
 
 const dependencies = [
-  "runTests",
-  "watch"
+  'runTests',
+  'watch'
 ]
 
 const handlePath = function(options, path, stat) {
@@ -46,13 +46,13 @@ const handleError = function(options, e) {
 const run = function(options, cb) {
   const watcher = watch.getWatcher();
 
-  watcher.on("ready", function() {
-    watcher.on("add", function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on("addDir", function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on("change", function(path, stat) { handleChange(options, path, stat) });
-    watcher.on("unlink", function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on("unlinkDir", function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on("error", function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', function() {
+    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
+    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
+    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
+    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
 };
 

@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-const less = require("../lib/less");
+const less = require('../lib/less');
 
 module.exports = {
-  dependencies: [ "clean" ],
+  dependencies: [ 'clean' ],
   run: less.compileAllFiles
 };

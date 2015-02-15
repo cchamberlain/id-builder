@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-const browserify = require("../lib/browserify");
-const watch = require("../lib/watch");
+const browserify = require('../lib/browserify');
+const watch = require('../lib/watch');
 
 const dependencies = [
-  "runTests",
-  "watch"
+  'runTests',
+  'watch'
 ];
 
 const handlePath = function(options, path, stat) {

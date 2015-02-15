@@ -1,22 +1,22 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
+const fs = require('fs');
 
-const _ = require("lodash");
-const mkdirp = require("mkdirp");
-const async = require("async");
-const lsr = require("lsr");
-const prelude = require("prelude-ls");
+const _ = require('lodash');
+const mkdirp = require('mkdirp');
+const async = require('async');
+const lsr = require('lsr');
+const prelude = require('prelude-ls');
 
-const browserify = require("./browserify");
-const coffeescript = require("./coffeescript");
-const fileSystem = require("./fileSystem");
-const jade = require("./jade");
-const less = require("./less");
-const livescript = require("./livescript");
-const logging = require("./logging");
-const sixToFive = require("./sixToFive");
-const stylus = require("./stylus");
+const browserify = require('./browserify');
+const coffeescript = require('./coffeescript');
+const fileSystem = require('./fileSystem');
+const jade = require('./jade');
+const less = require('./less');
+const livescript = require('./livescript');
+const logging = require('./logging');
+const sixToFive = require('./sixToFive');
+const stylus = require('./stylus');
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
   const globalOptions = global.options;

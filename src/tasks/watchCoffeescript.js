@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-const coffeescript = require("../lib/coffeescript");
-const watch = require("../lib/watch");
+const coffeescript = require('../lib/coffeescript');
+const watch = require('../lib/watch');
 
 const dependencies = [
-  "runBrowsersyncServer",
-  "runTests",
-  "watch"
+  'runBrowsersyncServer',
+  'runTests',
+  'watch'
 ]
 
 const handlePath = function(options, path, stat) {
@@ -48,13 +48,13 @@ const handleError = function(options, e) {
 const run = function(options, cb) {
   const watcher = watch.getWatcher();
 
-  watcher.on("ready", function() {
-    watcher.on("add", function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on("addDir", function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on("change", function(path, stat) { handleChange(options, path, stat) });
-    watcher.on("unlink", function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on("unlinkDir", function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on("error", function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', function() {
+    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
+    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
+    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
+    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
 };
 

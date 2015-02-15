@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-const _ = require("lodash");
-const async = require("async");
-const moment = require("moment");
+const _ = require('lodash');
+const async = require('async');
+const moment = require('moment');
 
-const defaultOptions = require("./lib/defaultOptions");
-const logging = require("./lib/logging");
-const parseOptions = require("./lib/parseOptions");
-const tasks = require("./tasks");
+const defaultOptions = require('./lib/defaultOptions');
+const logging = require('./lib/logging');
+const parseOptions = require('./lib/parseOptions');
+const tasks = require('./tasks');
 
 const logInfo = function(message) {
   console.log(`${moment().format()} ${message}`);

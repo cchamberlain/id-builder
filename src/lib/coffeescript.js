@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-const coffeeScript = require("coffee-script");
+const coffeeScript = require('coffee-script');
 
-const fileSystem = require("./fileSystem");
-const logging = require("./logging");
+const fileSystem = require('./fileSystem');
+const logging = require('./logging');
 
-const sourceExtension = "coffee";
-const targetExtension = "js";
+const sourceExtension = 'coffee';
+const targetExtension = 'js';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
   return sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));

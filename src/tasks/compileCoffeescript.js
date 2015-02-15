@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-const coffeescript = require("../lib/coffeescript")
+const coffeescript = require('../lib/coffeescript')
 
 module.exports = {
-  dependencies: [ "clean" ],
+  dependencies: [ 'clean' ],
   run: coffeescript.compileAllFiles
 };

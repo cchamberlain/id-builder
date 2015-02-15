@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
+const fs = require('fs');
 
-const _ = require("lodash");
-const async = require("async");
-const rimraf = require("rimraf");
+const _ = require('lodash');
+const async = require('async');
+const rimraf = require('rimraf');
 
-const logging = require("./logging");
+const logging = require('./logging');
 
 const directory = function(options, cb) {
   fs.readdir(options.path, function(e, nodes) {

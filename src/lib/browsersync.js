@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-const browserSync = require("browser-sync");
+const browserSync = require('browser-sync');
 
-const p = require("path");
+const p = require('path');
 
-const logging = require("./logging");
+const logging = require('./logging');
 
 let sync = null;
 
@@ -18,7 +18,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
 const reload = function(options, updatedPath, cb) {
   browserSync.reload(updatedPath);
 
-  logging.taskInfo(options.taskName, "Reloaded `#{path}`");
+  logging.taskInfo(options.taskName, 'Reloaded `#{path}`');
 
   cb();
 };
@@ -28,9 +28,9 @@ const runServer = function(_options, cb) {
     //files: [],
     //minify: false,
     //open: true,
-    //host: "localhost",
+    //host: 'localhost',
     port: 9001,
-    logLevel: "silent",
+    logLevel: 'silent',
     logFileChanges: false,
   };
 

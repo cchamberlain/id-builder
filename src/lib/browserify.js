@@ -1,17 +1,17 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const _ = require("lodash");
-const browserify = require("browserify");
-const watchify = require("watchify");
+const _ = require('lodash');
+const browserify = require('browserify');
+const watchify = require('watchify');
 
-const fileSystem = require("./fileSystem");
-const logging = require("./logging");
+const fileSystem = require('./fileSystem');
+const logging = require('./logging');
 
-const sourceExtension = "coffee";
-const targetExtension = "js";
+const sourceExtension = 'coffee';
+const targetExtension = 'js';
 
 // Returns true if the path is the target path.
 const pathReloads = function(options, p) {
@@ -53,20 +53,20 @@ const compileAllFiles = function(options, cb) {
         packageCache: {}
       });
 
-      b.transform("reactify")
+      b.transform('reactify')
 
       b.add(path.resolve(options.sourcePath));
 
-      b.on("bundle", function(bundleStream) {
+      b.on('bundle', function(bundleStream) {
         const writeStream = fs.createWriteStream(options.targetPath);
 
-        writeStream.on("error", function(e) {
+        writeStream.on('error', function(e) {
           if (e) {
             return cb(e);
           }
         });
 
-        writeStream.on("finish", function() {
+        writeStream.on('finish', function() {
           logging.taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
           cb();
         });
@@ -90,18 +90,18 @@ const watch = function(options, cb) {
     packageCache: {}
   });
 
-  b.transform("reactify")
+  b.transform('reactify')
 
   b.add(path.resolve(options.sourcePath));
 
-  b.on("bundle", function(bundleStream) {
-    let data = "";
+  b.on('bundle', function(bundleStream) {
+    let data = '';
 
-    bundleStream.on("data", function(d) {
+    bundleStream.on('data', function(d) {
       data += d;
     });
 
-    bundleStream.on("data", function(d) {
+    bundleStream.on('data', function(d) {
       fs.writeFile(options.targetPath, data, function(e) {
         if (e) {
           return cb(e);
@@ -114,7 +114,7 @@ const watch = function(options, cb) {
 
   const w = watchify(b);
 
-  w.on("update", function() {
+  w.on('update', function() {
     b.bundle()
   });
 

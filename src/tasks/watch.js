@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const watch = require("../lib/watch");
+const watch = require('../lib/watch');
 
 const run = function(options, cb) {
   watch.start(options);
@@ -8,6 +8,6 @@ const run = function(options, cb) {
 };
 
 module.exports = {
-  dependencies: [ "runTests" ],
+  dependencies: [ 'runTests' ],
   run: run
 };

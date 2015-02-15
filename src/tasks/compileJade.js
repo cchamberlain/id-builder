@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-const jade = require("../lib/jade");
+const jade = require('../lib/jade');
 
 module.exports = {
-  dependencies: [ "clean" ],
+  dependencies: [ 'clean' ],
   run: jade.compileAllFiles
 };
