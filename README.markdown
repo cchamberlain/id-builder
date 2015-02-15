@@ -248,3 +248,34 @@ Watches for changes in the source and test directory and takes appropriate
 actions. There is a separate watch task for each compile and run task. There is
 only one watcher in your entire project to increase speed and not hit the
 inodes limit.
+
+## Planned Features
+
+### Options
+
+#### Paths
+It would be a good idea to have root paths configured so other paths may be
+specified relative to these root paths. I'm not sure how to make these paths
+both configurable and DRY other then putting variables in the paths;
+
+### Documentation
+At some point it would be good to have an automated documentation facility.
+The documentation would be JavaScript based so Languages that compile to
+JavaScript should include the documentation in their output.
+
+### Command Line
+It would be nice to be able to start tasks (and all their dependencies before
+them) based on a command line interface.
+
+### Web Interface
+Building on the command line interface, one of the commands could start a
+webserver hosting a webapplication to manage process instead of having to use
+the commandline.
+
+Acting as a "central hub" to your project, it could include code stats, test run
+stats, complete control over all the processes that are running for your
+project, running different environments (OTAP), etc.
+
+### Continuous Integration & Deployment
+Provide integration with CI and CD, allowing you to easily deploy new
+versions of your code.
