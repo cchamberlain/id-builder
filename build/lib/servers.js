@@ -1,18 +1,20 @@
 "use strict";
 
-let async = require("async");
-let foreverMonitor = require("forever-monitor");
-let fs = require("fs");
-let path = require("path");
-let preludeLs = require("prelude-ls");
-let logging = require("./logging");
-let p = path;
-let map = preludeLs.map;
+var fs = require("fs");
+var path = require("path");
 
-let monitors = {};
+var _ = require("lodash");
+var async = require("async");
+var foreverMonitor = require("forever-monitor");
+var preludeLs = require("prelude-ls");
+var logging = require("./logging");
+var p = path;
+var map = preludeLs.map;
 
-let addPath = function(path, cb){
-  let monitor = new foreverMonitor.Monitor(path, {
+var monitors = {};
+
+var addPath = function (path, cb) {
+  var monitor = new foreverMonitor.Monitor(path, {
     command: "node"
   });
 
@@ -23,8 +25,8 @@ let addPath = function(path, cb){
   cb();
 };
 
-let removePath = function(path, cb){
-  let monitor = monitors[path];
+var removePath = function (path, cb) {
+  var monitor = monitors[path];
 
   monitor.kill(true);
 
@@ -33,30 +35,28 @@ let removePath = function(path, cb){
   cb();
 };
 
-let restartPath = function(path, cb){
-  let monitor = monitors[path];
+var restartPath = function (path, cb) {
+  var monitor = monitors[path];
 
   monitor.restart();
 
   cb();
 };
 
-let sourceFilePathMatches = function(options, sourceFilePath, cb){
-  return p
-    .resolve(sourceFilePath)
-    .match(RegExp(`^${p.resolve(options.sourcePath)}`));
+var sourceFilePathMatches = function (options, sourceFilePath, cb) {
+  return p.resolve(sourceFilePath).match(RegExp("^" + p.resolve(options.sourcePath)));
 };
 
-let startServer = function(options, filePath, cb){
-  let absolutePath = path.resolve(filePath);
+var startServer = function (options, filePath, cb) {
+  var absolutePath = path.resolve(filePath);
 
-  fs.exists(absolutePath, function(exists){
+  fs.exists(absolutePath, function (exists) {
     if (!exists) {
-      logging.taskInfo(options.taskName, `skipping ${absolutePath} (Does not exist).`);
+      logging.taskInfo(options.taskName, "skipping " + absolutePath + " (Does not exist).");
       return cb();
     }
 
-    let monitor = monitors[absolutePath];
+    var monitor = monitors[absolutePath];
 
     if (monitor) {
       restartPath(absolutePath, cb);
@@ -66,16 +66,16 @@ let startServer = function(options, filePath, cb){
   });
 };
 
-let stopServer = function(options, filePath, cb){
-  let absolutePath = path.resolve(filePath);
+var stopServer = function (options, filePath, cb) {
+  var absolutePath = path.resolve(filePath);
 
-  fs.exists(absolutePath, function(exists){
+  fs.exists(absolutePath, function (exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
       return cb();
     }
 
-    let monitor = monitors[absolutePath];
+    var monitor = monitors[absolutePath];
 
     if (monitor) {
       removePath(absolutePath, cb);
@@ -86,18 +86,18 @@ let stopServer = function(options, filePath, cb){
   });
 };
 
-let restartServer = function(options, filePath, cb){
-  let absolutePath = path.resolve(filePath);
+var restartServer = function (options, filePath, cb) {
+  var absolutePath = path.resolve(filePath);
 
-  fs.exists(absolutePath, function(exists){
+  fs.exists(absolutePath, function (exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
       return cb();
     }
 
-    removePath(absolutePath, function(error){
-      if (error) {
-        return cb(error);
+    removePath(absolutePath, function (e) {
+      if (e) {
+        return cb(e);
       }
 
       addPath(absolutePath, cb);
@@ -105,20 +105,18 @@ let restartServer = function(options, filePath, cb){
   });
 };
 
-let runServers = function(options, cb){
-  let absolutePaths = options.paths
-    .map(function(v) {
-      return p.resolve(`${options.sourcePath}/${path}`);
-    });
+var runServers = function (options, cb) {
+  var absolutePaths = _(options.paths).map(function (v) {
+    return p.resolve("" + options.sourcePath + "/" + path);
+  }).value();
 
   async.each(absolutePaths, startServer(options), cb);
 };
 
-let restartServers = function(options, cb){
-  let absolutePaths = options.paths
-    .map(function(v) {
-      return p.resolve(`${options.sourcePath}/${path}`);
-    });
+var restartServers = function (options, cb) {
+  var absolutePaths = _(options.paths).map(function (v) {
+    return p.resolve("" + options.sourcePath + "/" + path);
+  }).value();
 
   async.each(absolutePaths, restartServer(options), cb);
 };

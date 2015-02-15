@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 
-const less = require("less");
-const async = require("async");
+const less = require('less');
+const async = require('async');
 
-const fileSystem = require("./fileSystem");
-const logging = require("./logging");
+const fileSystem = require('./fileSystem');
+const logging = require('./logging');
 
-const sourceExtension = "less";
-const targetExtension = "css";
+const sourceExtension = 'less';
+const targetExtension = 'css';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  const regex = new RegExp(`^${options.sourcePath}.+\.${options.sourceExtension}$`);
+  const regex = new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`);
 
   return sourceFilePath.match(regex);
 };

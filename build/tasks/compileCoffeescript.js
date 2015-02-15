@@ -1,8 +1,8 @@
 "use strict";
 
-let coffeescript = require("../lib/coffeescript")
+var coffeescript = require("../lib/coffeescript");
 
 module.exports = {
-  dependencies: [ "clean" ],
+  dependencies: ["clean"],
   run: coffeescript.compileAllFiles
 };

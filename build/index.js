@@ -1,22 +1,24 @@
 "use strict";
 
-const async = require("async");
-const moment = require("moment");
+var _ = require("lodash");
+var async = require("async");
+var moment = require("moment");
 
-const defaultOptions = require("./lib/defaultOptions");
-const logging = require("./lib/logging");
-const parseOptions = require("./lib/parseOptions");
+var defaultOptions = require("./lib/defaultOptions");
+var logging = require("./lib/logging");
+var parseOptions = require("./lib/parseOptions");
+var tasks = require("./tasks");
 
-const logInfo = function(message) {
-  console.log(`${moment().format()} ${message}`);
+var logInfo = function (message) {
+  console.log("" + moment().format() + " " + message);
 };
 
-const runTaskWithOptions = function(options, task, name) {
-  return function(cb) {
-    const taskOptions = options.tasks[name];
+var runTaskWithOptions = function (options, task, name) {
+  return function (cb) {
+    var taskOptions = options.tasks[name];
 
     if (!taskOptions) {
-      return cb `No options found for task ${name}.`
+      return cb("No options found for task " + name + ".");
     }
 
     if (!taskOptions.enabled) {
@@ -28,7 +30,7 @@ const runTaskWithOptions = function(options, task, name) {
 
     logging.startTask(name);
 
-    task.run(taskOptions, function(e) {
+    task.run(taskOptions, function (e) {
       if (e) {
         return cb(e);
       }
@@ -40,18 +42,16 @@ const runTaskWithOptions = function(options, task, name) {
   };
 };
 
-module.exports = function(inputOptions, cb) {
+module.exports = function (inputOptions, cb) {
   inputOptions = inputOptions || {};
 
   global.options = parseOptions(defaultOptions, inputOptions);
 
-  const tasks = require("./tasks");
-  const autoTasks = {};
+  var autoTasks = _.reduce(tasks, function (m, v, k) {
+    m[k] = v.dependencies.concat(runTaskWithOptions(global.options, v, k));
 
-  Object.keys(tasks)
-    .forEach(function(k) {
-      autoTasks[k] = tasks[k].dependencies.concat(runTaskWithOptions(global.options, tasks[k], k))
-    });
+    return m;
+  }, {});
 
   async.auto(autoTasks, cb);
 };

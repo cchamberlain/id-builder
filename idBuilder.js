@@ -1,4 +1,4 @@
-var idBuilder = require("./src");
+var idBuilder = require('./src');
 
 idBuilder({
   tasks: {
@@ -28,6 +28,10 @@ idBuilder({
 
     compileLivescript: {
       enabled: false
+    },
+
+    compileSixToFive: {
+      enabled: true
     },
 
     compileStylus: {
@@ -72,6 +76,10 @@ idBuilder({
 
     watchLivescript: {
       enabled: false
+    },
+
+    watchSixToFive: {
+      enabled: true
     },
 
     watchStylus: {

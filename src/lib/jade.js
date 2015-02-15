@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 
-const jade = require("jade");
-const async = require("async");
+const jade = require('jade');
+const async = require('async');
 
-const fileSystem = require("./fileSystem");
-const logging = require("./logging");
+const fileSystem = require('./fileSystem');
+const logging = require('./logging');
 
-const sourceExtension = "jade";
-const targetExtension = "js";
+const sourceExtension = 'jade';
+const targetExtension = 'js';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  const regex = new RegExp(`^${options.sourcePath}.+\.${options.sourceExtension}$`);
+  const regex = new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`);
 
   return sourceFilePath.match(regex);
 };

@@ -1,35 +1,35 @@
 "use strict";
 
-let less = require("less");
-let async = require("async");
+var less = require("less");
+var async = require("async");
 
-let fileSystem = require("./fileSystem");
-let logging = require("./logging");
+var fileSystem = require("./fileSystem");
+var logging = require("./logging");
 
-let sourceExtension = "less";
-let targetExtension = "css";
+var sourceExtension = "less";
+var targetExtension = "css";
 
-let sourceFilePathMatches = function(options, sourceFilePath) {
-  let regex = new RegExp(`^${options.sourcePath}.+\.${options.sourceExtension}$`);
+var sourceFilePathMatches = function (options, sourceFilePath) {
+  var regex = new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$");
 
   return sourceFilePath.match(regex);
 };
 
-let compileChunk = function(options, chunk, cb) {
-  less.render(chunk, function(e, result) {
+var compileChunk = function (options, chunk, cb) {
+  less.render(chunk, function (e, result) {
     if (e) {
       return cb(e);
     }
 
-    let css = result.css;
+    var css = result.css;
 
     return cb(null, css);
   });
 };
 
-let compileFile = fileSystem.compileFile(compileChunk);
+var compileFile = fileSystem.compileFile(compileChunk);
 
-let compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+var compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
 
 module.exports = {
   sourceExtension: sourceExtension,

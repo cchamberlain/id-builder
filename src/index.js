@@ -18,7 +18,7 @@ const runTaskWithOptions = function(options, task, name) {
     const taskOptions = options.tasks[name];
 
     if (!taskOptions) {
-      return cb `No options found for task ${name}.`
+      return cb(`No options found for task ${name}.`);
     }
 
     if (!taskOptions.enabled) {

@@ -1,6 +1,7 @@
-"use strict";
+'use strict';
 
-const chokidar = require("chokidar");
+const _ = require('lodash');
+const chokidar = require('chokidar');
 
 var watcher = null;
 
@@ -23,9 +24,8 @@ const start = function(options) {
     ignoreInitial: true
   });
 
-  for (const i = 1, l = options.paths.length; i < l; i++) {
-    watcher.add(options.paths[i]);
-  }
+  _(options.paths)
+    .each(watcher.add);
 
   return watcher;
 };

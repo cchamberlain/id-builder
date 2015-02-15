@@ -1,11 +1,13 @@
-"use strict";
+'use strict';
 
-const async = require("async");
-const foreverMonitor = require("forever-monitor");
-const fs = require("fs");
-const path = require("path");
-const preludeLs = require("prelude-ls");
-const logging = require("./logging");
+const fs = require('fs');
+const path = require('path');
+
+const _ = require('lodash')
+const async = require('async');
+const foreverMonitor = require('forever-monitor');
+const preludeLs = require('prelude-ls');
+const logging = require('./logging');
 const p = path;
 const map = preludeLs.map;
 
@@ -13,7 +15,7 @@ const monitors = {};
 
 const addPath = function(path, cb){
   const monitor = new foreverMonitor.Monitor(path, {
-    command: "node"
+    command: 'node'
   });
 
   monitors[path] = monitor;
@@ -71,7 +73,7 @@ const stopServer = function(options, filePath, cb){
 
   fs.exists(absolutePath, function(exists){
     if (!exists) {
-      logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
+      logging.taskInfo(options.taskName, 'skipping `' + absolutePath + '` (Does not exist).');
       return cb();
     }
 
@@ -80,7 +82,7 @@ const stopServer = function(options, filePath, cb){
     if (monitor) {
       removePath(absolutePath, cb);
     } else {
-      logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Monitor does not exist).");
+      logging.taskInfo(options.taskName, 'skipping `' + absolutePath + '` (Monitor does not exist).');
       cb();
     }
   });
@@ -91,7 +93,7 @@ const restartServer = function(options, filePath, cb){
 
   fs.exists(absolutePath, function(exists){
     if (!exists) {
-      logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
+      logging.taskInfo(options.taskName, 'skipping `' + absolutePath + '` (Does not exist).');
       return cb();
     }
 
@@ -106,19 +108,21 @@ const restartServer = function(options, filePath, cb){
 };
 
 const runServers = function(options, cb){
-  const absolutePaths = options.paths
+  const absolutePaths = _(options.paths)
     .map(function(v) {
       return p.resolve(`${options.sourcePath}/${path}`);
-    });
+    })
+    .value();
 
   async.each(absolutePaths, startServer(options), cb);
 };
 
 const restartServers = function(options, cb){
-  const absolutePaths = options.paths
+  const absolutePaths = _(options.paths)
     .map(function(v) {
       return p.resolve(`${options.sourcePath}/${path}`);
-    });
+    })
+    .value();
 
   async.each(absolutePaths, restartServer(options), cb);
 };

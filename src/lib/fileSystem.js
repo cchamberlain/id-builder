@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const _ = require("lodash");
-const async = require("async");
-const mkdirp = require("mkdirp");
-const preludeLs = require("prelude-ls");
-const lsr = require("lsr");
-const logging = require("./logging");
+const _ = require('lodash');
+const async = require('async');
+const mkdirp = require('mkdirp');
+const preludeLs = require('prelude-ls');
+const lsr = require('lsr');
+const logging = require('./logging');
 const map = preludeLs.map, reject = preludeLs.reject, filter = preludeLs.filter;
 
 const getFiles = function(path, cb) {
@@ -38,7 +38,7 @@ const getDirectories = function(path, cb) {
 const getTargetPath = function(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
   return sourcePath
     .replace(sourceDirectory, targetDirectory)
-    .replace(RegExp("\\." + sourceExtension + "$"), "." + targetExtension);
+    .replace(RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
 const readFile = function(path, cb) {
@@ -105,6 +105,7 @@ const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExten
         .filter(function(v) {
           return sourceFilePathMatches(options, v);
         })
+        .value();
 
       const iteratePath = function(currentSourceFilePath, cb) {
         const currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);

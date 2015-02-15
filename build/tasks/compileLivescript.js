@@ -1,8 +1,8 @@
 "use strict";
 
-let livescript = require("../lib/livescript");
+var livescript = require("../lib/livescript");
 
 module.exports = {
-  dependencies: [ "clean" ],
+  dependencies: ["clean"],
   run: livescript.compileAllFiles
 };

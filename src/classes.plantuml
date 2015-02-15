@@ -1,0 +1,98 @@
+class Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class BrowserifyCompiler extends Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class CoffeeScriptCompiler extends Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class CopyCompiler extends Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class JadeCompiler extends Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class LessCompiler extends Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class LiveScriptCompiler extends Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class StylusCompiler extends Compiler {
+  + compileChunk(cb)
+  + compileFile(cb)
+  + compileDirectory(cb)
+}
+
+class Task {
+  + name: String
+  + dependencies: [String]
+  + run(cb)
+}
+
+TaskRunner *-- Task
+class TaskRunner {
+  + tasks: [Task]
+  + run(cb)
+}
+
+CompileTask *-- Compiler
+class CompileTask extends Task {
+  + source: [String]
+  + target: String
+  + compiler: Compiler
+  + run(cb)
+}
+
+WatchTask *-- BrowserSyncServer
+WatchTask *-- CompileTask
+WatchTask *-- DirectoryWatcherServer
+class WatchTask extends Task {
+  + source: [String]
+  + target: String
+  + browsersyncServer: BrowserSyncServer
+  + directoryWatcherServer: DirectoryWatcherServer
+  + run(cb)
+}
+
+class BrowserSyncServer {
+  + reload(options, updatedPath, cb)
+  + runServer(options, cb)
+}
+
+class DirectoryWatcherServer {
+  + source: [String]
+  + runServer(options, cb)
+}
+
+class RunServersTask extends Task {
+  + match(options, sourceFilePath)
+  + run(cb)
+}
+
+class RunTestsTask extends Task {
+  + match(options, sourceFilePath)
+  + run(cb)
+}

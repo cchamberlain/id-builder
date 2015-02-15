@@ -14,10 +14,12 @@ const directory = function(options, cb) {
       return cb(e);
     }
 
-    const paths = _(nodes).map(function(v) {
-      logging.taskInfo(options.taskName, v);
-      return `${options.path}/${v}`;
-    });
+    const paths = _(nodes)
+      .map(function(v) {
+        logging.taskInfo(options.taskName, v);
+        return `${options.path}/${v}`;
+      })
+      .value();
 
     async.each(paths, rimraf, cb);
   });

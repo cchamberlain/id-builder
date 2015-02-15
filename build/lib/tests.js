@@ -1,53 +1,59 @@
 "use strict";
 
-let fs = require("fs");
-let os = require("os");
-let path = require("path");
+var fs = require("fs");
+var os = require("os");
+var path = require("path");
 
-let child_process = require("child_process");
-let fileSystem = require("./fileSystem");
-let logging = require("./logging");
+var child_process = require("child_process");
+var fileSystem = require("./fileSystem");
+var logging = require("./logging");
 
-let pathToMocha = path.resolve(__dirname + "/../../node_modules/mocha/bin/_mocha");
-let globalOptions = global.options;
+var pathToMocha = path.resolve(__dirname + "/../../node_modules/mocha/bin/_mocha");
 
-let randomString = function() {
+var randomString = function () {
   return Math.random().toString(36).slice(7);
 };
 
-let sourceFilePathMatches = function(options, sourceFilePath) {
-  let matchesJavascript = !!sourceFilePath.match(/\.js$/);
+var sourceFilePathMatches = function (options, sourceFilePath) {
+  var matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
+  var matchesTarget = sourceFilePath.indexOf(global.options.targetDirectory) === 0;
 
-  let matchesTarget = sourceFilePath.indexOf(globalOptions.targetDirectory) === 0;
+  console.log(global.options.targetDirectory, sourceFilePath);
+
+  console.log("sourceFilePathMatches", matchesJavascript, matchesTarget);
 
   return matchesJavascript && matchesTarget;
 };
 
-let runTests = function(options, cb) {
-  fs.exists(options.sourcePath, function(exists) {
+var buildFilePathMatches = function (options, buildFilePath) {
+  var matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
+  var matchesTarget = buildFilePath.indexOf(global.options.targetDirectory) === 0;
+
+  console.log(global.options.targetDirectory, buildFilePath);
+
+  console.log("buildFilePathMatches", matchesJavascript, matchesTarget);
+
+  return matchesJavascript && matchesTarget;
+};
+
+var runTests = function (options, cb) {
+  fs.exists(options.sourcePath, function (exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, "Skipping: Directory `" + options.sourcePath + "` not found.");
       return cb();
     }
 
-    let childProcess = child_process.spawn("iojs", [
-      pathToMocha,
-      "--recursive",
-      "--colors",
-      "--reporter",
-      options.reporter,
-      options.sourcePath
-    ]);
+    var childProcess = child_process.spawn("iojs", [pathToMocha, "--recursive", "--colors", "--reporter", options.reporter, options.sourcePath]);
 
-    childProcess.stdout.on("data", function(chunk) {
+    childProcess.stdout.on("data", function (chunk) {
       return process.stdout.write(chunk);
     });
 
-    childProcess.stderr.on("data", function(chunk) {
+    childProcess.stderr.on("data", function (chunk) {
       return process.stderr.write(chunk);
     });
 
-    childProcess.once("close", function() {
+    childProcess.once("close", function () {
       cb();
     });
   });
@@ -56,5 +62,6 @@ let runTests = function(options, cb) {
 module.exports = {
   randomString: randomString,
   sourceFilePathMatches: sourceFilePathMatches,
+  buildFilePathMatches: buildFilePathMatches,
   runTests: runTests
 };

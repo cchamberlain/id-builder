@@ -1,11 +1,14 @@
 'use strict';
 
-const liveScript = require('LiveScript');
+const path = require('path');
+
+const _ = require('lodash')
+const sixToFive = require('6to5');
 
 const fileSystem = require('./fileSystem');
 const logging = require('./logging');
 
-const sourceExtension = 'ls';
+const sourceExtension = 'js';
 const targetExtension = 'js';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
@@ -13,10 +16,43 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 const compileChunk = function(options, chunk, cb) {
+  const sixToFiveOptions = {
+    // filename:
+    // filenameRelative:
+    // blacklist:
+    // whitelist:
+    // loose:
+    // optional:
+    // modules:
+    // sourceMap:
+    // sourceMapName:
+    // sourceFileName:
+    // sourceRoot:
+    // moduleRoot:
+    // moduleIds:
+    // comments:
+    // keepModuleIdExtensions:
+    // runtime:
+    // code:
+    // ast:
+    // format: {
+    //   parenteses:
+    //   comments:
+    //   compact:
+    //   indent: {
+    //     adjustMultilineComment:
+    //     style:
+    //     base:
+    //   }
+    // }
+    // playground:
+    // experimental:
+  };
+
   try {
-    cb(null, liveScript.compile(chunk, {
-      bare: true
-    }));
+    const output = sixToFive.transform(chunk, sixToFiveOptions);
+
+    cb(null, output.code);
   } catch (e) {
     return cb(e);
   }

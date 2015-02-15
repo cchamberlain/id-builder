@@ -1,6 +1,6 @@
 "use strict";
 
-const less = require("../lib/less");
+const sixToFive = require("../lib/sixToFive");
 const watch = require("../lib/watch");
 
 const dependencies = [
@@ -9,15 +9,15 @@ const dependencies = [
 ]
 
 const handlePath = function(options, path, stat) {
-  if (!less.sourceFilePathMatches(options, path)) {
+  if (!sixToFive.sourceFilePathMatches(options, path)) {
     return;
   }
 
   const targetPath = path
     .replace(options.sourcePath, options.targetPath)
-    .replace(new RegExp(`^\.${less.sourceExtension}$`), `.${less.targetExtension}`);
+    .replace(new RegExp(`^\.${sixToFive.sourceExtension}$`), `.${sixToFive.targetExtension}`);
 
-  less.compileFile(options, path, targetPath, function(e) {
+  sixToFive.compileFile(options, path, targetPath, function(e) {
     if (e) {
       console.error(e);
     }

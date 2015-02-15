@@ -6,7 +6,7 @@ const p = require("path");
 
 const logging = require("./logging");
 
-const sync = null;
+let sync = null;
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
   const resolvedSourceFilePath = p.resolve(sourceFilePath);

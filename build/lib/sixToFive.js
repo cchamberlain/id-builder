@@ -1,11 +1,14 @@
 "use strict";
 
-var coffeeScript = require("coffee-script");
+var path = require("path");
+
+var _ = require("lodash");
+var sixToFive = require("6to5");
 
 var fileSystem = require("./fileSystem");
 var logging = require("./logging");
 
-var sourceExtension = "coffee";
+var sourceExtension = "js";
 var targetExtension = "js";
 
 var sourceFilePathMatches = function (options, sourceFilePath) {
@@ -13,10 +16,12 @@ var sourceFilePathMatches = function (options, sourceFilePath) {
 };
 
 var compileChunk = function (options, chunk, cb) {
+  var sixToFiveOptions = {};
+
   try {
-    cb(null, coffeeScript.compile(chunk, {
-      bare: true
-    }));
+    var output = sixToFive.transform(chunk, sixToFiveOptions);
+
+    cb(null, output.code);
   } catch (e) {
     return cb(e);
   }
@@ -35,3 +40,33 @@ module.exports = {
   compileFile: compileFile,
   compileAllFiles: compileAllFiles
 };
+// filename:
+// filenameRelative:
+// blacklist:
+// whitelist:
+// loose:
+// optional:
+// modules:
+// sourceMap:
+// sourceMapName:
+// sourceFileName:
+// sourceRoot:
+// moduleRoot:
+// moduleIds:
+// comments:
+// keepModuleIdExtensions:
+// runtime:
+// code:
+// ast:
+// format: {
+//   parenteses:
+//   comments:
+//   compact:
+//   indent: {
+//     adjustMultilineComment:
+//     style:
+//     base:
+//   }
+// }
+// playground:
+// experimental:

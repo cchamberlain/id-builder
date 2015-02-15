@@ -13,11 +13,9 @@ const logging = require("./logging");
 const sourceExtension = "coffee";
 const targetExtension = "js";
 
-const globalOptions = global.options;
-
 // Returns true if the path is the target path.
 const pathReloads = function(options, p) {
-  return p === globalOptions.tasks.watchBrowserify.targetPath;
+  return p === global.options.tasks.watchBrowserify.targetPath;
 };
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
@@ -97,7 +95,7 @@ const watch = function(options, cb) {
   b.add(path.resolve(options.sourcePath));
 
   b.on("bundle", function(bundleStream) {
-    const data = "";
+    let data = "";
 
     bundleStream.on("data", function(d) {
       data += d;

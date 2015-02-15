@@ -2,17 +2,9 @@
 
 // TODO: before program exit clean up children.
 
-let servers = require("../lib/servers");
+var servers = require("../lib/servers");
 
 module.exports = {
-  dependencies: [
-    "compileBrowserify",
-    "compileCoffeescript",
-    "compileCopy",
-    "compileJade",
-    "compileLess",
-    "compileLivescript",
-    "compileStylus"
-  ],
+  dependencies: ["compileBrowserify", "compileCoffeescript", "compileCopy", "compileJade", "compileLess", "compileLivescript", "compileStylus"],
   run: servers.runServers
 };

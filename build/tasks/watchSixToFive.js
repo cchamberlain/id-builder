@@ -1,18 +1,18 @@
 "use strict";
 
-var stylus = require("../lib/stylus");
+var sixToFive = require("../lib/sixToFive");
 var watch = require("../lib/watch");
 
 var dependencies = ["runTests", "watch"];
 
 var handlePath = function (options, path, stat) {
-  if (!stylus.sourceFilePathMatches(options, path)) {
+  if (!sixToFive.sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + stylus.sourceExtension + "$"), "." + stylus.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + sixToFive.sourceExtension + "$"), "." + sixToFive.targetExtension);
 
-  stylus.compileFile(options, path, targetPath, function (e) {
+  sixToFive.compileFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }

@@ -9,7 +9,9 @@ const dependencies = [
 ]
 
 const handlePath = function(options, path, stat) {
-  if (!tests.sourceFilePathMatches(options, path)) {
+  console.log('handlePath', options, path);
+
+  if (!tests.buildFilePathMatches(options, path)) {
     return;
   }
 
@@ -25,6 +27,7 @@ const handleAdd = function(options, path, stat) {
 };
 
 const handleAddDir = function(options, path, stat) {
+  handlePath(options, path, stat);
 };
 
 const handleChange = function(options, path, stat) {
@@ -32,24 +35,27 @@ const handleChange = function(options, path, stat) {
 };
 
 const handleUnlink = function(options, path, stat) {
+  handlePath(options, path, stat);
 };
 
 const handleUnlinkDir = function(options, path, stat) {
+  handlePath(options, path, stat);
 };
 
 const handleError = function(options, e) {
+  console.error(e);
 };
 
 const run = function(options, cb) {
   const watcher = watch.getWatcher();
 
   watcher.on("ready", function() {
-    watcher.on("add", handleAdd, options);
-    watcher.on("addDir", handleAddDir, options);
-    watcher.on("change", handleChange, options);
-    watcher.on("unlink", handleUnlink, options);
-    watcher.on("unlinkDir", handleUnlinkDir, options);
-    watcher.on("error", handleError, options);
+    watcher.on("add", function(path, stat) { handleAdd(options, path, stat) });
+    watcher.on("addDir", function(path, stat) { handleAddDir(options, path, stat) });
+    watcher.on("change", function(path, stat) { handleChange(options, path, stat) });
+    watcher.on("unlink", function(path, stat) { handleUnlink(options, path, stat) });
+    watcher.on("unlinkDir", function(path, stat) { handleUnlinkDir(options, path, stat) });
+    watcher.on("error", function(path, stat) { handleError(options, path, stat) });
   });
 };
 

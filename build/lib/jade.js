@@ -1,34 +1,34 @@
 "use strict";
 
-let jade = require("jade");
-let async = require("async");
+var jade = require("jade");
+var async = require("async");
 
-let fileSystem = require("./fileSystem");
-let logging = require("./logging");
+var fileSystem = require("./fileSystem");
+var logging = require("./logging");
 
-let sourceExtension = "jade";
-let targetExtension = "js";
+var sourceExtension = "jade";
+var targetExtension = "js";
 
-let sourceFilePathMatches = function(options, sourceFilePath) {
-  let regex = new RegExp(`^${options.sourcePath}.+\.${options.sourceExtension}$`);
+var sourceFilePathMatches = function (options, sourceFilePath) {
+  var regex = new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$");
 
   return sourceFilePath.match(regex);
 };
 
-let compileChunk = function(options, chunk, cb) {
+var compileChunk = function (options, chunk, cb) {
   try {
     cb(null, jade.compileClient(chunk, {
       compileDebug: false,
       filename: options.sourceFilePath
-    }))
+    }));
   } catch (e) {
     return cb(e);
   }
 };
 
-let compileFile = fileSystem.compileFile(compileChunk);
+var compileFile = fileSystem.compileFile(compileChunk);
 
-let compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+var compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
 
 module.exports = {
   sourceExtension: sourceExtension,

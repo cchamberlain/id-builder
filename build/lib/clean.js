@@ -1,25 +1,23 @@
 "use strict";
 
-let fs = require("fs");
+var fs = require("fs");
 
-let async = require("async");
-let rimraf = require("rimraf");
+var _ = require("lodash");
+var async = require("async");
+var rimraf = require("rimraf");
 
-let logging = require("./logging");
+var logging = require("./logging");
 
-let directory = function(options, cb) {
-  fs.readdir(options.path, function(e, nodes) {
+var directory = function (options, cb) {
+  fs.readdir(options.path, function (e, nodes) {
     if (e) {
       return cb(e);
     }
 
-    let paths = [];
-    let i = nodes.length;
-    while (i--) {
-      let v = nodes[i];
-      paths[i] = `${options.path}/${v}`;
+    var paths = _(nodes).map(function (v) {
       logging.taskInfo(options.taskName, v);
-    }
+      return "" + options.path + "/" + v;
+    }).value();
 
     async.each(paths, rimraf, cb);
   });

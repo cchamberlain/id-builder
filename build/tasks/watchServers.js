@@ -1,55 +1,60 @@
 "use strict";
 
-let servers = require("../lib/servers");
-let watch = require("../lib/watch");
+var servers = require("../lib/servers");
+var watch = require("../lib/watch");
 
-let dependencies = [
-  "runTests",
-  "watch"
-]
+var dependencies = ["runTests", "watch"];
 
-let handlePath = function(options, path, stat) {
+var handlePath = function (options, path, stat) {
   if (!servers.sourceFilePathMatches(options, path)) {
     return;
   }
 
-  servers.restartServers(options, function(e) {
+  servers.restartServers(options, function (e) {
     if (e) {
       console.error(e);
     }
   });
 };
 
-let handleAdd = function(options, path, stat) {
+var handleAdd = function (options, path, stat) {
   handlePath(options, path, stat);
 };
 
-let handleAddDir = function(options, path, stat) {
-};
+var handleAddDir = function (options, path, stat) {};
 
-let handleChange = function(options, path, stat) {
+var handleChange = function (options, path, stat) {
   handlePath(options, path, stat);
 };
 
-let handleUnlink = function(options, path, stat) {
-};
+var handleUnlink = function (options, path, stat) {};
 
-let handleUnlinkDir = function(options, path, stat) {
-};
+var handleUnlinkDir = function (options, path, stat) {};
 
-let handleError = function(options, e) {
-};
+var handleError = function (options, e) {};
 
-let run = function(options, cb) {
-  let watcher = watch.getWatcher();
+var run = function (options, cb) {
+  var watcher = watch.getWatcher();
 
-  watcher.on("ready", function() {
-    watcher.on("add", handleAdd, options);
-    watcher.on("addDir", handleAddDir, options);
-    watcher.on("change", handleChange, options);
-    watcher.on("unlink", handleUnlink, options);
-    watcher.on("unlinkDir", handleUnlinkDir, options);
-    watcher.on("error", handleError, options);
+  watcher.on("ready", function () {
+    watcher.on("add", function (path, stat) {
+      handleAdd(options, path, stat);
+    });
+    watcher.on("addDir", function (path, stat) {
+      handleAddDir(options, path, stat);
+    });
+    watcher.on("change", function (path, stat) {
+      handleChange(options, path, stat);
+    });
+    watcher.on("unlink", function (path, stat) {
+      handleUnlink(options, path, stat);
+    });
+    watcher.on("unlinkDir", function (path, stat) {
+      handleUnlinkDir(options, path, stat);
+    });
+    watcher.on("error", function (path, stat) {
+      handleError(options, path, stat);
+    });
   });
 };
 

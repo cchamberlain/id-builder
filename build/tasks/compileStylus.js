@@ -1,8 +1,8 @@
 "use strict";
 
-let stylus = require("../lib/stylus");
+var stylus = require("../lib/stylus");
 
 module.exports = {
-  dependencies: [ "clean" ],
+  dependencies: ["clean"],
   run: stylus.compileAllFiles
 };

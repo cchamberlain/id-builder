@@ -15,24 +15,27 @@ const jade = require("./jade");
 const less = require("./less");
 const livescript = require("./livescript");
 const logging = require("./logging");
+const sixToFive = require("./sixToFive");
 const stylus = require("./stylus");
 
-const globalOptions = global.options;
-
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  if (browserify.sourceFilePathMatches(globalOptions.tasks.watchBrowserify, sourceFilePath)) {
+  const globalOptions = global.options;
+
+  if (browserify.sourceFilePathMatches(globalOptions.tasks.compileBrowserify, sourceFilePath)) {
     return false;
-  } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.watchCoffeescript, sourceFilePath)) {
+  } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     return false;
-  } else if (jade.sourceFilePathMatches(globalOptions.tasks.watchJade, sourceFilePath)) {
+  } else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
     return false;
-  } else if (less.sourceFilePathMatches(globalOptions.tasks.watchLess, sourceFilePath)) {
+  } else if (less.sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     return false;
-  } else if (livescript.sourceFilePathMatches(globalOptions.tasks.watchLivescript, sourceFilePath)) {
+  } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
     return false;
-  } else if (stylus.sourceFilePathMatches(globalOptions.tasks.watchStylus, sourceFilePath)) {
+  } else if (sixToFive.sourceFilePathMatches(globalOptions.tasks.compileSixToFive, sourceFilePath)) {
     return false;
-  } else if (!!sourceFilePath.match(RegExp(`^${options.sourcePath}`))) {
+  } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
+    return false;
+  } else if (sourceFilePath && !!sourceFilePath.match(RegExp(`^${options.sourcePath}`))) {
     return true;
   } else {
     return false;
@@ -75,7 +78,8 @@ const copyAllFiles = function(options, cb) {
       })
       .map(function(v) {
         return v.fullPath;
-      });
+      })
+      .value();
 
     const iteratePath = function(currentSourceDirectoryPath, cb){
       const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
