@@ -10,11 +10,11 @@ restarts on changes and reloads the browser for you.
   // Source Directory
   src/
     client/
-      app.ls/coffee
+      app.js
     server/
-      app.ls/coffee
+      app.js
     tests/
-      anything.ls/coffee
+      anything.js
 
   // Target Directory (created automatically)
   build/
