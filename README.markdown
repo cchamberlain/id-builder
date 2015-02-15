@@ -5,7 +5,7 @@ id-builder compiles your code, runs your tests and servers, recompiles and
 restarts on changes and reloads the browser for you.
 
 ## Getting Started
-1. id-builder assumes the follwing directory structure (but that can be changed):
+1. id-builder assumes the following directory structure but all paths can be configured to point to a different location.
   ```
   // Source Directory
   src/
