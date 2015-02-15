@@ -58,7 +58,7 @@ var compileAllFiles = function (options, cb) {
       b.add(path.resolve(options.sourcePath));
 
       b.on("bundle", function (bundleStream) {
-        var writeStream = fs.create - writeStream(options.targetPath);
+        var writeStream = fs.createWriteStream(options.targetPath);
 
         writeStream.on("error", function (e) {
           if (e) {
