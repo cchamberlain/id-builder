@@ -94,6 +94,12 @@ idBuilder({
       targetPath: "build"
     },
 
+    compileSixToFive: {
+      enabled: true,
+      sourcePath: "src",
+      targetPath: "build"
+    },
+
     compileStylus: {
       enabled: true,
       sourcePath: "src/client",
@@ -168,6 +174,12 @@ idBuilder({
       enabled: true,
       sourcePath: "build/test",
       reporter: "spec"
+    },
+
+    watchSixToFive: {
+      enabled: true,
+      sourcePath: "src/client",
+      targetPath: "build/client"
     },
 
     watchStylus: {
