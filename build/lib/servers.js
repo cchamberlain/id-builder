@@ -107,18 +107,22 @@ var restartServer = function (options, filePath, cb) {
 
 var runServers = function (options, cb) {
   var absolutePaths = _(options.paths).map(function (v) {
-    return p.resolve("" + options.sourcePath + "/" + path);
+    return path.resolve("" + options.sourcePath + "/" + path);
   }).value();
 
-  async.each(absolutePaths, startServer(options), cb);
+  async.each(absolutePaths, function (v, cb) {
+    startServer(options, v, cb);
+  });
 };
 
 var restartServers = function (options, cb) {
   var absolutePaths = _(options.paths).map(function (v) {
-    return p.resolve("" + options.sourcePath + "/" + path);
+    return path.resolve("" + options.sourcePath + "/" + path);
   }).value();
 
-  async.each(absolutePaths, restartServer(options), cb);
+  async.each(absolutePaths, function (v, cb) {
+    restartServer(options, v, cb);
+  });
 };
 
 module.exports = {
