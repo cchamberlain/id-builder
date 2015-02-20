@@ -1,19 +1,23 @@
 "use strict";
 
-var fs = require("fs");
-var path = require("path");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var _ = require("lodash");
-var browserify = require("browserify");
-var watchify = require("watchify");
+var _fs = require("fs");
 
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+var exists = _fs.exists;
+var createWriteStream = _fs.createWriteStream;
+var writeFile = _fs.writeFile;
+var resolve = require("path").resolve;
+var browserify = _interopRequire(require("browserify"));
 
+var watchify = _interopRequire(require("watchify"));
+
+var ensureFileDirectory = require("./fileSystem").ensureFileDirectory;
+var taskInfo = require("./logging").taskInfo;
 var sourceExtension = exports.sourceExtension = "coffee";
 var targetExtension = exports.targetExtension = "js";
 
-// Returns true if the path is the target path.
+// Returns true if the path is the target
 var pathReloads = exports.pathReloads = function (options, p) {
   return p === global.options.tasks.watchBrowserify.targetPath;
 };
@@ -21,9 +25,9 @@ var pathReloads = exports.pathReloads = function (options, p) {
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
-  var resolvedSourceDirectoryPath = path.resolve(options.sourceDirectory);
-  var resolvedSourceFilePath = path.resolve(sourceFilePath);
-  var resolvedTargetPath = path.resolve(options.targetPath);
+  var resolvedSourceDirectoryPath = resolve(options.sourceDirectory);
+  var resolvedSourceFilePath = resolve(sourceFilePath);
+  var resolvedTargetPath = resolve(options.targetPath);
 
   if (resolvedSourceFilePath === resolvedTargetPath) {
     return false;
@@ -35,13 +39,13 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 };
 
 var compileAllFiles = exports.compileAllFiles = function (options, cb) {
-  fs.exists(options.sourcePath, function (exists) {
+  exists(options.sourcePath, function (exists) {
     if (!exists) {
-      logging.taskInfo(options.taskName, "skipping " + options.sourcePath + " (Does not exist)");
+      taskInfo(options.taskName, "skipping " + options.sourcePath + " (Does not exist)");
       return cb();
     }
 
-    fileSystem.ensureFileDirectory(options.targetPath, function (e) {
+    ensureFileDirectory(options.targetPath, function (e) {
       if (e) {
         return cb(e);
       }
@@ -55,10 +59,10 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
 
       b.transform("reactify");
 
-      b.add(path.resolve(options.sourcePath));
+      b.add(resolve(options.sourcePath));
 
       b.on("bundle", function (bundleStream) {
-        var writeStream = fs.createWriteStream(options.targetPath);
+        var writeStream = createWriteStream(options.targetPath);
 
         writeStream.on("error", function (e) {
           if (e) {
@@ -67,7 +71,7 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
         });
 
         writeStream.on("finish", function () {
-          logging.taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+          taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
           cb();
         });
 
@@ -91,7 +95,7 @@ var watch = exports.watch = function (options, cb) {
 
   b.transform("reactify");
 
-  b.add(path.resolve(options.sourcePath));
+  b.add(resolve(options.sourcePath));
 
   b.on("bundle", function (bundleStream) {
     var data = "";
@@ -101,12 +105,12 @@ var watch = exports.watch = function (options, cb) {
     });
 
     bundleStream.on("data", function (d) {
-      fs.writeFile(options.targetPath, data, function (e) {
+      writeFile(options.targetPath, data, function (e) {
         if (e) {
           return cb(e);
         }
 
-        logging.taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+        taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
       });
     });
   });

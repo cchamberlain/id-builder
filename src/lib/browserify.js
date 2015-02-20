@@ -1,19 +1,18 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+import { exists, createWriteStream, writeFile } from 'fs';
+import { resolve } from 'path';
 
-const _ = require('lodash');
-const browserify = require('browserify');
-const watchify = require('watchify');
+import browserify from 'browserify';
+import watchify from 'watchify';
 
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
+import { ensureFileDirectory } from './fileSystem';
+import { taskInfo } from './logging';
 
 export const sourceExtension = 'coffee';
 export const targetExtension = 'js';
 
-// Returns true if the path is the target path.
+// Returns true if the path is the target 
 export const pathReloads = function(options, p) {
   return p === global.options.tasks.watchBrowserify.targetPath;
 };
@@ -21,9 +20,9 @@ export const pathReloads = function(options, p) {
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  const resolvedSourceDirectoryPath = path.resolve(options.sourceDirectory);
-  const resolvedSourceFilePath = path.resolve(sourceFilePath);
-  const resolvedTargetPath = path.resolve(options.targetPath);
+  const resolvedSourceDirectoryPath = resolve(options.sourceDirectory);
+  const resolvedSourceFilePath = resolve(sourceFilePath);
+  const resolvedTargetPath = resolve(options.targetPath);
 
   if (resolvedSourceFilePath === resolvedTargetPath) {
     return false;
@@ -35,13 +34,13 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 export const compileAllFiles = function(options, cb) {
-  fs.exists(options.sourcePath, function(exists) {
+  exists(options.sourcePath, function(exists) {
     if (!exists) {
-      logging.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
+      taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
       return cb();
     }
 
-    fileSystem.ensureFileDirectory(options.targetPath, function(e) {
+    ensureFileDirectory(options.targetPath, function(e) {
       if (e) {
         return cb(e);
       }
@@ -55,10 +54,10 @@ export const compileAllFiles = function(options, cb) {
 
       b.transform('reactify')
 
-      b.add(path.resolve(options.sourcePath));
+      b.add(resolve(options.sourcePath));
 
       b.on('bundle', function(bundleStream) {
-        const writeStream = fs.createWriteStream(options.targetPath);
+        const writeStream = createWriteStream(options.targetPath);
 
         writeStream.on('error', function(e) {
           if (e) {
@@ -67,7 +66,7 @@ export const compileAllFiles = function(options, cb) {
         });
 
         writeStream.on('finish', function() {
-          logging.taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
+          taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
           cb();
         });
 
@@ -92,7 +91,7 @@ export const watch = function(options, cb) {
 
   b.transform('reactify')
 
-  b.add(path.resolve(options.sourcePath));
+  b.add(resolve(options.sourcePath));
 
   b.on('bundle', function(bundleStream) {
     let data = '';
@@ -102,12 +101,12 @@ export const watch = function(options, cb) {
     });
 
     bundleStream.on('data', function(d) {
-      fs.writeFile(options.targetPath, data, function(e) {
+      writeFile(options.targetPath, data, function(e) {
         if (e) {
           return cb(e);
         }
 
-        logging.taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
+        taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
       });
     });
   });
