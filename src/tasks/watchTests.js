@@ -6,7 +6,7 @@ import { getWatcher } from '../lib/watch';
 export const dependencies = [
   'runTests',
   'watch'
-]
+];
 
 const handlePath = function(options, path, stat) {
   if (!buildFilePathMatches(options, path)) {

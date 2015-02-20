@@ -5,7 +5,7 @@ import { getWatcher } from '../lib/watch';
 
 export const dependencies = [
   'watch'
-]
+];
 
 const handlePath = function(options, path, stat) {
   if (!sourceFilePathMatches(options, path)) {

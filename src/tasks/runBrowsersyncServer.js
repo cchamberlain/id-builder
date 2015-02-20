@@ -13,4 +13,4 @@ export const dependencies = [
   'compileStylus',
 ];
 
-export const run = runServer
+export const run = runServer;

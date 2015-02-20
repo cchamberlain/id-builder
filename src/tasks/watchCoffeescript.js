@@ -4,7 +4,7 @@ import coffeescript from '../lib/coffeescript';
 
 export const dependencies = [
   'watch'
-]
+];
 
 const handlePath = function(options, path, stat) {
   if (!coffeescript.sourceFilePathMatches(options, path)) {

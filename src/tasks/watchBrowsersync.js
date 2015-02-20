@@ -7,7 +7,7 @@ import { getWatcher } from '../lib/watch';
 export const dependencies = [
   'runBrowsersyncServer',
   'watch'
-]
+];
 
 const handlePath = function(options, path, stat) {
   if (path.match(/\.js$/) && !browserify.pathReloads(options, path)) {
