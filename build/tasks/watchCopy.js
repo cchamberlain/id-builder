@@ -1,10 +1,10 @@
 "use strict";
 
-var _libWatch = require("../lib/watch");
+var _libCopy = require("../lib/copy");
 
-var sourceFilePathMatches = _libWatch.sourceFilePathMatches;
-var copyFile = _libWatch.copyFile;
-var getWatcher = _libWatch.getWatcher;
+var sourceFilePathMatches = _libCopy.sourceFilePathMatches;
+var copyFile = _libCopy.copyFile;
+var getWatcher = require("../lib/watch").getWatcher;
 var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {

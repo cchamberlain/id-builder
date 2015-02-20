@@ -1,6 +1,6 @@
 'use strict';
 
-import { sourceFilePathMatches, copyFile } from '../lib/watch';
+import { sourceFilePathMatches, copyFile } from '../lib/copy';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [
