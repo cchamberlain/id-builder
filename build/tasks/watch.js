@@ -1,13 +1,12 @@
 "use strict";
 
-var watch = require("../lib/watch");
+var start = require("../lib/watch").start;
+var dependencies = exports.dependencies = ["runTests"];
 
-var run = function (options, cb) {
-  watch.start(options);
+var run = exports.run = function (options, cb) {
+  start(options);
   cb();
 };
-
-module.exports = {
-  dependencies: ["runTests"],
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

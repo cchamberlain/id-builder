@@ -1,18 +1,18 @@
 "use strict";
 
-var tests = require("../lib/tests");
-var watch = require("../lib/watch");
+var _libTests = require("../lib/tests");
 
-var dependencies = ["runTests", "watch"];
+var buildFilePathMatches = _libTests.buildFilePathMatches;
+var runTests = _libTests.runTests;
+var getWatcher = require("../lib/watch").getWatcher;
+var dependencies = exports.dependencies = ["runTests", "watch"];
 
 var handlePath = function (options, path, stat) {
-  console.log("handlePath", options, path);
-
-  if (!tests.buildFilePathMatches(options, path)) {
+  if (!buildFilePathMatches(options, path)) {
     return;
   }
 
-  tests.runTests(options, function (e) {
+  runTests(options, function (e) {
     if (e) {
       console.error(e);
     }
@@ -43,8 +43,8 @@ var handleError = function (options, e) {
   console.error(e);
 };
 
-var run = function (options, cb) {
-  var watcher = watch.getWatcher();
+var run = exports.run = function (options, cb) {
+  var watcher = getWatcher();
 
   watcher.on("ready", function () {
     watcher.on("add", function (path, stat) {
@@ -67,8 +67,6 @@ var run = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

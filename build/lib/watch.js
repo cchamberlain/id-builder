@@ -1,7 +1,10 @@
 "use strict";
 
-var _ = require("lodash");
-var chokidar = require("chokidar");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var _ = _interopRequire(require("lodash"));
+
+var chokidar = _interopRequire(require("chokidar"));
 
 var watcher = null;
 

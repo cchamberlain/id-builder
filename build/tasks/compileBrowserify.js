@@ -1,13 +1,9 @@
 "use strict";
 
-var fileSystem = require("../lib/fileSystem");
-var browserify = require("../lib/browserify");
+var compileAllFiles = require("../lib/browserify").compileAllFiles;
+var dependencies = exports.dependencies = ["clean", "compileBabel", "compileCoffeescript", "compileCopy", "compileJade", "compileLess", "compileLivescript", "compileStylus"];
 
-var dependencies = ["clean", "compileCoffeescript", "compileJade", "compileLivescript", "compileBabel"];
-
-var run = browserify.compileAllFiles;
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+var run = exports.run = compileAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

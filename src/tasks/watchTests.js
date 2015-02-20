@@ -9,8 +9,6 @@ export const dependencies = [
 ]
 
 const handlePath = function(options, path, stat) {
-  console.log('handlePath', options, path);
-
   if (!buildFilePathMatches(options, path)) {
     return;
   }

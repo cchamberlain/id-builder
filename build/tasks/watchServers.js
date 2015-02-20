@@ -1,9 +1,11 @@
 "use strict";
 
-var servers = require("../lib/servers");
-var watch = require("../lib/watch");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var dependencies = ["watch"];
+var servers = _interopRequire(require("../lib/servers"));
+
+var getWatcher = require("../lib/watch").getWatcher;
+var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
   if (!servers.sourceFilePathMatches(options, path)) {
@@ -33,8 +35,8 @@ var handleUnlinkDir = function (options, path, stat) {};
 
 var handleError = function (options, e) {};
 
-var run = function (options, cb) {
-  var watcher = watch.getWatcher();
+var run = exports.run = function (options, cb) {
+  var watcher = getWatcher();
 
   watcher.on("ready", function () {
     watcher.on("add", function (path, stat) {
@@ -57,8 +59,6 @@ var run = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

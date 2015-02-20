@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 
-import browserify from '../../../lib/browserify';
+import * as browserify from '../../../lib/browserify';
 import { randomString } from '../../../lib/tests';
 
 describe('browserify', function() {

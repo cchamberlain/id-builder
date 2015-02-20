@@ -7,7 +7,7 @@ import moment from 'moment';
 import defaultOptions from './lib/defaultOptions';
 import { disabledTask, startTask, finishTask } from './lib/logging';
 import parseOptions from './lib/parseOptions';
-import * as tasks from './tasks';
+import tasks from './tasks';
 
 const logInfo = function(message) {
   console.log(`${moment().format()} ${message}`);
@@ -18,7 +18,7 @@ const runTaskWithOptions = function(options, task, name) {
     const taskOptions = options.tasks[name];
 
     if (!taskOptions) {
-      return cb(`No options found for task ${name}.`);
+      return cb(`No options found for task "${name}".`);
     }
 
     if (!taskOptions.enabled) {
@@ -48,8 +48,6 @@ export default function(inputOptions, cb) {
   global.options = parseOptions(defaultOptions, inputOptions);
 
   const autoTasks = _.reduce(tasks, function(m, v, k) {
-    console.log(k, v);
-
     m[k] = v.dependencies.concat(runTaskWithOptions(global.options, v, k));
 
     return m;

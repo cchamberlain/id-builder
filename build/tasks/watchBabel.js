@@ -1,18 +1,22 @@
 "use strict";
 
-var babel = require("../lib/babel");
-var watch = require("../lib/watch");
+var _libBabel = require("../lib/babel");
 
-var dependencies = ["watch"];
+var sourceFilePathMatches = _libBabel.sourceFilePathMatches;
+var sourceExtension = _libBabel.sourceExtension;
+var targetExtension = _libBabel.targetExtension;
+var compileFile = _libBabel.compileFile;
+var getWatcher = require("../lib/watch").getWatcher;
+var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
-  if (!babel.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + babel.sourceExtension + "$"), "." + babel.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + sourceExtension + "$"), "." + targetExtension);
 
-  babel.compileFile(options, path, targetPath, function (e) {
+  compileFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }
@@ -35,8 +39,8 @@ var handleUnlinkDir = function (options, path, stat) {};
 
 var handleError = function (options, e) {};
 
-var run = function (options, cb) {
-  var watcher = watch.getWatcher();
+var run = exports.run = function (options, cb) {
+  var watcher = getWatcher();
 
   watcher.on("ready", function () {
     watcher.on("add", function (path, stat) {
@@ -59,8 +63,6 @@ var run = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

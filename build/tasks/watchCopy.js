@@ -1,18 +1,20 @@
 "use strict";
 
-var copy = require("../lib/copy");
-var watch = require("../lib/watch");
+var _libWatch = require("../lib/watch");
 
-var dependencies = ["watch"];
+var sourceFilePathMatches = _libWatch.sourceFilePathMatches;
+var copyFile = _libWatch.copyFile;
+var getWatcher = _libWatch.getWatcher;
+var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
-  if (!copy.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
   var targetPath = path.replace(options.sourcePath, options.targetPath);
 
-  copy.copyFile(options, path, targetPath, function (e) {
+  copyFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }
@@ -35,8 +37,8 @@ var handleUnlinkDir = function (options, path, stat) {};
 
 var handleError = function (options, e) {};
 
-var run = function (options, cb) {
-  var watcher = watch.getWatcher();
+var run = exports.run = function (options, cb) {
+  var watcher = getWatcher();
 
   watcher.on("ready", function () {
     watcher.on("add", function (path, stat) {
@@ -59,8 +61,6 @@ var run = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

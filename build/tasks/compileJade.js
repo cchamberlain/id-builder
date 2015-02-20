@@ -1,8 +1,9 @@
 "use strict";
 
-var jade = require("../lib/jade");
+var compileAllFiles = require("../lib/jade").compileAllFiles;
+var dependencies = exports.dependencies = ["clean"];
 
-module.exports = {
-  dependencies: ["clean"],
-  run: jade.compileAllFiles
-};
+var run = exports.run = compileAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

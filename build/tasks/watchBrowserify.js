@@ -1,9 +1,13 @@
 "use strict";
 
-var browserify = require("../lib/browserify");
-var watch = require("../lib/watch");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var dependencies = ["watch"];
+var browserify = _interopRequire(require("../lib/browserify"));
+
+var dependencies = exports.dependencies = [
+// TODO: consider removing this dependency because browserify has it's own
+// watcher.
+"watch"];
 
 var handlePath = function (options, path, stat) {
   if (!browserify.sourceFilePathMatches(options, path)) {
@@ -35,11 +39,9 @@ var handleError = function (options, e) {
   console.error(e);
 };
 
-var run = function (options, cb) {
+var run = exports.run = function (options, cb) {
   browserify.watch(options, cb);
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

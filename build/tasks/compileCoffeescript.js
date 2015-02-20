@@ -1,8 +1,9 @@
 "use strict";
 
-var coffeescript = require("../lib/coffeescript");
+var compileAllFiles = require("../lib/fileSystem").compileAllFiles;
+var dependencies = exports.dependencies = ["clean"];
 
-module.exports = {
-  dependencies: ["clean"],
-  run: coffeescript.compileAllFiles
-};
+var run = exports.run = compileAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

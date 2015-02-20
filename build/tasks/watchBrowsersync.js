@@ -1,23 +1,23 @@
 "use strict";
 
-var browserSync = require("browser-sync");
+var pathReloads = require("../lib/browserify").pathReloads;
+var _libBrowsersync = require("../lib/browsersync");
 
-var browserify = require("../lib/browserify");
-var browsersync = require("../lib/browsersync");
-var watch = require("../lib/watch");
-
-var dependencies = ["runBrowsersyncServer", "watch"];
+var sourceFilePathMatches = _libBrowsersync.sourceFilePathMatches;
+var compileFile = _libBrowsersync.compileFile;
+var getWatcher = require("../lib/watch").getWatcher;
+var dependencies = exports.dependencies = ["runBrowsersyncServer", "watch"];
 
 var handlePath = function (options, path, stat) {
   if (path.match(/\.js$/) && !browserify.pathReloads(options, path)) {
     return;
   }
 
-  if (!browsersync.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
-  browsersync.reload(options, path, function (e) {
+  reload(options, path, function (e) {
     if (e) {
       console.error(e);
     }
@@ -40,8 +40,8 @@ var handleUnlinkDir = function (options, path, stat) {};
 
 var handleError = function (options, e) {};
 
-var run = function (options, cb) {
-  var watcher = watch.getWatcher();
+var run = exports.run = function (options, cb) {
+  var watcher = getWatcher();
 
   watcher.on("ready", function () {
     watcher.on("add", function (path, stat) {
@@ -64,8 +64,6 @@ var run = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

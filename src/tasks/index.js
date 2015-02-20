@@ -1,29 +1,29 @@
 'use strict';
 
-import clean from './clean';
-import compileBabel from './compileBabel';
-import compileBrowserify from './compileBrowserify';
-import compileCoffeescript from './compileCoffeescript';
-import compileCopy from './compileCopy';
-import compileJade from './compileJade';
-import compileLess from './compileLess';
-import compileLivescript from './compileLivescript';
-import compileStylus from './compileStylus';
-import runBrowsersyncServer from './runBrowsersyncServer';
-import runServers from './runServers';
-import runTests from './runTests';
-import watch from './watch';
-import watchBabel from './watchBabel';
-import watchBrowserify from './watchBrowserify';
-import watchBrowsersync from './watchBrowsersync';
-import watchCoffeescript from './watchCoffeescript';
-import watchCopy from './watchCopy';
-import watchJade from './watchJade';
-import watchLess from './watchLess';
-import watchLivescript from './watchLivescript';
-import watchServers from './watchServers';
-import watchStylus from './watchStylus';
-import watchTests from './watchTests';
+import * as clean from './clean';
+import * as compileBabel from './compileBabel';
+import * as compileBrowserify from './compileBrowserify';
+import * as compileCoffeescript from './compileCoffeescript';
+import * as compileCopy from './compileCopy';
+import * as compileJade from './compileJade';
+import * as compileLess from './compileLess';
+import * as compileLivescript from './compileLivescript';
+import * as compileStylus from './compileStylus';
+import * as runBrowsersyncServer from './runBrowsersyncServer';
+import * as runServers from './runServers';
+import * as runTests from './runTests';
+import * as watch from './watch';
+import * as watchBabel from './watchBabel';
+import * as watchBrowserify from './watchBrowserify';
+import * as watchBrowsersync from './watchBrowsersync';
+import * as watchCoffeescript from './watchCoffeescript';
+import * as watchCopy from './watchCopy';
+import * as watchJade from './watchJade';
+import * as watchLess from './watchLess';
+import * as watchLivescript from './watchLivescript';
+import * as watchServers from './watchServers';
+import * as watchStylus from './watchStylus';
+import * as watchTests from './watchTests';
 
 export default {
   clean: clean,

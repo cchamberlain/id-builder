@@ -1,8 +1,9 @@
 "use strict";
 
-var livescript = require("../lib/livescript");
+var compileAllFiles = require("../lib/livescript").compileAllFiles;
+var dependencies = exports.dependencies = ["clean"];
 
-module.exports = {
-  dependencies: ["clean"],
-  run: livescript.compileAllFiles
-};
+var run = exports.run = compileAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

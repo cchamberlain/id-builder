@@ -1,15 +1,22 @@
 "use strict";
 
-var chai = require("chai");
-var mkdirp = require("mkdirp");
-var rimraf = require("rimraf");
-var browserify = require("../../../lib/browserify");
-var tests = require("../../../lib/tests");
-var expect = chai.expect;
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var expect = require("chai").expect;
+var mkdirp = _interopRequire(require("mkdirp"));
+
+var rimraf = _interopRequire(require("rimraf"));
+
+var browserify = _interopRequireWildcard(require("../../../lib/browserify"));
+
+var randomString = require("../../../lib/tests").randomString;
+
 
 describe("browserify", function () {
   beforeEach(function (cb) {
-    this.directoryPath = ".tmp/" + tests.randomString();
+    this.directoryPath = ".tmp/" + randomString();
 
     mkdirp(this.directoryPath, cb);
   });

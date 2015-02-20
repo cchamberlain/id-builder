@@ -1,8 +1,9 @@
 "use strict";
 
-var tests = require("../lib/tests");
+var runTests = require("../lib/tests").runTests;
+var dependencies = exports.dependencies = ["compileBabel", "compileBrowserify", "compileCoffeescript", "compileCopy", "compileJade", "compileLess", "compileLivescript", "compileStylus"];
 
-module.exports = {
-  dependencies: ["compileBrowserify", "compileCoffeescript", "compileCopy", "compileJade", "compileLess", "compileLivescript", "compileBabel", "compileStylus"],
-  run: tests.runTests
-};
+var run = exports.run = runTests;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

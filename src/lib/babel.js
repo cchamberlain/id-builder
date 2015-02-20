@@ -1,6 +1,7 @@
 'use strict';
 
 import { transform } from 'babel';
+
 import * as fileSystem from './fileSystem'
 
 export const sourceExtension = 'js';

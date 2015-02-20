@@ -1,8 +1,9 @@
 "use strict";
 
-var babel = require("../lib/babel");
+var compileAllFiles = require("../lib/babel").compileAllFiles;
+var dependencies = exports.dependencies = ["clean"];
 
-module.exports = {
-  dependencies: ["clean"],
-  run: babel.compileAllFiles
-};
+var run = exports.run = compileAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

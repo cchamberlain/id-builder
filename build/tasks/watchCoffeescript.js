@@ -1,9 +1,10 @@
 "use strict";
 
-var coffeescript = require("../lib/coffeescript");
-var watch = require("../lib/watch");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var dependencies = ["watch"];
+var coffeescript = _interopRequire(require("../lib/coffeescript"));
+
+var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
@@ -35,7 +36,7 @@ var handleUnlinkDir = function (options, path, stat) {};
 
 var handleError = function (options, e) {};
 
-var run = function (options, cb) {
+var run = exports.run = function (options, cb) {
   var watcher = watch.getWatcher();
 
   watcher.on("ready", function () {
@@ -59,8 +60,6 @@ var run = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

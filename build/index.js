@@ -1,13 +1,22 @@
 "use strict";
 
-var _ = require("lodash");
-var async = require("async");
-var moment = require("moment");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var defaultOptions = require("./lib/defaultOptions");
-var logging = require("./lib/logging");
-var parseOptions = require("./lib/parseOptions");
-var tasks = require("./tasks");
+var _ = _interopRequire(require("lodash"));
+
+var auto = require("async").auto;
+var moment = _interopRequire(require("moment"));
+
+var defaultOptions = _interopRequire(require("./lib/defaultOptions"));
+
+var _libLogging = require("./lib/logging");
+
+var disabledTask = _libLogging.disabledTask;
+var startTask = _libLogging.startTask;
+var finishTask = _libLogging.finishTask;
+var parseOptions = _interopRequire(require("./lib/parseOptions"));
+
+var tasks = _interopRequire(require("./tasks"));
 
 var logInfo = function (message) {
   console.log("" + moment().format() + " " + message);
@@ -18,24 +27,24 @@ var runTaskWithOptions = function (options, task, name) {
     var taskOptions = options.tasks[name];
 
     if (!taskOptions) {
-      return cb("No options found for task " + name + ".");
+      return cb("No options found for task \"" + name + "\".");
     }
 
     if (!taskOptions.enabled) {
-      logging.disabledTask(name);
+      disabledTask(name);
       return cb();
     }
 
     taskOptions.taskName = name;
 
-    logging.startTask(name);
+    startTask(name);
 
     task.run(taskOptions, function (e) {
       if (e) {
         return cb(e);
       }
 
-      logging.finishTask(name);
+      finishTask(name);
 
       cb();
     });
@@ -53,5 +62,5 @@ module.exports = function (inputOptions, cb) {
     return m;
   }, {});
 
-  async.auto(autoTasks, cb);
+  auto(autoTasks, cb);
 };

@@ -1,6 +1,11 @@
 'use strict';
 
-import babel from '../lib/babel';
+import {
+  sourceFilePathMatches,
+  sourceExtension,
+  targetExtension,
+  compileFile
+} from '../lib/babel';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [
@@ -8,15 +13,15 @@ export const dependencies = [
 ]
 
 const handlePath = function(options, path, stat) {
-  if (!babel.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
   const targetPath = path
     .replace(options.sourcePath, options.targetPath)
-    .replace(new RegExp(`^\.${babel.sourceExtension}$`), `.${babel.targetExtension}`);
+    .replace(new RegExp(`^\.${sourceExtension}$`), `.${targetExtension}`);
 
-  babel.compileFile(options, path, targetPath, function(e) {
+  compileFile(options, path, targetPath, function(e) {
     if (e) {
       console.error(e);
     }

@@ -2,8 +2,7 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var stylus = require("stylus");
-var async = require("async");
+var render = require("stylus").render;
 var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "styl";
@@ -14,7 +13,7 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 };
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
-  stylus.render(chunk, cb);
+  render(chunk, cb);
 };
 
 var compileFile = exports.compileFile = fileSystem.compileFile(compileChunk);

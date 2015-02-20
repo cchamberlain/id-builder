@@ -2,6 +2,6 @@
 
 import { compileAllFiles } from '../lib/stylus';
 
-export const dependencies = [ 'runTests' ];
+export const dependencies = [ 'clean' ];
 
 export const run = compileAllFiles

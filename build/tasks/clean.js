@@ -1,11 +1,10 @@
 "use strict";
 
-var clean = require("../lib/clean");
-
+var directory = require("../lib/clean").directory;
 var dependencies = exports.dependencies = [];
 
 var run = exports.run = function (options, cb) {
-  clean.directory(options, cb);
+  directory(options, cb);
 };
 Object.defineProperty(exports, "__esModule", {
   value: true

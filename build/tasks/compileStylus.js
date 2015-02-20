@@ -1,8 +1,9 @@
 "use strict";
 
-var stylus = require("../lib/stylus");
+var compileAllFiles = require("../lib/stylus").compileAllFiles;
+var dependencies = exports.dependencies = ["clean"];
 
-module.exports = {
-  dependencies: ["clean"],
-  run: stylus.compileAllFiles
-};
+var run = exports.run = compileAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

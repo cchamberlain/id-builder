@@ -1,8 +1,9 @@
 "use strict";
 
-var copy = require("../lib/copy");
+var copyAllFiles = require("../lib/copy").copyAllFiles;
+var dependencies = exports.dependencies = ["clean"];
 
-module.exports = {
-  dependencies: ["clean"],
-  run: copy.copyAllFiles
-};
+var run = exports.run = copyAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

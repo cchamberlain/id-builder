@@ -4,10 +4,13 @@ import { compileAllFiles } from '../lib/browserify';
 
 export const dependencies = [
   'clean',
+  'compileBabel',
   'compileCoffeescript',
+  'compileCopy',
   'compileJade',
+  'compileLess',
   'compileLivescript',
-  'compileBabel'
+  'compileStylus'
 ];
 
 export const run = compileAllFiles;

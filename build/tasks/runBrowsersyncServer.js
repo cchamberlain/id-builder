@@ -1,8 +1,9 @@
 "use strict";
 
-var browsersync = require("../lib/browsersync");
+var runServer = require("../lib/browsersync").runServer;
+var dependencies = exports.dependencies = ["compileBrowserify", "compileCoffeescript", "compileCopy", "compileJade", "compileLess", "compileLivescript", "compileBabel", "compileStylus"];
 
-module.exports = {
-  dependencies: ["compileBrowserify", "compileCoffeescript", "compileCopy", "compileJade", "compileLess", "compileLivescript", "compileBabel", "compileStylus"],
-  run: browsersync.runServer
-};
+var run = exports.run = runServer;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

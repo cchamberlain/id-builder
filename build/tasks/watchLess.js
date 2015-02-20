@@ -1,18 +1,20 @@
 "use strict";
 
-var less = require("../lib/less");
-var watch = require("../lib/watch");
+var _libLess = require("../lib/less");
 
-var dependencies = ["watch"];
+var sourceFilePathMatches = _libLess.sourceFilePathMatches;
+var compileFile = _libLess.compileFile;
+var getWatcher = require("../lib/watch").getWatcher;
+var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
-  if (!less.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + less.sourceExtension + "$"), "." + less.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + sourceExtension + "$"), "." + targetExtension);
 
-  less.compileFile(options, path, targetPath, function (e) {
+  compileFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }
@@ -35,8 +37,8 @@ var handleUnlinkDir = function (options, path, stat) {};
 
 var handleError = function (options, e) {};
 
-var run = function (options, cb) {
-  var watcher = watch.getWatcher();
+var run = exports.run = function (options, cb) {
+  var watcher = getWatcher();
 
   watcher.on("ready", function () {
     watcher.on("add", function (path, stat) {
@@ -59,8 +61,6 @@ var run = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

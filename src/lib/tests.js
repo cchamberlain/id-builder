@@ -14,20 +14,12 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
   const matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
   const matchesTarget = sourceFilePath.indexOf(global.options.targetDirectory) === 0;
 
-  console.log(global.options.targetDirectory, sourceFilePath);
-
-  console.log('sourceFilePathMatches', matchesJavascript, matchesTarget);
-
   return matchesJavascript && matchesTarget;
 };
 
 export const buildFilePathMatches = function(options, buildFilePath) {
   const matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
   const matchesTarget = buildFilePath.indexOf(global.options.targetDirectory) === 0;
-
-  console.log(global.options.targetDirectory, buildFilePath);
-
-  console.log('buildFilePathMatches', matchesJavascript, matchesTarget);
 
   return matchesJavascript && matchesTarget;
 };

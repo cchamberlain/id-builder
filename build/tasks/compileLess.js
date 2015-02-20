@@ -1,8 +1,9 @@
 "use strict";
 
-var less = require("../lib/less");
+var compileAllFiles = require("../lib/less").compileAllFiles;
+var dependencies = exports.dependencies = ["clean"];
 
-module.exports = {
-  dependencies: ["clean"],
-  run: less.compileAllFiles
-};
+var run = exports.run = compileAllFiles;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
