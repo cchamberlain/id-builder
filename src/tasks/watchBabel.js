@@ -1,11 +1,6 @@
 'use strict';
 
-import {
-  sourceFilePathMatches,
-  sourceExtension,
-  targetExtension,
-  compileFile
-} from '../lib/babel';
+import { sourceFilePathMatches, sourceExtension, targetExtension, compileFile } from '../lib/babel';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [
