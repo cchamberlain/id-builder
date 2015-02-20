@@ -1,12 +1,9 @@
 "use strict";
 
-var path = require("path");
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var _ = require("lodash");
-var babel = require("babel");
-
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+var transform = require("babel").transform;
+var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "js";
 var targetExtension = exports.targetExtension = "js";
@@ -16,10 +13,8 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 };
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
-  var babelOptions = {};
-
   try {
-    var output = babel.transform(chunk, babelOptions);
+    var output = transform(chunk);
 
     cb(null, output.code);
   } catch (e) {
@@ -33,34 +28,3 @@ var compileAllFiles = exports.compileAllFiles = fileSystem.compileAllFiles(sourc
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-// filename:
-// filenameRelative:
-// blacklist:
-// whitelist:
-// loose:
-// optional:
-// modules:
-// sourceMap:
-// sourceMapName:
-// sourceFileName:
-// sourceRoot:
-// moduleRoot:
-// moduleIds:
-// comments:
-// keepModuleIdExtensions:
-// runtime:
-// code:
-// ast:
-// format: {
-//   parenteses:
-//   comments:
-//   compact:
-//   indent: {
-//     adjustMultilineComment:
-//     style:
-//     base:
-//   }
-// }
-// playground:
-// experimental:

@@ -1,12 +1,7 @@
 'use strict';
 
-const path = require('path');
-
-const _ = require('lodash')
-const babel = require('babel');
-
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
+import { transform } from 'babel';
+import * as fileSystem from './fileSystem'
 
 export const sourceExtension = 'js';
 export const targetExtension = 'js';
@@ -16,41 +11,8 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 export const compileChunk = function(options, chunk, cb) {
-  const babelOptions = {
-    // filename:
-    // filenameRelative:
-    // blacklist:
-    // whitelist:
-    // loose:
-    // optional:
-    // modules:
-    // sourceMap:
-    // sourceMapName:
-    // sourceFileName:
-    // sourceRoot:
-    // moduleRoot:
-    // moduleIds:
-    // comments:
-    // keepModuleIdExtensions:
-    // runtime:
-    // code:
-    // ast:
-    // format: {
-    //   parenteses:
-    //   comments:
-    //   compact:
-    //   indent: {
-    //     adjustMultilineComment:
-    //     style:
-    //     base:
-    //   }
-    // }
-    // playground:
-    // experimental:
-  };
-
   try {
-    const output = babel.transform(chunk, babelOptions);
+    const output = transform(chunk);
 
     cb(null, output.code);
   } catch (e) {
