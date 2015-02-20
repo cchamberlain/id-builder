@@ -5,11 +5,11 @@ var chokidar = require("chokidar");
 
 var watcher = null;
 
-var getWatcher = function () {
+var getWatcher = exports.getWatcher = function () {
   return watcher;
 };
 
-var start = function (options) {
+var start = exports.start = function (options) {
   if (!options.paths.length) {
     return;
   }
@@ -28,8 +28,6 @@ var start = function (options) {
 
   return watcher;
 };
-
-module.exports = {
-  getWatcher: getWatcher,
-  start: start
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

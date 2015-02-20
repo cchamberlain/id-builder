@@ -8,14 +8,14 @@ var babel = require("babel");
 var fileSystem = require("./fileSystem");
 var logging = require("./logging");
 
-var sourceExtension = "js";
-var targetExtension = "js";
+var sourceExtension = exports.sourceExtension = "js";
+var targetExtension = exports.targetExtension = "js";
 
-var sourceFilePathMatches = function (options, sourceFilePath) {
+var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
   return sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
 };
 
-var compileChunk = function (options, chunk, cb) {
+var compileChunk = exports.compileChunk = function (options, chunk, cb) {
   var babelOptions = {};
 
   try {
@@ -27,19 +27,13 @@ var compileChunk = function (options, chunk, cb) {
   }
 };
 
-var compileFile = fileSystem.compileFile(compileChunk);
+var compileFile = exports.compileFile = fileSystem.compileFile(compileChunk);
 
-var compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+var compileAllFiles = exports.compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-module.exports = {
-  sourceExtension: sourceExtension,
-  targetExtension: targetExtension,
-
-  sourceFilePathMatches: sourceFilePathMatches,
-  compileChunk: compileChunk,
-  compileFile: compileFile,
-  compileAllFiles: compileAllFiles
-};
 // filename:
 // filenameRelative:
 // blacklist:

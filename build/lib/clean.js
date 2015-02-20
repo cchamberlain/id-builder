@@ -8,7 +8,7 @@ var rimraf = require("rimraf");
 
 var logging = require("./logging");
 
-var directory = function (options, cb) {
+var directory = exports.directory = function (options, cb) {
   fs.readdir(options.path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -22,7 +22,6 @@ var directory = function (options, cb) {
     async.each(paths, rimraf, cb);
   });
 };
-
-module.exports = {
-  directory: directory
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

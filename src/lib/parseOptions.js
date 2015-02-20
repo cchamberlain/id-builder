@@ -2,6 +2,6 @@
 
 const deepmerge = require('deepmerge');
 
-module.exports = function(defaults, options) {
+export default function(defaults, options) {
   return deepmerge(defaults, options);
 };

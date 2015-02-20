@@ -42,7 +42,7 @@ const runTaskWithOptions = function(options, task, name) {
   };
 };
 
-module.exports = function(inputOptions, cb) {
+export default function(inputOptions, cb) {
   inputOptions = inputOptions || {};
 
   global.options = parseOptions(defaultOptions, inputOptions);

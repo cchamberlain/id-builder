@@ -6,16 +6,16 @@ var async = require("async");
 var fileSystem = require("./fileSystem");
 var logging = require("./logging");
 
-var sourceExtension = "less";
-var targetExtension = "css";
+var sourceExtension = exports.sourceExtension = "less";
+var targetExtension = exports.targetExtension = "css";
 
-var sourceFilePathMatches = function (options, sourceFilePath) {
+var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
   var regex = new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$");
 
   return sourceFilePath.match(regex);
 };
 
-var compileChunk = function (options, chunk, cb) {
+var compileChunk = exports.compileChunk = function (options, chunk, cb) {
   less.render(chunk, function (e, result) {
     if (e) {
       return cb(e);
@@ -27,15 +27,9 @@ var compileChunk = function (options, chunk, cb) {
   });
 };
 
-var compileFile = fileSystem.compileFile(compileChunk);
+var compileFile = exports.compileFile = fileSystem.compileFile(compileChunk);
 
-var compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
-
-module.exports = {
-  sourceExtension: sourceExtension,
-  targetExtension: targetExtension,
-  sourceFilePathMatches: sourceFilePathMatches,
-  compileChunk: compileChunk,
-  compileFile: compileFile,
-  compileAllFiles: compileAllFiles
-};
+var compileAllFiles = exports.compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

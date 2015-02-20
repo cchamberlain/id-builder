@@ -55,11 +55,11 @@ var writeFile = function (path, string, cb) {
   fs.writeFile(path, string, cb);
 };
 
-var ensureFileDirectory = function (targetFilePath, cb) {
+var ensureFileDirectory = exports.ensureFileDirectory = function (targetFilePath, cb) {
   mkdirp(path.dirname(targetFilePath), cb);
 };
 
-var compileFile = function (compileChunk) {
+var compileFile = exports.compileFile = function (compileChunk) {
   return function (options, sourceFilePath, targetFilePath, cb) {
     readFile(sourceFilePath, function (e, fileContent) {
       if (e) {
@@ -91,7 +91,7 @@ var compileFile = function (compileChunk) {
   };
 };
 
-var compileAllFiles = function (sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
+var compileAllFiles = exports.compileAllFiles = function (sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function (options, cb) {
     getFiles(options.sourcePath, function (e, sourceFilePaths) {
       if (e) {
@@ -114,9 +114,6 @@ var compileAllFiles = function (sourceFilePathMatches, compileFile, sourceExtens
     });
   };
 };
-
-module.exports = {
-  compileAllFiles: compileAllFiles,
-  compileFile: compileFile,
-  ensureFileDirectory: ensureFileDirectory
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

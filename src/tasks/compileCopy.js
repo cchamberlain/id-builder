@@ -2,7 +2,7 @@
 
 const copy = require('../lib/copy');
 
-module.exports = {
+export default {
   dependencies: [ 'clean' ],
   run: copy.copyAllFiles
 };

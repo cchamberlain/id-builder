@@ -4,7 +4,7 @@
 
 const servers = require('../lib/servers');
 
-module.exports = {
+export default {
   dependencies: [
     'compileBrowserify',
     'compileCoffeescript',

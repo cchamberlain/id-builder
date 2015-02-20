@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+export default {
   clean: require('./clean'),
   compileBabel: require('./compileBabel'),
   compileBrowserify: require('./compileBrowserify'),

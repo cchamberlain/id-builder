@@ -10,17 +10,17 @@ const watchify = require('watchify');
 const fileSystem = require('./fileSystem');
 const logging = require('./logging');
 
-const sourceExtension = 'coffee';
-const targetExtension = 'js';
+export const sourceExtension = 'coffee';
+export const targetExtension = 'js';
 
 // Returns true if the path is the target path.
-const pathReloads = function(options, p) {
+export const pathReloads = function(options, p) {
   return p === global.options.tasks.watchBrowserify.targetPath;
 };
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-const sourceFilePathMatches = function(options, sourceFilePath) {
+export const sourceFilePathMatches = function(options, sourceFilePath) {
   const resolvedSourceDirectoryPath = path.resolve(options.sourceDirectory);
   const resolvedSourceFilePath = path.resolve(sourceFilePath);
   const resolvedTargetPath = path.resolve(options.targetPath);
@@ -34,7 +34,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
   }
 };
 
-const compileAllFiles = function(options, cb) {
+export const compileAllFiles = function(options, cb) {
   fs.exists(options.sourcePath, function(exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
@@ -80,7 +80,7 @@ const compileAllFiles = function(options, cb) {
   });
 };
 
-const watch = function(options, cb) {
+export const watch = function(options, cb) {
   cb();
 
   const b = browserify({
@@ -119,13 +119,4 @@ const watch = function(options, cb) {
   });
 
   b.bundle();
-};
-
-module.exports = {
-  sourceExtension: sourceExtension,
-  targetExtension: targetExtension,
-  pathReloads: pathReloads,
-  sourceFilePathMatches: sourceFilePathMatches,
-  compileAllFiles: compileAllFiles,
-  watch: watch
 };

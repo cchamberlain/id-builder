@@ -13,7 +13,7 @@ var map = preludeLs.map;
 
 var monitors = {};
 
-var addPath = function (path, cb) {
+var addPath = exports.addPath = function (path, cb) {
   var monitor = new foreverMonitor.Monitor(path, {
     command: "node"
   });
@@ -25,7 +25,7 @@ var addPath = function (path, cb) {
   cb();
 };
 
-var removePath = function (path, cb) {
+var removePath = exports.removePath = function (path, cb) {
   var monitor = monitors[path];
 
   monitor.kill(true);
@@ -35,7 +35,7 @@ var removePath = function (path, cb) {
   cb();
 };
 
-var restartPath = function (path, cb) {
+var restartPath = exports.restartPath = function (path, cb) {
   var monitor = monitors[path];
 
   monitor.restart();
@@ -43,11 +43,11 @@ var restartPath = function (path, cb) {
   cb();
 };
 
-var sourceFilePathMatches = function (options, sourceFilePath, cb) {
+var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath, cb) {
   return p.resolve(sourceFilePath).match(RegExp("^" + p.resolve(options.sourcePath)));
 };
 
-var startServer = function (options, filePath, cb) {
+var startServer = exports.startServer = function (options, filePath, cb) {
   var absolutePath = path.resolve(filePath);
 
   fs.exists(absolutePath, function (exists) {
@@ -66,7 +66,7 @@ var startServer = function (options, filePath, cb) {
   });
 };
 
-var stopServer = function (options, filePath, cb) {
+var stopServer = exports.stopServer = function (options, filePath, cb) {
   var absolutePath = path.resolve(filePath);
 
   fs.exists(absolutePath, function (exists) {
@@ -86,7 +86,7 @@ var stopServer = function (options, filePath, cb) {
   });
 };
 
-var restartServer = function (options, filePath, cb) {
+var restartServer = exports.restartServer = function (options, filePath, cb) {
   var absolutePath = path.resolve(filePath);
 
   fs.exists(absolutePath, function (exists) {
@@ -105,26 +105,17 @@ var restartServer = function (options, filePath, cb) {
   });
 };
 
-var runServers = function (options, cb) {
+var runServers = exports.runServers = function (options, cb) {
   async.each(options.paths, function (v, cb) {
     startServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };
 
-var restartServers = function (options, cb) {
+var restartServers = exports.restartServers = function (options, cb) {
   async.each(options.paths, function (v, cb) {
     restartServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };
-
-module.exports = {
-  addPath: addPath,
-  removePath: removePath,
-  restartPath: restartPath,
-  sourceFilePathMatches: sourceFilePathMatches,
-  startServer: startServer,
-  stopServer: stopServer,
-  restartServer: restartServer,
-  runServers: runServers,
-  restartServers: restartServers
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

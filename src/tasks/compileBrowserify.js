@@ -13,7 +13,7 @@ const dependencies = [
 
 const run = browserify.compileAllFiles;
 
-module.exports = {
+export default {
   dependencies: dependencies,
   run: run
 };

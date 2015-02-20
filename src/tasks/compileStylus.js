@@ -2,7 +2,7 @@
 
 const stylus = require('../lib/stylus');
 
-module.exports = {
+export default {
   dependencies: [ 'clean' ],
   run: stylus.compileAllFiles
 };

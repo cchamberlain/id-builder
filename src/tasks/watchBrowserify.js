@@ -44,7 +44,7 @@ const run = function(options, cb) {
   browserify.watch(options, cb);
 };
 
-module.exports = {
+export default {
   dependencies: dependencies,
   run: run
 };

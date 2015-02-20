@@ -7,7 +7,7 @@ const run = function(options, cb) {
   cb();
 };
 
-module.exports = {
+export default {
   dependencies: [ 'runTests' ],
   run: run
 };

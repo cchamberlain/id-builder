@@ -18,7 +18,7 @@ const logging = require('./logging');
 const babel = require('./babel');
 const stylus = require('./stylus');
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+export const sourceFilePathMatches = function(options, sourceFilePath) {
   const globalOptions = global.options;
 
   if (browserify.sourceFilePathMatches(globalOptions.tasks.compileBrowserify, sourceFilePath)) {
@@ -42,7 +42,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
   }
 };
 
-const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   fs.readFile(sourceFilePath, function(e, readChunk){
     if (e) {
       return cb(e);
@@ -66,7 +66,7 @@ const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   });
 };
 
-const copyAllFiles = function(options, cb) {
+export const copyAllFiles = function(options, cb) {
   lsr(options.sourcePath, function(e, nodes){
     if (e) {
       return cb(e);
@@ -95,10 +95,4 @@ const copyAllFiles = function(options, cb) {
       cb(null);
     });
   });
-};
-
-module.exports = {
-  sourceFilePathMatches: sourceFilePathMatches,
-  copyFile: copyFile,
-  copyAllFiles: copyAllFiles
 };

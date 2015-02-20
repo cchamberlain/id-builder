@@ -2,13 +2,11 @@
 
 var clean = require("../lib/clean");
 
-var dependencies = [];
+var dependencies = exports.dependencies = [];
 
-var run = function (options, cb) {
+var run = exports.run = function (options, cb) {
   clean.directory(options, cb);
 };
-
-module.exports = {
-  dependencies: dependencies,
-  run: run
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

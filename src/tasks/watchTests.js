@@ -59,7 +59,7 @@ const run = function(options, cb) {
   });
 };
 
-module.exports = {
+export default {
   dependencies: dependencies,
   run: run
 };

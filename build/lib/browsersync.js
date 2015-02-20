@@ -6,14 +6,14 @@ var p = require("path");
 
 var logging = require("./logging");
 
-var sourceFilePathMatches = function (options, sourceFilePath) {
+var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
   var resolvedSourceFilePath = p.resolve(sourceFilePath);
   var resolvedSourcePath = p.resolve(options.sourcePath);
 
   return resolvedSourceFilePath.indexOf(resolvedSourcePath) === 0;
 };
 
-var reload = function (options, updatedPath, cb) {
+var reload = exports.reload = function (options, updatedPath, cb) {
   browserSync.reload(updatedPath);
 
   logging.taskInfo(options.taskName, "Reloaded `#{path}`");
@@ -21,7 +21,7 @@ var reload = function (options, updatedPath, cb) {
   cb();
 };
 
-var runServer = function (_options, cb) {
+var runServer = exports.runServer = function (_options, cb) {
   var options = {
     //files: [],
     //minify: false,
@@ -39,9 +39,6 @@ var runServer = function (_options, cb) {
     cb();
   });
 };
-
-module.exports = {
-  sourceFilePathMatches: sourceFilePathMatches,
-  reload: reload,
-  runServer: runServer
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

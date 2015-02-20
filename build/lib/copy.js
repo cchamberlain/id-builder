@@ -18,7 +18,7 @@ var logging = require("./logging");
 var babel = require("./babel");
 var stylus = require("./stylus");
 
-var sourceFilePathMatches = function (options, sourceFilePath) {
+var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
   var globalOptions = global.options;
 
   if (browserify.sourceFilePathMatches(globalOptions.tasks.compileBrowserify, sourceFilePath)) {
@@ -42,7 +42,7 @@ var sourceFilePathMatches = function (options, sourceFilePath) {
   }
 };
 
-var copyFile = function (options, sourceFilePath, targetFilePath, cb) {
+var copyFile = exports.copyFile = function (options, sourceFilePath, targetFilePath, cb) {
   fs.readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
@@ -66,7 +66,7 @@ var copyFile = function (options, sourceFilePath, targetFilePath, cb) {
   });
 };
 
-var copyAllFiles = function (options, cb) {
+var copyAllFiles = exports.copyAllFiles = function (options, cb) {
   lsr(options.sourcePath, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -93,9 +93,6 @@ var copyAllFiles = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  sourceFilePathMatches: sourceFilePathMatches,
-  copyFile: copyFile,
-  copyAllFiles: copyAllFiles
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

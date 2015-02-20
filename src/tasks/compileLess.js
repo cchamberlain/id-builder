@@ -2,7 +2,7 @@
 
 const less = require('../lib/less');
 
-module.exports = {
+export default {
   dependencies: [ 'clean' ],
   run: less.compileAllFiles
 };

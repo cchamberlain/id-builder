@@ -2,7 +2,7 @@
 
 const jade = require('../lib/jade');
 
-module.exports = {
+export default {
   dependencies: [ 'clean' ],
   run: jade.compileAllFiles
 };

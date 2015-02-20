@@ -6,16 +6,16 @@ const async = require('async');
 const fileSystem = require('./fileSystem');
 const logging = require('./logging');
 
-const sourceExtension = 'jade';
-const targetExtension = 'js';
+export const sourceExtension = 'jade';
+export const targetExtension = 'js';
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+export const sourceFilePathMatches = function(options, sourceFilePath) {
   const regex = new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`);
 
   return sourceFilePath.match(regex);
 };
 
-const compileChunk = function(options, chunk, cb) {
+export const compileChunk = function(options, chunk, cb) {
   try {
     cb(null, jade.compileClient(chunk, {
       compileDebug: false,
@@ -26,15 +26,6 @@ const compileChunk = function(options, chunk, cb) {
   }
 };
 
-const compileFile = fileSystem.compileFile(compileChunk);
+export const compileFile = fileSystem.compileFile(compileChunk);
 
-const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
-
-module.exports = {
-  sourceExtension: sourceExtension,
-  targetExtension: targetExtension,
-  sourceFilePathMatches: sourceFilePathMatches,
-  compileChunk: compileChunk,
-  compileFile: compileFile,
-  compileAllFiles: compileAllFiles
-};
+export const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);

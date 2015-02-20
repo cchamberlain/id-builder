@@ -10,11 +10,11 @@ var logging = require("./logging");
 
 var pathToMocha = path.resolve(__dirname + "/../../node_modules/mocha/bin/_mocha");
 
-var randomString = function () {
+var randomString = exports.randomString = function () {
   return Math.random().toString(36).slice(7);
 };
 
-var sourceFilePathMatches = function (options, sourceFilePath) {
+var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
   var matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
   var matchesTarget = sourceFilePath.indexOf(global.options.targetDirectory) === 0;
 
@@ -25,7 +25,7 @@ var sourceFilePathMatches = function (options, sourceFilePath) {
   return matchesJavascript && matchesTarget;
 };
 
-var buildFilePathMatches = function (options, buildFilePath) {
+var buildFilePathMatches = exports.buildFilePathMatches = function (options, buildFilePath) {
   var matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
   var matchesTarget = buildFilePath.indexOf(global.options.targetDirectory) === 0;
 
@@ -36,7 +36,7 @@ var buildFilePathMatches = function (options, buildFilePath) {
   return matchesJavascript && matchesTarget;
 };
 
-var runTests = function (options, cb) {
+var runTests = exports.runTests = function (options, cb) {
   fs.exists(options.sourcePath, function (exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, "Skipping: Directory `" + options.sourcePath + "` not found.");
@@ -58,10 +58,6 @@ var runTests = function (options, cb) {
     });
   });
 };
-
-module.exports = {
-  randomString: randomString,
-  sourceFilePathMatches: sourceFilePathMatches,
-  buildFilePathMatches: buildFilePathMatches,
-  runTests: runTests
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});

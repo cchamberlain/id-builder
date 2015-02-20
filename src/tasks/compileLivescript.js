@@ -2,7 +2,7 @@
 
 const livescript = require('../lib/livescript');
 
-module.exports = {
+export default {
   dependencies: [ 'clean' ],
   run: livescript.compileAllFiles
 };

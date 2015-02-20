@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+export default {
   sourceDirectory: 'src',
   targetDirectory: 'build',
   testsDirectory: 'build/tests',

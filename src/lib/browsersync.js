@@ -6,14 +6,14 @@ const p = require('path');
 
 const logging = require('./logging');
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+export const sourceFilePathMatches = function(options, sourceFilePath) {
   const resolvedSourceFilePath = p.resolve(sourceFilePath);
   const resolvedSourcePath      = p.resolve(options.sourcePath);
 
   return (resolvedSourceFilePath.indexOf(resolvedSourcePath)) === 0;
 };
 
-const reload = function(options, updatedPath, cb) {
+export const reload = function(options, updatedPath, cb) {
   browserSync.reload(updatedPath);
 
   logging.taskInfo(options.taskName, 'Reloaded `#{path}`');
@@ -21,7 +21,7 @@ const reload = function(options, updatedPath, cb) {
   cb();
 };
 
-const runServer = function(_options, cb) {
+export const runServer = function(_options, cb) {
   const options = {
     //files: [],
     //minify: false,
@@ -39,10 +39,4 @@ const runServer = function(_options, cb) {
 
     cb();
   });
-};
-
-module.exports = {
-  sourceFilePathMatches: sourceFilePathMatches,
-  reload: reload,
-  runServer: runServer
 };

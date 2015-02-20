@@ -2,7 +2,7 @@
 
 const tests = require('../lib/tests');
 
-module.exports = {
+export default {
   dependencies: [
     'compileBrowserify',
     'compileCoffeescript',

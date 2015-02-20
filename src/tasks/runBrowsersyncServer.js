@@ -2,7 +2,7 @@
 
 const browsersync = require('../lib/browsersync');
 
-module.exports = {
+export default {
   dependencies: [
     'compileBrowserify',
     'compileCoffeescript',

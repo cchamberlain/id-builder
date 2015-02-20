@@ -2,7 +2,7 @@
 
 const babel = require('../lib/babel')
 
-module.exports = {
+export default {
   dependencies: [ 'clean' ],
   run: babel.compileAllFiles
 };

@@ -5,11 +5,11 @@ const chokidar = require('chokidar');
 
 var watcher = null;
 
-const getWatcher = function() {
+export const getWatcher = function() {
   return watcher;
 };
 
-const start = function(options) {
+export const start = function(options) {
   if (!options.paths.length) {
     return;
   }
@@ -28,9 +28,4 @@ const start = function(options) {
     .each(watcher.add);
 
   return watcher;
-};
-
-module.exports = {
-  getWatcher: getWatcher,
-  start: start
 };

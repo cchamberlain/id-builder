@@ -2,7 +2,7 @@
 
 const coffeescript = require('../lib/coffeescript')
 
-module.exports = {
+export default {
   dependencies: [ 'clean' ],
   run: coffeescript.compileAllFiles
 };

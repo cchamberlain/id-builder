@@ -55,11 +55,11 @@ const writeFile = function(path, string, cb) {
   fs.writeFile(path, string, cb);
 };
 
-const ensureFileDirectory = function(targetFilePath, cb) {
+export const ensureFileDirectory = function(targetFilePath, cb) {
   mkdirp(path.dirname(targetFilePath), cb);
 };
 
-const compileFile = function(compileChunk) {
+export const compileFile = function(compileChunk) {
   return function(options, sourceFilePath, targetFilePath, cb) {
     readFile(sourceFilePath, function(e, fileContent) {
       if (e) {
@@ -91,7 +91,7 @@ const compileFile = function(compileChunk) {
   };
 };
 
-const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
+export const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function(options, cb) {
     getFiles(options.sourcePath, function(e, sourceFilePaths) {
       if (e) {
@@ -116,10 +116,4 @@ const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExten
       async.each(paths, iteratePath, cb);
     });
   };
-};
-
-module.exports = {
-  compileAllFiles: compileAllFiles,
-  compileFile: compileFile,
-  ensureFileDirectory: ensureFileDirectory
 };

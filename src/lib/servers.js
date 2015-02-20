@@ -13,7 +13,7 @@ const map = preludeLs.map;
 
 const monitors = {};
 
-const addPath = function(path, cb){
+export const addPath = function(path, cb){
   const monitor = new foreverMonitor.Monitor(path, {
     command: 'node'
   });
@@ -25,7 +25,7 @@ const addPath = function(path, cb){
   cb();
 };
 
-const removePath = function(path, cb){
+export const removePath = function(path, cb){
   const monitor = monitors[path];
 
   monitor.kill(true);
@@ -35,7 +35,7 @@ const removePath = function(path, cb){
   cb();
 };
 
-const restartPath = function(path, cb){
+export const restartPath = function(path, cb){
   const monitor = monitors[path];
 
   monitor.restart();
@@ -43,13 +43,13 @@ const restartPath = function(path, cb){
   cb();
 };
 
-const sourceFilePathMatches = function(options, sourceFilePath, cb){
+export const sourceFilePathMatches = function(options, sourceFilePath, cb){
   return p
     .resolve(sourceFilePath)
     .match(RegExp(`^${p.resolve(options.sourcePath)}`));
 };
 
-const startServer = function(options, filePath, cb){
+export const startServer = function(options, filePath, cb){
   const absolutePath = path.resolve(filePath);
 
   fs.exists(absolutePath, function(exists){
@@ -68,7 +68,7 @@ const startServer = function(options, filePath, cb){
   });
 };
 
-const stopServer = function(options, filePath, cb){
+export const stopServer = function(options, filePath, cb){
   const absolutePath = path.resolve(filePath);
 
   fs.exists(absolutePath, function(exists){
@@ -88,7 +88,7 @@ const stopServer = function(options, filePath, cb){
   });
 };
 
-const restartServer = function(options, filePath, cb){
+export const restartServer = function(options, filePath, cb){
   const absolutePath = path.resolve(filePath);
 
   fs.exists(absolutePath, function(exists){
@@ -107,26 +107,14 @@ const restartServer = function(options, filePath, cb){
   });
 };
 
-const runServers = function(options, cb){
+export const runServers = function(options, cb){
   async.each(options.paths, function(v, cb) {
     startServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };
 
-const restartServers = function(options, cb){
+export const restartServers = function(options, cb){
   async.each(options.paths, function(v, cb) {
     restartServer(options, `${options.sourcePath}/${v}`, cb);
   });
-};
-
-module.exports = {
-  addPath: addPath,
-  removePath: removePath,
-  restartPath: restartPath,
-  sourceFilePathMatches: sourceFilePathMatches,
-  startServer: startServer,
-  stopServer: stopServer,
-  restartServer: restartServer,
-  runServers: runServers,
-  restartServers: restartServers
 };

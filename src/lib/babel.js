@@ -8,14 +8,14 @@ const babel = require('babel');
 const fileSystem = require('./fileSystem');
 const logging = require('./logging');
 
-const sourceExtension = 'js';
-const targetExtension = 'js';
+export const sourceExtension = 'js';
+export const targetExtension = 'js';
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+export const sourceFilePathMatches = function(options, sourceFilePath) {
   return sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
 };
 
-const compileChunk = function(options, chunk, cb) {
+export const compileChunk = function(options, chunk, cb) {
   const babelOptions = {
     // filename:
     // filenameRelative:
@@ -58,16 +58,6 @@ const compileChunk = function(options, chunk, cb) {
   }
 };
 
-const compileFile = fileSystem.compileFile(compileChunk);
+export const compileFile = fileSystem.compileFile(compileChunk);
 
-const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
-
-module.exports = {
-  sourceExtension: sourceExtension,
-  targetExtension: targetExtension,
-
-  sourceFilePathMatches: sourceFilePathMatches,
-  compileChunk: compileChunk,
-  compileFile: compileFile,
-  compileAllFiles: compileAllFiles
-};
+export const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
