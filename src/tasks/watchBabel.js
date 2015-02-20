@@ -1,23 +1,22 @@
 'use strict';
 
-const sixToFive = require('../lib/sixToFive');
+const babel = require('../lib/babel');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ]
 
 const handlePath = function(options, path, stat) {
-  if (!sixToFive.sourceFilePathMatches(options, path)) {
+  if (!babel.sourceFilePathMatches(options, path)) {
     return;
   }
 
   const targetPath = path
     .replace(options.sourcePath, options.targetPath)
-    .replace(new RegExp(`^\.${sixToFive.sourceExtension}$`), `.${sixToFive.targetExtension}`);
+    .replace(new RegExp(`^\.${babel.sourceExtension}$`), `.${babel.targetExtension}`);
 
-  sixToFive.compileFile(options, path, targetPath, function(e) {
+  babel.compileFile(options, path, targetPath, function(e) {
     if (e) {
       console.error(e);
     }

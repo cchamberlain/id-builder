@@ -3,7 +3,7 @@
 const path = require('path');
 
 const _ = require('lodash')
-const sixToFive = require('6to5');
+const babel = require('6to5');
 
 const fileSystem = require('./fileSystem');
 const logging = require('./logging');
@@ -16,7 +16,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 const compileChunk = function(options, chunk, cb) {
-  const sixToFiveOptions = {
+  const babelOptions = {
     // filename:
     // filenameRelative:
     // blacklist:
@@ -50,7 +50,7 @@ const compileChunk = function(options, chunk, cb) {
   };
 
   try {
-    const output = sixToFive.transform(chunk, sixToFiveOptions);
+    const output = babel.transform(chunk, babelOptions);
 
     cb(null, output.code);
   } catch (e) {

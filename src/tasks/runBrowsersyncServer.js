@@ -10,7 +10,8 @@ module.exports = {
     'compileJade',
     'compileLess',
     'compileLivescript',
-    'compileStylus'
+    'compileBabel',
+    'compileStylus',
   ],
   run: browsersync.runServer
 };

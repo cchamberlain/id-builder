@@ -6,8 +6,6 @@ var p = require("path");
 
 var logging = require("./logging");
 
-var sync = null;
-
 var sourceFilePathMatches = function (options, sourceFilePath) {
   var resolvedSourceFilePath = p.resolve(sourceFilePath);
   var resolvedSourcePath = p.resolve(options.sourcePath);
@@ -28,7 +26,7 @@ var runServer = function (_options, cb) {
     //files: [],
     //minify: false,
     //open: true,
-    //host: "localhost",
+    //host: 'localhost',
     port: 9001,
     logLevel: "silent",
     logFileChanges: false };
@@ -37,8 +35,6 @@ var runServer = function (_options, cb) {
     if (e) {
       return cb(e);
     }
-
-    sync = bs;
 
     cb();
   });

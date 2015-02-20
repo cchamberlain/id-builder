@@ -4,7 +4,6 @@ const stylus = require('../lib/stylus');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ]
 

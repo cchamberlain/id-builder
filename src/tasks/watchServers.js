@@ -4,7 +4,6 @@ const servers = require('../lib/servers');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ]
 

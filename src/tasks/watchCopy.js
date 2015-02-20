@@ -4,7 +4,6 @@ const copy = require('../lib/copy');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ]
 

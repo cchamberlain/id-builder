@@ -3,7 +3,7 @@
 var coffeescript = require("../lib/coffeescript");
 var watch = require("../lib/watch");
 
-var dependencies = ["runBrowsersyncServer", "runTests", "watch"];
+var dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
   if (!coffeescript.sourceFilePathMatches(options, path)) {

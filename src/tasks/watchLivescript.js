@@ -4,7 +4,6 @@ const livescript = require('../lib/livescript');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ]
 

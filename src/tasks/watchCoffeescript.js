@@ -4,8 +4,6 @@ const coffeescript = require('../lib/coffeescript');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runBrowsersyncServer',
-  'runTests',
   'watch'
 ]
 

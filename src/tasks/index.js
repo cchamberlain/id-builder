@@ -8,7 +8,7 @@ module.exports = {
   compileJade: require('./compileJade'),
   compileLess: require('./compileLess'),
   compileLivescript: require('./compileLivescript'),
-  compileSixToFive: require('./compileSixToFive'),
+  compileBrowserify: require('./compileBabel'),
   compileStylus: require('./compileStylus'),
   runBrowsersyncServer: require('./runBrowsersyncServer'),
   runServers: require('./runServers'),
@@ -22,7 +22,7 @@ module.exports = {
   watchLess: require('./watchLess'),
   watchLivescript: require('./watchLivescript'),
   watchServers: require('./watchServers'),
-  watchSixToFive: require('./watchSixToFive'),
+  watchBabel: require('./watchBabel'),
   watchStylus: require('./watchStylus'),
   watchTests: require('./watchTests')
 };

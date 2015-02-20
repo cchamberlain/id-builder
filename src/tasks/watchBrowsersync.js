@@ -8,7 +8,6 @@ const watch = require('../lib/watch');
 
 const dependencies = [
   'runBrowsersyncServer',
-  'runTests',
   'watch'
 ]
 

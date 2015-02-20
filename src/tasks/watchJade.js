@@ -4,7 +4,6 @@ const jade = require('../lib/jade');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ]
 

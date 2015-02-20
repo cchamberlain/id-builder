@@ -7,7 +7,8 @@ const dependencies = [
   'clean',
   'compileCoffeescript',
   'compileJade',
-  'compileLivescript'
+  'compileLivescript',
+  'compileBabel'
 ];
 
 const run = browserify.compileAllFiles;

@@ -3,7 +3,7 @@
 var jade = require("../lib/jade");
 var watch = require("../lib/watch");
 
-var dependencies = ["runTests", "watch"];
+var dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
   if (!jade.sourceFilePathMatches(options, path)) {

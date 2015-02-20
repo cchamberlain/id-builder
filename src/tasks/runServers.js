@@ -12,6 +12,7 @@ module.exports = {
     'compileJade',
     'compileLess',
     'compileLivescript',
+    'compileBabel',
     'compileStylus'
   ],
   run: servers.runServers

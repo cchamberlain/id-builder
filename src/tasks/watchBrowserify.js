@@ -4,7 +4,6 @@ const browserify = require('../lib/browserify');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ];
 

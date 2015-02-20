@@ -15,7 +15,7 @@ const jade = require('./jade');
 const less = require('./less');
 const livescript = require('./livescript');
 const logging = require('./logging');
-const sixToFive = require('./sixToFive');
+const babel = require('./babel');
 const stylus = require('./stylus');
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
@@ -31,7 +31,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
     return false;
   } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
     return false;
-  } else if (sixToFive.sourceFilePathMatches(globalOptions.tasks.compileSixToFive, sourceFilePath)) {
+  } else if (babel.sourceFilePathMatches(globalOptions.tasks.compileBabel, sourceFilePath)) {
     return false;
   } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     return false;

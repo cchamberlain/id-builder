@@ -6,7 +6,7 @@ var browserify = require("../lib/browserify");
 var browsersync = require("../lib/browsersync");
 var watch = require("../lib/watch");
 
-var dependencies = ["runBrowsersyncServer", "runTests", "watch"];
+var dependencies = ["runBrowsersyncServer", "watch"];
 
 var handlePath = function (options, path, stat) {
   if (path.match(/\.js$/) && !browserify.pathReloads(options, path)) {

@@ -3,7 +3,7 @@
 var browserify = require("../lib/browserify");
 var watch = require("../lib/watch");
 
-var dependencies = ["runTests", "watch"];
+var dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
   if (!browserify.sourceFilePathMatches(options, path)) {

@@ -6,8 +6,6 @@ const p = require('path');
 
 const logging = require('./logging');
 
-let sync = null;
-
 const sourceFilePathMatches = function(options, sourceFilePath) {
   const resolvedSourceFilePath = p.resolve(sourceFilePath);
   const resolvedSourcePath      = p.resolve(options.sourcePath);
@@ -38,8 +36,6 @@ const runServer = function(_options, cb) {
     if (e) {
       return cb(e);
     }
-
-    sync = bs;
 
     cb();
   });

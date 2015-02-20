@@ -4,7 +4,6 @@ const less = require('../lib/less');
 const watch = require('../lib/watch');
 
 const dependencies = [
-  'runTests',
   'watch'
 ]
 
