@@ -10,6 +10,10 @@ idBuilder({
       enabled: true
     },
 
+    compileBabel: {
+      enabled: true
+    },
+
     compileBrowserify: {
       enabled: false
     },
@@ -48,6 +52,10 @@ idBuilder({
 
     runTests: {
       enabled: true
+    },
+
+    watchBabel: {
+      enabled: false
     },
 
     watchBrowserify: {

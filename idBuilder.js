@@ -10,6 +10,10 @@ idBuilder({
       enabled: true
     },
 
+    compileBabel: {
+      enabled: true
+    },
+
     compileBrowserify: {
       enabled: false
     },
@@ -34,10 +38,6 @@ idBuilder({
       enabled: false
     },
 
-    compileSixToFive: {
-      enabled: true
-    },
-
     compileStylus: {
       enabled: false
     },
@@ -51,6 +51,10 @@ idBuilder({
     },
 
     runTests: {
+      enabled: true
+    },
+
+    watchBabel: {
       enabled: true
     },
 
@@ -80,10 +84,6 @@ idBuilder({
 
     watchLivescript: {
       enabled: false
-    },
-
-    watchSixToFive: {
-      enabled: true
     },
 
     watchStylus: {
