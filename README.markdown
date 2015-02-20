@@ -26,7 +26,13 @@ restarts on changes and reloads the browser for you.
       anything.js
   ```
 
-2. Create a file with any name in your project for example `id-builder.js`.
+  so
+
+  ```
+  $ mkdir -p src/client src/server src/tests build;
+  ```
+
+2. Create a file with any name in your project for example `idBuilder.js`.
    ```javascript
    var idBuilder = require("id-builder");
 
@@ -41,7 +47,7 @@ restarts on changes and reloads the browser for you.
 
 3. Run the file.
   ```bash
-  node id-builder.js
+  $ node id-builder.js
 
   ```
 
@@ -52,15 +58,16 @@ Takes an optional options object. By default, all tasks are enabled.
 Default options:
 ```javascript
 idBuilder({
-  // These aren't used at the moment.
-  sourceDirectory: "src",
-  targetDirectory: "build",
-  testsDirectory: "build/tests",
-
   tasks: {
     clean: {
       enabled: true,
       path: "build"
+    },
+
+    compileBabel: {
+      enabled: true,
+      sourcePath: "src",
+      targetPath: "build"
     },
 
     compileBrowserify: {
@@ -94,12 +101,6 @@ idBuilder({
       targetPath: "build"
     },
 
-    compileSixToFive: {
-      enabled: true,
-      sourcePath: "src",
-      targetPath: "build"
-    },
-
     compileStylus: {
       enabled: true,
       sourcePath: "src/client",
@@ -126,6 +127,12 @@ idBuilder({
       enabled: true,
       sourcePath: "build/test",
       reporter: "spec"
+    },
+
+    watchBabel: {
+      enabled: true,
+      sourcePath: "src/client",
+      targetPath: "build/client"
     },
 
     watchBrowserify: {
@@ -176,12 +183,6 @@ idBuilder({
       reporter: "spec"
     },
 
-    watchSixToFive: {
-      enabled: true,
-      sourcePath: "src/client",
-      targetPath: "build/client"
-    },
-
     watchStylus: {
       enabled: true,
       sourcePath: "src/client",
@@ -212,6 +213,9 @@ Copies files that are not compiled to another format.
 
 ### Compile
 These tasks all compile an input language to HTML, JavaScript or CSS.
+
+#### Babel
+Compiles ES6 to ES5.
 
 #### Browserify
 Compiles all Client code into one file. Uses
