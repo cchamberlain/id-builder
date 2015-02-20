@@ -42,7 +42,7 @@ module.exports = {
       targetPath: "build"
     },
 
-    compileSixToFive: {
+    compileBabel: {
       enabled: true,
       sourcePath: "src",
       targetPath: "build"
@@ -125,7 +125,7 @@ module.exports = {
       reporter: "spec"
     },
 
-    watchSixToFive: {
+    watchBabel: {
       enabled: true,
       sourcePath: "src",
       targetPath: "build"

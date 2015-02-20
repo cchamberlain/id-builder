@@ -15,7 +15,7 @@ var jade = require("./jade");
 var less = require("./less");
 var livescript = require("./livescript");
 var logging = require("./logging");
-var sixToFive = require("./sixToFive");
+var babel = require("./babel");
 var stylus = require("./stylus");
 
 var sourceFilePathMatches = function (options, sourceFilePath) {
@@ -31,7 +31,7 @@ var sourceFilePathMatches = function (options, sourceFilePath) {
     return false;
   } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
     return false;
-  } else if (sixToFive.sourceFilePathMatches(globalOptions.tasks.compileSixToFive, sourceFilePath)) {
+  } else if (babel.sourceFilePathMatches(globalOptions.tasks.compileBabel, sourceFilePath)) {
     return false;
   } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     return false;

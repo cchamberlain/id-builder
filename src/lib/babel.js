@@ -3,7 +3,7 @@
 const path = require('path');
 
 const _ = require('lodash')
-const babel = require('6to5');
+const babel = require('babel');
 
 const fileSystem = require('./fileSystem');
 const logging = require('./logging');

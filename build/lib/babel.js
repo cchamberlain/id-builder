@@ -3,7 +3,7 @@
 var path = require("path");
 
 var _ = require("lodash");
-var sixToFive = require("6to5");
+var babel = require("babel");
 
 var fileSystem = require("./fileSystem");
 var logging = require("./logging");
@@ -16,10 +16,10 @@ var sourceFilePathMatches = function (options, sourceFilePath) {
 };
 
 var compileChunk = function (options, chunk, cb) {
-  var sixToFiveOptions = {};
+  var babelOptions = {};
 
   try {
-    var output = sixToFive.transform(chunk, sixToFiveOptions);
+    var output = babel.transform(chunk, babelOptions);
 
     cb(null, output.code);
   } catch (e) {
