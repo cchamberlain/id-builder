@@ -1,15 +1,15 @@
 'use strict';
 
-const chai = require('chai');
-const mkdirp = require('mkdirp');
-const rimraf = require('rimraf');
-const browserify = require('../../../lib/browserify');
-const tests = require('../../../lib/tests');
-const expect = chai.expect;
+import { expect } from 'chai';
+import mkdirp from 'mkdirp';
+import rimraf from 'rimraf';
+
+import browserify from '../../../lib/browserify';
+import { randomString } from '../../../lib/tests';
 
 describe('browserify', function() {
   beforeEach(function(cb) {
-    this.directoryPath = '.tmp/' + tests.randomString();
+    this.directoryPath = '.tmp/' + randomString();
 
     mkdirp(this.directoryPath, cb);
   });

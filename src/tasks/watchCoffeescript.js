@@ -1,9 +1,8 @@
 'use strict';
 
-const coffeescript = require('../lib/coffeescript');
-const watch = require('../lib/watch');
+import coffeescript from '../lib/coffeescript';
 
-const dependencies = [
+export const dependencies = [
   'watch'
 ]
 
@@ -43,7 +42,7 @@ const handleUnlinkDir = function(options, path, stat) {
 const handleError = function(options, e) {
 };
 
-const run = function(options, cb) {
+export const run = function(options, cb) {
   const watcher = watch.getWatcher();
 
   watcher.on('ready', function() {
@@ -54,9 +53,4 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
-};
-
-export default {
-  dependencies: dependencies,
-  run: run
 };

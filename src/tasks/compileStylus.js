@@ -1,8 +1,7 @@
 'use strict';
 
-const stylus = require('../lib/stylus');
+import { compileAllFiles } from '../lib/stylus';
 
-export default {
-  dependencies: [ 'clean' ],
-  run: stylus.compileAllFiles
-};
+export const dependencies = [ 'runTests' ];
+
+export const run = compileAllFiles

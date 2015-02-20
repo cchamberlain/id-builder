@@ -1,9 +1,9 @@
 'use strict';
 
-const tests = require('../lib/tests');
-const watch = require('../lib/watch');
+import { buildFilePathMatches, runTests } from '../lib/tests';
+import { getWatcher } from '../lib/watch';
 
-const dependencies = [
+export const dependencies = [
   'runTests',
   'watch'
 ]
@@ -11,11 +11,11 @@ const dependencies = [
 const handlePath = function(options, path, stat) {
   console.log('handlePath', options, path);
 
-  if (!tests.buildFilePathMatches(options, path)) {
+  if (!buildFilePathMatches(options, path)) {
     return;
   }
 
-  tests.runTests(options, function(e) {
+  runTests(options, function(e) {
     if (e) {
       console.error(e);
     }
@@ -46,8 +46,8 @@ const handleError = function(options, e) {
   console.error(e);
 };
 
-const run = function(options, cb) {
-  const watcher = watch.getWatcher();
+export const run = function(options, cb) {
+  const watcher = getWatcher();
 
   watcher.on('ready', function() {
     watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
@@ -57,9 +57,4 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
-};
-
-export default {
-  dependencies: dependencies,
-  run: run
 };

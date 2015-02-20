@@ -1,8 +1,7 @@
 'use strict';
 
-const coffeescript = require('../lib/coffeescript')
+import { compileAllFiles } from '../lib/fileSystem';
 
-export default {
-  dependencies: [ 'clean' ],
-  run: coffeescript.compileAllFiles
-};
+export const dependencies = [ 'clean' ];
+
+export const run = compileAllFiles

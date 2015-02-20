@@ -1,21 +1,21 @@
 'use strict';
 
-const copy = require('../lib/copy');
-const watch = require('../lib/watch');
+import { sourceFilePathMatches, copyFile } from '../lib/watch';
+import { getWatcher } from '../lib/watch';
 
-const dependencies = [
+export const dependencies = [
   'watch'
 ]
 
 const handlePath = function(options, path, stat) {
-  if (!copy.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
   const targetPath = path
     .replace(options.sourcePath, options.targetPath);
 
-  copy.copyFile(options, path, targetPath, function(e) {
+  copyFile(options, path, targetPath, function(e) {
     if (e) {
       console.error(e);
     }
@@ -42,8 +42,8 @@ const handleUnlinkDir = function(options, path, stat) {
 const handleError = function(options, e) {
 };
 
-const run = function(options, cb) {
-  const watcher = watch.getWatcher();
+export const run = function(options, cb) {
+  const watcher = getWatcher();
 
   watcher.on('ready', function() {
     watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
@@ -53,9 +53,4 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
-};
-
-export default {
-  dependencies: dependencies,
-  run: run
 };

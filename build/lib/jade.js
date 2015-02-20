@@ -1,10 +1,9 @@
 "use strict";
 
-var jade = require("jade");
-var async = require("async");
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+var compileClient = require("jade").compileClient;
+var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "jade";
 var targetExtension = exports.targetExtension = "js";

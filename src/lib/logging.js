@@ -1,6 +1,6 @@
 'use strict';
 
-const moment = require('moment');
+import moment from 'moment';
 
 export const getDate = function(){
   return moment().format();

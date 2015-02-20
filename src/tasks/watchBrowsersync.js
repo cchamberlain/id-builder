@@ -1,12 +1,10 @@
 'use strict';
 
-const browserSync = require('browser-sync');
+import { pathReloads } from '../lib/browserify';
+import { sourceFilePathMatches, compileFile } from '../lib/browsersync';
+import { getWatcher } from '../lib/watch';
 
-const browserify  = require('../lib/browserify');
-const browsersync = require('../lib/browsersync');
-const watch = require('../lib/watch');
-
-const dependencies = [
+export const dependencies = [
   'runBrowsersyncServer',
   'watch'
 ]
@@ -16,11 +14,11 @@ const handlePath = function(options, path, stat) {
     return;
   }
 
-  if (!browsersync.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
-  browsersync.reload(options, path, function(e) {
+  reload(options, path, function(e) {
     if (e) {
       console.error(e);
     }
@@ -47,8 +45,8 @@ const handleUnlinkDir = function(options, path, stat) {
 const handleError = function(options, e) {
 };
 
-const run = function(options, cb) {
-  const watcher = watch.getWatcher();
+export const run = function(options, cb) {
+  const watcher = getWatcher();
 
   watcher.on('ready', function() {
     watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
@@ -58,9 +56,4 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
-};
-
-export default {
-  dependencies: dependencies,
-  run: run
 };

@@ -1,9 +1,8 @@
 'use strict';
 
-const liveScript = require('LiveScript');
+import { compile } from 'LiveScript';
 
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
+import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'ls';
 export const targetExtension = 'js';
@@ -14,7 +13,7 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 
 export const compileChunk = function(options, chunk, cb) {
   try {
-    cb(null, liveScript.compile(chunk, {
+    cb(null, compile(chunk, {
       bare: true
     }));
   } catch (e) {

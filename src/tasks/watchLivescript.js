@@ -1,9 +1,9 @@
 'use strict';
 
-const livescript = require('../lib/livescript');
-const watch = require('../lib/watch');
+import livescript from '../lib/livescript';
+import { getWatcher } from '../lib/watch';
 
-const dependencies = [
+export const dependencies = [
   'watch'
 ]
 
@@ -43,8 +43,8 @@ const handleUnlinkDir = function(options, path, stat) {
 const handleError = function(options, e) {
 };
 
-const run = function(options, cb) {
-  const watcher = watch.getWatcher();
+export const run = function(options, cb) {
+  const watcher = getWatcher();
 
   watcher.on('ready', function() {
     watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
@@ -54,9 +54,4 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
-};
-
-export default {
-  dependencies: dependencies,
-  run: run
 };

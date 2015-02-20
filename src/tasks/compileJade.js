@@ -1,8 +1,7 @@
 'use strict';
 
-const jade = require('../lib/jade');
+import { compileAllFiles } from '../lib/jade';
 
-export default {
-  dependencies: [ 'clean' ],
-  run: jade.compileAllFiles
-};
+export const dependencies = [ 'clean' ];
+
+export const run = compileAllFiles

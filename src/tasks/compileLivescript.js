@@ -1,8 +1,7 @@
 'use strict';
 
-const livescript = require('../lib/livescript');
+import { compileAllFiles } from '../lib/livescript';
 
-export default {
-  dependencies: [ 'clean' ],
-  run: livescript.compileAllFiles
-};
+export const dependencies = [ 'clean' ];
+
+export const run = compileAllFiles

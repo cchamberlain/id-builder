@@ -1,22 +1,22 @@
 'use strict';
 
-const less = require('../lib/less');
-const watch = require('../lib/watch');
+import { sourceFilePathMatches, compileFile } from '../lib/less';
+import { getWatcher } from '../lib/watch';
 
-const dependencies = [
+export const dependencies = [
   'watch'
 ]
 
 const handlePath = function(options, path, stat) {
-  if (!less.sourceFilePathMatches(options, path)) {
+  if (!sourceFilePathMatches(options, path)) {
     return;
   }
 
   const targetPath = path
     .replace(options.sourcePath, options.targetPath)
-    .replace(new RegExp(`^\.${less.sourceExtension}$`), `.${less.targetExtension}`);
+    .replace(new RegExp(`^\.${sourceExtension}$`), `.${targetExtension}`);
 
-  less.compileFile(options, path, targetPath, function(e) {
+  compileFile(options, path, targetPath, function(e) {
     if (e) {
       console.error(e);
     }
@@ -43,8 +43,8 @@ const handleUnlinkDir = function(options, path, stat) {
 const handleError = function(options, e) {
 };
 
-const run = function(options, cb) {
-  const watcher = watch.getWatcher();
+export const run = function(options, cb) {
+  const watcher = getWatcher();
 
   watcher.on('ready', function() {
     watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
@@ -54,9 +54,4 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
-};
-
-export default {
-  dependencies: dependencies,
-  run: run
 };

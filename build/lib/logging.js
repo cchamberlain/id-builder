@@ -1,6 +1,8 @@
 "use strict";
 
-var moment = require("moment");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var moment = _interopRequire(require("moment"));
 
 var getDate = exports.getDate = function () {
   return moment().format();

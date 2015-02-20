@@ -1,9 +1,9 @@
 'use strict';
 
-const _ = require('lodash');
-const chokidar = require('chokidar');
+import _ from 'lodash';
+import chokidar from 'chokidar';
 
-var watcher = null;
+let watcher = null;
 
 export const getWatcher = function() {
   return watcher;

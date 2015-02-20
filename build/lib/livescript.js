@@ -1,9 +1,9 @@
 "use strict";
 
-var liveScript = require("LiveScript");
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+var compile = require("LiveScript").compile;
+var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "ls";
 var targetExtension = exports.targetExtension = "js";
@@ -14,7 +14,7 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
   try {
-    cb(null, liveScript.compile(chunk, {
+    cb(null, compile(chunk, {
       bare: true
     }));
   } catch (e) {

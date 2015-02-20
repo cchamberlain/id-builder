@@ -1,13 +1,13 @@
 'use strict';
 
-const _ = require('lodash');
-const async = require('async');
-const moment = require('moment');
+import _ from 'lodash';
+import { auto } from 'async';
+import moment from 'moment';
 
-const defaultOptions = require('./lib/defaultOptions');
-const logging = require('./lib/logging');
-const parseOptions = require('./lib/parseOptions');
-const tasks = require('./tasks');
+import defaultOptions from './lib/defaultOptions';
+import { disabledTask, startTask, finishTask } from './lib/logging';
+import parseOptions from './lib/parseOptions';
+import * as tasks from './tasks';
 
 const logInfo = function(message) {
   console.log(`${moment().format()} ${message}`);
@@ -22,20 +22,20 @@ const runTaskWithOptions = function(options, task, name) {
     }
 
     if (!taskOptions.enabled) {
-      logging.disabledTask(name);
+      disabledTask(name);
       return cb();
     }
 
     taskOptions.taskName = name;
 
-    logging.startTask(name);
+    startTask(name);
 
     task.run(taskOptions, function(e) {
       if (e) {
         return cb(e);
       }
 
-      logging.finishTask(name);
+      finishTask(name);
 
       cb();
     });
@@ -48,10 +48,12 @@ export default function(inputOptions, cb) {
   global.options = parseOptions(defaultOptions, inputOptions);
 
   const autoTasks = _.reduce(tasks, function(m, v, k) {
+    console.log(k, v);
+
     m[k] = v.dependencies.concat(runTaskWithOptions(global.options, v, k));
 
     return m;
   }, {});
 
-  async.auto(autoTasks, cb);
+  auto(autoTasks, cb);
 };

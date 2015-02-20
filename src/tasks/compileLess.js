@@ -1,8 +1,7 @@
 'use strict';
 
-const less = require('../lib/less');
+import { compileAllFiles } from '../lib/less';
 
-export default {
-  dependencies: [ 'clean' ],
-  run: less.compileAllFiles
-};
+export const dependencies = [ 'clean' ];
+
+export const run = compileAllFiles

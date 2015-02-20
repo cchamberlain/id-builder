@@ -1,10 +1,8 @@
 'use strict';
 
-const jade = require('jade');
-const async = require('async');
+import { compileClient } from 'jade';
 
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
+import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'jade';
 export const targetExtension = 'js';

@@ -1,13 +1,10 @@
 'use strict';
 
-const watch = require('../lib/watch');
+import { start } from '../lib/watch';
 
-const run = function(options, cb) {
-  watch.start(options);
+export const dependencies = [ 'runTests' ];
+
+export const run = function(options, cb) {
+  start(options);
   cb();
-};
-
-export default {
-  dependencies: [ 'runTests' ],
-  run: run
 };

@@ -1,8 +1,7 @@
 'use strict';
 
-const copy = require('../lib/copy');
+import { copyAllFiles } from '../lib/copy';
 
-export default {
-  dependencies: [ 'clean' ],
-  run: copy.copyAllFiles
-};
+export const dependencies = [ 'clean' ];
+
+export const run = copyAllFiles

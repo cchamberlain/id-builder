@@ -1,15 +1,11 @@
 "use strict";
 
-var fs = require("fs");
-var path = require("path");
+var exists = require("fs").exists;
+var resolve = require("path").resolve;
+var each = require("async").each;
+var Monitor = require("forever-monitor").Monitor;
+var taskInfo = require("./logging").taskInfo;
 
-var _ = require("lodash");
-var async = require("async");
-var foreverMonitor = require("forever-monitor");
-var preludeLs = require("prelude-ls");
-var logging = require("./logging");
-var p = path;
-var map = preludeLs.map;
 
 var monitors = {};
 
@@ -44,15 +40,15 @@ var restartPath = exports.restartPath = function (path, cb) {
 };
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath, cb) {
-  return p.resolve(sourceFilePath).match(RegExp("^" + p.resolve(options.sourcePath)));
+  return resolve(sourceFilePath).match(RegExp("^" + resolve(options.sourcePath)));
 };
 
 var startServer = exports.startServer = function (options, filePath, cb) {
-  var absolutePath = path.resolve(filePath);
+  var absolutePath = resolve(filePath);
 
-  fs.exists(absolutePath, function (exists) {
-    if (!exists) {
-      logging.taskInfo(options.taskName, "skipping " + absolutePath + " (Does not exist).");
+  exists(absolutePath, function (result) {
+    if (!result) {
+      taskInfo(options.taskName, "skipping " + absolutePath + " (Does not exist).");
       return cb();
     }
 
@@ -67,11 +63,11 @@ var startServer = exports.startServer = function (options, filePath, cb) {
 };
 
 var stopServer = exports.stopServer = function (options, filePath, cb) {
-  var absolutePath = path.resolve(filePath);
+  var absolutePath = resolve(filePath);
 
-  fs.exists(absolutePath, function (exists) {
-    if (!exists) {
-      logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
+  exists(absolutePath, function (result) {
+    if (!result) {
+      taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
       return cb();
     }
 
@@ -80,18 +76,18 @@ var stopServer = exports.stopServer = function (options, filePath, cb) {
     if (monitor) {
       removePath(absolutePath, cb);
     } else {
-      logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Monitor does not exist).");
+      taskInfo(options.taskName, "skipping `" + absolutePath + "` (Monitor does not exist).");
       cb();
     }
   });
 };
 
 var restartServer = exports.restartServer = function (options, filePath, cb) {
-  var absolutePath = path.resolve(filePath);
+  var absolutePath = resolve(filePath);
 
-  fs.exists(absolutePath, function (exists) {
-    if (!exists) {
-      logging.taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
+  exists(absolutePath, function (result) {
+    if (!result) {
+      taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
       return cb();
     }
 
@@ -106,13 +102,13 @@ var restartServer = exports.restartServer = function (options, filePath, cb) {
 };
 
 var runServers = exports.runServers = function (options, cb) {
-  async.each(options.paths, function (v, cb) {
+  each(options.paths, function (v, cb) {
     startServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };
 
 var restartServers = exports.restartServers = function (options, cb) {
-  async.each(options.paths, function (v, cb) {
+  each(options.paths, function (v, cb) {
     restartServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };

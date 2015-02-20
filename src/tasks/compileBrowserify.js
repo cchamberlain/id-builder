@@ -1,9 +1,8 @@
 'use strict';
 
-const fileSystem = require('../lib/fileSystem');
-const browserify  = require('../lib/browserify');
+import { compileAllFiles } from '../lib/browserify';
 
-const dependencies = [
+export const dependencies = [
   'clean',
   'compileCoffeescript',
   'compileJade',
@@ -11,9 +10,4 @@ const dependencies = [
   'compileBabel'
 ];
 
-const run = browserify.compileAllFiles;
-
-export default {
-  dependencies: dependencies,
-  run: run
-};
+export const run = compileAllFiles;

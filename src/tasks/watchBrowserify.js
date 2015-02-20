@@ -1,9 +1,10 @@
 'use strict';
 
-const browserify = require('../lib/browserify');
-const watch = require('../lib/watch');
+import browserify from '../lib/browserify';
 
-const dependencies = [
+export const dependencies = [
+  // TODO: consider removing this dependency because browserify has it's own
+  // watcher.
   'watch'
 ];
 
@@ -40,11 +41,6 @@ const handleError = function(options, e) {
   console.error(e);
 };
 
-const run = function(options, cb) {
+export const run = function(options, cb) {
   browserify.watch(options, cb);
-};
-
-export default {
-  dependencies: dependencies,
-  run: run
 };

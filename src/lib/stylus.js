@@ -1,9 +1,7 @@
 'use strict';
 
-const stylus = require('stylus');
-const async = require('async');
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
+import { render } from 'stylus';
+import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'styl';
 export const targetExtension = 'css';
@@ -13,7 +11,7 @@ export const sourceFilePathMatches = function(options, sourceFilePath){
 };
 
 export const compileChunk = function(options, chunk, cb){
-  stylus.render(chunk, cb);
+  render(chunk, cb);
 };
 
 export const compileFile = fileSystem.compileFile(compileChunk);

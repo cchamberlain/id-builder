@@ -5,8 +5,6 @@ var os = require("os");
 var path = require("path");
 
 var child_process = require("child_process");
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
 
 var pathToMocha = path.resolve(__dirname + "/../../node_modules/mocha/bin/_mocha");
 

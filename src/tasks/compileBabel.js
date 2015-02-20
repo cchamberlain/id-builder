@@ -1,8 +1,7 @@
 'use strict';
 
-const babel = require('../lib/babel')
+import { compileAllFiles } from '../lib/babel';
 
-export default {
-  dependencies: [ 'clean' ],
-  run: babel.compileAllFiles
-};
+export const dependencies = [ 'clean' ];
+
+export const run = compileAllFiles

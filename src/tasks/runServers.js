@@ -1,19 +1,17 @@
 'use strict';
 
 // TODO: before program exit clean up children.
+import { runServers } from '../lib/servers';
 
-const servers = require('../lib/servers');
+export const dependencies = [
+  'compileBrowserify',
+  'compileCoffeescript',
+  'compileCopy',
+  'compileJade',
+  'compileLess',
+  'compileLivescript',
+  'compileBabel',
+  'compileStylus'
+];
 
-export default {
-  dependencies: [
-    'compileBrowserify',
-    'compileCoffeescript',
-    'compileCopy',
-    'compileJade',
-    'compileLess',
-    'compileLivescript',
-    'compileBabel',
-    'compileStylus'
-  ],
-  run: servers.runServers
-};
+export const run = runServers;

@@ -1,10 +1,8 @@
 'use strict';
 
-const less = require('less');
-const async = require('async');
+import { render } from 'less';
 
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
+import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'less';
 export const targetExtension = 'css';

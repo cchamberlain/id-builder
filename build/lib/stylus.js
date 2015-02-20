@@ -1,9 +1,10 @@
 "use strict";
 
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
 var stylus = require("stylus");
 var async = require("async");
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "styl";
 var targetExtension = exports.targetExtension = "css";

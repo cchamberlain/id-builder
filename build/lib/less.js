@@ -1,10 +1,9 @@
 "use strict";
 
-var less = require("less");
-var async = require("async");
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var fileSystem = require("./fileSystem");
-var logging = require("./logging");
+var render = require("less").render;
+var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "less";
 var targetExtension = exports.targetExtension = "css";

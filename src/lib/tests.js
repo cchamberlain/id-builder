@@ -1,14 +1,10 @@
 'use strict';
 
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
+import { exists } from 'fs';
+import { resolve } from 'path';
+import { spawn } from 'child_process';
 
-const child_process = require('child_process');
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
-
-const pathToMocha = path.resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
+const pathToMocha = resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
 export const randomString = function() {
   return Math.random().toString(36).slice(7);
@@ -37,13 +33,13 @@ export const buildFilePathMatches = function(options, buildFilePath) {
 };
 
 export const runTests = function(options, cb) {
-  fs.exists(options.sourcePath, function(exists) {
+  exists(options.sourcePath, function(exists) {
     if (!exists) {
       logging.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
       return cb();
     }
 
-    const childProcess = child_process.spawn('iojs', [
+    const childProcess = spawn('iojs', [
       pathToMocha,
       '--recursive',
       '--colors',
