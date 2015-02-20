@@ -1,14 +1,14 @@
 "use strict";
 
-var browserSync = require("browser-sync");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var p = require("path");
+var resolve = require("path").resolve;
+var browserSync = _interopRequire(require("browser-sync"));
 
-var logging = require("./logging");
-
+var taskInfo = require("./logging").taskInfo;
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
-  var resolvedSourceFilePath = p.resolve(sourceFilePath);
-  var resolvedSourcePath = p.resolve(options.sourcePath);
+  var resolvedSourceFilePath = resolve(sourceFilePath);
+  var resolvedSourcePath = resolve(options.sourcePath);
 
   return resolvedSourceFilePath.indexOf(resolvedSourcePath) === 0;
 };
@@ -16,7 +16,7 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 var reload = exports.reload = function (options, updatedPath, cb) {
   browserSync.reload(updatedPath);
 
-  logging.taskInfo(options.taskName, "Reloaded `#{path}`");
+  taskInfo(options.taskName, "Reloaded `#{path}`");
 
   cb();
 };

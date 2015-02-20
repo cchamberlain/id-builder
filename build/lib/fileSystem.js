@@ -1,17 +1,21 @@
 "use strict";
 
-var fs = require("fs");
-var path = require("path");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var _ = require("lodash");
-var async = require("async");
-var mkdirp = require("mkdirp");
-var preludeLs = require("prelude-ls");
-var lsr = require("lsr");
-var logging = require("./logging");
-var map = preludeLs.map,
-    reject = preludeLs.reject,
-    filter = preludeLs.filter;
+var _fs = require("fs");
+
+var readFile = _fs.readFile;
+var writeFile = _fs.writeFile;
+var dirname = require("path").dirname;
+var _ = _interopRequire(require("lodash"));
+
+var lsr = _interopRequire(require("lsr"));
+
+var mkdirp = _interopRequire(require("mkdirp"));
+
+var each = require("async").each;
+var taskInfo = require("./logging").taskInfo;
+
 
 var getFiles = function (path, cb) {
   lsr(path, function (e, nodes) {
@@ -41,22 +45,8 @@ var getTargetPath = function (sourceDirectory, targetDirectory, sourceExtension,
   return sourcePath.replace(sourceDirectory, targetDirectory).replace(RegExp("\\." + sourceExtension + "$"), "." + targetExtension);
 };
 
-var readFile = function (path, cb) {
-  fs.readFile(path, function (e, chunk) {
-    if (e) {
-      return cb(e);
-    }
-
-    cb(null, chunk.toString());
-  });
-};
-
-var writeFile = function (path, string, cb) {
-  fs.writeFile(path, string, cb);
-};
-
 var ensureFileDirectory = exports.ensureFileDirectory = function (targetFilePath, cb) {
-  mkdirp(path.dirname(targetFilePath), cb);
+  mkdirp(dirname(targetFilePath), cb);
 };
 
 var compileFile = exports.compileFile = function (compileChunk) {
@@ -66,7 +56,7 @@ var compileFile = exports.compileFile = function (compileChunk) {
         return cb(e);
       }
 
-      compileChunk(options, fileContent, function (e, compiledChunk) {
+      compileChunk(options, fileContent.toString(), function (e, compiledChunk) {
         if (e) {
           return cb(e);
         }
@@ -81,7 +71,7 @@ var compileFile = exports.compileFile = function (compileChunk) {
               return cb(e);
             }
 
-            logging.taskInfo(options.taskName, "" + sourceFilePath + " => " + targetFilePath);
+            taskInfo(options.taskName, "" + sourceFilePath + " => " + targetFilePath);
 
             cb(null);
           });
@@ -110,7 +100,7 @@ var compileAllFiles = exports.compileAllFiles = function (sourceFilePathMatches,
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
       };
 
-      async.each(paths, iteratePath, cb);
+      each(paths, iteratePath, cb);
     });
   };
 };

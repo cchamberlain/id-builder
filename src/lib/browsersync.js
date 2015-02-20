@@ -1,14 +1,14 @@
 'use strict';
 
-const browserSync = require('browser-sync');
+import { resolve } from 'path';
 
-const p = require('path');
+import browserSync from 'browser-sync';
 
-const logging = require('./logging');
+import { taskInfo } from './logging';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  const resolvedSourceFilePath = p.resolve(sourceFilePath);
-  const resolvedSourcePath      = p.resolve(options.sourcePath);
+  const resolvedSourceFilePath = resolve(sourceFilePath);
+  const resolvedSourcePath = resolve(options.sourcePath);
 
   return (resolvedSourceFilePath.indexOf(resolvedSourcePath)) === 0;
 };
@@ -16,7 +16,7 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 export const reload = function(options, updatedPath, cb) {
   browserSync.reload(updatedPath);
 
-  logging.taskInfo(options.taskName, 'Reloaded `#{path}`');
+  taskInfo(options.taskName, 'Reloaded `#{path}`');
 
   cb();
 };

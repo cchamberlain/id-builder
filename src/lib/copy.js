@@ -1,22 +1,20 @@
 'use strict';
 
-const fs = require('fs');
+import { readFile, writeFile } from 'fs';
 
-const _ = require('lodash');
-const mkdirp = require('mkdirp');
-const async = require('async');
-const lsr = require('lsr');
-const prelude = require('prelude-ls');
+import _ from 'lodash';
+import { each } from 'async';
+import lsr from 'lsr';
 
-const browserify = require('./browserify');
-const coffeescript = require('./coffeescript');
-const fileSystem = require('./fileSystem');
-const jade = require('./jade');
-const less = require('./less');
-const livescript = require('./livescript');
-const logging = require('./logging');
-const babel = require('./babel');
-const stylus = require('./stylus');
+import * as babel from './babel';
+import * as browserify from './browserify';
+import * as coffeescript from './coffeescript';
+import * as fileSystem from './fileSystem';
+import * as jade from './jade';
+import * as less from './less';
+import * as livescript from './livescript';
+import * as logging from './logging';
+import * as stylus from './stylus';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
   const globalOptions = global.options;
@@ -43,7 +41,7 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
-  fs.readFile(sourceFilePath, function(e, readChunk){
+  readFile(sourceFilePath, function(e, readChunk){
     if (e) {
       return cb(e);
     }
@@ -53,7 +51,7 @@ export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
         return cb(e);
       }
 
-      fs.writeFile(targetFilePath, readChunk, function(e){
+      writeFile(targetFilePath, readChunk, function(e){
         if (e) {
           return cb(e);
         }
@@ -87,7 +85,7 @@ export const copyAllFiles = function(options, cb) {
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
 
-    async.each(paths, iteratePath, function(e){
+    each(paths, iteratePath, function(e){
       if (e) {
         return cb(e);
       }

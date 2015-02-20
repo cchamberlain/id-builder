@@ -1,9 +1,8 @@
 'use strict';
 
-const coffeeScript = require('coffee-script');
+import { compile } from 'coffee-script';
 
-const fileSystem = require('./fileSystem');
-const logging = require('./logging');
+import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'coffee';
 export const targetExtension = 'js';
@@ -14,7 +13,7 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 
 export const compileChunk = function(options, chunk, cb) {
   try {
-    cb(null, coffeeScript.compile(chunk, {
+    cb(null, compile(chunk, {
       bare: true
     }));
   } catch (e) {

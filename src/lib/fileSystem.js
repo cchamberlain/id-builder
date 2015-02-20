@@ -1,15 +1,14 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+import { readFile, writeFile } from 'fs';
+import { dirname } from 'path';
 
-const _ = require('lodash');
-const async = require('async');
-const mkdirp = require('mkdirp');
-const preludeLs = require('prelude-ls');
-const lsr = require('lsr');
-const logging = require('./logging');
-const map = preludeLs.map, reject = preludeLs.reject, filter = preludeLs.filter;
+import _ from 'lodash';
+import lsr from 'lsr';
+import mkdirp from 'mkdirp';
+import { each } from 'async';
+
+import { taskInfo } from './logging';
 
 const getFiles = function(path, cb) {
   lsr(path, function(e, nodes) {
@@ -41,22 +40,8 @@ const getTargetPath = function(sourceDirectory, targetDirectory, sourceExtension
     .replace(RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
-const readFile = function(path, cb) {
-  fs.readFile(path, function(e, chunk) {
-    if (e) {
-      return cb(e);
-    }
-
-    cb(null, chunk.toString());
-  });
-};
-
-const writeFile = function(path, string, cb) {
-  fs.writeFile(path, string, cb);
-};
-
 export const ensureFileDirectory = function(targetFilePath, cb) {
-  mkdirp(path.dirname(targetFilePath), cb);
+  mkdirp(dirname(targetFilePath), cb);
 };
 
 export const compileFile = function(compileChunk) {
@@ -66,7 +51,7 @@ export const compileFile = function(compileChunk) {
         return cb(e);
       }
 
-      compileChunk(options, fileContent, function(e, compiledChunk) {
+      compileChunk(options, fileContent.toString(), function(e, compiledChunk) {
         if (e) {
           return cb(e);
         }
@@ -81,7 +66,7 @@ export const compileFile = function(compileChunk) {
               return cb(e);
             }
 
-            logging.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
+            taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
 
             cb(null);
           });
@@ -113,7 +98,7 @@ export const compileAllFiles = function(sourceFilePathMatches, compileFile, sour
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
       };
 
-      async.each(paths, iteratePath, cb);
+      each(paths, iteratePath, cb);
     });
   };
 };

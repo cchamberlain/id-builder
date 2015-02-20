@@ -1,25 +1,29 @@
 "use strict";
 
-var fs = require("fs");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var _ = require("lodash");
-var async = require("async");
-var rimraf = require("rimraf");
+var readdir = require("fs").readdir;
+var _ = _interopRequire(require("lodash"));
 
-var logging = require("./logging");
+var rimraf = _interopRequire(require("rimraf"));
 
+var each = require("async").each;
+var taskInfo = require("./logging").taskInfo;
 var directory = exports.directory = function (options, cb) {
-  fs.readdir(options.path, function (e, nodes) {
+  readdir(options.path, function (e, nodes) {
     if (e) {
       return cb(e);
     }
 
     var paths = _(nodes).map(function (v) {
-      logging.taskInfo(options.taskName, v);
-      return "" + options.path + "/" + v;
+      var path = "" + options.path + "/" + v;
+
+      taskInfo(options.taskName, path);
+
+      return path;
     }).value();
 
-    async.each(paths, rimraf, cb);
+    each(paths, rimraf, cb);
   });
 };
 Object.defineProperty(exports, "__esModule", {

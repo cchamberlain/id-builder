@@ -1,22 +1,35 @@
 "use strict";
 
-var fs = require("fs");
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var _ = require("lodash");
-var mkdirp = require("mkdirp");
-var async = require("async");
-var lsr = require("lsr");
-var prelude = require("prelude-ls");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var browserify = require("./browserify");
-var coffeescript = require("./coffeescript");
-var fileSystem = require("./fileSystem");
-var jade = require("./jade");
-var less = require("./less");
-var livescript = require("./livescript");
-var logging = require("./logging");
-var babel = require("./babel");
-var stylus = require("./stylus");
+var _fs = require("fs");
+
+var readFile = _fs.readFile;
+var writeFile = _fs.writeFile;
+var _ = _interopRequire(require("lodash"));
+
+var each = require("async").each;
+var lsr = _interopRequire(require("lsr"));
+
+var babel = _interopRequireWildcard(require("./babel"));
+
+var browserify = _interopRequireWildcard(require("./browserify"));
+
+var coffeescript = _interopRequireWildcard(require("./coffeescript"));
+
+var fileSystem = _interopRequireWildcard(require("./fileSystem"));
+
+var jade = _interopRequireWildcard(require("./jade"));
+
+var less = _interopRequireWildcard(require("./less"));
+
+var livescript = _interopRequireWildcard(require("./livescript"));
+
+var logging = _interopRequireWildcard(require("./logging"));
+
+var stylus = _interopRequireWildcard(require("./stylus"));
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
   var globalOptions = global.options;
@@ -43,7 +56,7 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 };
 
 var copyFile = exports.copyFile = function (options, sourceFilePath, targetFilePath, cb) {
-  fs.readFile(sourceFilePath, function (e, readChunk) {
+  readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
     }
@@ -53,7 +66,7 @@ var copyFile = exports.copyFile = function (options, sourceFilePath, targetFileP
         return cb(e);
       }
 
-      fs.writeFile(targetFilePath, readChunk, function (e) {
+      writeFile(targetFilePath, readChunk, function (e) {
         if (e) {
           return cb(e);
         }
@@ -84,7 +97,7 @@ var copyAllFiles = exports.copyAllFiles = function (options, cb) {
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
 
-    async.each(paths, iteratePath, function (e) {
+    each(paths, iteratePath, function (e) {
       if (e) {
         return cb(e);
       }
