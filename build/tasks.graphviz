@@ -1,0 +1,99 @@
+digraph tasks {
+  clean;
+
+  clean -> compileBabel;
+  compileBabel;
+
+  compileBabel -> compileBrowserify;
+  compileCoffeescript -> compileBrowserify;
+  compileCopy -> compileBrowserify;
+  compileJade -> compileBrowserify;
+  compileLess -> compileBrowserify;
+  compileLivescript -> compileBrowserify;
+  compileStylus -> compileBrowserify;
+  compileBrowserify;
+
+  clean -> compileCoffeescript;
+  compileCoffeescript;
+
+  clean -> compileCopy;
+  compileCopy;
+
+  clean -> compileJade;
+  compileJade;
+
+  clean -> compileLess;
+  compileLess;
+
+  clean -> compileLivescript;
+  compileLivescript;
+
+  clean -> compileStylus;
+  compileStylus;
+
+  compileBabel -> runBrowsersyncServer;
+  compileBrowserify -> runBrowsersyncServer;
+  compileCoffeescript -> runBrowsersyncServer;
+  compileCopy -> runBrowsersyncServer;
+  compileJade -> runBrowsersyncServer;
+  compileLess -> runBrowsersyncServer;
+  compileLivescript -> runBrowsersyncServer;
+  compileStylus -> runBrowsersyncServer;
+  runBrowsersyncServer;
+
+  compileBabel -> runServers;
+  compileBrowserify -> runServers;
+  compileCoffeescript -> runServers;
+  compileCopy -> runServers;
+  compileJade -> runServers;
+  compileLess -> runServers;
+  compileLivescript -> runServers;
+  compileStylus -> runServers;
+  runServers;
+
+  compileBabel -> runTests;
+  compileBrowserify -> runTests;
+  compileCoffeescript -> runTests;
+  compileCopy -> runTests;
+  compileJade -> runTests;
+  compileLess -> runTests;
+  compileLivescript -> runTests;
+  compileStylus -> runTests;
+  runTests;
+
+  runTests -> watch;
+  watch;
+
+  watch -> watchBabel;
+  watchBabel;
+
+  runTests -> watchBrowserify;
+  watchBrowserify;
+
+  watch -> watchBrowsersync;
+  watchBrowsersync;
+
+  watch -> watchCoffeescript;
+  watchCoffeescript;
+
+  watch -> watchCopy;
+  watchCopy;
+
+  watch -> watchJade;
+  watchJade;
+
+  watch -> watchLess;
+  watchLess;
+
+  watch -> watchLivescript;
+  watchLivescript;
+
+  watch -> watchServers;
+  watchServers;
+
+  watch -> watchStylus;
+  watchStylus;
+
+  watch -> watchTests;
+  watchTests;
+}

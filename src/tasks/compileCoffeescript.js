@@ -1,6 +1,6 @@
 'use strict';
 
-import { compileAllFiles } from '../lib/fileSystem';
+import { compileAllFiles } from '../lib/coffeescript';
 
 export const dependencies = [ 'clean' ];
 

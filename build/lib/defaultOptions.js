@@ -32,8 +32,9 @@ module.exports = {
 
     compileLess: {
       enabled: true,
-      sourcePath: "src/client",
-      targetPath: "build/client"
+      sourceDirectory: "src/client/styles",
+      sourcePath: "src/client/styles/app.less",
+      targetPath: "build/client/styles/app.css"
     },
 
     compileLivescript: {
@@ -102,8 +103,9 @@ module.exports = {
 
     watchLess: {
       enabled: true,
-      sourcePath: "src/client",
-      targetPath: "build/client"
+      sourceDirectory: "src/client/styles",
+      sourcePath: "src/client/styles/app.less",
+      targetPath: "build/client/styles/app.css"
     },
 
     watchLivescript: {

@@ -13,21 +13,23 @@ var getWatcher = exports.getWatcher = function () {
 };
 
 var start = exports.start = function (options) {
+  // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
     return;
   }
 
+  // If the watcher instance already exists, return it.
   if (watcher) {
     return watcher;
   }
 
-  watcher = chokidar.watch(options.paths[0], {
+  // Start the watcher with the first path.
+  watcher = chokidar.watch(options.paths, {
     ignored: /[\/\/]\./,
     persistent: true,
-    ignoreInitial: true
+    ignoreInitial: true,
+    usePolling: true
   });
-
-  _(options.paths).each(watcher.add);
 
   return watcher;
 };

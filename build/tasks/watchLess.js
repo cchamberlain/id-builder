@@ -2,8 +2,10 @@
 
 var _libLess = require("../lib/less");
 
-var sourceFilePathMatches = _libLess.sourceFilePathMatches;
 var compileFile = _libLess.compileFile;
+var sourceExtension = _libLess.sourceExtension;
+var sourceFilePathMatches = _libLess.sourceFilePathMatches;
+var targetExtension = _libLess.targetExtension;
 var getWatcher = require("../lib/watch").getWatcher;
 var dependencies = exports.dependencies = ["watch"];
 
@@ -12,9 +14,7 @@ var handlePath = function (options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + sourceExtension + "$"), "." + targetExtension);
-
-  compileFile(options, path, targetPath, function (e) {
+  compileFile(options, options.sourcePath, options.targetPath, function (e) {
     if (e) {
       console.error(e);
     }

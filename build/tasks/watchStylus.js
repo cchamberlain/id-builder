@@ -1,8 +1,8 @@
 "use strict";
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var stylus = _interopRequire(require("../lib/stylus"));
+var stylus = _interopRequireWildcard(require("../lib/stylus"));
 
 var getWatcher = require("../lib/watch").getWatcher;
 var dependencies = exports.dependencies = ["watch"];

@@ -4,13 +4,13 @@
 import { runServers } from '../lib/servers';
 
 export const dependencies = [
-  'compileBrowserify',
+  'compileBabel',
+  //'compileBrowserify',
   'compileCoffeescript',
   'compileCopy',
   'compileJade',
   'compileLess',
   'compileLivescript',
-  'compileBabel',
   'compileStylus'
 ];
 

@@ -53,7 +53,7 @@ var watchTests = _interopRequireWildcard(require("./watchTests"));
 module.exports = {
   clean: clean,
   compileBabel: compileBabel,
-  compileBrowserify: compileBrowserify,
+  //compileBrowserify: compileBrowserify,
   compileCoffeescript: compileCoffeescript,
   compileCopy: compileCopy,
   compileJade: compileJade,

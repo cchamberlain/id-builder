@@ -4,7 +4,7 @@ import { runTests } from '../lib/tests';
 
 export const dependencies = [
   'compileBabel',
-  'compileBrowserify',
+  //'compileBrowserify',
   'compileCoffeescript',
   'compileCopy',
   'compileJade',

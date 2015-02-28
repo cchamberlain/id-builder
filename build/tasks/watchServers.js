@@ -1,8 +1,8 @@
 "use strict";
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var servers = _interopRequire(require("../lib/servers"));
+var servers = _interopRequireWildcard(require("../lib/servers"));
 
 var getWatcher = require("../lib/watch").getWatcher;
 var dependencies = exports.dependencies = ["watch"];

@@ -1,22 +1,20 @@
 "use strict";
 
-var _libBabel = require("../lib/babel");
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var sourceFilePathMatches = _libBabel.sourceFilePathMatches;
-var sourceExtension = _libBabel.sourceExtension;
-var targetExtension = _libBabel.targetExtension;
-var compileFile = _libBabel.compileFile;
+var babel = _interopRequireWildcard(require("../lib/babel"));
+
 var getWatcher = require("../lib/watch").getWatcher;
 var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
-  if (!sourceFilePathMatches(options, path)) {
+  if (!babel.sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + sourceExtension + "$"), "." + targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp("^." + babel.sourceExtension + "$"), "." + babel.targetExtension);
 
-  compileFile(options, path, targetPath, function (e) {
+  babel.compileFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }

@@ -15,7 +15,7 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 
 export const compileChunk = function(options, chunk, cb) {
   try {
-    cb(null, jade.compileClient(chunk, {
+    cb(null, compileClient(chunk, {
       compileDebug: false,
       filename: options.sourceFilePath
     }))

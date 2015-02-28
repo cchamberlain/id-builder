@@ -1,7 +1,6 @@
 'use strict';
 
-import { pathReloads } from '../lib/browserify';
-import { sourceFilePathMatches, compileFile } from '../lib/browsersync';
+import { sourceFilePathMatches, reload } from '../lib/browsersync';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [
@@ -10,8 +9,11 @@ export const dependencies = [
 ];
 
 const handlePath = function(options, path, stat) {
-  if (path.match(/\.js$/) && !browserify.pathReloads(options, path)) {
-    return;
+  // Only reload if it's the bundle when the file is a JavaScript file.
+  if (path.match(/\.js$/)) {
+    if (global.options.tasks.watchBrowserify.targetPath !== path) {
+      return;
+    }
   }
 
   if (!sourceFilePathMatches(options, path)) {

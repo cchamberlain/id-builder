@@ -1,6 +1,6 @@
 'use strict';
 
-import servers  from '../lib/servers';
+import * as servers  from '../lib/servers';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [

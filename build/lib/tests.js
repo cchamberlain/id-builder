@@ -3,6 +3,7 @@
 var exists = require("fs").exists;
 var resolve = require("path").resolve;
 var spawn = require("child_process").spawn;
+var taskInfo = require("./logging").taskInfo;
 
 
 var pathToMocha = resolve(__dirname + "/../../node_modules/mocha/bin/_mocha");
@@ -28,7 +29,7 @@ var buildFilePathMatches = exports.buildFilePathMatches = function (options, bui
 var runTests = exports.runTests = function (options, cb) {
   exists(options.sourcePath, function (exists) {
     if (!exists) {
-      logging.taskInfo(options.taskName, "Skipping: Directory `" + options.sourcePath + "` not found.");
+      taskInfo(options.taskName, "Skipping: Directory `" + options.sourcePath + "` not found.");
       return cb();
     }
 

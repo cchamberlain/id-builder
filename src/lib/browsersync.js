@@ -4,19 +4,22 @@ import { resolve } from 'path';
 
 import browserSync from 'browser-sync';
 
+import * as copy from './copy';
 import { taskInfo } from './logging';
 
-export const sourceFilePathMatches = function(options, sourceFilePath) {
-  const resolvedSourceFilePath = resolve(sourceFilePath);
-  const resolvedSourcePath = resolve(options.sourcePath);
+//export const sourceFilePathMatches = function(options, sourceFilePath) {
+//  const resolvedSourceFilePath = resolve(sourceFilePath);
+//  const resolvedSourcePath = resolve(options.sourcePath);
+//
+//  return (resolvedSourceFilePath.indexOf(resolvedSourcePath)) === 0;
+//};
 
-  return (resolvedSourceFilePath.indexOf(resolvedSourcePath)) === 0;
-};
+export const sourceFilePathMatches = copy.sourceFilePathMatches;
 
-export const reload = function(options, updatedPath, cb) {
-  browserSync.reload(updatedPath);
+export const reload = function(options, path, cb) {
+  browserSync.reload(path);
 
-  taskInfo(options.taskName, 'Reloaded `#{path}`');
+  taskInfo(options.taskName, `Reloaded \`${path}\``);
 
   cb();
 };

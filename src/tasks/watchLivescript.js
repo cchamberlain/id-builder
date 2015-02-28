@@ -1,6 +1,6 @@
 'use strict';
 
-import livescript from '../lib/livescript';
+import * as livescript from '../lib/livescript';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [

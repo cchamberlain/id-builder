@@ -1,16 +1,18 @@
 "use strict";
 
-var pathReloads = require("../lib/browserify").pathReloads;
 var _libBrowsersync = require("../lib/browsersync");
 
 var sourceFilePathMatches = _libBrowsersync.sourceFilePathMatches;
-var compileFile = _libBrowsersync.compileFile;
+var reload = _libBrowsersync.reload;
 var getWatcher = require("../lib/watch").getWatcher;
 var dependencies = exports.dependencies = ["runBrowsersyncServer", "watch"];
 
 var handlePath = function (options, path, stat) {
-  if (path.match(/\.js$/) && !browserify.pathReloads(options, path)) {
-    return;
+  // Only reload if it's the bundle when the file is a JavaScript file.
+  if (path.match(/\.js$/)) {
+    if (global.options.tasks.watchBrowserify.targetPath !== path) {
+      return;
+    }
   }
 
   if (!sourceFilePathMatches(options, path)) {

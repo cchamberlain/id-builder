@@ -1,9 +1,10 @@
 "use strict";
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var coffeescript = _interopRequire(require("../lib/coffeescript"));
+var coffeescript = _interopRequireWildcard(require("../lib/coffeescript"));
 
+var getWatcher = require("../lib/watch").getWatcher;
 var dependencies = exports.dependencies = ["watch"];
 
 var handlePath = function (options, path, stat) {
@@ -37,7 +38,7 @@ var handleUnlinkDir = function (options, path, stat) {};
 var handleError = function (options, e) {};
 
 var run = exports.run = function (options, cb) {
-  var watcher = watch.getWatcher();
+  var watcher = getWatcher();
 
   watcher.on("ready", function () {
     watcher.on("add", function (path, stat) {

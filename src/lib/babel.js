@@ -8,7 +8,7 @@ export const sourceExtension = 'js';
 export const targetExtension = 'js';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  return sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
+  return !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
 };
 
 export const compileChunk = function(options, chunk, cb) {

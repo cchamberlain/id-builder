@@ -3,7 +3,6 @@
 import { compileAllFiles } from '../lib/browserify';
 
 export const dependencies = [
-  'clean',
   'compileBabel',
   'compileCoffeescript',
   'compileCopy',

@@ -1,6 +1,6 @@
 "use strict";
 
-var compileAllFiles = require("../lib/fileSystem").compileAllFiles;
+var compileAllFiles = require("../lib/coffeescript").compileAllFiles;
 var dependencies = exports.dependencies = ["clean"];
 
 var run = exports.run = compileAllFiles;

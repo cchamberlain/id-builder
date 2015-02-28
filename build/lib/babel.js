@@ -9,7 +9,7 @@ var sourceExtension = exports.sourceExtension = "js";
 var targetExtension = exports.targetExtension = "js";
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
-  return sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
+  return !!sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
 };
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {

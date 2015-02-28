@@ -10,7 +10,7 @@ var taskInfo = require("./logging").taskInfo;
 var monitors = {};
 
 var addPath = exports.addPath = function (path, cb) {
-  var monitor = new foreverMonitor.Monitor(path, {
+  var monitor = new Monitor(path, {
     command: "node"
   });
 
@@ -40,7 +40,7 @@ var restartPath = exports.restartPath = function (path, cb) {
 };
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath, cb) {
-  return resolve(sourceFilePath).match(RegExp("^" + resolve(options.sourcePath)));
+  return !!resolve(sourceFilePath).match(RegExp("^" + resolve(options.sourcePath)));
 };
 
 var startServer = exports.startServer = function (options, filePath, cb) {

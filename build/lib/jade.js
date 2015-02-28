@@ -16,7 +16,7 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
   try {
-    cb(null, jade.compileClient(chunk, {
+    cb(null, compileClient(chunk, {
       compileDebug: false,
       filename: options.sourceFilePath
     }));

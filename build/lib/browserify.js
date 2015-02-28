@@ -17,11 +17,6 @@ var taskInfo = require("./logging").taskInfo;
 var sourceExtension = exports.sourceExtension = "coffee";
 var targetExtension = exports.targetExtension = "js";
 
-// Returns true if the path is the target
-var pathReloads = exports.pathReloads = function (options, p) {
-  return p === global.options.tasks.watchBrowserify.targetPath;
-};
-
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
@@ -57,8 +52,6 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
         packageCache: {}
       });
 
-      b.transform("reactify");
-
       b.add(resolve(options.sourcePath));
 
       b.on("bundle", function (bundleStream) {
@@ -84,7 +77,7 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
 };
 
 var watch = exports.watch = function (options, cb) {
-  cb();
+  //cb();
 
   var b = browserify({
     cache: {},
@@ -92,8 +85,6 @@ var watch = exports.watch = function (options, cb) {
     fullPaths: true,
     packageCache: {}
   });
-
-  b.transform("reactify");
 
   b.add(resolve(options.sourcePath));
 
@@ -104,7 +95,7 @@ var watch = exports.watch = function (options, cb) {
       data += d;
     });
 
-    bundleStream.on("data", function (d) {
+    bundleStream.on("end", function (d) {
       writeFile(options.targetPath, data, function (e) {
         if (e) {
           return cb(e);

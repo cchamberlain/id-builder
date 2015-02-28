@@ -1,6 +1,6 @@
 'use strict';
 
-import jade from '../lib/jade';
+import * as jade from '../lib/jade';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [

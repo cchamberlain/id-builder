@@ -1,6 +1,6 @@
 'use strict';
 
-import stylus from '../lib/stylus';
+import * as stylus from '../lib/stylus';
 import { getWatcher } from '../lib/watch';
 
 export const dependencies = [

@@ -2,27 +2,30 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var render = require("less").render;
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var less = _interopRequire(require("less"));
+
 var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "less";
 var targetExtension = exports.targetExtension = "css";
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
-  var regex = new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$");
+  var regex = new RegExp("^" + options.sourceDirectory + ".+." + sourceExtension + "$");
 
   return sourceFilePath.match(regex);
 };
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
-  less.render(chunk, function (e, result) {
+  var options = {};
+
+  less.render(chunk, options, function (e, result) {
     if (e) {
       return cb(e);
     }
 
-    var css = result.css;
-
-    return cb(null, css);
+    return cb(null, result.css);
   });
 };
 

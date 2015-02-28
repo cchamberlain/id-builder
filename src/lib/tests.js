@@ -4,6 +4,8 @@ import { exists } from 'fs';
 import { resolve } from 'path';
 import { spawn } from 'child_process';
 
+import { taskInfo } from './logging';
+
 const pathToMocha = resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
 export const randomString = function() {
@@ -27,7 +29,7 @@ export const buildFilePathMatches = function(options, buildFilePath) {
 export const runTests = function(options, cb) {
   exists(options.sourcePath, function(exists) {
     if (!exists) {
-      logging.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
+      taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
       return cb();
     }
 

@@ -1,7 +1,14 @@
 'use strict';
 
-import { sourceFilePathMatches, compileFile } from '../lib/less';
-import { getWatcher } from '../lib/watch';
+import {
+  compileFile,
+  sourceExtension,
+  sourceFilePathMatches,
+  targetExtension
+} from '../lib/less';
+import {
+  getWatcher
+} from '../lib/watch';
 
 export const dependencies = [
   'watch'
@@ -12,11 +19,7 @@ const handlePath = function(options, path, stat) {
     return;
   }
 
-  const targetPath = path
-    .replace(options.sourcePath, options.targetPath)
-    .replace(new RegExp(`^\.${sourceExtension}$`), `.${targetExtension}`);
-
-  compileFile(options, path, targetPath, function(e) {
+  compileFile(options, options.sourcePath, options.targetPath, function(e) {
     if (e) {
       console.error(e);
     }

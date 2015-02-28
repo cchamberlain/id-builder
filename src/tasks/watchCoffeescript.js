@@ -1,6 +1,7 @@
 'use strict';
 
-import coffeescript from '../lib/coffeescript';
+import * as coffeescript from '../lib/coffeescript';
+import { getWatcher } from '../lib/watch';
 
 export const dependencies = [
   'watch'
@@ -43,7 +44,7 @@ const handleError = function(options, e) {
 };
 
 export const run = function(options, cb) {
-  const watcher = watch.getWatcher();
+  const watcher = getWatcher();
 
   watcher.on('ready', function() {
     watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });

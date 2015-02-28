@@ -11,7 +11,7 @@ import { taskInfo } from './logging';
 const monitors = {};
 
 export const addPath = function(path, cb){
-  const monitor = new foreverMonitor.Monitor(path, {
+  const monitor = new Monitor(path, {
     command: 'node'
   });
 
@@ -41,7 +41,7 @@ export const restartPath = function(path, cb){
 };
 
 export const sourceFilePathMatches = function(options, sourceFilePath, cb){
-  return resolve(sourceFilePath)
+  return !!resolve(sourceFilePath)
     .match(RegExp(`^${resolve(options.sourcePath)}`));
 };
 
