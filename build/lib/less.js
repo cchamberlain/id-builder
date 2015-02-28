@@ -4,6 +4,9 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+var _ = _interopRequire(require("lodash"));
+
+var resolve = require("path").resolve;
 var less = _interopRequire(require("less"));
 
 var fileSystem = _interopRequireWildcard(require("./fileSystem"));
@@ -18,9 +21,11 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
 };
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
-  var options = {};
+  var parseOptions = {
+    filename: options.sourcePath
+  };
 
-  less.render(chunk, options, function (e, result) {
+  less.render(chunk, parseOptions, function (e, result) {
     if (e) {
       return cb(e);
     }
