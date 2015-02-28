@@ -1,7 +1,5 @@
 'use strict';
 
-import _ from 'lodash';
-import { resolve } from 'path';
 import less from 'less';
 
 import * as fileSystem from './fileSystem';
@@ -16,11 +14,11 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 export const compileChunk = function(options, chunk, cb) {
-  const parseOptions = {
+  const renderOptions = {
     filename: options.sourcePath
   };
 
-  less.render(chunk, parseOptions, function(e, result) {
+  less.render(chunk, renderOptions, function(e, result) {
     if (e) {
       return cb(e);
     }
