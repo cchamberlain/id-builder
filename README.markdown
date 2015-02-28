@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/Industrial/id-builder.svg?branch=master)](https://travis-ci.org/Industrial/id-builder)
 
+Contributions, Tickets and Pull Requests appreciated!
+
 # id-builder
 id-builder compiles your code, runs your tests and servers, recompiles and
 restarts on changes and reloads the browser for you.
