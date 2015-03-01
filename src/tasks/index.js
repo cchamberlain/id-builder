@@ -28,7 +28,7 @@ import * as watchTests from './watchTests';
 export default {
   clean: clean,
   compileBabel: compileBabel,
-  //compileBrowserify: compileBrowserify,
+  compileBrowserify: compileBrowserify,
   compileCoffeescript: compileCoffeescript,
   compileCopy: compileCopy,
   compileJade: compileJade,

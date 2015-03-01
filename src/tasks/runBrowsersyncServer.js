@@ -4,7 +4,7 @@ import { runServer } from '../lib/browsersync';
 
 export const dependencies = [
   'compileBabel',
-  //'compileBrowserify',
+  'compileBrowserify',
   'compileCoffeescript',
   'compileCopy',
   'compileJade',

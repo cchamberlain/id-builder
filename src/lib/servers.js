@@ -50,7 +50,7 @@ export const startServer = function(options, filePath, cb){
 
   exists(absolutePath, function(result){
     if (!result) {
-      taskInfo(options.taskName, `skipping ${absolutePath} (Does not exist).`);
+      taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
     }
 
@@ -69,7 +69,7 @@ export const stopServer = function(options, filePath, cb){
 
   exists(absolutePath, function(result){
     if (!result) {
-      taskInfo(options.taskName, 'skipping `' + absolutePath + '` (Does not exist).');
+      taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
     }
 
@@ -78,7 +78,7 @@ export const stopServer = function(options, filePath, cb){
     if (monitor) {
       removePath(absolutePath, cb);
     } else {
-      taskInfo(options.taskName, 'skipping `' + absolutePath + '` (Monitor does not exist).');
+      taskInfo(options.taskName, `skipping ${filePath} (Monitor does not exist).`);
       cb();
     }
   });
@@ -89,7 +89,7 @@ export const restartServer = function(options, filePath, cb){
 
   exists(absolutePath, function(result){
     if (!result) {
-      taskInfo(options.taskName, 'skipping `' + absolutePath + '` (Does not exist).');
+      taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
     }
 

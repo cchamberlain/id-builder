@@ -48,7 +48,7 @@ var startServer = exports.startServer = function (options, filePath, cb) {
 
   exists(absolutePath, function (result) {
     if (!result) {
-      taskInfo(options.taskName, "skipping " + absolutePath + " (Does not exist).");
+      taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
       return cb();
     }
 
@@ -67,7 +67,7 @@ var stopServer = exports.stopServer = function (options, filePath, cb) {
 
   exists(absolutePath, function (result) {
     if (!result) {
-      taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
+      taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
       return cb();
     }
 
@@ -76,7 +76,7 @@ var stopServer = exports.stopServer = function (options, filePath, cb) {
     if (monitor) {
       removePath(absolutePath, cb);
     } else {
-      taskInfo(options.taskName, "skipping `" + absolutePath + "` (Monitor does not exist).");
+      taskInfo(options.taskName, "skipping " + filePath + " (Monitor does not exist).");
       cb();
     }
   });
@@ -87,7 +87,7 @@ var restartServer = exports.restartServer = function (options, filePath, cb) {
 
   exists(absolutePath, function (result) {
     if (!result) {
-      taskInfo(options.taskName, "skipping `" + absolutePath + "` (Does not exist).");
+      taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
       return cb();
     }
 

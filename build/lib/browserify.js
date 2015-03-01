@@ -33,6 +33,8 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
   }
 };
 
+var getBrowserify = exports.getBrowserify = function (options) {};
+
 var compileAllFiles = exports.compileAllFiles = function (options, cb) {
   exists(options.sourcePath, function (exists) {
     if (!exists) {
@@ -58,9 +60,7 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
         var writeStream = createWriteStream(options.targetPath);
 
         writeStream.on("error", function (e) {
-          if (e) {
-            return cb(e);
-          }
+          return cb(e);
         });
 
         writeStream.on("finish", function () {
@@ -77,42 +77,46 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
 };
 
 var watch = exports.watch = function (options, cb) {
-  //cb();
+  exists(options.sourcePath, function (exists) {
+    if (!exists) {
+      taskInfo(options.taskName, "skipping " + options.sourcePath + " (Does not exist)");
+      return cb();
+    }
 
-  var b = browserify({
-    cache: {},
-    debug: true,
-    fullPaths: true,
-    packageCache: {}
-  });
-
-  b.add(resolve(options.sourcePath));
-
-  b.on("bundle", function (bundleStream) {
-    var data = "";
-
-    bundleStream.on("data", function (d) {
-      data += d;
-    });
-
-    bundleStream.on("end", function (d) {
-      writeFile(options.targetPath, data, function (e) {
-        if (e) {
-          return cb(e);
-        }
-
-        taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+    ensureFileDirectory(options.targetPath, function (e) {
+      if (e) {
+        return cb(e);
+      }
+      var b = browserify({
+        cache: {},
+        debug: true,
+        fullPaths: true,
+        packageCache: {}
       });
+
+      b.add(resolve(options.sourcePath));
+
+      b.on("bundle", function (bundleStream) {
+        var writeStream = createWriteStream(options.targetPath);
+
+        writeStream.on("error", cb);
+
+        writeStream.on("finish", function () {
+          taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+        });
+
+        bundleStream.pipe(writeStream);
+      });
+
+      var w = watchify(b);
+
+      w.on("update", function () {
+        b.bundle();
+      });
+
+      b.bundle();
     });
   });
-
-  var w = watchify(b);
-
-  w.on("update", function () {
-    b.bundle();
-  });
-
-  b.bundle();
 };
 Object.defineProperty(exports, "__esModule", {
   value: true

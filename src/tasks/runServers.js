@@ -5,7 +5,7 @@ import { runServers } from '../lib/servers';
 
 export const dependencies = [
   'compileBabel',
-  //'compileBrowserify',
+  'compileBrowserify',
   'compileCoffeescript',
   'compileCopy',
   'compileJade',

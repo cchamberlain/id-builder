@@ -28,6 +28,9 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
   }
 };
 
+export const getBrowserify = function(options) {
+}
+
 export const compileAllFiles = function(options, cb) {
   exists(options.sourcePath, function(exists) {
     if (!exists) {
@@ -53,9 +56,7 @@ export const compileAllFiles = function(options, cb) {
         const writeStream = createWriteStream(options.targetPath);
 
         writeStream.on('error', function(e) {
-          if (e) {
-            return cb(e);
-          }
+          return cb(e);
         });
 
         writeStream.on('finish', function() {
@@ -73,40 +74,45 @@ export const compileAllFiles = function(options, cb) {
 };
 
 export const watch = function(options, cb) {
-  //cb();
+  exists(options.sourcePath, function(exists) {
+    if (!exists) {
+      taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
+      return cb();
+    }
 
-  const b = browserify({
-    cache: {},
-    debug: true,
-    fullPaths: true,
-    packageCache: {}
-  });
-
-  b.add(resolve(options.sourcePath));
-
-  b.on('bundle', function(bundleStream) {
-    let data = '';
-
-    bundleStream.on('data', function(d) {
-      data += d;
-    });
-
-    bundleStream.on('end', function(d) {
-      writeFile(options.targetPath, data, function(e) {
-        if (e) {
-          return cb(e);
-        }
-
-        taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
+    ensureFileDirectory(options.targetPath, function(e) {
+      if (e) {
+        return cb(e);
+      }
+      const b = browserify({
+        cache: {},
+        debug: true,
+        fullPaths: true,
+        packageCache: {}
       });
+
+      b.add(resolve(options.sourcePath));
+
+      b.on('bundle', function(bundleStream) {
+        const writeStream = createWriteStream(options.targetPath);
+
+        writeStream.on('error', cb);
+
+        writeStream.on('finish', function() {
+          taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
+        });
+
+        bundleStream
+          .pipe(writeStream);
+      });
+
+      const w = watchify(b);
+
+      w.on('update', function() {
+        b.bundle()
+      });
+
+      b.bundle();
     });
   });
-
-  const w = watchify(b);
-
-  w.on('update', function() {
-    b.bundle()
-  });
-
-  b.bundle();
 };
