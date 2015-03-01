@@ -33,8 +33,6 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
   }
 };
 
-var getBrowserify = exports.getBrowserify = function (options) {};
-
 var compileAllFiles = exports.compileAllFiles = function (options, cb) {
   exists(options.sourcePath, function (exists) {
     if (!exists) {

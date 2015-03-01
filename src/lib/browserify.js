@@ -28,9 +28,6 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
   }
 };
 
-export const getBrowserify = function(options) {
-}
-
 export const compileAllFiles = function(options, cb) {
   exists(options.sourcePath, function(exists) {
     if (!exists) {
