@@ -55,18 +55,22 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
       b.add(resolve(options.sourcePath));
 
       b.on("bundle", function (bundleStream) {
-        var writeStream = createWriteStream(options.targetPath);
+        var data = "";
 
-        writeStream.on("error", function (e) {
-          return cb(e);
+        bundleStream.on("data", function (d) {
+          data += d;
         });
 
-        writeStream.on("finish", function () {
-          taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
-          cb();
-        });
+        bundleStream.on("end", function (d) {
+          writeFile(options.targetPath, data, function (e) {
+            if (e) {
+              return cb(e);
+            }
 
-        bundleStream.pipe(writeStream);
+            taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+            cb();
+          });
+        });
       });
 
       b.bundle();
@@ -95,15 +99,21 @@ var watch = exports.watch = function (options, cb) {
       b.add(resolve(options.sourcePath));
 
       b.on("bundle", function (bundleStream) {
-        var writeStream = createWriteStream(options.targetPath);
+        var data = "";
 
-        writeStream.on("error", cb);
-
-        writeStream.on("finish", function () {
-          taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+        bundleStream.on("data", function (d) {
+          data += d;
         });
 
-        bundleStream.pipe(writeStream);
+        bundleStream.on("end", function (d) {
+          writeFile(options.targetPath, data, function (e) {
+            if (e) {
+              return cb(e);
+            }
+
+            taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+          });
+        });
       });
 
       var w = watchify(b);
