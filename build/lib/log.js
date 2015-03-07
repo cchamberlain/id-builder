@@ -12,10 +12,6 @@ var log = minilog("id-builder");
 
 minilog.pipe(minilog.suggest).pipe(minilog.backends.console.formatLearnboost).pipe(minilog.backends.console);
 
-var getDate = exports.getDate = function () {
-  return moment().format();
-};
-
 var debug = exports.debug = function () {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
