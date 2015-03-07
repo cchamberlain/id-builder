@@ -9,7 +9,7 @@ export const sourceExtension = 'coffee';
 export const targetExtension = 'js';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  const result = !!sourceFilePath.match(RegExp(`^${options.sourcePath}.+\.${sourceExtension}}`))
+  const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}`))
 
   log.debug('coffeescript.sourceFilePathMatches =>', result, sourceFilePath);
 
