@@ -12,10 +12,6 @@ minilog
   .pipe(minilog.backends.console.formatLearnboost)
   .pipe(minilog.backends.console);
 
-export const getDate = function(){
-  return moment().format();
-};
-
 export const debug = function(...args) {
   log.debug(...args);
 };
