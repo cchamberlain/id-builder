@@ -2,6 +2,10 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var log = _interopRequire(require("loglevel"));
+
 var clean = _interopRequireWildcard(require("./clean"));
 
 var compileBabel = _interopRequireWildcard(require("./compileBabel"));

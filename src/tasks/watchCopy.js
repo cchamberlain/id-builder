@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { sourceFilePathMatches, copyFile } from '../lib/copy';
 import { getWatcher } from '../lib/watch';
 

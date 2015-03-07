@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import * as livescript from '../lib/livescript';
 import { getWatcher } from '../lib/watch';
 

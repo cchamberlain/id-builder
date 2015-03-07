@@ -1,15 +1,17 @@
 "use strict";
 
-var exists = require("fs").exists;
-var resolve = require("path").resolve;
-var each = require("async").each;
-var Monitor = require("forever-monitor").Monitor;
-var taskInfo = require("./logging").taskInfo;
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
+var exists = require("fs").exists;
+var Monitor = require("forever-monitor").Monitor;
+var each = require("async").each;
+var log = _interopRequireWildcard(require("./log"));
 
 var monitors = {};
 
 var addPath = exports.addPath = function (path, cb) {
+  log.debug("servers.addPath", path);
+
   var monitor = new Monitor(path, {
     command: "node"
   });
@@ -22,6 +24,10 @@ var addPath = exports.addPath = function (path, cb) {
 };
 
 var removePath = exports.removePath = function (path, cb) {
+  log.debug("servers.removePath", path);
+
+  log.debug("monitors", monitors);
+
   var monitor = monitors[path];
 
   monitor.kill(true);
@@ -32,6 +38,8 @@ var removePath = exports.removePath = function (path, cb) {
 };
 
 var restartPath = exports.restartPath = function (path, cb) {
+  log.debug("servers.restartPath", path);
+
   var monitor = monitors[path];
 
   monitor.restart();
@@ -40,74 +48,84 @@ var restartPath = exports.restartPath = function (path, cb) {
 };
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath, cb) {
-  return !!resolve(sourceFilePath).match(RegExp("^" + resolve(options.sourcePath)));
+  log.debug("servers.sourceFilePathMatches", options, sourceFilePath);
+
+  var result = !!sourceFilePath.match(RegExp("^" + options.sourcePath));
+
+  log.debug("servers.sourceFilePathMatches =>", result);
+
+  return result;
 };
 
 var startServer = exports.startServer = function (options, filePath, cb) {
-  var absolutePath = resolve(filePath);
+  log.debug("servers.startServer", options, filePath);
 
-  exists(absolutePath, function (result) {
+  exists(filePath, function (result) {
     if (!result) {
-      taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
+      log.taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
       return cb();
     }
 
-    var monitor = monitors[absolutePath];
+    var monitor = monitors[filePath];
 
     if (monitor) {
-      restartPath(absolutePath, cb);
+      restartPath(filePath, cb);
     } else {
-      addPath(absolutePath, cb);
+      addPath(filePath, cb);
     }
   });
 };
 
 var stopServer = exports.stopServer = function (options, filePath, cb) {
-  var absolutePath = resolve(filePath);
+  log.debug("servers.stopServer", options, filePath);
 
-  exists(absolutePath, function (result) {
+  exists(filePath, function (result) {
     if (!result) {
-      taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
+      log.taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
       return cb();
     }
 
-    var monitor = monitors[absolutePath];
+    var monitor = monitors[filePath];
 
     if (monitor) {
-      removePath(absolutePath, cb);
+      removePath(filePath, cb);
     } else {
-      taskInfo(options.taskName, "skipping " + filePath + " (Monitor does not exist).");
+      log.taskInfo(options.taskName, "skipping " + filePath + " (Monitor does not exist).");
       cb();
     }
   });
 };
 
 var restartServer = exports.restartServer = function (options, filePath, cb) {
-  var absolutePath = resolve(filePath);
+  log.debug("servers.restartServer", options, filePath);
 
-  exists(absolutePath, function (result) {
+  exists(filePath, function (result) {
     if (!result) {
-      taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
+      log.taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
       return cb();
     }
 
-    removePath(absolutePath, function (e) {
+    removePath(filePath, function (e) {
       if (e) {
         return cb(e);
       }
 
-      addPath(absolutePath, cb);
+      addPath(filePath, cb);
     });
   });
 };
 
 var runServers = exports.runServers = function (options, cb) {
+  log.debug("servers.runServers", options);
+
   each(options.paths, function (v, cb) {
     startServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };
 
 var restartServers = exports.restartServers = function (options, cb) {
+  log.debug("servers.restartServers", options);
+
   each(options.paths, function (v, cb) {
     restartServer(options, "" + options.sourcePath + "/" + v, cb);
   });

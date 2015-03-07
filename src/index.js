@@ -1,17 +1,16 @@
 'use strict';
 
+import minilog from 'minilog';
 import _ from 'lodash';
 import { auto } from 'async';
 import moment from 'moment';
 
+import * as log from './lib/log';
 import defaultOptions from './lib/defaultOptions';
-import { disabledTask, startTask, finishTask } from './lib/logging';
 import parseOptions from './lib/parseOptions';
 import tasks from './tasks';
 
-const logInfo = function(message) {
-  console.log(`${moment().format()} ${message}`);
-};
+let options;
 
 const runTaskWithOptions = function(options, task, name) {
   return function(cb) {
@@ -22,33 +21,35 @@ const runTaskWithOptions = function(options, task, name) {
     }
 
     if (!taskOptions.enabled) {
-      disabledTask(name);
+      //log.disabledTask(name);
       return cb();
     }
 
     taskOptions.taskName = name;
 
-    startTask(name);
+    log.startTask(name);
 
     task.run(taskOptions, function(e) {
       if (e) {
         return cb(e);
       }
 
-      finishTask(name);
+      log.finishTask(name);
 
       cb();
     });
   };
 };
 
-export default function(inputOptions, cb) {
-  inputOptions = inputOptions || {};
+export default function(inputOptions = {}, cb) {
+  options = global.options = parseOptions(defaultOptions, inputOptions);
 
-  global.options = parseOptions(defaultOptions, inputOptions);
+  if (options.logging) {
+    minilog.suggest.deny(/.*/, options.logging.level)
+  }
 
   const autoTasks = _.reduce(tasks, function(m, v, k) {
-    m[k] = v.dependencies.concat(runTaskWithOptions(global.options, v, k));
+    m[k] = v.dependencies.concat(runTaskWithOptions(options, v, k));
 
     return m;
   }, {});

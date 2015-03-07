@@ -4,14 +4,16 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+var log = _interopRequire(require("loglevel"));
+
 var expect = require("chai").expect;
 var mkdirp = _interopRequire(require("mkdirp"));
 
 var rimraf = _interopRequire(require("rimraf"));
 
-var browserify = _interopRequireWildcard(require("../../../lib/browserify"));
+var browserify = _interopRequireWildcard(require("../build/../../../lib/browserify"));
 
-var randomString = require("../../../lib/tests").randomString;
+var randomString = require("../build/../../../lib/tests").randomString;
 
 
 describe("browserify", function () {
@@ -25,7 +27,7 @@ describe("browserify", function () {
     rimraf(this.directoryPath, cb);
   });
 
-  describe("source-extension", function () {
+  describe("sourceExtension", function () {
     it("should be defined", function (cb) {
       expect(browserify.sourceExtension).to.be.a("string")["with"].length.above(0);
 
@@ -33,7 +35,7 @@ describe("browserify", function () {
     });
   });
 
-  describe("target-extension", function () {
+  describe("targetExtension", function () {
     it("should be defined", function (cb) {
       expect(browserify.targetExtension).to.be.a("string")["with"].length.above(0);
 
@@ -41,10 +43,10 @@ describe("browserify", function () {
     });
   });
 
-  describe("path-reloads(options, path)", function () {});
+  describe("pathReloads(options, path)", function () {});
 
-  describe("source-file-path-matches", function () {
-    describe("when the `source-file-path` is the `target-path`", function () {
+  describe("sourceFilePathMatches", function () {
+    describe("when the `sourceFilePath` is the `targetPath`", function () {
       it("should return `false`", function (cb) {
         var options = {
           targetPath: "x/y.js",
@@ -57,7 +59,7 @@ describe("browserify", function () {
       });
     });
 
-    describe("when the `source-file-path` is in the the `source-directory`", function () {
+    describe("when the `sourceFilePath` is in the the `sourceDirectory`", function () {
       it("should return `true`", function (cb) {
         var options = {
           targetPath: "x/y.js",
@@ -70,7 +72,7 @@ describe("browserify", function () {
       });
     });
 
-    describe("when the `source-file-path` is not in the the `source-directory`", function () {
+    describe("when the `sourceFilePath` is not in the the `sourceDirectory`", function () {
       it("should return `false`", function (cb) {
         var options = {
           targetPath: "x/q.js",
@@ -84,7 +86,7 @@ describe("browserify", function () {
     });
   });
 
-  describe("compile-all-files", function () {});
+  describe("compileAllFiles", function () {});
 
   describe("watch", function () {});
 });

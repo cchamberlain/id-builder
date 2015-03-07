@@ -1,13 +1,12 @@
 'use strict';
 
 import { exists, createWriteStream, writeFile } from 'fs';
-import { resolve } from 'path';
 
 import browserify from 'browserify';
 import watchify from 'watchify';
 
 import { ensureFileDirectory } from './fileSystem';
-import { taskInfo } from './logging';
+import * as log from './log';
 
 export const sourceExtension = 'coffee';
 export const targetExtension = 'js';
@@ -15,23 +14,27 @@ export const targetExtension = 'js';
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  const resolvedSourceDirectoryPath = resolve(options.sourceDirectory);
-  const resolvedSourceFilePath = resolve(sourceFilePath);
-  const resolvedTargetPath = resolve(options.targetPath);
+  let result;
 
-  if (resolvedSourceFilePath === resolvedTargetPath) {
-    return false;
-  } else if (resolvedSourceFilePath.indexOf(resolvedSourceDirectoryPath) === 0) {
-    return true;
+  if (sourceFilePath === options.targetPath) {
+    result = false;
+  } else if (sourceFilePath.indexOf(options.sourceDirectory) === 0) {
+    result = true;
   }  else {
-    return false;
+    result = false;
   }
+
+  log.debug('browserify.sourceFilePathMatches =>', result, sourceFilePath);
+
+  return result;
 };
 
 export const compileAllFiles = function(options, cb) {
+  log.debug('browserify.compileAllFiles');
+
   exists(options.sourcePath, function(exists) {
     if (!exists) {
-      taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
+      log.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
       return cb();
     }
 
@@ -47,7 +50,7 @@ export const compileAllFiles = function(options, cb) {
         packageCache: {}
       });
 
-      b.add(resolve(options.sourcePath));
+      b.add(options.sourcePath);
 
       b.on('bundle', function(bundleStream) {
         let data = '';
@@ -62,7 +65,7 @@ export const compileAllFiles = function(options, cb) {
               return cb(e);
             }
 
-            taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
+            log.taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
             cb();
           });
         });
@@ -74,9 +77,11 @@ export const compileAllFiles = function(options, cb) {
 };
 
 export const watch = function(options, cb) {
+  log.debug('browserify.watch');
+
   exists(options.sourcePath, function(exists) {
     if (!exists) {
-      taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
+      log.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
       return cb();
     }
 
@@ -91,7 +96,7 @@ export const watch = function(options, cb) {
         packageCache: {}
       });
 
-      b.add(resolve(options.sourcePath));
+      b.add(options.sourcePath);
 
       b.on('bundle', function(bundleStream) {
         let data = '';
@@ -106,7 +111,7 @@ export const watch = function(options, cb) {
               return cb(e);
             }
 
-            taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
+            log.taskInfo(options.taskName, `${options.sourcePath} => ${options.targetPath}`);
           });
         });
       });

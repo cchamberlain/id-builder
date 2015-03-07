@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import {
   compileFile,
   sourceExtension,

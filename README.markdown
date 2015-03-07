@@ -61,6 +61,11 @@ Takes an optional options object. By default, all tasks are enabled.
 Default options:
 ```javascript
 idBuilder({
+  logging: {
+    // debug, info, warn, error
+    level: 'info'
+  },
+
   tasks: {
     clean: {
       enabled: true,

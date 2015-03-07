@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import * as servers  from '../lib/servers';
 import { getWatcher } from '../lib/watch';
 

@@ -4,7 +4,7 @@ import { exists } from 'fs';
 import { resolve } from 'path';
 import { spawn } from 'child_process';
 
-import { taskInfo } from './logging';
+import * as log from './log';
 
 const pathToMocha = resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
@@ -14,22 +14,30 @@ export const randomString = function() {
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
   const matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
-  const matchesTarget = sourceFilePath.indexOf(global.options.targetDirectory) === 0;
+  const matchesWatchPath = sourceFilePath.indexOf(options.watchPath) === 0;
+  const result = matchesJavascript && matchesWatchPath;
 
-  return matchesJavascript && matchesTarget;
+  log.debug('tests.sourceFilePathMatches =>', result, sourceFilePath);
+
+  return result;
 };
 
 export const buildFilePathMatches = function(options, buildFilePath) {
   const matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
-  const matchesTarget = buildFilePath.indexOf(global.options.targetDirectory) === 0;
+  const matchesWatchPath = buildFilePath.indexOf(options.watchPath) === 0;
+  const result = matchesJavascript && matchesWatchPath;
 
-  return matchesJavascript && matchesTarget;
+  log.debug('tests.buildFilePathMatches =>', result, buildFilePath);
+
+  return result;
 };
 
 export const runTests = function(options, cb) {
+  log.debug('tests.runTests', options.sourcePath);
+
   exists(options.sourcePath, function(exists) {
     if (!exists) {
-      taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
+      log.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
       return cb();
     }
 

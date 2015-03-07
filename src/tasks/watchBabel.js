@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import * as babel from '../lib/babel';
 import { getWatcher } from '../lib/watch';
 

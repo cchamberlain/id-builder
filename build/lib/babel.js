@@ -3,16 +3,24 @@
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
 var transform = require("babel").transform;
+var log = _interopRequireWildcard(require("./log"));
+
 var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "js";
 var targetExtension = exports.targetExtension = "js";
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
-  return !!sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
+  var result = !!sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
+
+  log.debug("babel.sourceFilePathMatches =>", result, sourceFilePath);
+
+  return result;
 };
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
+  log.debug("babel.compileChunk");
+
   try {
     var output = transform(chunk);
 

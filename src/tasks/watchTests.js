@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { buildFilePathMatches, runTests } from '../lib/tests';
 import { getWatcher } from '../lib/watch';
 

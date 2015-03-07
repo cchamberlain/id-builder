@@ -2,6 +2,10 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var log = _interopRequire(require("loglevel"));
+
 var jade = _interopRequireWildcard(require("../lib/jade"));
 
 var getWatcher = require("../lib/watch").getWatcher;

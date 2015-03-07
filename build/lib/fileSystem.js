@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
 var _fs = require("fs");
@@ -14,10 +16,11 @@ var lsr = _interopRequire(require("lsr"));
 var mkdirp = _interopRequire(require("mkdirp"));
 
 var each = require("async").each;
-var taskInfo = require("./logging").taskInfo;
-
+var log = _interopRequireWildcard(require("./log"));
 
 var getFiles = function (path, cb) {
+  log.debug("fileSystem.getFiles", path);
+
   lsr(path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -30,6 +33,8 @@ var getFiles = function (path, cb) {
 };
 
 var getDirectories = function (path, cb) {
+  log.debug("fileSystem.getDirectories", path);
+
   lsr(path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -46,11 +51,15 @@ var getTargetPath = function (sourceDirectory, targetDirectory, sourceExtension,
 };
 
 var ensureFileDirectory = exports.ensureFileDirectory = function (targetFilePath, cb) {
+  log.debug("fileSystem.ensureFileDirectory", targetFilePath);
+
   mkdirp(dirname(targetFilePath), cb);
 };
 
 var compileFile = exports.compileFile = function (compileChunk) {
   return function (options, sourceFilePath, targetFilePath, cb) {
+    log.debug("fileSystem.compileFile", sourceFilePath);
+
     readFile(sourceFilePath, function (e, fileContent) {
       if (e) {
         return cb(e);
@@ -71,7 +80,7 @@ var compileFile = exports.compileFile = function (compileChunk) {
               return cb(e);
             }
 
-            taskInfo(options.taskName, "" + sourceFilePath + " => " + targetFilePath);
+            log.taskInfo(options.taskName, "" + sourceFilePath + " => " + targetFilePath);
 
             cb(null);
           });
@@ -83,6 +92,8 @@ var compileFile = exports.compileFile = function (compileChunk) {
 
 var compileAllFiles = exports.compileAllFiles = function (sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function (options, cb) {
+    log.debug("fileSystem.compileAllFiles");
+
     getFiles(options.sourcePath, function (e, sourceFilePaths) {
       if (e) {
         return cb();

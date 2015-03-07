@@ -2,16 +2,23 @@
 
 import { transform } from 'babel';
 
+import * as log from './log';
 import * as fileSystem from './fileSystem'
 
 export const sourceExtension = 'js';
 export const targetExtension = 'js';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  return !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
+  const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
+
+  log.debug('babel.sourceFilePathMatches =>', result, sourceFilePath);
+
+  return result;
 };
 
 export const compileChunk = function(options, chunk, cb) {
+  log.debug('babel.compileChunk');
+
   try {
     const output = transform(chunk);
 

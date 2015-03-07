@@ -1,16 +1,24 @@
 'use strict';
 
 import { render } from 'stylus';
+
+import * as log from './log';
 import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'styl';
 export const targetExtension = 'css';
 
 export const sourceFilePathMatches = function(options, sourceFilePath){
-  return sourceFilePath.match(RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
+  const result = !!sourceFilePath.match(RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`))
+
+  log.debug('stylus.sourceFilePathMatches =>', result, sourceFilePath);
+
+  return result;
 };
 
 export const compileChunk = function(options, chunk, cb){
+  log.debug('stylus.compileChunk', options.sourcePath);
+
   render(chunk, cb);
 };
 

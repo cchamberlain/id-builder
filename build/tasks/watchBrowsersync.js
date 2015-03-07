@@ -1,5 +1,9 @@
 "use strict";
 
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var log = _interopRequire(require("loglevel"));
+
 var _libBrowsersync = require("../lib/browsersync");
 
 var sourceFilePathMatches = _libBrowsersync.sourceFilePathMatches;

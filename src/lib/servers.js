@@ -1,16 +1,17 @@
 'use strict';
 
 import { exists } from 'fs';
-import { resolve } from 'path';
 
-import { each } from 'async';
 import { Monitor } from 'forever-monitor';
+import { each } from 'async';
 
-import { taskInfo } from './logging';
+import * as log from './log';
 
 const monitors = {};
 
 export const addPath = function(path, cb){
+  log.debug('servers.addPath', path);
+
   const monitor = new Monitor(path, {
     command: 'node'
   });
@@ -23,6 +24,10 @@ export const addPath = function(path, cb){
 };
 
 export const removePath = function(path, cb){
+  log.debug('servers.removePath', path);
+
+  log.debug('monitors', monitors);
+
   const monitor = monitors[path];
 
   monitor.kill(true);
@@ -33,6 +38,8 @@ export const removePath = function(path, cb){
 };
 
 export const restartPath = function(path, cb){
+  log.debug('servers.restartPath', path);
+
   const monitor = monitors[path];
 
   monitor.restart();
@@ -41,75 +48,84 @@ export const restartPath = function(path, cb){
 };
 
 export const sourceFilePathMatches = function(options, sourceFilePath, cb){
-  return !!resolve(sourceFilePath)
-    .match(RegExp(`^${resolve(options.sourcePath)}`));
+  log.debug('servers.sourceFilePathMatches', options, sourceFilePath);
+
+  const result = !!sourceFilePath.match(RegExp(`^${options.sourcePath}`))
+
+  log.debug('servers.sourceFilePathMatches =>', result);
+
+  return result;
 };
 
 export const startServer = function(options, filePath, cb){
-  const absolutePath = resolve(filePath);
+  log.debug('servers.startServer', options, filePath);
 
-  exists(absolutePath, function(result){
+  exists(filePath, function(result){
     if (!result) {
-      taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
+      log.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
     }
 
-    const monitor = monitors[absolutePath];
+    const monitor = monitors[filePath];
 
     if (monitor) {
-      restartPath(absolutePath, cb);
+      restartPath(filePath, cb);
     } else {
-      addPath(absolutePath, cb);
+      addPath(filePath, cb);
     }
   });
 };
 
 export const stopServer = function(options, filePath, cb){
-  const absolutePath = resolve(filePath);
+  log.debug('servers.stopServer', options, filePath);
 
-  exists(absolutePath, function(result){
+  exists(filePath, function(result){
     if (!result) {
-      taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
+      log.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
     }
 
-    const monitor = monitors[absolutePath];
+    const monitor = monitors[filePath];
 
     if (monitor) {
-      removePath(absolutePath, cb);
+      removePath(filePath, cb);
     } else {
-      taskInfo(options.taskName, `skipping ${filePath} (Monitor does not exist).`);
+      log.taskInfo(options.taskName, `skipping ${filePath} (Monitor does not exist).`);
       cb();
     }
   });
 };
 
 export const restartServer = function(options, filePath, cb){
-  const absolutePath = resolve(filePath);
+  log.debug('servers.restartServer', options, filePath);
 
-  exists(absolutePath, function(result){
+  exists(filePath, function(result){
     if (!result) {
-      taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
+      log.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
     }
 
-    removePath(absolutePath, function(e){
+    removePath(filePath, function(e){
       if (e) {
         return cb(e);
       }
 
-      addPath(absolutePath, cb);
+      addPath(filePath, cb);
     });
   });
 };
 
 export const runServers = function(options, cb){
+  log.debug('servers.runServers', options);
+
   each(options.paths, function(v, cb) {
     startServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };
 
 export const restartServers = function(options, cb){
+  log.debug('servers.restartServers', options);
+
   each(options.paths, function(v, cb) {
     restartServer(options, `${options.sourcePath}/${v}`, cb);
   });

@@ -3,6 +3,8 @@
 import _ from 'lodash';
 import chokidar from 'chokidar';
 
+import * as log from './log';
+
 let watcher = null;
 
 export const getWatcher = function() {
@@ -10,6 +12,8 @@ export const getWatcher = function() {
 };
 
 export const start = function(options) {
+  log.debug('watch.start');
+
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
     return;

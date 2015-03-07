@@ -13,34 +13,42 @@ import * as fileSystem from './fileSystem';
 import * as jade from './jade';
 import * as less from './less';
 import * as livescript from './livescript';
-import * as logging from './logging';
+import * as log from './log';
 import * as stylus from './stylus';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
   const globalOptions = global.options;
 
+  let result;
+
   if (browserify.sourceFilePathMatches(globalOptions.tasks.compileBrowserify, sourceFilePath)) {
-    return false;
+    result = false;
   } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
-    return false;
+    result = false;
   } else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
-    return false;
+    result = false;
   } else if (less.sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
-    return false;
+    result = false;
   } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
-    return false;
+    result = false;
   } else if (babel.sourceFilePathMatches(globalOptions.tasks.compileBabel, sourceFilePath)) {
-    return false;
+    result = false;
   } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
-    return false;
+    result = false;
   } else if (sourceFilePath && !!sourceFilePath.match(RegExp(`^${options.sourcePath}`))) {
-    return true;
+    result = true;
   } else {
-    return false;
+    result = false;
   }
+
+  log.debug('copy.sourceFilePathMatches =>', result, sourceFilePath);
+
+  return result;
 };
 
 export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+  log.debug('copy.copyFile', sourceFilePath, targetFilePath);
+
   readFile(sourceFilePath, function(e, readChunk){
     if (e) {
       return cb(e);
@@ -56,7 +64,7 @@ export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
           return cb(e);
         }
 
-        logging.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
+        log.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
 
         cb(null);
       });
@@ -65,6 +73,8 @@ export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
 };
 
 export const copyAllFiles = function(options, cb) {
+  log.debug('copy.copyAllFiles', options.sourcePath);
+
   lsr(options.sourcePath, function(e, nodes){
     if (e) {
       return cb(e);

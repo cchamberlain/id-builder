@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import * as stylus from '../lib/stylus';
 import { getWatcher } from '../lib/watch';
 

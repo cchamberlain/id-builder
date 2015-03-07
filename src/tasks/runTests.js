@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { runTests } from '../lib/tests';
 
 export const dependencies = [

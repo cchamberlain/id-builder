@@ -1,9 +1,13 @@
 "use strict";
 
 module.exports = {
-  sourceDirectory: "src",
-  targetDirectory: "build",
-  testsDirectory: "build/tests",
+  //sourceDirectory: 'src',
+  //targetDirectory: 'build',
+  //testsDirectory: 'build/tests',
+
+  logging: {
+    level: "info"
+  },
 
   tasks: {
     clean: {

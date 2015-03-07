@@ -1,10 +1,11 @@
 "use strict";
 
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
 var exists = require("fs").exists;
 var resolve = require("path").resolve;
 var spawn = require("child_process").spawn;
-var taskInfo = require("./logging").taskInfo;
-
+var log = _interopRequireWildcard(require("./log"));
 
 var pathToMocha = resolve(__dirname + "/../../node_modules/mocha/bin/_mocha");
 
@@ -14,22 +15,30 @@ var randomString = exports.randomString = function () {
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
   var matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
-  var matchesTarget = sourceFilePath.indexOf(global.options.targetDirectory) === 0;
+  var matchesWatchPath = sourceFilePath.indexOf(options.watchPath) === 0;
+  var result = matchesJavascript && matchesWatchPath;
 
-  return matchesJavascript && matchesTarget;
+  log.debug("tests.sourceFilePathMatches =>", result, sourceFilePath);
+
+  return result;
 };
 
 var buildFilePathMatches = exports.buildFilePathMatches = function (options, buildFilePath) {
   var matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
-  var matchesTarget = buildFilePath.indexOf(global.options.targetDirectory) === 0;
+  var matchesWatchPath = buildFilePath.indexOf(options.watchPath) === 0;
+  var result = matchesJavascript && matchesWatchPath;
 
-  return matchesJavascript && matchesTarget;
+  log.debug("tests.buildFilePathMatches =>", result, buildFilePath);
+
+  return result;
 };
 
 var runTests = exports.runTests = function (options, cb) {
+  log.debug("tests.runTests", options.sourcePath);
+
   exists(options.sourcePath, function (exists) {
     if (!exists) {
-      taskInfo(options.taskName, "Skipping: Directory `" + options.sourcePath + "` not found.");
+      log.taskInfo(options.taskName, "Skipping: Directory `" + options.sourcePath + "` not found.");
       return cb();
     }
 

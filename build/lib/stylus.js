@@ -3,16 +3,24 @@
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
 var render = require("stylus").render;
+var log = _interopRequireWildcard(require("./log"));
+
 var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
 var sourceExtension = exports.sourceExtension = "styl";
 var targetExtension = exports.targetExtension = "css";
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
-  return sourceFilePath.match(RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
+  var result = !!sourceFilePath.match(RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
+
+  log.debug("stylus.sourceFilePathMatches =>", result, sourceFilePath);
+
+  return result;
 };
 
 var compileChunk = exports.compileChunk = function (options, chunk, cb) {
+  log.debug("stylus.compileChunk", options.sourcePath);
+
   render(chunk, cb);
 };
 

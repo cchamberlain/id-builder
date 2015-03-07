@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { compileAllFiles } from '../lib/stylus';
 
 export const dependencies = [ 'clean' ];

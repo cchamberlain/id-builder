@@ -1,11 +1,12 @@
 'use strict';
 
+import log from 'loglevel';
 import { expect } from 'chai';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 
-import * as browserify from '../../../lib/browserify';
-import { randomString } from '../../../lib/tests';
+import * as browserify from '../build/../../../lib/browserify';
+import { randomString } from '../build/../../../lib/tests';
 
 describe('browserify', function() {
   beforeEach(function(cb) {
@@ -18,7 +19,7 @@ describe('browserify', function() {
     rimraf(this.directoryPath, cb);
   });
 
-  describe('source-extension', function() {
+  describe('sourceExtension', function() {
     it('should be defined', function(cb) {
       expect(browserify.sourceExtension).to.be.a('string')['with'].length.above(0);
 
@@ -26,7 +27,7 @@ describe('browserify', function() {
     });
   });
 
-  describe('target-extension', function() {
+  describe('targetExtension', function() {
     it('should be defined', function(cb) {
       expect(browserify.targetExtension).to.be.a('string')['with'].length.above(0);
 
@@ -34,11 +35,11 @@ describe('browserify', function() {
     });
   });
 
-  describe('path-reloads(options, path)', function() {
+  describe('pathReloads(options, path)', function() {
   });
 
-  describe('source-file-path-matches', function() {
-    describe('when the `source-file-path` is the `target-path`', function() {
+  describe('sourceFilePathMatches', function() {
+    describe('when the `sourceFilePath` is the `targetPath`', function() {
       it('should return `false`', function(cb) {
         const options = {
           targetPath: 'x/y.js',
@@ -51,7 +52,7 @@ describe('browserify', function() {
       });
     });
 
-    describe('when the `source-file-path` is in the the `source-directory`', function() {
+    describe('when the `sourceFilePath` is in the the `sourceDirectory`', function() {
       it('should return `true`', function(cb) {
         const options = {
           targetPath: 'x/y.js',
@@ -64,7 +65,7 @@ describe('browserify', function() {
       });
     });
 
-    describe('when the `source-file-path` is not in the the `source-directory`', function() {
+    describe('when the `sourceFilePath` is not in the the `sourceDirectory`', function() {
       it('should return `false`', function(cb) {
         const options = {
           targetPath: 'x/q.js',
@@ -78,7 +79,7 @@ describe('browserify', function() {
     });
   });
 
-  describe('compile-all-files', function() {
+  describe('compileAllFiles', function() {
   });
 
   describe('watch', function() {

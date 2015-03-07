@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import * as jade from '../lib/jade';
 import { getWatcher } from '../lib/watch';
 

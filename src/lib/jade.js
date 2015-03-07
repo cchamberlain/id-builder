@@ -2,18 +2,23 @@
 
 import { compileClient } from 'jade';
 
+import * as log from './log';
 import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'jade';
 export const targetExtension = 'js';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  const regex = new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`);
+  const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`))
 
-  return sourceFilePath.match(regex);
+  log.debug('jade.sourceFilePathMatches =>', result, sourceFilePath);
+
+  return result;
 };
 
 export const compileChunk = function(options, chunk, cb) {
+  log.debug('jade.compileChunk', options.sourceFilePath);
+
   try {
     cb(null, compileClient(chunk, {
       compileDebug: false,

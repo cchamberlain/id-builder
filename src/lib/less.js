@@ -2,18 +2,23 @@
 
 import less from 'less';
 
+import * as log from './log';
 import * as fileSystem from './fileSystem';
 
 export const sourceExtension = 'less';
 export const targetExtension = 'css';
 
 export const sourceFilePathMatches = function(options, sourceFilePath) {
-  const regex = new RegExp(`^${options.sourceDirectory}.+\.${sourceExtension}$`);
+  const result = !!sourceFilePath.match(new RegExp(`^${options.sourceDirectory}.+\.${sourceExtension}$`))
 
-  return sourceFilePath.match(regex);
+  log.debug('less.sourceFilePathMatches =>', result, sourceFilePath);
+
+  return result;
 };
 
 export const compileChunk = function(options, chunk, cb) {
+  log.debug('less.compileChunk', options.sourcePath);
+
   const renderOptions = {
     filename: options.sourcePath
   };

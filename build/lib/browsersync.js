@@ -4,32 +4,27 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var resolve = require("path").resolve;
 var browserSync = _interopRequire(require("browser-sync"));
 
 var copy = _interopRequireWildcard(require("./copy"));
 
-var taskInfo = require("./logging").taskInfo;
-
-
-//export const sourceFilePathMatches = function(options, sourceFilePath) {
-//  const resolvedSourceFilePath = resolve(sourceFilePath);
-//  const resolvedSourcePath = resolve(options.sourcePath);
-//
-//  return (resolvedSourceFilePath.indexOf(resolvedSourcePath)) === 0;
-//};
+var log = _interopRequireWildcard(require("./log"));
 
 var sourceFilePathMatches = exports.sourceFilePathMatches = copy.sourceFilePathMatches;
 
 var reload = exports.reload = function (options, path, cb) {
+  log.debug("browsersync.reload", path);
+
   browserSync.reload(path);
 
-  taskInfo(options.taskName, "Reloaded `" + path + "`");
+  log.taskInfo(options.taskName, "Reloaded `" + path + "`");
 
   cb();
 };
 
 var runServer = exports.runServer = function (_options, cb) {
+  log.debug("browsersync.runServer");
+
   var options = {
     //files: [],
     //minify: false,

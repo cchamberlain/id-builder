@@ -6,9 +6,11 @@ import _ from 'lodash';
 import rimraf from 'rimraf';
 import { each } from 'async';
 
-import { taskInfo } from './logging';
+import * as log from './log';
 
 export const directory = function(options, cb) {
+  log.debug('clean.directory', options.path);
+
   readdir(options.path, function(e, nodes) {
     if (e) {
       return cb(e);
@@ -18,7 +20,7 @@ export const directory = function(options, cb) {
       .map(function(v) {
         const path = `${options.path}/${v}`;
 
-        taskInfo(options.taskName, path);
+        log.taskInfo(options.taskName, path);
 
         return path;
       })

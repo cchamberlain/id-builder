@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { directory } from '../lib/clean';
 
 export const dependencies = []

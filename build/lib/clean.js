@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
 var readdir = require("fs").readdir;
@@ -8,8 +10,11 @@ var _ = _interopRequire(require("lodash"));
 var rimraf = _interopRequire(require("rimraf"));
 
 var each = require("async").each;
-var taskInfo = require("./logging").taskInfo;
+var log = _interopRequireWildcard(require("./log"));
+
 var directory = exports.directory = function (options, cb) {
+  log.debug("clean.directory", options.path);
+
   readdir(options.path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -18,7 +23,7 @@ var directory = exports.directory = function (options, cb) {
     var paths = _(nodes).map(function (v) {
       var path = "" + options.path + "/" + v;
 
-      taskInfo(options.taskName, path);
+      log.taskInfo(options.taskName, path);
 
       return path;
     }).value();

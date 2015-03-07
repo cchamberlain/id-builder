@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { sourceFilePathMatches, reload } from '../lib/browsersync';
 import { getWatcher } from '../lib/watch';
 
