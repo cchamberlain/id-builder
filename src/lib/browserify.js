@@ -1,6 +1,7 @@
 'use strict';
 
 import { exists, createWriteStream, writeFile } from 'fs';
+import { resolve } from 'path';
 
 import browserify from 'browserify';
 import watchify from 'watchify';
@@ -50,7 +51,7 @@ export const compileAllFiles = function(options, cb) {
         packageCache: {}
       });
 
-      b.add(options.sourcePath);
+      b.add(resolve(options.sourcePath));
 
       b.on('bundle', function(bundleStream) {
         let data = '';
@@ -96,7 +97,7 @@ export const watch = function(options, cb) {
         packageCache: {}
       });
 
-      b.add(options.sourcePath);
+      b.add(resolve(options.sourcePath));
 
       b.on('bundle', function(bundleStream) {
         let data = '';

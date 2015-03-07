@@ -9,6 +9,7 @@ var _fs = require("fs");
 var exists = _fs.exists;
 var createWriteStream = _fs.createWriteStream;
 var writeFile = _fs.writeFile;
+var resolve = require("path").resolve;
 var browserify = _interopRequire(require("browserify"));
 
 var watchify = _interopRequire(require("watchify"));
@@ -58,7 +59,7 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
         packageCache: {}
       });
 
-      b.add(options.sourcePath);
+      b.add(resolve(options.sourcePath));
 
       b.on("bundle", function (bundleStream) {
         var data = "";
@@ -104,7 +105,7 @@ var watch = exports.watch = function (options, cb) {
         packageCache: {}
       });
 
-      b.add(options.sourcePath);
+      b.add(resolve(options.sourcePath));
 
       b.on("bundle", function (bundleStream) {
         var data = "";
