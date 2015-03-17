@@ -23,7 +23,7 @@
     "coffee-script": "^1.8.0",
     "deepmerge": "^0.2.7",
     "forever-monitor": "^1.5.2",
-    "gaze": "^0.6.4",
+    "gaze": "^0.5.1",
     "highland": "^2.2.0",
     "id-debug": "^1.2.0",
     "jade": "^1.8.2",
