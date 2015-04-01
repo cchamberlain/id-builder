@@ -9,6 +9,7 @@ var minilog = _interopRequire(require("minilog"));
 var _ = _interopRequire(require("lodash"));
 
 var auto = require("async").auto;
+
 var moment = _interopRequire(require("moment"));
 
 var log = _interopRequireWildcard(require("./lib/log"));
@@ -21,7 +22,7 @@ var tasks = _interopRequire(require("./tasks"));
 
 var options = undefined;
 
-var runTaskWithOptions = function (options, task, name) {
+var runTaskWithOptions = function runTaskWithOptions(options, task, name) {
   return function (cb) {
     var taskOptions = options.tasks[name];
 
@@ -52,6 +53,7 @@ var runTaskWithOptions = function (options, task, name) {
 
 module.exports = function (_x, cb) {
   var inputOptions = arguments[0] === undefined ? {} : arguments[0];
+
   options = global.options = parseOptions(defaultOptions, inputOptions);
 
   if (options.logging) {

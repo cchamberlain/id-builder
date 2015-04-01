@@ -2,6 +2,11 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var log = _interopRequire(require("loglevel"));
 
 var _libLess = require("../lib/less");
@@ -10,10 +15,13 @@ var compileFile = _libLess.compileFile;
 var sourceExtension = _libLess.sourceExtension;
 var sourceFilePathMatches = _libLess.sourceFilePathMatches;
 var targetExtension = _libLess.targetExtension;
-var getWatcher = require("../lib/watch").getWatcher;
-var dependencies = exports.dependencies = ["watch"];
 
-var handlePath = function (options, path, stat) {
+var getWatcher = require("../lib/watch").getWatcher;
+
+var dependencies = ["watch"];
+
+exports.dependencies = dependencies;
+var handlePath = function handlePath(options, path, stat) {
   if (!sourceFilePathMatches(options, path)) {
     return;
   }
@@ -25,23 +33,23 @@ var handlePath = function (options, path, stat) {
   });
 };
 
-var handleAdd = function (options, path, stat) {
+var handleAdd = function handleAdd(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-var handleAddDir = function (options, path, stat) {};
+var handleAddDir = function handleAddDir(options, path, stat) {};
 
-var handleChange = function (options, path, stat) {
+var handleChange = function handleChange(options, path, stat) {
   handlePath(options, path, stat);
 };
 
-var handleUnlink = function (options, path, stat) {};
+var handleUnlink = function handleUnlink(options, path, stat) {};
 
-var handleUnlinkDir = function (options, path, stat) {};
+var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
 
-var handleError = function (options, e) {};
+var handleError = function handleError(options, e) {};
 
-var run = exports.run = function (options, cb) {
+var run = function run(options, cb) {
   var watcher = getWatcher();
 
   watcher.on("ready", function () {
@@ -65,6 +73,4 @@ var run = exports.run = function (options, cb) {
     });
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.run = run;

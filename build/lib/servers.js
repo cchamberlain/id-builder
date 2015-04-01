@@ -2,14 +2,22 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var exists = require("fs").exists;
+
 var Monitor = require("forever-monitor").Monitor;
+
 var each = require("async").each;
+
 var log = _interopRequireWildcard(require("./log"));
 
 var monitors = {};
 
-var addPath = exports.addPath = function (path, cb) {
+var addPath = function addPath(path, cb) {
   log.debug("servers.addPath", path);
 
   var monitor = new Monitor(path, {
@@ -23,7 +31,8 @@ var addPath = exports.addPath = function (path, cb) {
   cb();
 };
 
-var removePath = exports.removePath = function (path, cb) {
+exports.addPath = addPath;
+var removePath = function removePath(path, cb) {
   log.debug("servers.removePath", path);
 
   log.debug("monitors", monitors);
@@ -37,7 +46,8 @@ var removePath = exports.removePath = function (path, cb) {
   cb();
 };
 
-var restartPath = exports.restartPath = function (path, cb) {
+exports.removePath = removePath;
+var restartPath = function restartPath(path, cb) {
   log.debug("servers.restartPath", path);
 
   var monitor = monitors[path];
@@ -47,7 +57,8 @@ var restartPath = exports.restartPath = function (path, cb) {
   cb();
 };
 
-var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath, cb) {
+exports.restartPath = restartPath;
+var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath, cb) {
   log.debug("servers.sourceFilePathMatches", options, sourceFilePath);
 
   var result = !!sourceFilePath.match(RegExp("^" + options.sourcePath));
@@ -57,7 +68,8 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
   return result;
 };
 
-var startServer = exports.startServer = function (options, filePath, cb) {
+exports.sourceFilePathMatches = sourceFilePathMatches;
+var startServer = function startServer(options, filePath, cb) {
   log.debug("servers.startServer", options, filePath);
 
   exists(filePath, function (result) {
@@ -76,7 +88,8 @@ var startServer = exports.startServer = function (options, filePath, cb) {
   });
 };
 
-var stopServer = exports.stopServer = function (options, filePath, cb) {
+exports.startServer = startServer;
+var stopServer = function stopServer(options, filePath, cb) {
   log.debug("servers.stopServer", options, filePath);
 
   exists(filePath, function (result) {
@@ -96,7 +109,8 @@ var stopServer = exports.stopServer = function (options, filePath, cb) {
   });
 };
 
-var restartServer = exports.restartServer = function (options, filePath, cb) {
+exports.stopServer = stopServer;
+var restartServer = function restartServer(options, filePath, cb) {
   log.debug("servers.restartServer", options, filePath);
 
   exists(filePath, function (result) {
@@ -115,7 +129,8 @@ var restartServer = exports.restartServer = function (options, filePath, cb) {
   });
 };
 
-var runServers = exports.runServers = function (options, cb) {
+exports.restartServer = restartServer;
+var runServers = function runServers(options, cb) {
   log.debug("servers.runServers", options);
 
   each(options.paths, function (v, cb) {
@@ -123,13 +138,12 @@ var runServers = exports.runServers = function (options, cb) {
   });
 };
 
-var restartServers = exports.restartServers = function (options, cb) {
+exports.runServers = runServers;
+var restartServers = function restartServers(options, cb) {
   log.debug("servers.restartServers", options);
 
   each(options.paths, function (v, cb) {
     restartServer(options, "" + options.sourcePath + "/" + v, cb);
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.restartServers = restartServers;

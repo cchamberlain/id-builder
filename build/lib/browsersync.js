@@ -4,15 +4,21 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var browserSync = _interopRequire(require("browser-sync"));
 
 var copy = _interopRequireWildcard(require("./copy"));
 
 var log = _interopRequireWildcard(require("./log"));
 
-var sourceFilePathMatches = exports.sourceFilePathMatches = copy.sourceFilePathMatches;
+var sourceFilePathMatches = copy.sourceFilePathMatches;
 
-var reload = exports.reload = function (options, path, cb) {
+exports.sourceFilePathMatches = sourceFilePathMatches;
+var reload = function reload(options, path, cb) {
   log.debug("browsersync.reload", path);
 
   browserSync.reload(path);
@@ -22,7 +28,8 @@ var reload = exports.reload = function (options, path, cb) {
   cb();
 };
 
-var runServer = exports.runServer = function (_options, cb) {
+exports.reload = reload;
+var runServer = function runServer(_options, cb) {
   log.debug("browsersync.runServer");
 
   var options = {
@@ -42,6 +49,4 @@ var runServer = exports.runServer = function (_options, cb) {
     cb();
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.runServer = runServer;

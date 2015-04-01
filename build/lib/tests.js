@@ -2,18 +2,27 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var exists = require("fs").exists;
+
 var resolve = require("path").resolve;
+
 var spawn = require("child_process").spawn;
+
 var log = _interopRequireWildcard(require("./log"));
 
 var pathToMocha = resolve(__dirname + "/../../node_modules/mocha/bin/_mocha");
 
-var randomString = exports.randomString = function () {
+var randomString = function randomString() {
   return Math.random().toString(36).slice(7);
 };
 
-var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
+exports.randomString = randomString;
+var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
   var matchesWatchPath = sourceFilePath.indexOf(options.watchPath) === 0;
   var result = matchesJavascript && matchesWatchPath;
@@ -23,7 +32,8 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
   return result;
 };
 
-var buildFilePathMatches = exports.buildFilePathMatches = function (options, buildFilePath) {
+exports.sourceFilePathMatches = sourceFilePathMatches;
+var buildFilePathMatches = function buildFilePathMatches(options, buildFilePath) {
   var matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
   var matchesWatchPath = buildFilePath.indexOf(options.watchPath) === 0;
   var result = matchesJavascript && matchesWatchPath;
@@ -33,7 +43,8 @@ var buildFilePathMatches = exports.buildFilePathMatches = function (options, bui
   return result;
 };
 
-var runTests = exports.runTests = function (options, cb) {
+exports.buildFilePathMatches = buildFilePathMatches;
+var runTests = function runTests(options, cb) {
   log.debug("tests.runTests", options.sourcePath);
 
   exists(options.sourcePath, function (exists) {
@@ -42,7 +53,7 @@ var runTests = exports.runTests = function (options, cb) {
       return cb();
     }
 
-    var childProcess = spawn("iojs", [pathToMocha, "--recursive", "--colors", "--reporter", options.reporter, options.sourcePath]);
+    var childProcess = spawn("node", [pathToMocha, "--recursive", "--colors", "--reporter", options.reporter, options.sourcePath]);
 
     childProcess.stdout.on("data", function (chunk) {
       return process.stdout.write(chunk);
@@ -57,6 +68,4 @@ var runTests = exports.runTests = function (options, cb) {
     });
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.runTests = runTests;

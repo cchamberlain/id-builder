@@ -2,15 +2,23 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var compile = require("LiveScript").compile;
+
 var log = _interopRequireWildcard(require("./log"));
 
 var fileSystem = _interopRequireWildcard(require("./fileSystem"));
 
-var sourceExtension = exports.sourceExtension = "ls";
-var targetExtension = exports.targetExtension = "js";
+var sourceExtension = "ls";
+exports.sourceExtension = sourceExtension;
+var targetExtension = "js";
 
-var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
+exports.targetExtension = targetExtension;
+var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var result = !!sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
 
   log.debug("livescript.sourceFilePathMatches =>", result, sourceFilePath);
@@ -18,7 +26,8 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
   return result;
 };
 
-var compileChunk = exports.compileChunk = function (options, chunk, cb) {
+exports.sourceFilePathMatches = sourceFilePathMatches;
+var compileChunk = function compileChunk(options, chunk, cb) {
   log.debug("livescript.compileChunk", options.sourcePath);
 
   try {
@@ -30,9 +39,9 @@ var compileChunk = exports.compileChunk = function (options, chunk, cb) {
   }
 };
 
-var compileFile = exports.compileFile = fileSystem.compileFile(compileChunk);
+exports.compileChunk = compileChunk;
+var compileFile = fileSystem.compileFile(compileChunk);
 
-var compileAllFiles = exports.compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.compileFile = compileFile;
+var compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+exports.compileAllFiles = compileAllFiles;

@@ -4,11 +4,18 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var _fs = require("fs");
 
 var readFile = _fs.readFile;
 var writeFile = _fs.writeFile;
+
 var dirname = require("path").dirname;
+
 var _ = _interopRequire(require("lodash"));
 
 var lsr = _interopRequire(require("lsr"));
@@ -16,9 +23,10 @@ var lsr = _interopRequire(require("lsr"));
 var mkdirp = _interopRequire(require("mkdirp"));
 
 var each = require("async").each;
+
 var log = _interopRequireWildcard(require("./log"));
 
-var getFiles = function (path, cb) {
+var getFiles = function getFiles(path, cb) {
   log.debug("fileSystem.getFiles", path);
 
   lsr(path, function (e, nodes) {
@@ -32,7 +40,7 @@ var getFiles = function (path, cb) {
   });
 };
 
-var getDirectories = function (path, cb) {
+var getDirectories = function getDirectories(path, cb) {
   log.debug("fileSystem.getDirectories", path);
 
   lsr(path, function (e, nodes) {
@@ -46,17 +54,18 @@ var getDirectories = function (path, cb) {
   });
 };
 
-var getTargetPath = function (sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
+var getTargetPath = function getTargetPath(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
   return sourcePath.replace(sourceDirectory, targetDirectory).replace(RegExp("\\." + sourceExtension + "$"), "." + targetExtension);
 };
 
-var ensureFileDirectory = exports.ensureFileDirectory = function (targetFilePath, cb) {
+var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
   log.debug("fileSystem.ensureFileDirectory", targetFilePath);
 
   mkdirp(dirname(targetFilePath), cb);
 };
 
-var compileFile = exports.compileFile = function (compileChunk) {
+exports.ensureFileDirectory = ensureFileDirectory;
+var compileFile = function compileFile(compileChunk) {
   return function (options, sourceFilePath, targetFilePath, cb) {
     log.debug("fileSystem.compileFile", sourceFilePath);
 
@@ -90,7 +99,8 @@ var compileFile = exports.compileFile = function (compileChunk) {
   };
 };
 
-var compileAllFiles = exports.compileAllFiles = function (sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
+exports.compileFile = compileFile;
+var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function (options, cb) {
     log.debug("fileSystem.compileAllFiles");
 
@@ -105,7 +115,7 @@ var compileAllFiles = exports.compileAllFiles = function (sourceFilePathMatches,
         return sourceFilePathMatches(options, v);
       }).value();
 
-      var iteratePath = function (currentSourceFilePath, cb) {
+      var iteratePath = function iteratePath(currentSourceFilePath, cb) {
         var currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);
 
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
@@ -115,6 +125,4 @@ var compileAllFiles = exports.compileAllFiles = function (sourceFilePathMatches,
     });
   };
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.compileAllFiles = compileAllFiles;

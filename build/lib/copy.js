@@ -4,13 +4,20 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var _fs = require("fs");
 
 var readFile = _fs.readFile;
 var writeFile = _fs.writeFile;
+
 var _ = _interopRequire(require("lodash"));
 
 var each = require("async").each;
+
 var lsr = _interopRequire(require("lsr"));
 
 var babel = _interopRequireWildcard(require("./babel"));
@@ -31,7 +38,7 @@ var log = _interopRequireWildcard(require("./log"));
 
 var stylus = _interopRequireWildcard(require("./stylus"));
 
-var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
+var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var globalOptions = global.options;
 
   var result = undefined;
@@ -61,7 +68,8 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
   return result;
 };
 
-var copyFile = exports.copyFile = function (options, sourceFilePath, targetFilePath, cb) {
+exports.sourceFilePathMatches = sourceFilePathMatches;
+var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
   log.debug("copy.copyFile", sourceFilePath, targetFilePath);
 
   readFile(sourceFilePath, function (e, readChunk) {
@@ -87,7 +95,8 @@ var copyFile = exports.copyFile = function (options, sourceFilePath, targetFileP
   });
 };
 
-var copyAllFiles = exports.copyAllFiles = function (options, cb) {
+exports.copyFile = copyFile;
+var copyAllFiles = function copyAllFiles(options, cb) {
   log.debug("copy.copyAllFiles", options.sourcePath);
 
   lsr(options.sourcePath, function (e, nodes) {
@@ -101,7 +110,7 @@ var copyAllFiles = exports.copyAllFiles = function (options, cb) {
       return v.fullPath;
     }).value();
 
-    var iteratePath = function (currentSourceDirectoryPath, cb) {
+    var iteratePath = function iteratePath(currentSourceDirectoryPath, cb) {
       var currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
@@ -116,6 +125,4 @@ var copyAllFiles = exports.copyAllFiles = function (options, cb) {
     });
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.copyAllFiles = copyAllFiles;

@@ -4,14 +4,21 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var log = _interopRequire(require("loglevel"));
 
 var coffeescript = _interopRequireWildcard(require("../lib/coffeescript"));
 
 var getWatcher = require("../lib/watch").getWatcher;
-var dependencies = exports.dependencies = ["watch"];
 
-var handlePath = function (options, path, stat) {
+var dependencies = ["watch"];
+
+exports.dependencies = dependencies;
+var handlePath = function handlePath(options, path, stat) {
   //log.debug('watchCoffeescript.handlePath', path);
 
   if (!coffeescript.sourceFilePathMatches(options, path)) {
@@ -29,27 +36,27 @@ var handlePath = function (options, path, stat) {
   });
 };
 
-var handleAdd = function (options, path, stat) {
+var handleAdd = function handleAdd(options, path, stat) {
   //log.debug('watchCoffeescript.handleAdd', path);
 
   handlePath(options, path, stat);
 };
 
-var handleAddDir = function (options, path, stat) {};
+var handleAddDir = function handleAddDir(options, path, stat) {};
 
-var handleChange = function (options, path, stat) {
+var handleChange = function handleChange(options, path, stat) {
   //log.debug('watchCoffeescript.handleChange', path);
 
   handlePath(options, path, stat);
 };
 
-var handleUnlink = function (options, path, stat) {};
+var handleUnlink = function handleUnlink(options, path, stat) {};
 
-var handleUnlinkDir = function (options, path, stat) {};
+var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
 
-var handleError = function (options, e) {};
+var handleError = function handleError(options, e) {};
 
-var run = exports.run = function (options, cb) {
+var run = function run(options, cb) {
   //log.debug('watchCoffeescript.run', options);
 
   var watcher = getWatcher();
@@ -75,11 +82,12 @@ var run = exports.run = function (options, cb) {
     });
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.run = run;
 
 //log.debug('watchCoffeescript.handleAddDir', path);
+
 //log.debug('watchCoffeescript.handleUnlink', path);
+
 //log.debug('watchCoffeescript.handleUnlinkDir', path);
+
 //log.debug('watchCoffeescript.handleError', options, e);

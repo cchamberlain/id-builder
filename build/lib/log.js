@@ -2,6 +2,11 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var moment = _interopRequire(require("moment"));
 
 var chalk = _interopRequire(require("chalk"));
@@ -12,11 +17,12 @@ var log = minilog("id-builder");
 
 minilog.pipe(minilog.suggest).pipe(minilog.backends.console.formatLearnboost).pipe(minilog.backends.console);
 
-var getDate = exports.getDate = function () {
+var getDate = function getDate() {
   return moment().format();
 };
 
-var debug = exports.debug = function () {
+exports.getDate = getDate;
+var debug = function debug() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
@@ -24,7 +30,8 @@ var debug = exports.debug = function () {
   log.debug.apply(log, args);
 };
 
-var info = exports.info = function () {
+exports.debug = debug;
+var info = function info() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
@@ -32,7 +39,8 @@ var info = exports.info = function () {
   log.info.apply(log, args);
 };
 
-var warn = exports.warn = function () {
+exports.info = info;
+var warn = function warn() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
@@ -40,7 +48,8 @@ var warn = exports.warn = function () {
   log.warn.apply(log, args);
 };
 
-var error = exports.error = function () {
+exports.warn = warn;
+var error = function error() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
@@ -48,34 +57,40 @@ var error = exports.error = function () {
   log.error.apply(log, args);
 };
 
+exports.error = error;
+var arrowCharacter = "→";
+exports.arrowCharacter = arrowCharacter;
+var okCharacter = "✓";
+exports.okCharacter = okCharacter;
+var warningCharacter = "✗";
 
-var arrowCharacter = exports.arrowCharacter = "→";
-var okCharacter = exports.okCharacter = "✓";
-var warningCharacter = exports.warningCharacter = "✗";
-
-var taskInfo = exports.taskInfo = function (task, message) {
+exports.warningCharacter = warningCharacter;
+var taskInfo = function taskInfo(task, message) {
   info("  " + task + " " + chalk.grey(message));
 };
 
-var taskWarn = exports.taskWarn = function (task, message) {
+exports.taskInfo = taskInfo;
+var taskWarn = function taskWarn(task, message) {
   warn("" + chalk.grey(arrowCharacter) + " " + task + ": " + message);
 };
 
-var taskError = exports.taskError = function (task, message) {
+exports.taskWarn = taskWarn;
+var taskError = function taskError(task, message) {
   error("" + chalk.grey(arrowCharacter) + " " + task + ": " + message);
 };
 
-var disabledTask = exports.disabledTask = function (name) {
+exports.taskError = taskError;
+var disabledTask = function disabledTask(name) {
   warn("" + chalk.yellow(warningCharacter) + " " + name);
 };
 
-var startTask = exports.startTask = function (name) {
+exports.disabledTask = disabledTask;
+var startTask = function startTask(name) {
   info("" + chalk.grey(arrowCharacter) + " " + name);
 };
 
-var finishTask = exports.finishTask = function (name) {
+exports.startTask = startTask;
+var finishTask = function finishTask(name) {
   info("" + chalk.green(okCharacter) + " " + chalk.green(name));
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.finishTask = finishTask;

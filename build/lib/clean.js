@@ -4,15 +4,22 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var readdir = require("fs").readdir;
+
 var _ = _interopRequire(require("lodash"));
 
 var rimraf = _interopRequire(require("rimraf"));
 
 var each = require("async").each;
+
 var log = _interopRequireWildcard(require("./log"));
 
-var directory = exports.directory = function (options, cb) {
+var directory = function directory(options, cb) {
   log.debug("clean.directory", options.path);
 
   readdir(options.path, function (e, nodes) {
@@ -31,6 +38,4 @@ var directory = exports.directory = function (options, cb) {
     each(paths, rimraf, cb);
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.directory = directory;

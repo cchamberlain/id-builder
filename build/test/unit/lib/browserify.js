@@ -7,6 +7,7 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 var log = _interopRequire(require("loglevel"));
 
 var expect = require("chai").expect;
+
 var mkdirp = _interopRequire(require("mkdirp"));
 
 var rimraf = _interopRequire(require("rimraf"));
@@ -14,7 +15,6 @@ var rimraf = _interopRequire(require("rimraf"));
 var browserify = _interopRequireWildcard(require("../build/../../../lib/browserify"));
 
 var randomString = require("../build/../../../lib/tests").randomString;
-
 
 describe("browserify", function () {
   beforeEach(function (cb) {

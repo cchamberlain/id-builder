@@ -4,24 +4,33 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+"use strict";
+
 var _fs = require("fs");
 
 var exists = _fs.exists;
 var createWriteStream = _fs.createWriteStream;
 var writeFile = _fs.writeFile;
+
 var browserify = _interopRequire(require("browserify"));
 
 var watchify = _interopRequire(require("watchify"));
 
 var ensureFileDirectory = require("./fileSystem").ensureFileDirectory;
+
 var log = _interopRequireWildcard(require("./log"));
 
-var sourceExtension = exports.sourceExtension = "coffee";
-var targetExtension = exports.targetExtension = "js";
+var sourceExtension = "coffee";
+exports.sourceExtension = sourceExtension;
+var targetExtension = "js";
 
+exports.targetExtension = targetExtension;
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, sourceFilePath) {
+var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var result = undefined;
 
   if (sourceFilePath === options.targetPath) {
@@ -37,7 +46,8 @@ var sourceFilePathMatches = exports.sourceFilePathMatches = function (options, s
   return result;
 };
 
-var compileAllFiles = exports.compileAllFiles = function (options, cb) {
+exports.sourceFilePathMatches = sourceFilePathMatches;
+var compileAllFiles = function compileAllFiles(options, cb) {
   log.debug("browserify.compileAllFiles");
 
   exists(options.sourcePath, function (exists) {
@@ -84,7 +94,8 @@ var compileAllFiles = exports.compileAllFiles = function (options, cb) {
   });
 };
 
-var watch = exports.watch = function (options, cb) {
+exports.compileAllFiles = compileAllFiles;
+var watch = function watch(options, cb) {
   log.debug("browserify.watch");
 
   exists(options.sourcePath, function (exists) {
@@ -134,6 +145,4 @@ var watch = exports.watch = function (options, cb) {
     });
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.watch = watch;
