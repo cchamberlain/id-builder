@@ -19,7 +19,7 @@ var targetExtension = "js";
 
 exports.targetExtension = targetExtension;
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(RegExp("^" + options.sourcePath + ".+." + sourceExtension + "}"));
+  var result = !!sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension));
 
   log.debug("coffeescript.sourceFilePathMatches =>", result, sourceFilePath);
 
