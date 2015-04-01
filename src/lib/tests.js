@@ -41,7 +41,7 @@ export const runTests = function(options, cb) {
       return cb();
     }
 
-    const childProcess = spawn('iojs', [
+    const childProcess = spawn('node', [
       pathToMocha,
       '--recursive',
       '--colors',
