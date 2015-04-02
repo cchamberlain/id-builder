@@ -22,7 +22,7 @@
     "babel": "^5.0.0",
     "browser-sync": "^2.5.2",
     "browserify": "^8.0.1",
-    "chai": "^1.10.0",
+    "chai": "^2.2.0",
     "chalk": "^1.0.0",
     "chokidar": "^0.12.5",
     "coffee-script": "^1.8.0",
