@@ -25,7 +25,7 @@
     "chai": "^2.2.0",
     "chalk": "^1.0.0",
     "chokidar": "^1.0.0-rc5",
-    "coffee-script": "^1.8.0",
+    "coffee-script": "^1.9.1",
     "deepmerge": "^0.2.7",
     "forever-monitor": "^1.5.2",
     "jade": "^1.8.2",
