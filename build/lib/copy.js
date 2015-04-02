@@ -1,42 +1,62 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var _fs = require("fs");
+var _readFile$writeFile = require('fs');
 
-var readFile = _fs.readFile;
-var writeFile = _fs.writeFile;
+var _import = require('lodash');
 
-var _ = _interopRequire(require("lodash"));
+var _ = _interopRequire(_import);
 
-var each = require("async").each;
+var _each = require('async');
 
-var lsr = _interopRequire(require("lsr"));
+var _lsr = require('lsr');
 
-var babel = _interopRequireWildcard(require("./babel"));
+var lsr = _interopRequire(_lsr);
 
-var browserify = _interopRequireWildcard(require("./browserify"));
+var _import2 = require('./babel');
 
-var coffeescript = _interopRequireWildcard(require("./coffeescript"));
+var babel = _interopRequireWildcard(_import2);
 
-var fileSystem = _interopRequireWildcard(require("./fileSystem"));
+var _import3 = require('./browserify');
 
-var jade = _interopRequireWildcard(require("./jade"));
+var browserify = _interopRequireWildcard(_import3);
 
-var less = _interopRequireWildcard(require("./less"));
+var _import4 = require('./coffeescript');
 
-var livescript = _interopRequireWildcard(require("./livescript"));
+var coffeescript = _interopRequireWildcard(_import4);
 
-var log = _interopRequireWildcard(require("./log"));
+var _import5 = require('./fileSystem');
 
-var stylus = _interopRequireWildcard(require("./stylus"));
+var fileSystem = _interopRequireWildcard(_import5);
+
+var _import6 = require('./jade');
+
+var jade = _interopRequireWildcard(_import6);
+
+var _import7 = require('./less');
+
+var less = _interopRequireWildcard(_import7);
+
+var _import8 = require('./livescript');
+
+var livescript = _interopRequireWildcard(_import8);
+
+var _import9 = require('./log');
+
+var log = _interopRequireWildcard(_import9);
+
+var _import10 = require('./stylus');
+
+var stylus = _interopRequireWildcard(_import10);
+
+'use strict';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var globalOptions = global.options;
@@ -57,22 +77,22 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     result = false;
-  } else if (sourceFilePath && !!sourceFilePath.match(RegExp("^" + options.sourcePath))) {
+  } else if (sourceFilePath && !!sourceFilePath.match(RegExp('^' + options.sourcePath))) {
     result = true;
   } else {
     result = false;
   }
 
-  log.debug("copy.sourceFilePathMatches =>", result, sourceFilePath);
+  log.debug('copy.sourceFilePathMatches =>', result, sourceFilePath);
 
   return result;
 };
 
 exports.sourceFilePathMatches = sourceFilePathMatches;
 var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
-  log.debug("copy.copyFile", sourceFilePath, targetFilePath);
+  log.debug('copy.copyFile', sourceFilePath, targetFilePath);
 
-  readFile(sourceFilePath, function (e, readChunk) {
+  _readFile$writeFile.readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
     }
@@ -82,12 +102,12 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
         return cb(e);
       }
 
-      writeFile(targetFilePath, readChunk, function (e) {
+      _readFile$writeFile.writeFile(targetFilePath, readChunk, function (e) {
         if (e) {
           return cb(e);
         }
 
-        log.taskInfo(options.taskName, "" + sourceFilePath + " => " + targetFilePath);
+        log.taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
         cb(null);
       });
@@ -97,7 +117,7 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
 
 exports.copyFile = copyFile;
 var copyAllFiles = function copyAllFiles(options, cb) {
-  log.debug("copy.copyAllFiles", options.sourcePath);
+  log.debug('copy.copyAllFiles', options.sourcePath);
 
   lsr(options.sourcePath, function (e, nodes) {
     if (e) {
@@ -116,7 +136,7 @@ var copyAllFiles = function copyAllFiles(options, cb) {
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
 
-    each(paths, iteratePath, function (e) {
+    _each.each(paths, iteratePath, function (e) {
       if (e) {
         return cb(e);
       }

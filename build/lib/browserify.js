@@ -1,33 +1,36 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var _fs = require("fs");
+var _exists$createWriteStream$writeFile = require('fs');
 
-var exists = _fs.exists;
-var createWriteStream = _fs.createWriteStream;
-var writeFile = _fs.writeFile;
+var _resolve = require('path');
 
-var resolve = require("path").resolve;
+var _browserify = require('browserify');
 
-var browserify = _interopRequire(require("browserify"));
+var browserify = _interopRequire(_browserify);
 
-var watchify = _interopRequire(require("watchify"));
+var _watchify = require('watchify');
 
-var ensureFileDirectory = require("./fileSystem").ensureFileDirectory;
+var watchify = _interopRequire(_watchify);
 
-var log = _interopRequireWildcard(require("./log"));
+var _ensureFileDirectory = require('./fileSystem');
 
-var sourceExtension = "coffee";
+var _import = require('./log');
+
+var log = _interopRequireWildcard(_import);
+
+'use strict';
+
+var sourceExtension = 'coffee';
 exports.sourceExtension = sourceExtension;
-var targetExtension = "js";
+var targetExtension = 'js';
 
 exports.targetExtension = targetExtension;
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
@@ -43,22 +46,22 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   }
 
-  log.debug("browserify.sourceFilePathMatches =>", result, sourceFilePath);
+  log.debug('browserify.sourceFilePathMatches =>', result, sourceFilePath);
 
   return result;
 };
 
 exports.sourceFilePathMatches = sourceFilePathMatches;
 var compileAllFiles = function compileAllFiles(options, cb) {
-  log.debug("browserify.compileAllFiles");
+  log.debug('browserify.compileAllFiles');
 
-  exists(options.sourcePath, function (exists) {
+  _exists$createWriteStream$writeFile.exists(options.sourcePath, function (exists) {
     if (!exists) {
-      log.taskInfo(options.taskName, "skipping " + options.sourcePath + " (Does not exist)");
+      log.taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
       return cb();
     }
 
-    ensureFileDirectory(options.targetPath, function (e) {
+    _ensureFileDirectory.ensureFileDirectory(options.targetPath, function (e) {
       if (e) {
         return cb(e);
       }
@@ -70,22 +73,22 @@ var compileAllFiles = function compileAllFiles(options, cb) {
         packageCache: {}
       });
 
-      b.add(resolve(options.sourcePath));
+      b.add(_resolve.resolve(options.sourcePath));
 
-      b.on("bundle", function (bundleStream) {
-        var data = "";
+      b.on('bundle', function (bundleStream) {
+        var data = '';
 
-        bundleStream.on("data", function (d) {
+        bundleStream.on('data', function (d) {
           data += d;
         });
 
-        bundleStream.on("end", function (d) {
-          writeFile(options.targetPath, data, function (e) {
+        bundleStream.on('end', function (d) {
+          _exists$createWriteStream$writeFile.writeFile(options.targetPath, data, function (e) {
             if (e) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+            log.taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
             cb();
           });
         });
@@ -98,15 +101,15 @@ var compileAllFiles = function compileAllFiles(options, cb) {
 
 exports.compileAllFiles = compileAllFiles;
 var watch = function watch(options, cb) {
-  log.debug("browserify.watch");
+  log.debug('browserify.watch');
 
-  exists(options.sourcePath, function (exists) {
+  _exists$createWriteStream$writeFile.exists(options.sourcePath, function (exists) {
     if (!exists) {
-      log.taskInfo(options.taskName, "skipping " + options.sourcePath + " (Does not exist)");
+      log.taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
       return cb();
     }
 
-    ensureFileDirectory(options.targetPath, function (e) {
+    _ensureFileDirectory.ensureFileDirectory(options.targetPath, function (e) {
       if (e) {
         return cb(e);
       }
@@ -117,29 +120,29 @@ var watch = function watch(options, cb) {
         packageCache: {}
       });
 
-      b.add(resolve(options.sourcePath));
+      b.add(_resolve.resolve(options.sourcePath));
 
-      b.on("bundle", function (bundleStream) {
-        var data = "";
+      b.on('bundle', function (bundleStream) {
+        var data = '';
 
-        bundleStream.on("data", function (d) {
+        bundleStream.on('data', function (d) {
           data += d;
         });
 
-        bundleStream.on("end", function (d) {
-          writeFile(options.targetPath, data, function (e) {
+        bundleStream.on('end', function (d) {
+          _exists$createWriteStream$writeFile.writeFile(options.targetPath, data, function (e) {
             if (e) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, "" + options.sourcePath + " => " + options.targetPath);
+            log.taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
           });
         });
       });
 
       var w = watchify(b);
 
-      w.on("update", function () {
+      w.on('update', function () {
         b.bundle();
       });
 

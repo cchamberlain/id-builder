@@ -1,19 +1,26 @@
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var moment = _interopRequire(require("moment"));
+var _moment = require('moment');
 
-var chalk = _interopRequire(require("chalk"));
+var moment = _interopRequire(_moment);
 
-var minilog = _interopRequire(require("minilog"));
+var _chalk = require('chalk');
 
-var log = minilog("id-builder");
+var chalk = _interopRequire(_chalk);
+
+var _minilog = require('minilog');
+
+var minilog = _interopRequire(_minilog);
+
+'use strict';
+
+var log = minilog('id-builder');
 
 minilog.pipe(minilog.suggest).pipe(minilog.backends.console.formatLearnboost).pipe(minilog.backends.console);
 
@@ -53,39 +60,39 @@ var error = function error() {
 };
 
 exports.error = error;
-var arrowCharacter = "→";
+var arrowCharacter = '→';
 exports.arrowCharacter = arrowCharacter;
-var okCharacter = "✓";
+var okCharacter = '✓';
 exports.okCharacter = okCharacter;
-var warningCharacter = "✗";
+var warningCharacter = '✗';
 
 exports.warningCharacter = warningCharacter;
 var taskInfo = function taskInfo(task, message) {
-  info("  " + task + " " + chalk.grey(message));
+  info('  ' + task + ' ' + chalk.grey(message));
 };
 
 exports.taskInfo = taskInfo;
 var taskWarn = function taskWarn(task, message) {
-  warn("" + chalk.grey(arrowCharacter) + " " + task + ": " + message);
+  warn('' + chalk.grey(arrowCharacter) + ' ' + task + ': ' + message);
 };
 
 exports.taskWarn = taskWarn;
 var taskError = function taskError(task, message) {
-  error("" + chalk.grey(arrowCharacter) + " " + task + ": " + message);
+  error('' + chalk.grey(arrowCharacter) + ' ' + task + ': ' + message);
 };
 
 exports.taskError = taskError;
 var disabledTask = function disabledTask(name) {
-  warn("" + chalk.yellow(warningCharacter) + " " + name);
+  warn('' + chalk.yellow(warningCharacter) + ' ' + name);
 };
 
 exports.disabledTask = disabledTask;
 var startTask = function startTask(name) {
-  info("" + chalk.grey(arrowCharacter) + " " + name);
+  info('' + chalk.grey(arrowCharacter) + ' ' + name);
 };
 
 exports.startTask = startTask;
 var finishTask = function finishTask(name) {
-  info("" + chalk.green(okCharacter) + " " + chalk.green(name));
+  info('' + chalk.green(okCharacter) + ' ' + chalk.green(name));
 };
 exports.finishTask = finishTask;

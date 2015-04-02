@@ -1,21 +1,24 @@
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var log = _interopRequire(require("loglevel"));
+var _log = require('loglevel');
 
-var start = require("../lib/watch").start;
+var log = _interopRequire(_log);
 
-var dependencies = ["runTests"];
+var _start = require('../lib/watch');
+
+'use strict';
+
+var dependencies = ['runTests'];
 
 exports.dependencies = dependencies;
 var run = function run(options, cb) {
-  start(options);
+  _start.start(options);
   cb();
 };
 exports.run = run;

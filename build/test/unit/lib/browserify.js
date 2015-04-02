@@ -1,24 +1,32 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-var log = _interopRequire(require("loglevel"));
+var _log = require('loglevel');
 
-var expect = require("chai").expect;
+var log = _interopRequire(_log);
 
-var mkdirp = _interopRequire(require("mkdirp"));
+var _expect = require('chai');
 
-var rimraf = _interopRequire(require("rimraf"));
+var _mkdirp = require('mkdirp');
 
-var browserify = _interopRequireWildcard(require("../build/../../../lib/browserify"));
+var mkdirp = _interopRequire(_mkdirp);
 
-var randomString = require("../build/../../../lib/tests").randomString;
+var _rimraf = require('rimraf');
 
-describe("browserify", function () {
+var rimraf = _interopRequire(_rimraf);
+
+var _import = require('../build/../../../lib/browserify');
+
+var browserify = _interopRequireWildcard(_import);
+
+var _randomString = require('../build/../../../lib/tests');
+
+describe('browserify', function () {
   beforeEach(function (cb) {
-    this.directoryPath = ".tmp/" + randomString();
+    this.directoryPath = '.tmp/' + _randomString.randomString();
 
     mkdirp(this.directoryPath, cb);
   });
@@ -27,66 +35,66 @@ describe("browserify", function () {
     rimraf(this.directoryPath, cb);
   });
 
-  describe("sourceExtension", function () {
-    it("should be defined", function (cb) {
-      expect(browserify.sourceExtension).to.be.a("string")["with"].length.above(0);
+  describe('sourceExtension', function () {
+    it('should be defined', function (cb) {
+      _expect.expect(browserify.sourceExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
   });
 
-  describe("targetExtension", function () {
-    it("should be defined", function (cb) {
-      expect(browserify.targetExtension).to.be.a("string")["with"].length.above(0);
+  describe('targetExtension', function () {
+    it('should be defined', function (cb) {
+      _expect.expect(browserify.targetExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
   });
 
-  describe("pathReloads(options, path)", function () {});
+  describe('pathReloads(options, path)', function () {});
 
-  describe("sourceFilePathMatches", function () {
-    describe("when the `sourceFilePath` is the `targetPath`", function () {
-      it("should return `false`", function (cb) {
+  describe('sourceFilePathMatches', function () {
+    describe('when the `sourceFilePath` is the `targetPath`', function () {
+      it('should return `false`', function (cb) {
         var options = {
-          targetPath: "x/y.js",
-          sourceDirectory: "x"
+          targetPath: 'x/y.js',
+          sourceDirectory: 'x'
         };
 
-        expect(browserify.sourceFilePathMatches(options, "x/y.js")).to.equal(false);
+        _expect.expect(browserify.sourceFilePathMatches(options, 'x/y.js')).to.equal(false);
 
         cb();
       });
     });
 
-    describe("when the `sourceFilePath` is in the the `sourceDirectory`", function () {
-      it("should return `true`", function (cb) {
+    describe('when the `sourceFilePath` is in the the `sourceDirectory`', function () {
+      it('should return `true`', function (cb) {
         var options = {
-          targetPath: "x/y.js",
-          sourceDirectory: "x"
+          targetPath: 'x/y.js',
+          sourceDirectory: 'x'
         };
 
-        expect(browserify.sourceFilePathMatches(options, "x/q.js")).to.equal(true);
+        _expect.expect(browserify.sourceFilePathMatches(options, 'x/q.js')).to.equal(true);
 
         cb();
       });
     });
 
-    describe("when the `sourceFilePath` is not in the the `sourceDirectory`", function () {
-      it("should return `false`", function (cb) {
+    describe('when the `sourceFilePath` is not in the the `sourceDirectory`', function () {
+      it('should return `false`', function (cb) {
         var options = {
-          targetPath: "x/q.js",
-          sourceDirectory: "a"
+          targetPath: 'x/q.js',
+          sourceDirectory: 'a'
         };
 
-        expect(browserify.sourceFilePathMatches(options, "x/q.js")).to.equal(false);
+        _expect.expect(browserify.sourceFilePathMatches(options, 'x/q.js')).to.equal(false);
 
         cb();
       });
     });
   });
 
-  describe("compileAllFiles", function () {});
+  describe('compileAllFiles', function () {});
 
-  describe("watch", function () {});
+  describe('watch', function () {});
 });

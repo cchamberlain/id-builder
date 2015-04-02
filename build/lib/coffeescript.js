@@ -1,37 +1,42 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var compile = require("coffee-script").compile;
+var _compile = require('coffee-script');
 
-var log = _interopRequireWildcard(require("./log"));
+var _import = require('./log');
 
-var fileSystem = _interopRequireWildcard(require("./fileSystem"));
+var log = _interopRequireWildcard(_import);
 
-var sourceExtension = "coffee";
+var _import2 = require('./fileSystem');
+
+var fileSystem = _interopRequireWildcard(_import2);
+
+'use strict';
+
+var sourceExtension = 'coffee';
 exports.sourceExtension = sourceExtension;
-var targetExtension = "js";
+var targetExtension = 'js';
 
 exports.targetExtension = targetExtension;
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(new RegExp("^" + options.sourcePath + ".+." + sourceExtension));
+  var result = !!sourceFilePath.match(new RegExp('^' + options.sourcePath + '.+.' + sourceExtension));
 
-  log.debug("coffeescript.sourceFilePathMatches =>", result, sourceFilePath);
+  log.debug('coffeescript.sourceFilePathMatches =>', result, sourceFilePath);
 
   return result;
 };
 
 exports.sourceFilePathMatches = sourceFilePathMatches;
 var compileChunk = function compileChunk(options, chunk, cb) {
-  log.debug("coffeescript.compileChunk", options);
+  log.debug('coffeescript.compileChunk', options);
 
   try {
-    cb(null, compile(chunk, {
+    cb(null, _compile.compile(chunk, {
       bare: true
     }));
   } catch (e) {

@@ -1,33 +1,39 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var _fs = require("fs");
+var _readFile$writeFile = require('fs');
 
-var readFile = _fs.readFile;
-var writeFile = _fs.writeFile;
+var _dirname = require('path');
 
-var dirname = require("path").dirname;
+var _import = require('lodash');
 
-var _ = _interopRequire(require("lodash"));
+var _ = _interopRequire(_import);
 
-var lsr = _interopRequire(require("lsr"));
+var _lsr = require('lsr');
 
-var mkdirp = _interopRequire(require("mkdirp"));
+var lsr = _interopRequire(_lsr);
 
-var each = require("async").each;
+var _mkdirp = require('mkdirp');
 
-var log = _interopRequireWildcard(require("./log"));
+var mkdirp = _interopRequire(_mkdirp);
+
+var _each = require('async');
+
+var _import2 = require('./log');
+
+var log = _interopRequireWildcard(_import2);
+
+'use strict';
 
 var getFiles = function getFiles(path, cb) {
-  log.debug("fileSystem.getFiles", path);
+  log.debug('fileSystem.getFiles', path);
 
   lsr(path, function (e, nodes) {
     if (e) {
@@ -41,7 +47,7 @@ var getFiles = function getFiles(path, cb) {
 };
 
 var getDirectories = function getDirectories(path, cb) {
-  log.debug("fileSystem.getDirectories", path);
+  log.debug('fileSystem.getDirectories', path);
 
   lsr(path, function (e, nodes) {
     if (e) {
@@ -55,21 +61,21 @@ var getDirectories = function getDirectories(path, cb) {
 };
 
 var getTargetPath = function getTargetPath(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
-  return sourcePath.replace(sourceDirectory, targetDirectory).replace(RegExp("\\." + sourceExtension + "$"), "." + targetExtension);
+  return sourcePath.replace(sourceDirectory, targetDirectory).replace(RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
 var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
-  log.debug("fileSystem.ensureFileDirectory", targetFilePath);
+  log.debug('fileSystem.ensureFileDirectory', targetFilePath);
 
-  mkdirp(dirname(targetFilePath), cb);
+  mkdirp(_dirname.dirname(targetFilePath), cb);
 };
 
 exports.ensureFileDirectory = ensureFileDirectory;
 var compileFile = function compileFile(compileChunk) {
   return function (options, sourceFilePath, targetFilePath, cb) {
-    log.debug("fileSystem.compileFile", sourceFilePath);
+    log.debug('fileSystem.compileFile', sourceFilePath);
 
-    readFile(sourceFilePath, function (e, fileContent) {
+    _readFile$writeFile.readFile(sourceFilePath, function (e, fileContent) {
       if (e) {
         return cb(e);
       }
@@ -84,12 +90,12 @@ var compileFile = function compileFile(compileChunk) {
             return cb(e);
           }
 
-          writeFile(targetFilePath, compiledChunk, function (e) {
+          _readFile$writeFile.writeFile(targetFilePath, compiledChunk, function (e) {
             if (e) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, "" + sourceFilePath + " => " + targetFilePath);
+            log.taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
             cb(null);
           });
@@ -102,7 +108,7 @@ var compileFile = function compileFile(compileChunk) {
 exports.compileFile = compileFile;
 var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function (options, cb) {
-    log.debug("fileSystem.compileAllFiles");
+    log.debug('fileSystem.compileAllFiles');
 
     getFiles(options.sourcePath, function (e, sourceFilePaths) {
       if (e) {
@@ -121,7 +127,7 @@ var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFil
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
       };
 
-      each(paths, iteratePath, cb);
+      _each.each(paths, iteratePath, cb);
     });
   };
 };

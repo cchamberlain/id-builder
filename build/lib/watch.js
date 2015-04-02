@@ -1,19 +1,26 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var _ = _interopRequire(require("lodash"));
+var _import = require('lodash');
 
-var chokidar = _interopRequire(require("chokidar"));
+var _ = _interopRequire(_import);
 
-var log = _interopRequireWildcard(require("./log"));
+var _chokidar = require('chokidar');
+
+var chokidar = _interopRequire(_chokidar);
+
+var _import2 = require('./log');
+
+var log = _interopRequireWildcard(_import2);
+
+'use strict';
 
 var watcher = null;
 
@@ -23,7 +30,7 @@ var getWatcher = function getWatcher() {
 
 exports.getWatcher = getWatcher;
 var start = function start(options) {
-  log.debug("watch.start");
+  log.debug('watch.start');
 
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {

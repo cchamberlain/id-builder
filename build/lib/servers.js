@@ -1,27 +1,30 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var exists = require("fs").exists;
+var _exists = require('fs');
 
-var Monitor = require("forever-monitor").Monitor;
+var _Monitor = require('forever-monitor');
 
-var each = require("async").each;
+var _each = require('async');
 
-var log = _interopRequireWildcard(require("./log"));
+var _import = require('./log');
+
+var log = _interopRequireWildcard(_import);
+
+'use strict';
 
 var monitors = {};
 
 var addPath = function addPath(path, cb) {
-  log.debug("servers.addPath", path);
+  log.debug('servers.addPath', path);
 
-  var monitor = new Monitor(path, {
-    command: "node"
+  var monitor = new _Monitor.Monitor(path, {
+    command: 'node'
   });
 
   monitors[path] = monitor;
@@ -33,9 +36,9 @@ var addPath = function addPath(path, cb) {
 
 exports.addPath = addPath;
 var removePath = function removePath(path, cb) {
-  log.debug("servers.removePath", path);
+  log.debug('servers.removePath', path);
 
-  log.debug("monitors", monitors);
+  log.debug('monitors', monitors);
 
   var monitor = monitors[path];
 
@@ -48,7 +51,7 @@ var removePath = function removePath(path, cb) {
 
 exports.removePath = removePath;
 var restartPath = function restartPath(path, cb) {
-  log.debug("servers.restartPath", path);
+  log.debug('servers.restartPath', path);
 
   var monitor = monitors[path];
 
@@ -59,22 +62,22 @@ var restartPath = function restartPath(path, cb) {
 
 exports.restartPath = restartPath;
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath, cb) {
-  log.debug("servers.sourceFilePathMatches", options, sourceFilePath);
+  log.debug('servers.sourceFilePathMatches', options, sourceFilePath);
 
-  var result = !!sourceFilePath.match(RegExp("^" + options.sourcePath));
+  var result = !!sourceFilePath.match(RegExp('^' + options.sourcePath));
 
-  log.debug("servers.sourceFilePathMatches =>", result);
+  log.debug('servers.sourceFilePathMatches =>', result);
 
   return result;
 };
 
 exports.sourceFilePathMatches = sourceFilePathMatches;
 var startServer = function startServer(options, filePath, cb) {
-  log.debug("servers.startServer", options, filePath);
+  log.debug('servers.startServer', options, filePath);
 
-  exists(filePath, function (result) {
+  _exists.exists(filePath, function (result) {
     if (!result) {
-      log.taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
+      log.taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
       return cb();
     }
 
@@ -90,11 +93,11 @@ var startServer = function startServer(options, filePath, cb) {
 
 exports.startServer = startServer;
 var stopServer = function stopServer(options, filePath, cb) {
-  log.debug("servers.stopServer", options, filePath);
+  log.debug('servers.stopServer', options, filePath);
 
-  exists(filePath, function (result) {
+  _exists.exists(filePath, function (result) {
     if (!result) {
-      log.taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
+      log.taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
       return cb();
     }
 
@@ -103,7 +106,7 @@ var stopServer = function stopServer(options, filePath, cb) {
     if (monitor) {
       removePath(filePath, cb);
     } else {
-      log.taskInfo(options.taskName, "skipping " + filePath + " (Monitor does not exist).");
+      log.taskInfo(options.taskName, 'skipping ' + filePath + ' (Monitor does not exist).');
       cb();
     }
   });
@@ -111,11 +114,11 @@ var stopServer = function stopServer(options, filePath, cb) {
 
 exports.stopServer = stopServer;
 var restartServer = function restartServer(options, filePath, cb) {
-  log.debug("servers.restartServer", options, filePath);
+  log.debug('servers.restartServer', options, filePath);
 
-  exists(filePath, function (result) {
+  _exists.exists(filePath, function (result) {
     if (!result) {
-      log.taskInfo(options.taskName, "skipping " + filePath + " (Does not exist).");
+      log.taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
       return cb();
     }
 
@@ -131,19 +134,19 @@ var restartServer = function restartServer(options, filePath, cb) {
 
 exports.restartServer = restartServer;
 var runServers = function runServers(options, cb) {
-  log.debug("servers.runServers", options);
+  log.debug('servers.runServers', options);
 
-  each(options.paths, function (v, cb) {
-    startServer(options, "" + options.sourcePath + "/" + v, cb);
+  _each.each(options.paths, function (v, cb) {
+    startServer(options, '' + options.sourcePath + '/' + v, cb);
   });
 };
 
 exports.runServers = runServers;
 var restartServers = function restartServers(options, cb) {
-  log.debug("servers.restartServers", options);
+  log.debug('servers.restartServers', options);
 
-  each(options.paths, function (v, cb) {
-    restartServer(options, "" + options.sourcePath + "/" + v, cb);
+  _each.each(options.paths, function (v, cb) {
+    restartServer(options, '' + options.sourcePath + '/' + v, cb);
   });
 };
 exports.restartServers = restartServers;

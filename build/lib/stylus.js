@@ -1,36 +1,41 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var render = require("stylus").render;
+var _render = require('stylus');
 
-var log = _interopRequireWildcard(require("./log"));
+var _import = require('./log');
 
-var fileSystem = _interopRequireWildcard(require("./fileSystem"));
+var log = _interopRequireWildcard(_import);
 
-var sourceExtension = "styl";
+var _import2 = require('./fileSystem');
+
+var fileSystem = _interopRequireWildcard(_import2);
+
+'use strict';
+
+var sourceExtension = 'styl';
 exports.sourceExtension = sourceExtension;
-var targetExtension = "css";
+var targetExtension = 'css';
 
 exports.targetExtension = targetExtension;
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(RegExp("^" + options.sourcePath + ".+." + sourceExtension + "$"));
+  var result = !!sourceFilePath.match(RegExp('^' + options.sourcePath + '.+.' + sourceExtension + '$'));
 
-  log.debug("stylus.sourceFilePathMatches =>", result, sourceFilePath);
+  log.debug('stylus.sourceFilePathMatches =>', result, sourceFilePath);
 
   return result;
 };
 
 exports.sourceFilePathMatches = sourceFilePathMatches;
 var compileChunk = function compileChunk(options, chunk, cb) {
-  log.debug("stylus.compileChunk", options.sourcePath);
+  log.debug('stylus.compileChunk', options.sourcePath);
 
-  render(chunk, cb);
+  _render.render(chunk, cb);
 };
 
 exports.compileChunk = compileChunk;

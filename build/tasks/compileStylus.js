@@ -1,18 +1,21 @@
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var log = _interopRequire(require("loglevel"));
+var _log = require('loglevel');
 
-var compileAllFiles = require("../lib/stylus").compileAllFiles;
+var log = _interopRequire(_log);
 
-var dependencies = ["clean"];
+var _compileAllFiles = require('../lib/stylus');
+
+'use strict';
+
+var dependencies = ['clean'];
 
 exports.dependencies = dependencies;
-var run = compileAllFiles;
+var run = _compileAllFiles.compileAllFiles;
 exports.run = run;

@@ -1,18 +1,21 @@
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var log = _interopRequire(require("loglevel"));
+var _log = require('loglevel');
 
-var copyAllFiles = require("../lib/copy").copyAllFiles;
+var log = _interopRequire(_log);
 
-var dependencies = ["clean"];
+var _copyAllFiles = require('../lib/copy');
+
+'use strict';
+
+var dependencies = ['clean'];
 
 exports.dependencies = dependencies;
-var run = copyAllFiles;
+var run = _copyAllFiles.copyAllFiles;
 exports.run = run;

@@ -1,24 +1,38 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-var minilog = _interopRequire(require("minilog"));
+var _minilog = require('minilog');
 
-var _ = _interopRequire(require("lodash"));
+var minilog = _interopRequire(_minilog);
 
-var auto = require("async").auto;
+var _import = require('lodash');
 
-var moment = _interopRequire(require("moment"));
+var _ = _interopRequire(_import);
 
-var log = _interopRequireWildcard(require("./lib/log"));
+var _auto = require('async');
 
-var defaultOptions = _interopRequire(require("./lib/defaultOptions"));
+var _moment = require('moment');
 
-var parseOptions = _interopRequire(require("./lib/parseOptions"));
+var moment = _interopRequire(_moment);
 
-var tasks = _interopRequire(require("./tasks"));
+var _import2 = require('./lib/log');
+
+var log = _interopRequireWildcard(_import2);
+
+var _defaultOptions = require('./lib/defaultOptions');
+
+var defaultOptions = _interopRequire(_defaultOptions);
+
+var _parseOptions = require('./lib/parseOptions');
+
+var parseOptions = _interopRequire(_parseOptions);
+
+var _tasks = require('./tasks');
+
+var tasks = _interopRequire(_tasks);
 
 var options = undefined;
 
@@ -27,7 +41,7 @@ var runTaskWithOptions = function runTaskWithOptions(options, task, name) {
     var taskOptions = options.tasks[name];
 
     if (!taskOptions) {
-      return cb("No options found for task \"" + name + "\".");
+      return cb('No options found for task "' + name + '".');
     }
 
     if (!taskOptions.enabled) {
@@ -66,5 +80,7 @@ module.exports = function (_x, cb) {
     return m;
   }, {});
 
-  auto(autoTasks, cb);
+  _auto.auto(autoTasks, cb);
 };
+
+;

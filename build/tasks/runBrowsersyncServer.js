@@ -1,18 +1,21 @@
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var log = _interopRequire(require("loglevel"));
+var _log = require('loglevel');
 
-var runServer = require("../lib/browsersync").runServer;
+var log = _interopRequire(_log);
 
-var dependencies = ["compileBabel", "compileBrowserify", "compileCoffeescript", "compileCopy", "compileJade", "compileLess", "compileLivescript", "compileStylus"];
+var _runServer = require('../lib/browsersync');
+
+'use strict';
+
+var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy', 'compileJade', 'compileLess', 'compileLivescript', 'compileStylus'];
 
 exports.dependencies = dependencies;
-var run = runServer;
+var run = _runServer.runServer;
 exports.run = run;

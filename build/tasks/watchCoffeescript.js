@@ -1,21 +1,26 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-"use strict";
 
-var log = _interopRequire(require("loglevel"));
+var _log = require('loglevel');
 
-var coffeescript = _interopRequireWildcard(require("../lib/coffeescript"));
+var log = _interopRequire(_log);
 
-var getWatcher = require("../lib/watch").getWatcher;
+var _import = require('../lib/coffeescript');
 
-var dependencies = ["watch"];
+var coffeescript = _interopRequireWildcard(_import);
+
+var _getWatcher = require('../lib/watch');
+
+'use strict';
+
+var dependencies = ['watch'];
 
 exports.dependencies = dependencies;
 var handlePath = function handlePath(options, path, stat) {
@@ -25,7 +30,7 @@ var handlePath = function handlePath(options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace("." + coffeescript.sourceExtension, "." + coffeescript.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace('.' + coffeescript.sourceExtension, '.' + coffeescript.targetExtension);
 
   //log.debug('watchCoffeescript.handlePath targetPath', targetPath);
 
@@ -59,25 +64,25 @@ var handleError = function handleError(options, e) {};
 var run = function run(options, cb) {
   //log.debug('watchCoffeescript.run', options);
 
-  var watcher = getWatcher();
+  var watcher = _getWatcher.getWatcher();
 
-  watcher.on("ready", function () {
-    watcher.on("add", function (path, stat) {
+  watcher.on('ready', function () {
+    watcher.on('add', function (path, stat) {
       handleAdd(options, path, stat);
     });
-    watcher.on("addDir", function (path, stat) {
+    watcher.on('addDir', function (path, stat) {
       handleAddDir(options, path, stat);
     });
-    watcher.on("change", function (path, stat) {
+    watcher.on('change', function (path, stat) {
       handleChange(options, path, stat);
     });
-    watcher.on("unlink", function (path, stat) {
+    watcher.on('unlink', function (path, stat) {
       handleUnlink(options, path, stat);
     });
-    watcher.on("unlinkDir", function (path, stat) {
+    watcher.on('unlinkDir', function (path, stat) {
       handleUnlinkDir(options, path, stat);
     });
-    watcher.on("error", function (path, stat) {
+    watcher.on('error', function (path, stat) {
       handleError(options, path, stat);
     });
   });
