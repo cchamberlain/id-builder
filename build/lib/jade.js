@@ -36,7 +36,7 @@ var compileChunk = function compileChunk(options, chunk, cb) {
   log.debug('jade.compileChunk', options.sourceFilePath);
 
   try {
-    cb(null, _compileClient.compileClient(chunk, {
+    cb(null, 'module.exports=' + _compileClient.compileClient(chunk, {
       compileDebug: false,
       filename: options.sourceFilePath
     }));

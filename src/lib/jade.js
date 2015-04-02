@@ -20,10 +20,10 @@ export const compileChunk = function(options, chunk, cb) {
   log.debug('jade.compileChunk', options.sourceFilePath);
 
   try {
-    cb(null, compileClient(chunk, {
+    cb(null, ('module.exports='+compileClient(chunk, {
       compileDebug: false,
       filename: options.sourceFilePath
-    }))
+    })))
   } catch (e) {
     return cb(e);
   }
