@@ -42,7 +42,7 @@
     "react-jade": "^2.3.0",
     "reactify": "^0.17.1",
     "rimraf": "^2.2.8",
-    "sinon": "^1.12.2",
+    "sinon": "^1.14.1",
     "sinon-chai": "^2.6.0",
     "spawn-mocha-parallel": "^1.0.0",
     "stylus": "^0.49.3",
