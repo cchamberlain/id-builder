@@ -15,7 +15,7 @@ const handlePath = function(options, path, stat) {
 
   const targetPath = path
     .replace(options.sourcePath, options.targetPath)
-    .replace(new RegExp(`^\.${jade.sourceExtension}$`), `.${jade.targetExtension}`);
+    .replace(new RegExp(`\.${jade.sourceExtension}$`), `.${jade.targetExtension}`);
 
   jade.compileFile(options, path, targetPath, function(e) {
     if (e) {

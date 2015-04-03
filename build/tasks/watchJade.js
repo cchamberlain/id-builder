@@ -28,7 +28,7 @@ var handlePath = function handlePath(options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + jade.sourceExtension + '$'), '.' + jade.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('.' + jade.sourceExtension + '$'), '.' + jade.targetExtension);
 
   jade.compileFile(options, path, targetPath, function (e) {
     if (e) {
