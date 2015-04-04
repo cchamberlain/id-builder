@@ -2,8 +2,6 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
@@ -14,33 +12,33 @@ var _dirname = require('path');
 
 var _import = require('lodash');
 
-var _ = _interopRequire(_import);
+var _import2 = _interopRequireWildcard(_import);
 
 var _lsr = require('lsr');
 
-var lsr = _interopRequire(_lsr);
+var _lsr2 = _interopRequireWildcard(_lsr);
 
 var _mkdirp = require('mkdirp');
 
-var mkdirp = _interopRequire(_mkdirp);
+var _mkdirp2 = _interopRequireWildcard(_mkdirp);
 
 var _each = require('async');
 
-var _import2 = require('./log');
+var _import3 = require('./log');
 
-var log = _interopRequireWildcard(_import2);
+var log = _interopRequireWildcard(_import3);
 
 'use strict';
 
 var getFiles = function getFiles(path, cb) {
   log.debug('fileSystem.getFiles', path);
 
-  lsr(path, function (e, nodes) {
+  _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
     }
 
-    cb(null, _(nodes).filter(function (v) {
+    cb(null, _import2['default'](nodes).filter(function (v) {
       return v.isFile();
     }));
   });
@@ -49,12 +47,12 @@ var getFiles = function getFiles(path, cb) {
 var getDirectories = function getDirectories(path, cb) {
   log.debug('fileSystem.getDirectories', path);
 
-  lsr(path, function (e, nodes) {
+  _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
     }
 
-    cb(null, _(nodes).filter(function (v) {
+    cb(null, _import2['default'](nodes).filter(function (v) {
       return v.isDirectory();
     }));
   });
@@ -67,7 +65,7 @@ var getTargetPath = function getTargetPath(sourceDirectory, targetDirectory, sou
 var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
   log.debug('fileSystem.ensureFileDirectory', targetFilePath);
 
-  mkdirp(_dirname.dirname(targetFilePath), cb);
+  _mkdirp2['default'](_dirname.dirname(targetFilePath), cb);
 };
 
 exports.ensureFileDirectory = ensureFileDirectory;
@@ -115,7 +113,7 @@ var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFil
         return cb();
       }
 
-      var paths = _(sourceFilePaths).map(function (v) {
+      var paths = _import2['default'](sourceFilePaths).map(function (v) {
         return v.fullPath;
       }).filter(function (v) {
         return sourceFilePathMatches(options, v);

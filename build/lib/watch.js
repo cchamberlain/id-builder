@@ -2,23 +2,21 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
 var _import = require('lodash');
 
-var _ = _interopRequire(_import);
+var _import2 = _interopRequireWildcard(_import);
 
 var _chokidar = require('chokidar');
 
-var chokidar = _interopRequire(_chokidar);
+var _chokidar2 = _interopRequireWildcard(_chokidar);
 
-var _import2 = require('./log');
+var _import3 = require('./log');
 
-var log = _interopRequireWildcard(_import2);
+var log = _interopRequireWildcard(_import3);
 
 'use strict';
 
@@ -43,7 +41,7 @@ var start = function start(options) {
   }
 
   // Start the watcher with the first path.
-  watcher = chokidar.watch(options.paths, {
+  watcher = _chokidar2['default'].watch(options.paths, {
     ignored: /[\/\/]\./,
     persistent: true,
     ignoreInitial: true,

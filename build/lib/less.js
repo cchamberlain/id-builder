@@ -2,15 +2,13 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
 var _less = require('less');
 
-var less = _interopRequire(_less);
+var _less2 = _interopRequireWildcard(_less);
 
 var _import = require('./log');
 
@@ -43,7 +41,7 @@ var compileChunk = function compileChunk(options, chunk, cb) {
     filename: options.sourcePath
   };
 
-  less.render(chunk, renderOptions, function (e, result) {
+  _less2['default'].render(chunk, renderOptions, function (e, result) {
     if (e) {
       return cb(e);
     }

@@ -9,7 +9,7 @@ export const dependencies = [
   'compileBrowserify',
   'compileCoffeescript',
   'compileCopy',
-  'compileJade',
+  //'compileJade',
   'compileLess',
   'compileLivescript',
   'compileStylus'

@@ -10,7 +10,7 @@ import * as babel from './babel';
 import * as browserify from './browserify';
 import * as coffeescript from './coffeescript';
 import * as fileSystem from './fileSystem';
-import * as jade from './jade';
+//import * as jade from './jade';
 import * as less from './less';
 import * as livescript from './livescript';
 import * as log from './log';
@@ -25,8 +25,8 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     result = false;
-  } else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
-    result = false;
+  //} else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
+  //  result = false;
   } else if (less.sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     result = false;
   } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {

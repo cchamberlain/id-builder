@@ -2,37 +2,41 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 var _minilog = require('minilog');
 
-var minilog = _interopRequire(_minilog);
+var _minilog2 = _interopRequireWildcard(_minilog);
 
 var _import = require('lodash');
 
-var _ = _interopRequire(_import);
+var _import2 = _interopRequireWildcard(_import);
 
 var _auto = require('async');
 
 var _moment = require('moment');
 
-var moment = _interopRequire(_moment);
+var _moment2 = _interopRequireWildcard(_moment);
 
-var _import2 = require('./lib/log');
+var _import3 = require('./lib/log');
 
-var log = _interopRequireWildcard(_import2);
+var log = _interopRequireWildcard(_import3);
 
 var _defaultOptions = require('./lib/defaultOptions');
 
-var defaultOptions = _interopRequire(_defaultOptions);
+var _defaultOptions2 = _interopRequireWildcard(_defaultOptions);
 
 var _parseOptions = require('./lib/parseOptions');
 
-var parseOptions = _interopRequire(_parseOptions);
+var _parseOptions2 = _interopRequireWildcard(_parseOptions);
 
 var _tasks = require('./tasks');
 
-var tasks = _interopRequire(_tasks);
+var _tasks2 = _interopRequireWildcard(_tasks);
+
+'use strict';
 
 var options = undefined;
 
@@ -65,16 +69,16 @@ var runTaskWithOptions = function runTaskWithOptions(options, task, name) {
   };
 };
 
-module.exports = function (_x, cb) {
+exports['default'] = function (_x, cb) {
   var inputOptions = arguments[0] === undefined ? {} : arguments[0];
 
-  options = global.options = parseOptions(defaultOptions, inputOptions);
+  options = global.options = _parseOptions2['default'](_defaultOptions2['default'], inputOptions);
 
   if (options.logging) {
-    minilog.suggest.deny(/.*/, options.logging.level);
+    _minilog2['default'].suggest.deny(/.*/, options.logging.level);
   }
 
-  var autoTasks = _.reduce(tasks, function (m, v, k) {
+  var autoTasks = _import2['default'].reduce(_tasks2['default'], function (m, v, k) {
     m[k] = v.dependencies.concat(runTaskWithOptions(options, v, k));
 
     return m;
@@ -84,3 +88,4 @@ module.exports = function (_x, cb) {
 };
 
 ;
+module.exports = exports['default'];

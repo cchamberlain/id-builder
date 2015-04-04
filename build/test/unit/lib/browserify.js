@@ -2,21 +2,19 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
-
 var _log = require('loglevel');
 
-var log = _interopRequire(_log);
+var _log2 = _interopRequireWildcard(_log);
 
 var _expect = require('chai');
 
 var _mkdirp = require('mkdirp');
 
-var mkdirp = _interopRequire(_mkdirp);
+var _mkdirp2 = _interopRequireWildcard(_mkdirp);
 
 var _rimraf = require('rimraf');
 
-var rimraf = _interopRequire(_rimraf);
+var _rimraf2 = _interopRequireWildcard(_rimraf);
 
 var _import = require('../build/../../../lib/browserify');
 
@@ -28,11 +26,11 @@ describe('browserify', function () {
   beforeEach(function (cb) {
     this.directoryPath = '.tmp/' + _randomString.randomString();
 
-    mkdirp(this.directoryPath, cb);
+    _mkdirp2['default'](this.directoryPath, cb);
   });
 
   afterEach(function (cb) {
-    rimraf(this.directoryPath, cb);
+    _rimraf2['default'](this.directoryPath, cb);
   });
 
   describe('sourceExtension', function () {

@@ -1,6 +1,11 @@
 'use strict';
 
-module.exports = {
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+'use strict';
+
+exports['default'] = {
   //sourceDirectory: 'src',
   //targetDirectory: 'build',
   //testsDirectory: 'build/tests',
@@ -155,3 +160,4 @@ module.exports = {
     }
   }
 };
+module.exports = exports['default'];

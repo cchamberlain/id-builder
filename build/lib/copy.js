@@ -2,8 +2,6 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
@@ -12,33 +10,31 @@ var _readFile$writeFile = require('fs');
 
 var _import = require('lodash');
 
-var _ = _interopRequire(_import);
+var _import2 = _interopRequireWildcard(_import);
 
 var _each = require('async');
 
 var _lsr = require('lsr');
 
-var lsr = _interopRequire(_lsr);
+var _lsr2 = _interopRequireWildcard(_lsr);
 
-var _import2 = require('./babel');
+var _import3 = require('./babel');
 
-var babel = _interopRequireWildcard(_import2);
+var babel = _interopRequireWildcard(_import3);
 
-var _import3 = require('./browserify');
+var _import4 = require('./browserify');
 
-var browserify = _interopRequireWildcard(_import3);
+var browserify = _interopRequireWildcard(_import4);
 
-var _import4 = require('./coffeescript');
+var _import5 = require('./coffeescript');
 
-var coffeescript = _interopRequireWildcard(_import4);
+var coffeescript = _interopRequireWildcard(_import5);
 
-var _import5 = require('./fileSystem');
+var _import6 = require('./fileSystem');
 
-var fileSystem = _interopRequireWildcard(_import5);
+var fileSystem = _interopRequireWildcard(_import6);
 
-var _import6 = require('./jade');
-
-var jade = _interopRequireWildcard(_import6);
+//import * as jade from './jade';
 
 var _import7 = require('./less');
 
@@ -67,8 +63,8 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     result = false;
-  } else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
-    result = false;
+    //} else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
+    //  result = false;
   } else if (less.sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     result = false;
   } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
@@ -119,12 +115,12 @@ exports.copyFile = copyFile;
 var copyAllFiles = function copyAllFiles(options, cb) {
   log.debug('copy.copyAllFiles', options.sourcePath);
 
-  lsr(options.sourcePath, function (e, nodes) {
+  _lsr2['default'](options.sourcePath, function (e, nodes) {
     if (e) {
       return cb(e);
     }
 
-    var paths = _(nodes).filter(function (v) {
+    var paths = _import2['default'](nodes).filter(function (v) {
       return !v.isDirectory() && sourceFilePathMatches(options, v.fullPath);
     }).map(function (v) {
       return v.fullPath;

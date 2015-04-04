@@ -5,6 +5,7 @@ import { resolve } from 'path';
 
 import browserify from 'browserify';
 import watchify from 'watchify';
+import jadeify from 'jadeify';
 
 import { ensureFileDirectory } from './fileSystem';
 import * as log from './log';
@@ -51,6 +52,8 @@ export const compileAllFiles = function(options, cb) {
         packageCache: {}
       });
 
+      b.transform(jadeify);
+
       b.add(resolve(options.sourcePath));
 
       b.on('bundle', function(bundleStream) {
@@ -96,6 +99,8 @@ export const watch = function(options, cb) {
         fullPaths: true,
         packageCache: {}
       });
+
+      b.transform(jadeify);
 
       b.add(resolve(options.sourcePath));
 

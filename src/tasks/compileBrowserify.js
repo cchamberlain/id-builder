@@ -7,7 +7,7 @@ export const dependencies = [
   'compileBabel',
   'compileCoffeescript',
   'compileCopy',
-  'compileJade',
+  //'compileJade',
   'compileLess',
   'compileLivescript',
   'compileStylus'

@@ -2,8 +2,6 @@
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj['default'] : obj; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
@@ -14,11 +12,15 @@ var _resolve = require('path');
 
 var _browserify = require('browserify');
 
-var browserify = _interopRequire(_browserify);
+var _browserify2 = _interopRequireWildcard(_browserify);
 
 var _watchify = require('watchify');
 
-var watchify = _interopRequire(_watchify);
+var _watchify2 = _interopRequireWildcard(_watchify);
+
+var _jadeify = require('jadeify');
+
+var _jadeify2 = _interopRequireWildcard(_jadeify);
 
 var _ensureFileDirectory = require('./fileSystem');
 
@@ -66,12 +68,14 @@ var compileAllFiles = function compileAllFiles(options, cb) {
         return cb(e);
       }
 
-      var b = browserify({
+      var b = _browserify2['default']({
         cache: {},
         debug: true,
         fullPaths: true,
         packageCache: {}
       });
+
+      b.transform(_jadeify2['default']);
 
       b.add(_resolve.resolve(options.sourcePath));
 
@@ -113,12 +117,14 @@ var watch = function watch(options, cb) {
       if (e) {
         return cb(e);
       }
-      var b = browserify({
+      var b = _browserify2['default']({
         cache: {},
         debug: true,
         fullPaths: true,
         packageCache: {}
       });
+
+      b.transform(_jadeify2['default']);
 
       b.add(_resolve.resolve(options.sourcePath));
 
@@ -140,7 +146,7 @@ var watch = function watch(options, cb) {
         });
       });
 
-      var w = watchify(b);
+      var w = _watchify2['default'](b);
 
       w.on('update', function () {
         b.bundle();
