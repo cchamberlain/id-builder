@@ -24,17 +24,15 @@ var _jadeify2 = _interopRequireWildcard(_jadeify);
 
 var _ensureFileDirectory = require('./fileSystem');
 
-var _import = require('./log');
+var _log = require('./log');
 
-var log = _interopRequireWildcard(_import);
+var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 
 var sourceExtension = 'coffee';
-exports.sourceExtension = sourceExtension;
 var targetExtension = 'js';
 
-exports.targetExtension = targetExtension;
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
@@ -48,18 +46,40 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   }
 
-  log.debug('browserify.sourceFilePathMatches =>', result, sourceFilePath);
-
   return result;
 };
 
-exports.sourceFilePathMatches = sourceFilePathMatches;
+var getBrowserifyBundle = function getBrowserifyBundle(options) {
+  var browserifyOptions = {
+    cache: {},
+    debug: true,
+    fullPaths: true,
+    packageCache: {}
+  };
+
+  _log2['default'].debug('browserify.getBrowserifyBundle browserifyOptions:', JSON.stringify(browserifyOptions));
+
+  var b = _browserify2['default'](browserifyOptions);
+
+  var jadeifyOptions = {
+    compileDebug: true,
+    pretty: true,
+    runtimePath: require.resolve('jade/runtime')
+  };
+
+  _log2['default'].debug('browserify.getBrowserifyBundle jadeifyOptions', JSON.stringify(jadeifyOptions));
+
+  b.transform(_jadeify2['default'], jadeifyOptions);
+
+  return b;
+};
+
 var compileAllFiles = function compileAllFiles(options, cb) {
-  log.debug('browserify.compileAllFiles');
+  _log2['default'].debug('browserify.compileAllFiles');
 
   _exists$createWriteStream$writeFile.exists(options.sourcePath, function (exists) {
     if (!exists) {
-      log.taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
+      _log2['default'].taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
       return cb();
     }
 
@@ -68,14 +88,7 @@ var compileAllFiles = function compileAllFiles(options, cb) {
         return cb(e);
       }
 
-      var b = _browserify2['default']({
-        cache: {},
-        debug: true,
-        fullPaths: true,
-        packageCache: {}
-      });
-
-      b.transform(_jadeify2['default']);
+      var b = getBrowserifyBundle(options);
 
       b.add(_resolve.resolve(options.sourcePath));
 
@@ -92,7 +105,7 @@ var compileAllFiles = function compileAllFiles(options, cb) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
+            _log2['default'].taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
             cb();
           });
         });
@@ -103,13 +116,12 @@ var compileAllFiles = function compileAllFiles(options, cb) {
   });
 };
 
-exports.compileAllFiles = compileAllFiles;
 var watch = function watch(options, cb) {
-  log.debug('browserify.watch');
+  _log2['default'].debug('browserify.watch');
 
   _exists$createWriteStream$writeFile.exists(options.sourcePath, function (exists) {
     if (!exists) {
-      log.taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
+      _log2['default'].taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
       return cb();
     }
 
@@ -117,18 +129,14 @@ var watch = function watch(options, cb) {
       if (e) {
         return cb(e);
       }
-      var b = _browserify2['default']({
-        cache: {},
-        debug: true,
-        fullPaths: true,
-        packageCache: {}
-      });
 
-      b.transform(_jadeify2['default']);
+      var b = getBrowserifyBundle(options);
 
       b.add(_resolve.resolve(options.sourcePath));
 
       b.on('bundle', function (bundleStream) {
+        _log2['default'].debug('browserify.watch on bundle');
+
         var data = '';
 
         bundleStream.on('data', function (d) {
@@ -136,12 +144,14 @@ var watch = function watch(options, cb) {
         });
 
         bundleStream.on('end', function (d) {
+          _log2['default'].debug('browserify.watch on bundle end');
+
           _exists$createWriteStream$writeFile.writeFile(options.targetPath, data, function (e) {
             if (e) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
+            _log2['default'].taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
           });
         });
       });
@@ -156,4 +166,12 @@ var watch = function watch(options, cb) {
     });
   });
 };
-exports.watch = watch;
+
+exports['default'] = {
+  sourceExtension: sourceExtension,
+  targetExtension: targetExtension,
+  sourceFilePathMatches: sourceFilePathMatches,
+  compileAllFiles: compileAllFiles,
+  watch: watch
+};
+module.exports = exports['default'];

@@ -10,39 +10,37 @@ var _browserSync = require('browser-sync');
 
 var _browserSync2 = _interopRequireWildcard(_browserSync);
 
-var _import = require('./copy');
+var _copy = require('./copy');
 
-var copy = _interopRequireWildcard(_import);
+var _copy2 = _interopRequireWildcard(_copy);
 
-var _import2 = require('./log');
+var _log = require('./log');
 
-var log = _interopRequireWildcard(_import2);
+var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 
-var sourceFilePathMatches = copy.sourceFilePathMatches;
+var sourceFilePathMatches = _copy2['default'].sourceFilePathMatches;
 
-exports.sourceFilePathMatches = sourceFilePathMatches;
 var reload = function reload(options, path, cb) {
-  log.debug('browsersync.reload', path);
+  _log2['default'].debug('browsersync.reload', path);
 
   _browserSync2['default'].reload(path);
 
-  log.taskInfo(options.taskName, 'Reloaded `' + path + '`');
+  _log2['default'].taskInfo(options.taskName, 'Reloaded `' + path + '`');
 
   cb();
 };
 
-exports.reload = reload;
 var runServer = function runServer(_options, cb) {
-  log.debug('browsersync.runServer');
+  _log2['default'].debug('browsersync.runServer');
 
   var options = {
-    //files: [],
-    //minify: false,
-    //open: true,
-    //host: 'localhost',
-    port: 9001,
+    ui: {
+      port: 9001
+    },
+
+    port: 9000,
     logLevel: 'silent',
     logFileChanges: false };
 
@@ -54,4 +52,10 @@ var runServer = function runServer(_options, cb) {
     cb();
   });
 };
-exports.runServer = runServer;
+
+exports['default'] = {
+  sourceFilePathMatches: sourceFilePathMatches,
+  reload: reload,
+  runServer: runServer
+};
+module.exports = exports['default'];

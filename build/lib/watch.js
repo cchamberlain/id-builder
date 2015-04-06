@@ -14,9 +14,9 @@ var _chokidar = require('chokidar');
 
 var _chokidar2 = _interopRequireWildcard(_chokidar);
 
-var _import3 = require('./log');
+var _log = require('./log');
 
-var log = _interopRequireWildcard(_import3);
+var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 
@@ -26,9 +26,8 @@ var getWatcher = function getWatcher() {
   return watcher;
 };
 
-exports.getWatcher = getWatcher;
 var start = function start(options) {
-  log.debug('watch.start');
+  _log2['default'].debug('watch.start');
 
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
@@ -48,6 +47,15 @@ var start = function start(options) {
     usePolling: true
   });
 
+  watcher.on('raw', function (event, path, details) {
+    return _log2['default'].debug('watch raw', event, path, details);
+  });
+
   return watcher;
 };
-exports.start = start;
+
+exports['default'] = {
+  getWatcher: getWatcher,
+  start: start
+};
+module.exports = exports['default'];

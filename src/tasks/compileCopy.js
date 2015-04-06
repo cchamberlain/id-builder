@@ -3,6 +3,11 @@
 import log from 'loglevel';
 import { copyAllFiles } from '../lib/copy';
 
-export const dependencies = [ 'clean' ];
+const dependencies = [ 'clean' ];
 
-export const run = copyAllFiles;
+const run = copyAllFiles;
+
+export default {
+  dependencies,
+  run
+};

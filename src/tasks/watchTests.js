@@ -4,7 +4,7 @@ import log from 'loglevel';
 import { buildFilePathMatches, runTests } from '../lib/tests';
 import { getWatcher } from '../lib/watch';
 
-export const dependencies = [
+const dependencies = [
   'runTests',
   'watch'
 ];
@@ -45,7 +45,7 @@ const handleError = function(options, e) {
   console.error(e);
 };
 
-export const run = function(options, cb) {
+const run = function(options, cb) {
   const watcher = getWatcher();
 
   watcher.on('ready', function() {
@@ -56,4 +56,9 @@ export const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
+};
+
+export default {
+  dependencies,
+  run
 };

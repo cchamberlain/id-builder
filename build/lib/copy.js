@@ -18,39 +18,37 @@ var _lsr = require('lsr');
 
 var _lsr2 = _interopRequireWildcard(_lsr);
 
-var _import3 = require('./babel');
+var _babel = require('./babel');
 
-var babel = _interopRequireWildcard(_import3);
+var _babel2 = _interopRequireWildcard(_babel);
 
-var _import4 = require('./browserify');
+var _browserify = require('./browserify');
 
-var browserify = _interopRequireWildcard(_import4);
+var _browserify2 = _interopRequireWildcard(_browserify);
 
-var _import5 = require('./coffeescript');
+var _coffeescript = require('./coffeescript');
 
-var coffeescript = _interopRequireWildcard(_import5);
+var _coffeescript2 = _interopRequireWildcard(_coffeescript);
 
-var _import6 = require('./fileSystem');
+var _fileSystem = require('./fileSystem');
 
-var fileSystem = _interopRequireWildcard(_import6);
+var _fileSystem2 = _interopRequireWildcard(_fileSystem);
 
-//import * as jade from './jade';
+var _less = require('./less');
 
-var _import7 = require('./less');
+var _less2 = _interopRequireWildcard(_less);
 
-var less = _interopRequireWildcard(_import7);
+var _livescript = require('./livescript');
 
-var _import8 = require('./livescript');
+var _livescript2 = _interopRequireWildcard(_livescript);
 
-var livescript = _interopRequireWildcard(_import8);
+var _log = require('./log');
 
-var _import9 = require('./log');
+var _log2 = _interopRequireWildcard(_log);
 
-var log = _interopRequireWildcard(_import9);
+var _stylus = require('./stylus');
 
-var _import10 = require('./stylus');
-
-var stylus = _interopRequireWildcard(_import10);
+var _stylus2 = _interopRequireWildcard(_stylus);
 
 'use strict';
 
@@ -59,19 +57,19 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
 
   var result = undefined;
 
-  if (browserify.sourceFilePathMatches(globalOptions.tasks.compileBrowserify, sourceFilePath)) {
+  if (_browserify2['default'].sourceFilePathMatches(globalOptions.tasks.compileBrowserify, sourceFilePath)) {
     result = false;
-  } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
+  } else if (_coffeescript2['default'].sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     result = false;
     //} else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
     //  result = false;
-  } else if (less.sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
+  } else if (_less2['default'].sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     result = false;
-  } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
+  } else if (_livescript2['default'].sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
     result = false;
-  } else if (babel.sourceFilePathMatches(globalOptions.tasks.compileBabel, sourceFilePath)) {
+  } else if (_babel2['default'].sourceFilePathMatches(globalOptions.tasks.compileBabel, sourceFilePath)) {
     result = false;
-  } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
+  } else if (_stylus2['default'].sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     result = false;
   } else if (sourceFilePath && !!sourceFilePath.match(RegExp('^' + options.sourcePath))) {
     result = true;
@@ -79,21 +77,18 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   }
 
-  log.debug('copy.sourceFilePathMatches =>', result, sourceFilePath);
-
   return result;
 };
 
-exports.sourceFilePathMatches = sourceFilePathMatches;
 var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
-  log.debug('copy.copyFile', sourceFilePath, targetFilePath);
+  _log2['default'].debug('copy.copyFile', sourceFilePath, targetFilePath);
 
   _readFile$writeFile.readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
     }
 
-    fileSystem.ensureFileDirectory(targetFilePath, function (e) {
+    _fileSystem2['default'].ensureFileDirectory(targetFilePath, function (e) {
       if (e) {
         return cb(e);
       }
@@ -103,7 +98,7 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
           return cb(e);
         }
 
-        log.taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
+        _log2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
         cb(null);
       });
@@ -111,9 +106,8 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
   });
 };
 
-exports.copyFile = copyFile;
 var copyAllFiles = function copyAllFiles(options, cb) {
-  log.debug('copy.copyAllFiles', options.sourcePath);
+  _log2['default'].debug('copy.copyAllFiles', options.sourcePath);
 
   _lsr2['default'](options.sourcePath, function (e, nodes) {
     if (e) {
@@ -141,4 +135,10 @@ var copyAllFiles = function copyAllFiles(options, cb) {
     });
   });
 };
-exports.copyAllFiles = copyAllFiles;
+
+exports['default'] = {
+  sourceFilePathMatches: sourceFilePathMatches,
+  copyFile: copyFile,
+  copyAllFiles: copyAllFiles
+};
+module.exports = exports['default'];

@@ -5,11 +5,11 @@ import { exists } from 'fs';
 import { Monitor } from 'forever-monitor';
 import { each } from 'async';
 
-import * as log from './log';
+import log from './log';
 
 const monitors = {};
 
-export const addPath = function(path, cb){
+const addPath = function(path, cb){
   log.debug('servers.addPath', path);
 
   const monitor = new Monitor(path, {
@@ -23,7 +23,7 @@ export const addPath = function(path, cb){
   cb();
 };
 
-export const removePath = function(path, cb){
+const removePath = function(path, cb){
   log.debug('servers.removePath', path);
 
   log.debug('monitors', monitors);
@@ -37,7 +37,7 @@ export const removePath = function(path, cb){
   cb();
 };
 
-export const restartPath = function(path, cb){
+const restartPath = function(path, cb){
   log.debug('servers.restartPath', path);
 
   const monitor = monitors[path];
@@ -47,17 +47,13 @@ export const restartPath = function(path, cb){
   cb();
 };
 
-export const sourceFilePathMatches = function(options, sourceFilePath, cb){
-  log.debug('servers.sourceFilePathMatches', options, sourceFilePath);
-
+const sourceFilePathMatches = function(options, sourceFilePath, cb){
   const result = !!sourceFilePath.match(RegExp(`^${options.sourcePath}`))
-
-  log.debug('servers.sourceFilePathMatches =>', result);
 
   return result;
 };
 
-export const startServer = function(options, filePath, cb){
+const startServer = function(options, filePath, cb){
   log.debug('servers.startServer', options, filePath);
 
   exists(filePath, function(result){
@@ -76,7 +72,7 @@ export const startServer = function(options, filePath, cb){
   });
 };
 
-export const stopServer = function(options, filePath, cb){
+const stopServer = function(options, filePath, cb){
   log.debug('servers.stopServer', options, filePath);
 
   exists(filePath, function(result){
@@ -96,7 +92,7 @@ export const stopServer = function(options, filePath, cb){
   });
 };
 
-export const restartServer = function(options, filePath, cb){
+const restartServer = function(options, filePath, cb){
   log.debug('servers.restartServer', options, filePath);
 
   exists(filePath, function(result){
@@ -115,7 +111,7 @@ export const restartServer = function(options, filePath, cb){
   });
 };
 
-export const runServers = function(options, cb){
+const runServers = function(options, cb){
   log.debug('servers.runServers', options);
 
   each(options.paths, function(v, cb) {
@@ -123,10 +119,22 @@ export const runServers = function(options, cb){
   });
 };
 
-export const restartServers = function(options, cb){
+const restartServers = function(options, cb){
   log.debug('servers.restartServers', options);
 
   each(options.paths, function(v, cb) {
     restartServer(options, `${options.sourcePath}/${v}`, cb);
   });
+};
+
+export default {
+  addPath,
+  removePath,
+  restartPath,
+  sourceFilePathMatches,
+  startServer,
+  stopServer,
+  restartServer,
+  runServers,
+  restartServers
 };

@@ -20,9 +20,9 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireWildcard(_moment);
 
-var _import3 = require('./lib/log');
+var _log = require('./lib/log');
 
-var log = _interopRequireWildcard(_import3);
+var _log2 = _interopRequireWildcard(_log);
 
 var _defaultOptions = require('./lib/defaultOptions');
 
@@ -37,8 +37,6 @@ var _tasks = require('./tasks');
 var _tasks2 = _interopRequireWildcard(_tasks);
 
 'use strict';
-
-var options = undefined;
 
 var runTaskWithOptions = function runTaskWithOptions(options, task, name) {
   return function (cb) {
@@ -55,14 +53,14 @@ var runTaskWithOptions = function runTaskWithOptions(options, task, name) {
 
     taskOptions.taskName = name;
 
-    log.startTask(name);
+    _log2['default'].startTask(name);
 
     task.run(taskOptions, function (e) {
       if (e) {
         return cb(e);
       }
 
-      log.finishTask(name);
+      _log2['default'].finishTask(name);
 
       cb();
     });
@@ -72,7 +70,7 @@ var runTaskWithOptions = function runTaskWithOptions(options, task, name) {
 exports['default'] = function (_x, cb) {
   var inputOptions = arguments[0] === undefined ? {} : arguments[0];
 
-  options = global.options = _parseOptions2['default'](_defaultOptions2['default'], inputOptions);
+  var options = global.options = _parseOptions2['default'](_defaultOptions2['default'], inputOptions);
 
   if (options.logging) {
     _minilog2['default'].suggest.deny(/.*/, options.logging.level);

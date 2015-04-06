@@ -18,7 +18,6 @@ var _getWatcher = require('../lib/watch');
 
 var dependencies = ['watch'];
 
-exports.dependencies = dependencies;
 var handlePath = function handlePath(options, path, stat) {
   if (!_compileFile$sourceExtension$sourceFilePathMatches$targetExtension.sourceFilePathMatches(options, path)) {
     return;
@@ -71,4 +70,9 @@ var run = function run(options, cb) {
     });
   });
 };
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

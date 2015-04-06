@@ -5,12 +5,10 @@ import _ from 'lodash';
 import { auto } from 'async';
 import moment from 'moment';
 
-import * as log from './lib/log';
+import log from './lib/log';
 import defaultOptions from './lib/defaultOptions';
 import parseOptions from './lib/parseOptions';
 import tasks from './tasks';
-
-let options;
 
 const runTaskWithOptions = function(options, task, name) {
   return function(cb) {
@@ -42,7 +40,7 @@ const runTaskWithOptions = function(options, task, name) {
 };
 
 export default function(inputOptions = {}, cb) {
-  options = global.options = parseOptions(defaultOptions, inputOptions);
+  const options = global.options = parseOptions(defaultOptions, inputOptions);
 
   if (options.logging) {
     minilog.suggest.deny(/.*/, options.logging.level)

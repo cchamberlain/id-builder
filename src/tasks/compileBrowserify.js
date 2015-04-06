@@ -3,14 +3,18 @@
 import log from 'loglevel';
 import { compileAllFiles } from '../lib/browserify';
 
-export const dependencies = [
+const dependencies = [
   'compileBabel',
   'compileCoffeescript',
   'compileCopy',
-  //'compileJade',
   'compileLess',
   'compileLivescript',
   'compileStylus'
 ];
 
-export const run = compileAllFiles;
+const run = compileAllFiles;
+
+export default {
+  dependencies,
+  run
+};

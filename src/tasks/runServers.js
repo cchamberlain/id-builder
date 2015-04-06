@@ -4,7 +4,7 @@
 import { runServers } from '../lib/servers';
 import log from 'loglevel';
 
-export const dependencies = [
+const dependencies = [
   'compileBabel',
   'compileBrowserify',
   'compileCoffeescript',
@@ -15,4 +15,9 @@ export const dependencies = [
   'compileStylus'
 ];
 
-export const run = runServers;
+const run = runServers;
+
+export default {
+  dependencies,
+  run
+};

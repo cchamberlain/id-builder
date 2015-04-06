@@ -10,128 +10,118 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _import = require('./clean');
+var _clean = require('./clean');
 
-var clean = _interopRequireWildcard(_import);
+var _clean2 = _interopRequireWildcard(_clean);
 
-var _import2 = require('./compileBabel');
+var _compileBabel = require('./compileBabel');
 
-var compileBabel = _interopRequireWildcard(_import2);
+var _compileBabel2 = _interopRequireWildcard(_compileBabel);
 
-var _import3 = require('./compileBrowserify');
+var _compileBrowserify = require('./compileBrowserify');
 
-var compileBrowserify = _interopRequireWildcard(_import3);
+var _compileBrowserify2 = _interopRequireWildcard(_compileBrowserify);
 
-var _import4 = require('./compileCoffeescript');
+var _compileCoffeescript = require('./compileCoffeescript');
 
-var compileCoffeescript = _interopRequireWildcard(_import4);
+var _compileCoffeescript2 = _interopRequireWildcard(_compileCoffeescript);
 
-var _import5 = require('./compileCopy');
+var _compileCopy = require('./compileCopy');
 
-var compileCopy = _interopRequireWildcard(_import5);
+var _compileCopy2 = _interopRequireWildcard(_compileCopy);
 
-var _import6 = require('./compileJade');
+var _compileLess = require('./compileLess');
 
-var compileJade = _interopRequireWildcard(_import6);
+var _compileLess2 = _interopRequireWildcard(_compileLess);
 
-var _import7 = require('./compileLess');
+var _compileLivescript = require('./compileLivescript');
 
-var compileLess = _interopRequireWildcard(_import7);
+var _compileLivescript2 = _interopRequireWildcard(_compileLivescript);
 
-var _import8 = require('./compileLivescript');
+var _compileStylus = require('./compileStylus');
 
-var compileLivescript = _interopRequireWildcard(_import8);
+var _compileStylus2 = _interopRequireWildcard(_compileStylus);
 
-var _import9 = require('./compileStylus');
+var _runBrowsersyncServer = require('./runBrowsersyncServer');
 
-var compileStylus = _interopRequireWildcard(_import9);
+var _runBrowsersyncServer2 = _interopRequireWildcard(_runBrowsersyncServer);
 
-var _import10 = require('./runBrowsersyncServer');
+var _runServers = require('./runServers');
 
-var runBrowsersyncServer = _interopRequireWildcard(_import10);
+var _runServers2 = _interopRequireWildcard(_runServers);
 
-var _import11 = require('./runServers');
+var _runTests = require('./runTests');
 
-var runServers = _interopRequireWildcard(_import11);
+var _runTests2 = _interopRequireWildcard(_runTests);
 
-var _import12 = require('./runTests');
+var _watch = require('./watch');
 
-var runTests = _interopRequireWildcard(_import12);
+var _watch2 = _interopRequireWildcard(_watch);
 
-var _import13 = require('./watch');
+var _watchBabel = require('./watchBabel');
 
-var watch = _interopRequireWildcard(_import13);
+var _watchBabel2 = _interopRequireWildcard(_watchBabel);
 
-var _import14 = require('./watchBabel');
+var _watchBrowserify = require('./watchBrowserify');
 
-var watchBabel = _interopRequireWildcard(_import14);
+var _watchBrowserify2 = _interopRequireWildcard(_watchBrowserify);
 
-var _import15 = require('./watchBrowserify');
+var _watchBrowsersync = require('./watchBrowsersync');
 
-var watchBrowserify = _interopRequireWildcard(_import15);
+var _watchBrowsersync2 = _interopRequireWildcard(_watchBrowsersync);
 
-var _import16 = require('./watchBrowsersync');
+var _watchCoffeescript = require('./watchCoffeescript');
 
-var watchBrowsersync = _interopRequireWildcard(_import16);
+var _watchCoffeescript2 = _interopRequireWildcard(_watchCoffeescript);
 
-var _import17 = require('./watchCoffeescript');
+var _watchCopy = require('./watchCopy');
 
-var watchCoffeescript = _interopRequireWildcard(_import17);
+var _watchCopy2 = _interopRequireWildcard(_watchCopy);
 
-var _import18 = require('./watchCopy');
+var _watchLess = require('./watchLess');
 
-var watchCopy = _interopRequireWildcard(_import18);
+var _watchLess2 = _interopRequireWildcard(_watchLess);
 
-var _import19 = require('./watchJade');
+var _watchLivescript = require('./watchLivescript');
 
-var watchJade = _interopRequireWildcard(_import19);
+var _watchLivescript2 = _interopRequireWildcard(_watchLivescript);
 
-var _import20 = require('./watchLess');
+var _watchServers = require('./watchServers');
 
-var watchLess = _interopRequireWildcard(_import20);
+var _watchServers2 = _interopRequireWildcard(_watchServers);
 
-var _import21 = require('./watchLivescript');
+var _watchStylus = require('./watchStylus');
 
-var watchLivescript = _interopRequireWildcard(_import21);
+var _watchStylus2 = _interopRequireWildcard(_watchStylus);
 
-var _import22 = require('./watchServers');
+var _watchTests = require('./watchTests');
 
-var watchServers = _interopRequireWildcard(_import22);
-
-var _import23 = require('./watchStylus');
-
-var watchStylus = _interopRequireWildcard(_import23);
-
-var _import24 = require('./watchTests');
-
-var watchTests = _interopRequireWildcard(_import24);
+var _watchTests2 = _interopRequireWildcard(_watchTests);
 
 'use strict';
 
 exports['default'] = {
-  clean: clean,
-  compileBabel: compileBabel,
-  compileBrowserify: compileBrowserify,
-  compileCoffeescript: compileCoffeescript,
-  compileCopy: compileCopy,
-  //compileJade: compileJade,
-  compileLess: compileLess,
-  compileLivescript: compileLivescript,
-  compileStylus: compileStylus,
-  runBrowsersyncServer: runBrowsersyncServer,
-  runServers: runServers,
-  runTests: runTests,
-  watch: watch,
-  watchBabel: watchBabel,
-  watchBrowserify: watchBrowserify,
-  watchBrowsersync: watchBrowsersync,
-  watchCoffeescript: watchCoffeescript,
-  watchCopy: watchCopy,
-  //watchJade: watchJade,
-  watchLess: watchLess,
-  watchLivescript: watchLivescript,
-  watchServers: watchServers,
-  watchStylus: watchStylus,
-  watchTests: watchTests
+  clean: _clean2['default'],
+  compileBabel: _compileBabel2['default'],
+  compileBrowserify: _compileBrowserify2['default'],
+  compileCoffeescript: _compileCoffeescript2['default'],
+  compileCopy: _compileCopy2['default'],
+  compileLess: _compileLess2['default'],
+  compileLivescript: _compileLivescript2['default'],
+  compileStylus: _compileStylus2['default'],
+  runBrowsersyncServer: _runBrowsersyncServer2['default'],
+  runServers: _runServers2['default'],
+  runTests: _runTests2['default'],
+  watch: _watch2['default'],
+  watchBabel: _watchBabel2['default'],
+  watchBrowserify: _watchBrowserify2['default'],
+  watchBrowsersync: _watchBrowsersync2['default'],
+  watchCoffeescript: _watchCoffeescript2['default'],
+  watchCopy: _watchCopy2['default'],
+  watchLess: _watchLess2['default'],
+  watchLivescript: _watchLivescript2['default'],
+  watchServers: _watchServers2['default'],
+  watchStylus: _watchStylus2['default'],
+  watchTests: _watchTests2['default']
 };
 module.exports = exports['default'];

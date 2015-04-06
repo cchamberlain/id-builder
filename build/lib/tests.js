@@ -12,9 +12,9 @@ var _resolve = require('path');
 
 var _spawn = require('child_process');
 
-var _import = require('./log');
+var _log = require('./log');
 
-var log = _interopRequireWildcard(_import);
+var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 
@@ -24,35 +24,28 @@ var randomString = function randomString() {
   return Math.random().toString(36).slice(7);
 };
 
-exports.randomString = randomString;
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
   var matchesWatchPath = sourceFilePath.indexOf(options.watchPath) === 0;
   var result = matchesJavascript && matchesWatchPath;
 
-  log.debug('tests.sourceFilePathMatches =>', result, sourceFilePath);
-
   return result;
 };
 
-exports.sourceFilePathMatches = sourceFilePathMatches;
 var buildFilePathMatches = function buildFilePathMatches(options, buildFilePath) {
   var matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
   var matchesWatchPath = buildFilePath.indexOf(options.watchPath) === 0;
   var result = matchesJavascript && matchesWatchPath;
 
-  log.debug('tests.buildFilePathMatches =>', result, buildFilePath);
-
   return result;
 };
 
-exports.buildFilePathMatches = buildFilePathMatches;
 var runTests = function runTests(options, cb) {
-  log.debug('tests.runTests', options.sourcePath);
+  _log2['default'].debug('tests.runTests', options.sourcePath);
 
   _exists.exists(options.sourcePath, function (exists) {
     if (!exists) {
-      log.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
+      _log2['default'].taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
       return cb();
     }
 
@@ -71,4 +64,11 @@ var runTests = function runTests(options, cb) {
     });
   });
 };
-exports.runTests = runTests;
+
+exports['default'] = {
+  randomString: randomString,
+  sourceFilePathMatches: sourceFilePathMatches,
+  buildFilePathMatches: buildFilePathMatches,
+  runTests: runTests
+};
+module.exports = exports['default'];

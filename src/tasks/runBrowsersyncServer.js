@@ -3,15 +3,19 @@
 import log from 'loglevel';
 import { runServer } from '../lib/browsersync';
 
-export const dependencies = [
+const dependencies = [
   'compileBabel',
   'compileBrowserify',
   'compileCoffeescript',
   'compileCopy',
-  //'compileJade',
   'compileLess',
   'compileLivescript',
   'compileStylus',
 ];
 
-export const run = runServer;
+const run = runServer;
+
+export default {
+  dependencies,
+  run
+};

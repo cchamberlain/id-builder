@@ -14,10 +14,12 @@ var _runServer = require('../lib/browsersync');
 
 'use strict';
 
-var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy',
-//'compileJade',
-'compileLess', 'compileLivescript', 'compileStylus'];
+var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy', 'compileLess', 'compileLivescript', 'compileStylus'];
 
-exports.dependencies = dependencies;
 var run = _runServer.runServer;
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

@@ -18,14 +18,14 @@ var _rimraf2 = _interopRequireWildcard(_rimraf);
 
 var _each = require('async');
 
-var _import3 = require('./log');
+var _log = require('./log');
 
-var log = _interopRequireWildcard(_import3);
+var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 
 var directory = function directory(options, cb) {
-  log.debug('clean.directory', options.path);
+  _log2['default'].debug('clean.directory', options.path);
 
   _readdir.readdir(options.path, function (e, nodes) {
     if (e) {
@@ -35,7 +35,7 @@ var directory = function directory(options, cb) {
     var paths = _import2['default'](nodes).map(function (v) {
       var path = '' + options.path + '/' + v;
 
-      log.taskInfo(options.taskName, path);
+      _log2['default'].taskInfo(options.taskName, path);
 
       return path;
     }).value();
@@ -43,4 +43,8 @@ var directory = function directory(options, cb) {
     _each.each(paths, _rimraf2['default'], cb);
   });
 };
-exports.directory = directory;
+
+exports['default'] = {
+  directory: directory
+};
+module.exports = exports['default'];

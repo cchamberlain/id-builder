@@ -3,6 +3,11 @@
 import log from 'loglevel';
 import { compileAllFiles } from '../lib/livescript';
 
-export const dependencies = [ 'clean' ];
+const dependencies = [ 'clean' ];
 
-export const run = compileAllFiles;
+const run = compileAllFiles;
+
+export default {
+  dependencies,
+  run
+};

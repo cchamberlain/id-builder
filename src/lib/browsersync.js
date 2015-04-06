@@ -2,12 +2,12 @@
 
 import browserSync from 'browser-sync';
 
-import * as copy from './copy';
-import * as log from './log';
+import copy from './copy';
+import log from './log';
 
-export const sourceFilePathMatches = copy.sourceFilePathMatches;
+const sourceFilePathMatches = copy.sourceFilePathMatches;
 
-export const reload = function(options, path, cb) {
+const reload = function(options, path, cb) {
   log.debug('browsersync.reload', path);
 
   browserSync.reload(path);
@@ -17,15 +17,15 @@ export const reload = function(options, path, cb) {
   cb();
 };
 
-export const runServer = function(_options, cb) {
+const runServer = function(_options, cb) {
   log.debug('browsersync.runServer');
 
   const options = {
-    //files: [],
-    //minify: false,
-    //open: true,
-    //host: 'localhost',
-    port: 9001,
+    ui: {
+      port: 9001
+    },
+
+    port: 9000,
     logLevel: 'silent',
     logFileChanges: false,
   };
@@ -37,4 +37,10 @@ export const runServer = function(_options, cb) {
 
     cb();
   });
+};
+
+export default {
+  sourceFilePathMatches,
+  reload,
+  runServer
 };

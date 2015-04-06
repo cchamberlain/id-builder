@@ -24,14 +24,14 @@ var _mkdirp2 = _interopRequireWildcard(_mkdirp);
 
 var _each = require('async');
 
-var _import3 = require('./log');
+var _log = require('./log');
 
-var log = _interopRequireWildcard(_import3);
+var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 
 var getFiles = function getFiles(path, cb) {
-  log.debug('fileSystem.getFiles', path);
+  _log2['default'].debug('fileSystem.getFiles', path);
 
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
@@ -45,7 +45,7 @@ var getFiles = function getFiles(path, cb) {
 };
 
 var getDirectories = function getDirectories(path, cb) {
-  log.debug('fileSystem.getDirectories', path);
+  _log2['default'].debug('fileSystem.getDirectories', path);
 
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
@@ -63,15 +63,14 @@ var getTargetPath = function getTargetPath(sourceDirectory, targetDirectory, sou
 };
 
 var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
-  log.debug('fileSystem.ensureFileDirectory', targetFilePath);
+  _log2['default'].debug('fileSystem.ensureFileDirectory', targetFilePath);
 
   _mkdirp2['default'](_dirname.dirname(targetFilePath), cb);
 };
 
-exports.ensureFileDirectory = ensureFileDirectory;
 var compileFile = function compileFile(compileChunk) {
   return function (options, sourceFilePath, targetFilePath, cb) {
-    log.debug('fileSystem.compileFile', sourceFilePath);
+    _log2['default'].debug('fileSystem.compileFile', sourceFilePath);
 
     _readFile$writeFile.readFile(sourceFilePath, function (e, fileContent) {
       if (e) {
@@ -93,7 +92,7 @@ var compileFile = function compileFile(compileChunk) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
+            _log2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
             cb(null);
           });
@@ -103,10 +102,9 @@ var compileFile = function compileFile(compileChunk) {
   };
 };
 
-exports.compileFile = compileFile;
 var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function (options, cb) {
-    log.debug('fileSystem.compileAllFiles');
+    _log2['default'].debug('fileSystem.compileAllFiles');
 
     getFiles(options.sourcePath, function (e, sourceFilePaths) {
       if (e) {
@@ -129,4 +127,10 @@ var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFil
     });
   };
 };
-exports.compileAllFiles = compileAllFiles;
+
+exports['default'] = {
+  ensureFileDirectory: ensureFileDirectory,
+  compileFile: compileFile,
+  compileAllFiles: compileAllFiles
+};
+module.exports = exports['default'];

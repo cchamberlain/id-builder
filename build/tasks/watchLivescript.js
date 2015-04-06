@@ -10,9 +10,9 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _import = require('../lib/livescript');
+var _livescript = require('../lib/livescript');
 
-var livescript = _interopRequireWildcard(_import);
+var _livescript2 = _interopRequireWildcard(_livescript);
 
 var _getWatcher = require('../lib/watch');
 
@@ -20,15 +20,14 @@ var _getWatcher = require('../lib/watch');
 
 var dependencies = ['watch'];
 
-exports.dependencies = dependencies;
 var handlePath = function handlePath(options, path, stat) {
-  if (!livescript.sourceFilePathMatches(options, path)) {
+  if (!_livescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + livescript.sourceExtension + '$'), '.' + livescript.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + _livescript2['default'].sourceExtension + '$'), '.' + _livescript2['default'].targetExtension);
 
-  livescript.compileFile(options, path, targetPath, function (e) {
+  _livescript2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }
@@ -75,4 +74,9 @@ var run = function run(options, cb) {
     });
   });
 };
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

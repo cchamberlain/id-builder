@@ -3,11 +3,11 @@
 import { exists } from 'fs';
 
 import { compileFile } from '../lib/less';
-import * as log from '../lib/log';
+import log from '../lib/log';
 
-export const dependencies = [ 'clean' ];
+const dependencies = [ 'clean' ];
 
-export const run = function(options, cb) {
+const run = function(options, cb) {
   exists(options.sourcePath, function(result) {
     if (!result) {
       log.taskInfo('compileLess', `skipping ${options.sourcePath} (Does not exist).`);
@@ -16,4 +16,9 @@ export const run = function(options, cb) {
 
     compileFile(options, options.sourcePath, options.targetPath, cb);
   });
+};
+
+export default {
+  dependencies,
+  run
 };

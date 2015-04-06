@@ -3,8 +3,13 @@
 import log from 'loglevel';
 import { directory } from '../lib/clean';
 
-export const dependencies = []
+const dependencies = []
 
-export const run = function (options, cb) {
+const run = function (options, cb) {
   directory(options, cb);
+};
+
+export default {
+  dependencies,
+  run
 };

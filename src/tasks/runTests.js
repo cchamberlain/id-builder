@@ -3,7 +3,7 @@
 import log from 'loglevel';
 import { runTests } from '../lib/tests';
 
-export const dependencies = [
+const dependencies = [
   'compileBabel',
   'compileBrowserify',
   'compileCoffeescript',
@@ -14,4 +14,9 @@ export const dependencies = [
   'compileStylus'
 ];
 
-export const run = runTests;
+const run = runTests;
+
+export default {
+  dependencies,
+  run
+};

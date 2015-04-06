@@ -2,21 +2,19 @@
 
 import less from 'less';
 
-import * as log from './log';
-import * as fileSystem from './fileSystem';
+import log from './log';
+import fileSystem from './fileSystem';
 
-export const sourceExtension = 'less';
-export const targetExtension = 'css';
+const sourceExtension = 'less';
+const targetExtension = 'css';
 
-export const sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   const result = !!sourceFilePath.match(new RegExp(`^${options.sourceDirectory}.+\.${sourceExtension}$`))
-
-  log.debug('less.sourceFilePathMatches =>', result, sourceFilePath);
 
   return result;
 };
 
-export const compileChunk = function(options, chunk, cb) {
+const compileChunk = function(options, chunk, cb) {
   log.debug('less.compileChunk', options.sourcePath);
 
   const renderOptions = {
@@ -32,6 +30,15 @@ export const compileChunk = function(options, chunk, cb) {
   });
 };
 
-export const compileFile = fileSystem.compileFile(compileChunk);
+const compileFile = fileSystem.compileFile(compileChunk);
 
-export const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+
+export default {
+  sourceExtension,
+  targetExtension,
+  sourceFilePathMatches,
+  compileChunk,
+  compileFile,
+  compileAllFiles
+};

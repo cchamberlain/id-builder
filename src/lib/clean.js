@@ -6,9 +6,9 @@ import _ from 'lodash';
 import rimraf from 'rimraf';
 import { each } from 'async';
 
-import * as log from './log';
+import log from './log';
 
-export const directory = function(options, cb) {
+const directory = function(options, cb) {
   log.debug('clean.directory', options.path);
 
   readdir(options.path, function(e, nodes) {
@@ -28,4 +28,8 @@ export const directory = function(options, cb) {
 
     each(paths, rimraf, cb);
   });
+};
+
+export default {
+  directory
 };

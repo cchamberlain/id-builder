@@ -16,6 +16,10 @@ var _watch = require('../lib/browserify');
 
 var dependencies = ['runTests'];
 
-exports.dependencies = dependencies;
 var run = _watch.watch;
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

@@ -16,6 +16,10 @@ var _compileAllFiles = require('../lib/babel');
 
 var dependencies = ['clean'];
 
-exports.dependencies = dependencies;
 var run = _compileAllFiles.compileAllFiles;
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

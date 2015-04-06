@@ -16,9 +16,13 @@ var _start = require('../lib/watch');
 
 var dependencies = ['runTests'];
 
-exports.dependencies = dependencies;
 var run = function run(options, cb) {
   _start.start(options);
   cb();
 };
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

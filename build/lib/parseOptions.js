@@ -10,9 +10,9 @@ var _deepmerge = require('deepmerge');
 
 var _deepmerge2 = _interopRequireWildcard(_deepmerge);
 
-var _import = require('./log');
+var _log = require('./log');
 
-var log = _interopRequireWildcard(_import);
+var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 

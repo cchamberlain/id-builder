@@ -10,9 +10,9 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _import = require('../lib/servers');
+var _servers = require('../lib/servers');
 
-var servers = _interopRequireWildcard(_import);
+var _servers2 = _interopRequireWildcard(_servers);
 
 var _getWatcher = require('../lib/watch');
 
@@ -20,13 +20,12 @@ var _getWatcher = require('../lib/watch');
 
 var dependencies = ['watch'];
 
-exports.dependencies = dependencies;
 var handlePath = function handlePath(options, path, stat) {
-  if (!servers.sourceFilePathMatches(options, path)) {
+  if (!_servers2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
-  servers.restartServers(options, function (e) {
+  _servers2['default'].restartServers(options, function (e) {
     if (e) {
       console.error(e);
     }
@@ -73,4 +72,9 @@ var run = function run(options, cb) {
     });
   });
 };
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

@@ -18,6 +18,10 @@ var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 
 //'compileJade',
 'compileLess', 'compileLivescript', 'compileStylus'];
 
-exports.dependencies = dependencies;
 var run = _runTests.runTests;
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

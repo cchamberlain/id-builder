@@ -2,23 +2,19 @@
 
 import { transform } from 'babel';
 
-import * as log from './log';
-import * as fileSystem from './fileSystem'
+import log from './log';
+import fileSystem from './fileSystem'
 
-export const sourceExtension = 'js';
-export const targetExtension = 'js';
+const sourceExtension = 'js';
+const targetExtension = 'js';
 
-export const sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`));
-
-  log.debug('babel.sourceFilePathMatches =>', result, sourceFilePath);
 
   return result;
 };
 
-export const compileChunk = function(options, chunk, cb) {
-  log.debug('babel.compileChunk');
-
+const compileChunk = function(options, chunk, cb) {
   try {
     const output = transform(chunk);
 
@@ -28,6 +24,15 @@ export const compileChunk = function(options, chunk, cb) {
   }
 };
 
-export const compileFile = fileSystem.compileFile(compileChunk);
+const compileFile = fileSystem.compileFile(compileChunk);
 
-export const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+
+export default {
+  sourceExtension,
+  targetExtension,
+  sourceFilePathMatches,
+  compileChunk,
+  compileFile,
+  compileAllFiles
+};

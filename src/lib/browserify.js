@@ -8,14 +8,14 @@ import watchify from 'watchify';
 import jadeify from 'jadeify';
 
 import { ensureFileDirectory } from './fileSystem';
-import * as log from './log';
+import log from './log';
 
-export const sourceExtension = 'coffee';
-export const targetExtension = 'js';
+const sourceExtension = 'coffee';
+const targetExtension = 'js';
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-export const sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   let result;
 
   if (sourceFilePath === options.targetPath) {
@@ -26,12 +26,35 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   }
 
-  log.debug('browserify.sourceFilePathMatches =>', result, sourceFilePath);
-
   return result;
 };
 
-export const compileAllFiles = function(options, cb) {
+const getBrowserifyBundle = function(options) {
+  const browserifyOptions = {
+    cache: {},
+    debug: true,
+    fullPaths: true,
+    packageCache: {}
+  };
+
+  log.debug('browserify.getBrowserifyBundle browserifyOptions:', JSON.stringify(browserifyOptions));
+
+  const b = browserify(browserifyOptions);
+
+  const jadeifyOptions = {
+    compileDebug: true,
+    pretty: true,
+    runtimePath: require.resolve('jade/runtime')
+  }
+
+  log.debug('browserify.getBrowserifyBundle jadeifyOptions', JSON.stringify(jadeifyOptions));
+
+  b.transform(jadeify, jadeifyOptions);
+
+  return b;
+};
+
+const compileAllFiles = function(options, cb) {
   log.debug('browserify.compileAllFiles');
 
   exists(options.sourcePath, function(exists) {
@@ -45,14 +68,7 @@ export const compileAllFiles = function(options, cb) {
         return cb(e);
       }
 
-      const b = browserify({
-        cache: {},
-        debug: true,
-        fullPaths: true,
-        packageCache: {}
-      });
-
-      b.transform(jadeify);
+      const b = getBrowserifyBundle(options);
 
       b.add(resolve(options.sourcePath));
 
@@ -80,7 +96,7 @@ export const compileAllFiles = function(options, cb) {
   });
 };
 
-export const watch = function(options, cb) {
+const watch = function(options, cb) {
   log.debug('browserify.watch');
 
   exists(options.sourcePath, function(exists) {
@@ -93,18 +109,14 @@ export const watch = function(options, cb) {
       if (e) {
         return cb(e);
       }
-      const b = browserify({
-        cache: {},
-        debug: true,
-        fullPaths: true,
-        packageCache: {}
-      });
 
-      b.transform(jadeify);
+      const b = getBrowserifyBundle(options);
 
       b.add(resolve(options.sourcePath));
 
       b.on('bundle', function(bundleStream) {
+        log.debug('browserify.watch on bundle');
+
         let data = '';
 
         bundleStream.on('data', function(d) {
@@ -112,6 +124,8 @@ export const watch = function(options, cb) {
         });
 
         bundleStream.on('end', function(d) {
+          log.debug('browserify.watch on bundle end');
+
           writeFile(options.targetPath, data, function(e) {
             if (e) {
               return cb(e);
@@ -131,4 +145,12 @@ export const watch = function(options, cb) {
       b.bundle();
     });
   });
+};
+
+export default {
+  sourceExtension,
+  targetExtension,
+  sourceFilePathMatches,
+  compileAllFiles,
+  watch
 };

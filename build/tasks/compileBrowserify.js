@@ -14,10 +14,12 @@ var _compileAllFiles = require('../lib/browserify');
 
 'use strict';
 
-var dependencies = ['compileBabel', 'compileCoffeescript', 'compileCopy',
-//'compileJade',
-'compileLess', 'compileLivescript', 'compileStylus'];
+var dependencies = ['compileBabel', 'compileCoffeescript', 'compileCopy', 'compileLess', 'compileLivescript', 'compileStylus'];
 
-exports.dependencies = dependencies;
 var run = _compileAllFiles.compileAllFiles;
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

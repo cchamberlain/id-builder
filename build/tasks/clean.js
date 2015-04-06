@@ -16,8 +16,12 @@ var _directory = require('../lib/clean');
 
 var dependencies = [];
 
-exports.dependencies = dependencies;
 var run = function run(options, cb) {
   _directory.directory(options, cb);
 };
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

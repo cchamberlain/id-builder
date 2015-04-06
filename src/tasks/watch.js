@@ -3,9 +3,14 @@
 import log from 'loglevel';
 import { start } from '../lib/watch';
 
-export const dependencies = [ 'runTests' ];
+const dependencies = [ 'runTests' ];
 
-export const run = function(options, cb) {
+const run = function(options, cb) {
   start(options);
   cb();
+};
+
+export default {
+  dependencies,
+  run
 };

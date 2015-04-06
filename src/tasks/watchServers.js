@@ -1,10 +1,10 @@
 'use strict';
 
 import log from 'loglevel';
-import * as servers  from '../lib/servers';
+import servers  from '../lib/servers';
 import { getWatcher } from '../lib/watch';
 
-export const dependencies = [
+const dependencies = [
   'watch'
 ];
 
@@ -40,7 +40,7 @@ const handleUnlinkDir = function(options, path, stat) {
 const handleError = function(options, e) {
 };
 
-export const run = function(options, cb) {
+const run = function(options, cb) {
   const watcher = getWatcher();
 
   watcher.on('ready', function() {
@@ -51,4 +51,9 @@ export const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
+};
+
+export default {
+  dependencies,
+  run
 };

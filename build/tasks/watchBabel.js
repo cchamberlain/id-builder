@@ -10,9 +10,9 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _import = require('../lib/babel');
+var _babel = require('../lib/babel');
 
-var babel = _interopRequireWildcard(_import);
+var _babel2 = _interopRequireWildcard(_babel);
 
 var _getWatcher = require('../lib/watch');
 
@@ -20,15 +20,14 @@ var _getWatcher = require('../lib/watch');
 
 var dependencies = ['watch'];
 
-exports.dependencies = dependencies;
 var handlePath = function handlePath(options, path, stat) {
-  if (!babel.sourceFilePathMatches(options, path)) {
+  if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + babel.sourceExtension + '$'), '.' + babel.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + _babel2['default'].sourceExtension + '$'), '.' + _babel2['default'].targetExtension);
 
-  babel.compileFile(options, path, targetPath, function (e) {
+  _babel2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }
@@ -75,4 +74,9 @@ var run = function run(options, cb) {
     });
   });
 };
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

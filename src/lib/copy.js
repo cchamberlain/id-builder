@@ -6,17 +6,16 @@ import _ from 'lodash';
 import { each } from 'async';
 import lsr from 'lsr';
 
-import * as babel from './babel';
-import * as browserify from './browserify';
-import * as coffeescript from './coffeescript';
-import * as fileSystem from './fileSystem';
-//import * as jade from './jade';
-import * as less from './less';
-import * as livescript from './livescript';
-import * as log from './log';
-import * as stylus from './stylus';
+import babel from './babel';
+import browserify from './browserify';
+import coffeescript from './coffeescript';
+import fileSystem from './fileSystem';
+import less from './less';
+import livescript from './livescript';
+import log from './log';
+import stylus from './stylus';
 
-export const sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   const globalOptions = global.options;
 
   let result;
@@ -41,12 +40,10 @@ export const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   }
 
-  log.debug('copy.sourceFilePathMatches =>', result, sourceFilePath);
-
   return result;
 };
 
-export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   log.debug('copy.copyFile', sourceFilePath, targetFilePath);
 
   readFile(sourceFilePath, function(e, readChunk){
@@ -72,7 +69,7 @@ export const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   });
 };
 
-export const copyAllFiles = function(options, cb) {
+const copyAllFiles = function(options, cb) {
   log.debug('copy.copyAllFiles', options.sourcePath);
 
   lsr(options.sourcePath, function(e, nodes){
@@ -103,4 +100,10 @@ export const copyAllFiles = function(options, cb) {
       cb(null);
     });
   });
+};
+
+export default {
+  sourceFilePathMatches,
+  copyFile,
+  copyAllFiles
 };

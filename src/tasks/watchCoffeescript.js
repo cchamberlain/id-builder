@@ -2,10 +2,10 @@
 
 import log from 'loglevel';
 
-import * as coffeescript from '../lib/coffeescript';
+import coffeescript from '../lib/coffeescript';
 import { getWatcher } from '../lib/watch';
 
-export const dependencies = [
+const dependencies = [
   'watch'
 ];
 
@@ -57,7 +57,7 @@ const handleError = function(options, e) {
   //log.debug('watchCoffeescript.handleError', options, e);
 };
 
-export const run = function(options, cb) {
+const run = function(options, cb) {
   //log.debug('watchCoffeescript.run', options);
 
   const watcher = getWatcher();
@@ -70,4 +70,9 @@ export const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
+};
+
+export default {
+  dependencies,
+  run
 };

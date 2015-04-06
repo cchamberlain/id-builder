@@ -8,7 +8,7 @@ import lsr from 'lsr';
 import mkdirp from 'mkdirp';
 import { each } from 'async';
 
-import * as log from './log';
+import log from './log';
 
 const getFiles = function(path, cb) {
   log.debug('fileSystem.getFiles', path);
@@ -44,13 +44,13 @@ const getTargetPath = function(sourceDirectory, targetDirectory, sourceExtension
     .replace(RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
-export const ensureFileDirectory = function(targetFilePath, cb) {
+const ensureFileDirectory = function(targetFilePath, cb) {
   log.debug('fileSystem.ensureFileDirectory', targetFilePath);
 
   mkdirp(dirname(targetFilePath), cb);
 };
 
-export const compileFile = function(compileChunk) {
+const compileFile = function(compileChunk) {
   return function(options, sourceFilePath, targetFilePath, cb) {
     log.debug('fileSystem.compileFile', sourceFilePath);
 
@@ -84,7 +84,7 @@ export const compileFile = function(compileChunk) {
   };
 };
 
-export const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
+const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function(options, cb) {
     log.debug('fileSystem.compileAllFiles');
 
@@ -111,4 +111,10 @@ export const compileAllFiles = function(sourceFilePathMatches, compileFile, sour
       each(paths, iteratePath, cb);
     });
   };
+};
+
+export default {
+  ensureFileDirectory,
+  compileFile,
+  compileAllFiles
 };

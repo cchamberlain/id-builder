@@ -10,9 +10,9 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _import = require('../lib/coffeescript');
+var _coffeescript = require('../lib/coffeescript');
 
-var coffeescript = _interopRequireWildcard(_import);
+var _coffeescript2 = _interopRequireWildcard(_coffeescript);
 
 var _getWatcher = require('../lib/watch');
 
@@ -20,19 +20,18 @@ var _getWatcher = require('../lib/watch');
 
 var dependencies = ['watch'];
 
-exports.dependencies = dependencies;
 var handlePath = function handlePath(options, path, stat) {
   //log.debug('watchCoffeescript.handlePath', path);
 
-  if (!coffeescript.sourceFilePathMatches(options, path)) {
+  if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace('.' + coffeescript.sourceExtension, '.' + coffeescript.targetExtension);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace('.' + _coffeescript2['default'].sourceExtension, '.' + _coffeescript2['default'].targetExtension);
 
   //log.debug('watchCoffeescript.handlePath targetPath', targetPath);
 
-  coffeescript.compileFile(options, path, targetPath, function (e) {
+  _coffeescript2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {
       console.error(e);
     }
@@ -85,7 +84,12 @@ var run = function run(options, cb) {
     });
   });
 };
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];
 
 //log.debug('watchCoffeescript.handleAddDir', path);
 

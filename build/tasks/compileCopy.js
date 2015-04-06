@@ -16,6 +16,10 @@ var _copyAllFiles = require('../lib/copy');
 
 var dependencies = ['clean'];
 
-exports.dependencies = dependencies;
 var run = _copyAllFiles.copyAllFiles;
-exports.run = run;
+
+exports['default'] = {
+  dependencies: dependencies,
+  run: run
+};
+module.exports = exports['default'];

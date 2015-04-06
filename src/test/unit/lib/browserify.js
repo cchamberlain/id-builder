@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 
-import * as browserify from '../build/../../../lib/browserify';
+import browserify from '../build/../../../lib/browserify';
 import { randomString } from '../build/../../../lib/tests';
 
 describe('browserify', function() {

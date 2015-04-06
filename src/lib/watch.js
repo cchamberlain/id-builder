@@ -3,15 +3,15 @@
 import _ from 'lodash';
 import chokidar from 'chokidar';
 
-import * as log from './log';
+import log from './log';
 
 let watcher = null;
 
-export const getWatcher = function() {
+const getWatcher = function() {
   return watcher;
 };
 
-export const start = function(options) {
+const start = function(options) {
   log.debug('watch.start');
 
   // If there are no paths to watch, do nothing.
@@ -32,5 +32,12 @@ export const start = function(options) {
     usePolling: true
   });
 
+  watcher.on('raw', (event, path, details) => log.debug('watch raw', event, path, details));
+
   return watcher;
+};
+
+export default {
+  getWatcher,
+  start
 };

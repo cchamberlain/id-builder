@@ -4,12 +4,14 @@ import log from 'loglevel';
 import { sourceFilePathMatches, reload } from '../lib/browsersync';
 import { getWatcher } from '../lib/watch';
 
-export const dependencies = [
+const dependencies = [
   'runBrowsersyncServer',
   'watch'
 ];
 
 const handlePath = function(options, path, stat) {
+  log.debug('watchBrowsersync.handlePath', path);
+
   // Only reload if it's the bundle when the file is a JavaScript file.
   if (path.match(/\.js$/)) {
     if (global.options.tasks.watchBrowserify.targetPath !== path) {
@@ -48,7 +50,7 @@ const handleUnlinkDir = function(options, path, stat) {
 const handleError = function(options, e) {
 };
 
-export const run = function(options, cb) {
+const run = function(options, cb) {
   const watcher = getWatcher();
 
   watcher.on('ready', function() {
@@ -59,4 +61,9 @@ export const run = function(options, cb) {
     watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
     watcher.on('error', function(path, stat) { handleError(options, path, stat) });
   });
+};
+
+export default {
+  dependencies,
+  run
 };
