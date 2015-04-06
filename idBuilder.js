@@ -26,10 +26,6 @@ idBuilder({
       enabled: true
     },
 
-    compileJade: {
-      enabled: false
-    },
-
     compileLess: {
       enabled: false
     },
@@ -72,10 +68,6 @@ idBuilder({
 
     watchCopy: {
       enabled: true
-    },
-
-    watchJade: {
-      enabled: false
     },
 
     watchLess: {
