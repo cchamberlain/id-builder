@@ -3,6 +3,8 @@
 Contributions, Tickets and Pull Requests appreciated!
 
 # id-builder
+
+[![Join the chat at https://gitter.im/Industrial/id-builder](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Industrial/id-builder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 id-builder compiles your code, runs your tests and servers, recompiles and
 restarts on changes and reloads the browser for you.
 
