@@ -27,6 +27,8 @@ var getWatcher = function getWatcher() {
 };
 
 var start = function start(options) {
+  _log2['default'].debug('watch.start');
+
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
     return;

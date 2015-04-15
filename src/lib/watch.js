@@ -12,6 +12,8 @@ const getWatcher = function() {
 };
 
 const start = function(options) {
+  log.debug('watch.start');
+
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
     return;
