@@ -19,16 +19,11 @@ var _getWatcher = require('../lib/watch');
 var dependencies = ['runBrowsersyncServer', 'watch'];
 
 var handlePath = function handlePath(options, path, stat) {
-  _log2['default'].debug('watchBrowsersync.handlePath', path);
-
-  // Only reload if it's the bundle when the file is a JavaScript file.
-  if (path.match(/\.js$/)) {
-    if (global.options.tasks.watchBrowserify.targetPath !== path) {
-      return;
-    }
-  }
-
-  if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
+  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
+    // Only reload if it's the bundle when the file is a JavaScript file.
+    return;
+  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
+    // Only reload when needed if it isn't a js file.
     return;
   }
 
