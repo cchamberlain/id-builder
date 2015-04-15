@@ -12,8 +12,6 @@ const getWatcher = function() {
 };
 
 const start = function(options) {
-  log.debug('watch.start');
-
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
     return;
@@ -26,13 +24,12 @@ const start = function(options) {
 
   // Start the watcher with the first path.
   watcher = chokidar.watch(options.paths, {
+    atomic: true,
+    ignoreInitial: true,
     ignored: /[\/\/]\./,
     persistent: true,
-    ignoreInitial: true,
     usePolling: true
   });
-
-  watcher.on('raw', (event, path, details) => log.debug('watch raw', event, path, details));
 
   return watcher;
 };
