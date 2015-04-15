@@ -37,17 +37,15 @@ const getBrowserifyBundle = function(options) {
     packageCache: {}
   };
 
-  log.debug('browserify.getBrowserifyBundle browserifyOptions:', JSON.stringify(browserifyOptions));
-
   const b = browserify(browserifyOptions);
+
+  const jadeRuntime = require.resolve('jade/runtime');
 
   const jadeifyOptions = {
     compileDebug: true,
     pretty: true,
-    runtimePath: require.resolve('jade/runtime')
+    runtimePath: jadeRuntime
   }
-
-  log.debug('browserify.getBrowserifyBundle jadeifyOptions', JSON.stringify(jadeifyOptions));
 
   b.transform(jadeify, jadeifyOptions);
 
