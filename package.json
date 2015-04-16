@@ -28,7 +28,7 @@
     "coffee-script": "^1.9.1",
     "deepmerge": "^0.2.7",
     "forever-monitor": "^1.5.2",
-    "jadeify": "^4.1.0",
+    "jadeify": "^4.2.0",
     "less": "^2.4.0",
     "lodash": "^3.6.0",
     "loglevel": "^1.2.0",
