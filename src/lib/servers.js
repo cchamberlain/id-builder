@@ -114,7 +114,7 @@ const restartServer = function(options, filePath, cb){
 const runServers = function(options, cb){
   log.debug('servers.runServers', options);
 
-  each(options.paths, function(v, cb) {
+  each(options.paths, (v, cb) => {
     startServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };
@@ -122,7 +122,7 @@ const runServers = function(options, cb){
 const restartServers = function(options, cb){
   log.debug('servers.restartServers', options);
 
-  each(options.paths, function(v, cb) {
+  each(options.paths, (v, cb) => {
     restartServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };

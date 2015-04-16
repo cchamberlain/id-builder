@@ -9,7 +9,7 @@ const dependencies = [
   'watch'
 ];
 
-const handlePath = function(options, path, stat) {
+const handlePath = (options, path, stat) => {
   //log.debug('watchCoffeescript.handlePath', path);
 
   if (!coffeescript.sourceFilePathMatches(options, path)) {
@@ -22,53 +22,53 @@ const handlePath = function(options, path, stat) {
 
   //log.debug('watchCoffeescript.handlePath targetPath', targetPath);
 
-  coffeescript.compileFile(options, path, targetPath, function(e) {
+  coffeescript.compileFile(options, path, targetPath, (e) => {
     if (e) {
       console.error(e);
     }
   });
 };
 
-const handleAdd = function(options, path, stat) {
+const handleAdd = (options, path, stat) => {
   //log.debug('watchCoffeescript.handleAdd', path);
 
   handlePath(options, path, stat);
 };
 
-const handleAddDir = function(options, path, stat) {
+const handleAddDir = (options, path, stat) => {
   //log.debug('watchCoffeescript.handleAddDir', path);
 };
 
-const handleChange = function(options, path, stat) {
+const handleChange = (options, path, stat) => {
   //log.debug('watchCoffeescript.handleChange', path);
 
   handlePath(options, path, stat);
 };
 
-const handleUnlink = function(options, path, stat) {
+const handleUnlink = (options, path, stat) => {
   //log.debug('watchCoffeescript.handleUnlink', path);
 };
 
-const handleUnlinkDir = function(options, path, stat) {
+const handleUnlinkDir = (options, path, stat) => {
   //log.debug('watchCoffeescript.handleUnlinkDir', path);
 };
 
-const handleError = function(options, e) {
+const handleError = (options, e) => {
   //log.debug('watchCoffeescript.handleError', options, e);
 };
 
-const run = function(options, cb) {
+const run = (options, cb) => {
   //log.debug('watchCoffeescript.run', options);
 
   const watcher = getWatcher();
 
   watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

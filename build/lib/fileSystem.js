@@ -22,6 +22,10 @@ var _mkdirp = require('mkdirp');
 
 var _mkdirp2 = _interopRequireWildcard(_mkdirp);
 
+var _rimraf = require('rimraf');
+
+var _rimraf2 = _interopRequireWildcard(_rimraf);
+
 var _each = require('async');
 
 var _log = require('./log');
@@ -29,6 +33,10 @@ var _log = require('./log');
 var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
+
+var removePath = function removePath(path, cb) {
+  _rimraf2['default'](path, cb);
+};
 
 var getFiles = function getFiles(path, cb) {
   _log2['default'].debug('fileSystem.getFiles', path);
@@ -129,8 +137,9 @@ var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFil
 };
 
 exports['default'] = {
-  ensureFileDirectory: ensureFileDirectory,
+  compileAllFiles: compileAllFiles,
   compileFile: compileFile,
-  compileAllFiles: compileAllFiles
+  ensureFileDirectory: ensureFileDirectory,
+  removePath: removePath
 };
 module.exports = exports['default'];

@@ -8,13 +8,13 @@ import fileSystem from './fileSystem';
 const sourceExtension = 'coffee';
 const targetExtension = 'js';
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = (options, sourceFilePath) => {
   const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}`))
 
   return result;
 };
 
-const compileChunk = function(options, chunk, cb) {
+const compileChunk = (options, chunk, cb) => {
   log.debug('coffeescript.compileChunk', options);
 
   try {

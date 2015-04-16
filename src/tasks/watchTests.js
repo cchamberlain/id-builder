@@ -9,52 +9,52 @@ const dependencies = [
   'watch'
 ];
 
-const handlePath = function(options, path, stat) {
+const handlePath = (options, path, stat) => {
   if (!buildFilePathMatches(options, path)) {
     return;
   }
 
-  runTests(options, function(e) {
+  runTests(options, (e) => {
     if (e) {
       console.error(e);
     }
   });
 };
 
-const handleAdd = function(options, path, stat) {
+const handleAdd = (options, path, stat) => {
   handlePath(options, path, stat);
 };
 
-const handleAddDir = function(options, path, stat) {
+const handleAddDir = (options, path, stat) => {
   handlePath(options, path, stat);
 };
 
-const handleChange = function(options, path, stat) {
+const handleChange = (options, path, stat) => {
   handlePath(options, path, stat);
 };
 
-const handleUnlink = function(options, path, stat) {
+const handleUnlink = (options, path, stat) => {
   handlePath(options, path, stat);
 };
 
-const handleUnlinkDir = function(options, path, stat) {
+const handleUnlinkDir = (options, path, stat) => {
   handlePath(options, path, stat);
 };
 
-const handleError = function(options, e) {
+const handleError = (options, e) => {
   console.error(e);
 };
 
-const run = function(options, cb) {
+const run = (options, cb) => {
   const watcher = getWatcher();
 
   watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

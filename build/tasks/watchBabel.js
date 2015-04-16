@@ -16,11 +16,13 @@ var _babel2 = _interopRequireWildcard(_babel);
 
 var _getWatcher = require('../lib/watch');
 
+var _removePath = require('../lib/fileSystem');
+
 'use strict';
 
 var dependencies = ['watch'];
 
-var handlePath = function handlePath(options, path, stat) {
+var handleAdd = function handleAdd(options, path, stat) {
   if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -29,26 +31,68 @@ var handlePath = function handlePath(options, path, stat) {
 
   _babel2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {
-      console.error(e);
+      _log2['default'].error(e);
     }
   });
 };
 
-var handleAdd = function handleAdd(options, path, stat) {
-  handlePath(options, path, stat);
-};
+var handleAddDir = function handleAddDir(options, path, stat) {
+  if (!_babel2['default'].sourceFilePathMatches(options, path)) {
+    return;
+  }
 
-var handleAddDir = function handleAddDir(options, path, stat) {};
+  _babel2['default'].compileAllFiles({ sourcePath: path }, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
+};
 
 var handleChange = function handleChange(options, path, stat) {
-  handlePath(options, path, stat);
+  if (!_babel2['default'].sourceFilePathMatches(options, path)) {
+    return;
+  }
+
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + _babel2['default'].sourceExtension + '$'), '.' + _babel2['default'].targetExtension);
+
+  _babel2['default'].compileFile(options, path, targetPath, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
 };
 
-var handleUnlink = function handleUnlink(options, path, stat) {};
+var handleUnlink = function handleUnlink(options, path, stat) {
+  if (!_babel2['default'].sourceFilePathMatches(options, path)) {
+    return;
+  }
 
-var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
+  _removePath.removePath(path, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
+};
 
-var handleError = function handleError(options, e) {};
+var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
+  if (!_babel2['default'].sourceFilePathMatches(options, path)) {
+    return;
+  }
+
+  _removePath.removePath(path, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
+};
+
+var handleError = function handleError(options, e) {
+  if (!_babel2['default'].sourceFilePathMatches(options, path)) {
+    return;
+  }
+
+  _log2['default'].error(e);
+};
 
 var run = function run(options, cb) {
   var watcher = _getWatcher.getWatcher();
