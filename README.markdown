@@ -232,6 +232,16 @@ Compiles ES6 to ES5.
 Compiles all Client code into one file. Uses
 [Browserify](https://github.com/substack/node-browserify).
 
+### Browsersync
+Reloads the browser (or refreshes on CSS changes) when files change on disk that
+are loaded in the browser. Allows you to connect many devices to the same site
+and operate on them and reload them at the same time.
+
+To use this functionality, you need to add a script to the page that serves the
+app.bundle.js.
+
+Start id-builder and go to http://localhost:9001 for the script to include.
+
 #### CoffeeScript
 Compiles CoffeeScript files to JavaScript.
 
