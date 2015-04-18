@@ -16,7 +16,11 @@ const sourceFilePathMatches = (options, sourceFilePath) => {
 
 const compileChunk = (options, chunk, cb) => {
   try {
-    const output = transform(chunk);
+    const output = transform(chunk, {
+      optional: [
+        'asyncToGenerator'
+      ]
+    });
 
     cb(null, output.code);
   } catch (e) {

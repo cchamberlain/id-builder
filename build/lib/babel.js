@@ -29,7 +29,9 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
 
 var compileChunk = function compileChunk(options, chunk, cb) {
   try {
-    var output = _transform.transform(chunk);
+    var output = _transform.transform(chunk, {
+      optional: ['asyncToGenerator']
+    });
 
     cb(null, output.code);
   } catch (e) {
