@@ -37,7 +37,7 @@ var handleAdd = function handleAdd(options, path, stat) {
 
   _sourceFilePathMatches$reload.reload(options, path, function (e) {
     if (e) {
-      console.error(e);
+      _log2['default'].error(e);
     }
   });
 };
@@ -55,7 +55,7 @@ var handleChange = function handleChange(options, path, stat) {
 
   _sourceFilePathMatches$reload.reload(options, path, function (e) {
     if (e) {
-      console.error(e);
+      _log2['default'].error(e);
     }
   });
 };

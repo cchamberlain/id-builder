@@ -16,51 +16,85 @@ var _coffeescript2 = _interopRequireWildcard(_coffeescript);
 
 var _getWatcher = require('../lib/watch');
 
+var _removePath = require('../lib/fileSystem');
+
 'use strict';
 
 var dependencies = ['watch'];
 
-var handlePath = function handlePath(options, path, stat) {
-  //log.debug('watchCoffeescript.handlePath', path);
-
+var handleAdd = function handleAdd(options, path, stat) {
   if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
   var targetPath = path.replace(options.sourcePath, options.targetPath).replace('.' + _coffeescript2['default'].sourceExtension, '.' + _coffeescript2['default'].targetExtension);
 
-  //log.debug('watchCoffeescript.handlePath targetPath', targetPath);
-
   _coffeescript2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {
-      console.error(e);
+      _log2['default'].error(e);
     }
   });
 };
 
-var handleAdd = function handleAdd(options, path, stat) {
-  //log.debug('watchCoffeescript.handleAdd', path);
+var handleAddDir = function handleAddDir(options, path, stat) {
+  if (!matches(path)) {
+    return;
+  }
 
-  handlePath(options, path, stat);
+  _coffeescript2['default'].compileAllFiles({ sourcePath: path }, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
 };
-
-var handleAddDir = function handleAddDir(options, path, stat) {};
 
 var handleChange = function handleChange(options, path, stat) {
-  //log.debug('watchCoffeescript.handleChange', path);
+  if (!matches(path)) {
+    return;
+  }
 
-  handlePath(options, path, stat);
+  var targetPath = path.replace(options.sourcePath, options.targetPath).replace('.' + _coffeescript2['default'].sourceExtension, '.' + _coffeescript2['default'].targetExtension);
+
+  _coffeescript2['default'].compileFile(options, path, targetPath, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
 };
 
-var handleUnlink = function handleUnlink(options, path, stat) {};
+var handleUnlink = function handleUnlink(options, path, stat) {
+  if (!matches(path)) {
+    return;
+  }
 
-var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
+  _removePath.removePath(path, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
+};
 
-var handleError = function handleError(options, e) {};
+var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
+  if (!matches(path)) {
+    return;
+  }
+
+  _removePath.removePath(path, function (e) {
+    if (e) {
+      _log2['default'].error(e);
+    }
+  });
+};
+
+var handleError = function handleError(options, e) {
+  if (!matches(path)) {
+    return;
+  }
+
+  _log2['default'].error(e);
+};
 
 var run = function run(options, cb) {
-  //log.debug('watchCoffeescript.run', options);
-
   var watcher = _getWatcher.getWatcher();
 
   watcher.on('ready', function () {
@@ -90,11 +124,3 @@ exports['default'] = {
   run: run
 };
 module.exports = exports['default'];
-
-//log.debug('watchCoffeescript.handleAddDir', path);
-
-//log.debug('watchCoffeescript.handleUnlink', path);
-
-//log.debug('watchCoffeescript.handleUnlinkDir', path);
-
-//log.debug('watchCoffeescript.handleError', options, e);

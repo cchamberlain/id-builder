@@ -4,14 +4,13 @@ import log from 'loglevel';
 
 import coffeescript from '../lib/coffeescript';
 import { getWatcher } from '../lib/watch';
+import { removePath } from '../lib/fileSystem'
 
 const dependencies = [
   'watch'
-];
+]
 
-const handlePath = (options, path, stat) => {
-  //log.debug('watchCoffeescript.handlePath', path);
-
+const handleAdd = (options, path, stat) => {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -20,46 +19,74 @@ const handlePath = (options, path, stat) => {
     .replace(options.sourcePath, options.targetPath)
     .replace(`.${coffeescript.sourceExtension}`, `.${coffeescript.targetExtension}`);
 
-  //log.debug('watchCoffeescript.handlePath targetPath', targetPath);
-
   coffeescript.compileFile(options, path, targetPath, (e) => {
     if (e) {
-      console.error(e);
+      log.error(e);
     }
   });
 };
 
-const handleAdd = (options, path, stat) => {
-  //log.debug('watchCoffeescript.handleAdd', path);
-
-  handlePath(options, path, stat);
-};
-
 const handleAddDir = (options, path, stat) => {
-  //log.debug('watchCoffeescript.handleAddDir', path);
+  if (!matches(path)) {
+    return;
+  }
+
+  coffeescript.compileAllFiles({ sourcePath: path }, e => {
+    if (e) {
+      log.error(e);
+    }
+  });
 };
 
 const handleChange = (options, path, stat) => {
-  //log.debug('watchCoffeescript.handleChange', path);
+  if (!matches(path)) {
+    return;
+  }
 
-  handlePath(options, path, stat);
+  const targetPath = path
+    .replace(options.sourcePath, options.targetPath)
+    .replace(`.${coffeescript.sourceExtension}`, `.${coffeescript.targetExtension}`);
+
+  coffeescript.compileFile(options, path, targetPath, (e) => {
+    if (e) {
+      log.error(e);
+    }
+  });
 };
 
 const handleUnlink = (options, path, stat) => {
-  //log.debug('watchCoffeescript.handleUnlink', path);
+  if (!matches(path)) {
+    return;
+  }
+
+  removePath(path, e => {
+    if (e) {
+      log.error(e);
+    }
+  });
 };
 
 const handleUnlinkDir = (options, path, stat) => {
-  //log.debug('watchCoffeescript.handleUnlinkDir', path);
+  if (!matches(path)) {
+    return;
+  }
+
+  removePath(path, e => {
+    if (e) {
+      log.error(e);
+    }
+  });
 };
 
 const handleError = (options, e) => {
-  //log.debug('watchCoffeescript.handleError', options, e);
+  if (!matches(path)) {
+    return;
+  }
+
+  log.error(e);
 };
 
 const run = (options, cb) => {
-  //log.debug('watchCoffeescript.run', options);
-
   const watcher = getWatcher();
 
   watcher.on('ready', function() {

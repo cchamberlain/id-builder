@@ -26,7 +26,7 @@ const handleAdd = (options, path, stat) => {
 
   reload(options, path, (e) => {
     if (e) {
-      console.error(e);
+      log.error(e);
     }
   });
 };
@@ -44,7 +44,7 @@ const handleChange = (options, path, stat) => {
 
   reload(options, path, (e) => {
     if (e) {
-      console.error(e);
+      log.error(e);
     }
   });
 };
