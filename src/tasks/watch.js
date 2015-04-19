@@ -5,7 +5,7 @@ import { start } from '../lib/watch';
 
 const dependencies = [ 'runTests' ];
 
-const run = (options, cb) => {
+const run = function(options, cb) {
   start(options);
   cb();
 };

@@ -20,4 +20,5 @@ exports['default'] = function (defaults, options) {
   return _deepmerge2['default'](defaults, options);
 };
 
+;
 module.exports = exports['default'];

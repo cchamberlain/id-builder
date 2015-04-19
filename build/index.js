@@ -85,4 +85,5 @@ exports['default'] = function (_x, cb) {
   _auto.auto(autoTasks, cb);
 };
 
+;
 module.exports = exports['default'];
