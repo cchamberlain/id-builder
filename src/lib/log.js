@@ -12,19 +12,19 @@ minilog
   .pipe(minilog.backends.console.formatLearnboost)
   .pipe(minilog.backends.console);
 
-const debug = (...args) => {
+const debug = function(...args) {
   log.debug(...args);
 };
 
-const info = (...args) => {
+const info = function(...args) {
   log.info(...args);
 };
 
-const warn = (...args) => {
+const warn = function(...args) {
   log.warn(...args);
 };
 
-const error = (...args) => {
+const error = function(...args) {
   log.error(...args);
 };
 

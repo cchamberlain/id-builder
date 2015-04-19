@@ -8,20 +8,20 @@ import fileSystem from './fileSystem';
 const sourceExtension = 'less';
 const targetExtension = 'css';
 
-const sourceFilePathMatches = (options, sourceFilePath) => {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   const result = !!sourceFilePath.match(new RegExp(`^${options.sourceDirectory}.+\.${sourceExtension}$`))
 
   return result;
 };
 
-const compileChunk = (options, chunk, cb) => {
+const compileChunk = function(options, chunk, cb) {
   log.debug('less.compileChunk', options.sourcePath);
 
   const renderOptions = {
     filename: options.sourcePath
   };
 
-  less.render(chunk, renderOptions, (e, result) => {
+  less.render(chunk, renderOptions, function(e, result) {
     if (e) {
       return cb(e);
     }

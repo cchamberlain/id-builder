@@ -9,18 +9,18 @@ import browserify from '../build/../../../lib/browserify';
 import { randomString } from '../build/../../../lib/tests';
 
 describe('browserify', function() {
-  beforeEach((cb) => {
+  beforeEach(function(cb) {
     this.directoryPath = '.tmp/' + randomString();
 
     mkdirp(this.directoryPath, cb);
   });
 
-  afterEach((cb) => {
+  afterEach(function(cb) {
     rimraf(this.directoryPath, cb);
   });
 
   describe('sourceExtension', function() {
-    it('should be defined', (cb) => {
+    it('should be defined', function(cb) {
       expect(browserify.sourceExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
@@ -28,7 +28,7 @@ describe('browserify', function() {
   });
 
   describe('targetExtension', function() {
-    it('should be defined', (cb) => {
+    it('should be defined', function(cb) {
       expect(browserify.targetExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
@@ -40,7 +40,7 @@ describe('browserify', function() {
 
   describe('sourceFilePathMatches', function() {
     describe('when the `sourceFilePath` is the `targetPath`', function() {
-      it('should return `false`', (cb) => {
+      it('should return `false`', function(cb) {
         const options = {
           targetPath: 'x/y.js',
           sourceDirectory: 'x'
@@ -53,7 +53,7 @@ describe('browserify', function() {
     });
 
     describe('when the `sourceFilePath` is in the the `sourceDirectory`', function() {
-      it('should return `true`', (cb) => {
+      it('should return `true`', function(cb) {
         const options = {
           targetPath: 'x/y.js',
           sourceDirectory: 'x'
@@ -66,7 +66,7 @@ describe('browserify', function() {
     });
 
     describe('when the `sourceFilePath` is not in the the `sourceDirectory`', function() {
-      it('should return `false`', (cb) => {
+      it('should return `false`', function(cb) {
         const options = {
           targetPath: 'x/q.js',
           sourceDirectory: 'a'

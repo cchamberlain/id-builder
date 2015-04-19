@@ -15,7 +15,7 @@ const targetExtension = 'js';
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-const sourceFilePathMatches = (options, sourceFilePath) => {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   let result;
 
   if (sourceFilePath === options.targetPath) {
@@ -29,7 +29,7 @@ const sourceFilePathMatches = (options, sourceFilePath) => {
   return result;
 };
 
-const getBrowserifyBundle = (options) => {
+const getBrowserifyBundle = function(options) {
   const browserifyOptions = {
     cache: {},
     debug: true,
@@ -52,16 +52,16 @@ const getBrowserifyBundle = (options) => {
   return b;
 };
 
-const compileAllFiles = (options, cb) => {
+const compileAllFiles = function(options, cb) {
   log.debug('browserify.compileAllFiles');
 
-  exists(options.sourcePath, (exists) => {
+  exists(options.sourcePath, function(exists) {
     if (!exists) {
       log.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
       return cb();
     }
 
-    ensureFileDirectory(options.targetPath, (e) => {
+    ensureFileDirectory(options.targetPath, function(e) {
       if (e) {
         return cb(e);
       }
@@ -70,15 +70,15 @@ const compileAllFiles = (options, cb) => {
 
       b.add(resolve(options.sourcePath));
 
-      b.on('bundle', (bundleStream) => {
+      b.on('bundle', function(bundleStream) {
         let data = '';
 
-        bundleStream.on('data', (d) => {
+        bundleStream.on('data', function(d) {
           data += d;
         });
 
-        bundleStream.on('end', (d) => {
-          writeFile(options.targetPath, data, (e) => {
+        bundleStream.on('end', function(d) {
+          writeFile(options.targetPath, data, function(e) {
             if (e) {
               return cb(e);
             }
@@ -94,16 +94,16 @@ const compileAllFiles = (options, cb) => {
   });
 };
 
-const watch = (options, cb) => {
+const watch = function(options, cb) {
   log.debug('browserify.watch');
 
-  exists(options.sourcePath, (exists) => {
+  exists(options.sourcePath, function(exists) {
     if (!exists) {
       log.taskInfo(options.taskName, `skipping ${options.sourcePath} (Does not exist)`);
       return cb();
     }
 
-    ensureFileDirectory(options.targetPath, (e) => {
+    ensureFileDirectory(options.targetPath, function(e) {
       if (e) {
         return cb(e);
       }
@@ -112,19 +112,19 @@ const watch = (options, cb) => {
 
       b.add(resolve(options.sourcePath));
 
-      b.on('bundle', (bundleStream) => {
+      b.on('bundle', function(bundleStream) {
         log.debug('browserify.watch on bundle');
 
         let data = '';
 
-        bundleStream.on('data', (d) => {
+        bundleStream.on('data', function(d) {
           data += d;
         });
 
-        bundleStream.on('end', (d) => {
+        bundleStream.on('end', function(d) {
           log.debug('browserify.watch on bundle end');
 
-          writeFile(options.targetPath, data, (e) => {
+          writeFile(options.targetPath, data, function(e) {
             if (e) {
               return cb(e);
             }

@@ -8,13 +8,13 @@ import fileSystem from './fileSystem';
 const sourceExtension = 'ls';
 const targetExtension = 'js';
 
-const sourceFilePathMatches = (options, sourceFilePath) => {
+const sourceFilePathMatches = function(options, sourceFilePath) {
   const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`))
 
   return result;
 };
 
-const compileChunk = (options, chunk, cb) => {
+const compileChunk = function(options, chunk, cb) {
   log.debug('livescript.compileChunk', options.sourcePath);
 
   try {

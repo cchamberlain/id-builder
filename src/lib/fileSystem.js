@@ -11,14 +11,14 @@ import { each } from 'async';
 
 import log from './log';
 
-const removePath = (path, cb) => {
+const removePath = function(path, cb) {
   rimraf(path, cb);
 };
 
-const getFiles = (path, cb) => {
+const getFiles = function(path, cb) {
   log.debug('fileSystem.getFiles', path);
 
-  lsr(path, (e, nodes) => {
+  lsr(path, function(e, nodes) {
     if (e) {
       return cb(e);
     }
@@ -29,10 +29,10 @@ const getFiles = (path, cb) => {
   });
 };
 
-const getDirectories = (path, cb) => {
+const getDirectories = function(path, cb) {
   log.debug('fileSystem.getDirectories', path);
 
-  lsr(path, (e, nodes) => {
+  lsr(path, function(e, nodes) {
     if (e) {
       return cb(e);
     }
@@ -43,38 +43,38 @@ const getDirectories = (path, cb) => {
   });
 };
 
-const getTargetPath = (sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) => {
+const getTargetPath = function(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
   return sourcePath
     .replace(sourceDirectory, targetDirectory)
     .replace(RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
-const ensureFileDirectory = (targetFilePath, cb) => {
+const ensureFileDirectory = function(targetFilePath, cb) {
   log.debug('fileSystem.ensureFileDirectory', targetFilePath);
 
   mkdirp(dirname(targetFilePath), cb);
 };
 
-const compileFile = (compileChunk) => {
-  return (options, sourceFilePath, targetFilePath, cb) => {
+const compileFile = function(compileChunk) {
+  return function(options, sourceFilePath, targetFilePath, cb) {
     log.debug('fileSystem.compileFile', sourceFilePath);
 
-    readFile(sourceFilePath, (e, fileContent) => {
+    readFile(sourceFilePath, function(e, fileContent) {
       if (e) {
         return cb(e);
       }
 
-      compileChunk(options, fileContent.toString(), (e, compiledChunk) => {
+      compileChunk(options, fileContent.toString(), function(e, compiledChunk) {
         if (e) {
           return cb(e);
         }
 
-        ensureFileDirectory(targetFilePath, (e) => {
+        ensureFileDirectory(targetFilePath, function(e) {
           if (e) {
             return cb(e);
           }
 
-          writeFile(targetFilePath, compiledChunk, (e) => {
+          writeFile(targetFilePath, compiledChunk, function(e) {
             if (e) {
               return cb(e);
             }
@@ -89,11 +89,11 @@ const compileFile = (compileChunk) => {
   };
 };
 
-const compileAllFiles = (sourceFilePathMatches, compileFile, sourceExtension, targetExtension) => {
-  return (options, cb) => {
+const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
+  return function(options, cb) {
     log.debug('fileSystem.compileAllFiles');
 
-    getFiles(options.sourcePath, (e, sourceFilePaths) => {
+    getFiles(options.sourcePath, function(e, sourceFilePaths) {
       if (e) {
         return cb();
       }
@@ -107,7 +107,7 @@ const compileAllFiles = (sourceFilePathMatches, compileFile, sourceExtension, ta
         })
         .value();
 
-      const iteratePath = (currentSourceFilePath, cb) => {
+      const iteratePath = function(currentSourceFilePath, cb) {
         const currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);
 
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);

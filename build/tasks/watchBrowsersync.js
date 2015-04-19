@@ -20,18 +20,12 @@ var _removePath = require('../lib/fileSystem');
 
 var dependencies = ['watch'];
 
-var matches = function matches(path) {
+var handleAdd = function handleAdd(options, path, stat) {
   if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
     // Only reload if it's the bundle when the file is a JavaScript file.
     return;
   } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
     // Only reload when needed if it isn't a js file.
-    return;
-  }
-};
-
-var handleAdd = function handleAdd(options, path, stat) {
-  if (!matches(path)) {
     return;
   }
 
@@ -43,17 +37,33 @@ var handleAdd = function handleAdd(options, path, stat) {
 };
 
 var handleAddDir = function handleAddDir(options, path, stat) {
-  if (!matches(path)) {
+  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
+    // Only reload if it's the bundle when the file is a JavaScript file.
+    return;
+  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
+    // Only reload when needed if it isn't a js file.
     return;
   }
+
+  // TODO: Something?
 };
 
 var handleChange = function handleChange(options, path, stat) {
-  if (!matches(path)) {
+  _log2['default'].debug('watchBrowserSync.handleChange', path, options, stat);
+
+  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
+    // Only reload if it's the bundle when the file is a JavaScript file.
+    return;
+  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
+    // Only reload when needed if it isn't a js file.
     return;
   }
 
+  _log2['default'].debug('watchBrowserSync.handleChange MATCH!!!', path, options, stat);
+
   _sourceFilePathMatches$reload.reload(options, path, function (e) {
+    _log2['default'].debug('watchBrowserSync.handleChange RELOADED', path, options, stat);
+
     if (e) {
       _log2['default'].error(e);
     }
@@ -61,7 +71,11 @@ var handleChange = function handleChange(options, path, stat) {
 };
 
 var handleUnlink = function handleUnlink(options, path, stat) {
-  if (!matches(path)) {
+  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
+    // Only reload if it's the bundle when the file is a JavaScript file.
+    return;
+  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
+    // Only reload when needed if it isn't a js file.
     return;
   }
 
@@ -73,7 +87,11 @@ var handleUnlink = function handleUnlink(options, path, stat) {
 };
 
 var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
-  if (!matches(path)) {
+  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
+    // Only reload if it's the bundle when the file is a JavaScript file.
+    return;
+  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
+    // Only reload when needed if it isn't a js file.
     return;
   }
 
@@ -85,15 +103,21 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
 };
 
 var handleError = function handleError(options, e) {
-  if (!matches(path)) {
-    return;
-  }
-
   _log2['default'].error(e);
 };
 
 var run = function run(options, cb) {
+  _log2['default'].debug('watchBrowsersync.run', options);
+
   var watcher = _getWatcher.getWatcher();
+
+  watcher.on('all', function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _log2['default'].debug.apply(_log2['default'], ['watchBrowsersync all: '].concat(args));
+  });
 
   watcher.on('ready', function () {
     watcher.on('add', function (path, stat) {

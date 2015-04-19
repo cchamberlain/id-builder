@@ -37,7 +37,7 @@ var handleAdd = function handleAdd(options, path, stat) {
 };
 
 var handleAddDir = function handleAddDir(options, path, stat) {
-  if (!matches(path)) {
+  if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
@@ -49,7 +49,7 @@ var handleAddDir = function handleAddDir(options, path, stat) {
 };
 
 var handleChange = function handleChange(options, path, stat) {
-  if (!matches(path)) {
+  if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
@@ -63,7 +63,7 @@ var handleChange = function handleChange(options, path, stat) {
 };
 
 var handleUnlink = function handleUnlink(options, path, stat) {
-  if (!matches(path)) {
+  if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
@@ -75,7 +75,7 @@ var handleUnlink = function handleUnlink(options, path, stat) {
 };
 
 var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
-  if (!matches(path)) {
+  if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
@@ -87,10 +87,6 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
 };
 
 var handleError = function handleError(options, e) {
-  if (!matches(path)) {
-    return;
-  }
-
   _log2['default'].error(e);
 };
 

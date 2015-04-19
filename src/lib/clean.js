@@ -8,16 +8,16 @@ import { each } from 'async';
 
 import log from './log';
 
-const directory = (options, cb) => {
+const directory = function(options, cb) {
   log.debug('clean.directory', options.path);
 
-  readdir(options.path, (e, nodes) => {
+  readdir(options.path, function(e, nodes) {
     if (e) {
       return cb(e);
     }
 
     const paths = _(nodes)
-      .map((v) => {
+      .map(function(v) {
         const path = `${options.path}/${v}`;
 
         log.taskInfo(options.taskName, path);
