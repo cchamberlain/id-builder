@@ -48,6 +48,14 @@ var start = function start(options) {
     usePolling: true
   });
 
+  watcher.on('all', function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _log2['default'].debug.apply(_log2['default'], ['watch all: '].concat(args));
+  });
+
   return watcher;
 };
 

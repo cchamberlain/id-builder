@@ -45,5 +45,43 @@
     "spawn-mocha-parallel": "^1.3.1",
     "stylus": "^0.50.0",
     "watchify": "^3.1.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "jquery": true,
+      "node": true
+    },
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "binaryLiterals": true,
+      "blockBindings": true,
+      "classes": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "forOf": true,
+      "generators": true,
+      "globalReturn": true,
+      "jsx": true,
+      "modules": true,
+      "objectLiteralComputedProperties": true,
+      "objectLiteralDuplicateProperties": true,
+      "objectLiteralShorthandMethods": true,
+      "objectLiteralShorthandProperties": true,
+      "octalLiterals": true,
+      "regexUFlag": true,
+      "regexYFlag": true,
+      "spread": true,
+      "superInFunctions": true,
+      "templateStrings": true,
+      "unicodeCodePointEscapes": true
+    },
+    "rules": {
+      "quotes": [ 0, "single", "avoid-escape" ],
+      "no-underscore-dangle": 0,
+      "no-unused-vars": 0,
+      "consistent-return": 0
+    },
+    "globals": {}
   }
 }

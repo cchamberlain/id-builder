@@ -10,8 +10,8 @@ import defaultOptions from './lib/defaultOptions';
 import parseOptions from './lib/parseOptions';
 import tasks from './tasks';
 
-const runTaskWithOptions = (options, task, name) => {
-  return (cb) => {
+const runTaskWithOptions = function(options, task, name) {
+  return function(cb) {
     const taskOptions = options.tasks[name];
 
     if (!taskOptions) {
@@ -27,7 +27,7 @@ const runTaskWithOptions = (options, task, name) => {
 
     log.startTask(name);
 
-    task.run(taskOptions, (e) => {
+    task.run(taskOptions, function(e) {
       if (e) {
         return cb(e);
       }
@@ -39,14 +39,14 @@ const runTaskWithOptions = (options, task, name) => {
   };
 };
 
-export default (inputOptions = {}, cb) => {
+export default function(inputOptions = {}, cb) {
   const options = global.options = parseOptions(defaultOptions, inputOptions);
 
   if (options.logging) {
     minilog.suggest.deny(/.*/, options.logging.level)
   }
 
-  const autoTasks = _.reduce(tasks, (m, v, k) => {
+  const autoTasks = _.reduce(tasks, function(m, v, k) {
     m[k] = v.dependencies.concat(runTaskWithOptions(options, v, k));
 
     return m;

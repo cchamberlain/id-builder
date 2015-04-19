@@ -23,16 +23,14 @@ var _browserify2 = _interopRequireWildcard(_browserify);
 var _randomString = require('../build/../../../lib/tests');
 
 describe('browserify', function () {
-  var _this = this;
-
   beforeEach(function (cb) {
-    _this.directoryPath = '.tmp/' + _randomString.randomString();
+    this.directoryPath = '.tmp/' + _randomString.randomString();
 
-    _mkdirp2['default'](_this.directoryPath, cb);
+    _mkdirp2['default'](this.directoryPath, cb);
   });
 
   afterEach(function (cb) {
-    _rimraf2['default'](_this.directoryPath, cb);
+    _rimraf2['default'](this.directoryPath, cb);
   });
 
   describe('sourceExtension', function () {

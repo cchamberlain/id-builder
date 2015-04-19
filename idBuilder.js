@@ -5,6 +5,11 @@ require('babel/register');
 var idBuilder = require('./src');
 
 idBuilder({
+  logging: {
+    // debug, info, warn, error
+    level: 'debug'
+  },
+
   tasks: {
     clean: {
       enabled: true

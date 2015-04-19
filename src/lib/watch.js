@@ -11,7 +11,7 @@ const getWatcher = function() {
   return watcher;
 };
 
-const start = (options) => {
+const start = function(options) {
   log.debug('watch.start');
 
   // If there are no paths to watch, do nothing.
@@ -31,6 +31,10 @@ const start = (options) => {
     ignored: /[\/\/]\./,
     persistent: true,
     usePolling: true
+  });
+
+  watcher.on('all', function(...args) {
+    log.debug('watch all: ', ...args);
   });
 
   return watcher;
