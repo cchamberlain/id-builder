@@ -3,7 +3,7 @@
 import log from 'loglevel';
 import clean from '../lib/clean';
 
-const dependencies = []
+const dependencies = [];
 
 const run = function (options, cb) {
   clean.directory(options, cb);
