@@ -18,7 +18,11 @@ const compileChunk = function(options, chunk, cb) {
   try {
     const output = transform(chunk, {
       optional: [
-        'asyncToGenerator'
+        'es7.asyncFunctions',
+        'es7.decorators',
+        'es7.exportExtensions',
+        'es7.objectRestSpread',
+        'es7.trailingFunctionCommas'
       ]
     });
 
