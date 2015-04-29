@@ -16,17 +16,7 @@ const targetExtension = 'js';
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  let result;
-
-  if (sourceFilePath === options.targetPath) {
-    result = false;
-  } else if (sourceFilePath.indexOf(options.sourceDirectory) === 0) {
-    result = true;
-  }  else {
-    result = false;
-  }
-
-  return result;
+  return sourceFilePath !== options.targetPath && sourceFilePath.indexOf(options.sourceDirectory) === 0;
 };
 
 const getBrowserifyBundle = function(options) {
@@ -45,7 +35,7 @@ const getBrowserifyBundle = function(options) {
     compileDebug: true,
     pretty: true,
     runtimePath: jadeRuntime
-  }
+  };
 
   b.transform(jadeify, jadeifyOptions);
 
