@@ -1,12 +1,12 @@
 'use strict';
 
 import log from 'loglevel';
-import { directory } from '../lib/clean';
+import clean from '../lib/clean';
 
 const dependencies = []
 
 const run = function (options, cb) {
-  directory(options, cb);
+  clean.directory(options, cb);
 };
 
 export default {
