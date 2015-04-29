@@ -1,9 +1,9 @@
 'use strict';
 
-import { readFile, writeFile } from 'fs';
+import fs from 'fs';
 
 import _ from 'lodash';
-import { each } from 'async';
+import async from 'async';
 import lsr from 'lsr';
 
 import babel from './babel';
@@ -15,7 +15,7 @@ import livescript from './livescript';
 import log from './log';
 import stylus from './stylus';
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+const sourceFilePathMatches = (options, sourceFilePath) => {
   const globalOptions = global.options;
 
   let result;
@@ -43,23 +43,17 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
   return result;
 };
 
-const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+const copyFile = (options, sourceFilePath, targetFilePath, cb) => {
   log.debug('copy.copyFile', sourceFilePath, targetFilePath);
 
-  readFile(sourceFilePath, function(e, readChunk){
-    if (e) {
-      return cb(e);
-    }
+  fs.readFile(sourceFilePath, (e, readChunk) => {
+    if (e) { return cb(e); }
 
-    fileSystem.ensureFileDirectory(targetFilePath, function(e){
-      if (e) {
-        return cb(e);
-      }
+    fileSystem.ensureFileDirectory(targetFilePath, e => {
+      if (e) { return cb(e); }
 
-      writeFile(targetFilePath, readChunk, function(e){
-        if (e) {
-          return cb(e);
-        }
+      fs.writeFile(targetFilePath, readChunk, e => {
+        if (e) { return cb(e); }
 
         log.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
 
@@ -69,30 +63,26 @@ const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
   });
 };
 
-const copyAllFiles = function(options, cb) {
+const copyAllFiles = (options, cb) => {
   log.debug('copy.copyAllFiles', options.sourcePath);
 
-  lsr(options.sourcePath, function(e, nodes){
+  lsr(options.sourcePath, (e, nodes) => {
     if (e) {
       return cb(e);
     }
 
     const paths = _(nodes)
-      .filter(function(v) {
-        return !v.isDirectory() && sourceFilePathMatches(options, v.fullPath);
-      })
-      .map(function(v) {
-        return v.fullPath;
-      })
+      .filter(v => { return !v.isDirectory() && sourceFilePathMatches(options, v.fullPath); })
+      .map(v => { return v.fullPath; })
       .value();
 
-    const iteratePath = function(currentSourceDirectoryPath, cb){
+    const iteratePath = (currentSourceDirectoryPath, cb) => {
       const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
 
-    each(paths, iteratePath, function(e){
+    async.each(paths, iteratePath, e => {
       if (e) {
         return cb(e);
       }
