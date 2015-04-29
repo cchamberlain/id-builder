@@ -1,12 +1,12 @@
 'use strict';
 
 import log from 'loglevel';
-import clean from '../lib/clean';
+import rimraf from 'rimraf';
 
 const dependencies = [];
 
-const run = function (options, cb) {
-  clean.directory(options, cb);
+const run = (options, cb) => {
+  rimraf(`${options.path}/*`, cb);
 };
 
 export default {
