@@ -30,7 +30,7 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
 var compileChunk = function compileChunk(options, chunk, cb) {
   try {
     var output = _transform.transform(chunk, {
-      optional: ['asyncToGenerator']
+      optional: ['es7.asyncFunctions', 'es7.decorators', 'es7.exportExtensions', 'es7.objectRestSpread', 'es7.trailingFunctionCommas']
     });
 
     cb(null, output.code);

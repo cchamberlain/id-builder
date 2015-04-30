@@ -33,7 +33,7 @@ const start = function(options) {
     usePolling: true
   });
 
-  watcher.on('all', function(...args) {
+  watcher.on('all', (...args) => {
     log.debug('watch all: ', ...args);
   });
 

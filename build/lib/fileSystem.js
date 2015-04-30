@@ -6,9 +6,13 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _readFile$writeFile = require('fs');
+var _fs = require('fs');
 
-var _dirname = require('path');
+var _fs2 = _interopRequireWildcard(_fs);
+
+var _path = require('path');
+
+var _path2 = _interopRequireWildcard(_path);
 
 var _import = require('lodash');
 
@@ -26,7 +30,9 @@ var _rimraf = require('rimraf');
 
 var _rimraf2 = _interopRequireWildcard(_rimraf);
 
-var _each = require('async');
+var _async = require('async');
+
+var _async2 = _interopRequireWildcard(_async);
 
 var _log = require('./log');
 
@@ -34,9 +40,7 @@ var _log2 = _interopRequireWildcard(_log);
 
 'use strict';
 
-var removePath = function removePath(path, cb) {
-  _rimraf2['default'](path, cb);
-};
+var removePath = _rimraf2['default'];
 
 var getFiles = function getFiles(path, cb) {
   _log2['default'].debug('fileSystem.getFiles', path);
@@ -67,20 +71,20 @@ var getDirectories = function getDirectories(path, cb) {
 };
 
 var getTargetPath = function getTargetPath(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
-  return sourcePath.replace(sourceDirectory, targetDirectory).replace(RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
+  return sourcePath.replace(sourceDirectory, targetDirectory).replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
 var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
   _log2['default'].debug('fileSystem.ensureFileDirectory', targetFilePath);
 
-  _mkdirp2['default'](_dirname.dirname(targetFilePath), cb);
+  _mkdirp2['default'](_path2['default'].dirname(targetFilePath), cb);
 };
 
 var compileFile = function compileFile(compileChunk) {
   return function (options, sourceFilePath, targetFilePath, cb) {
     _log2['default'].debug('fileSystem.compileFile', sourceFilePath);
 
-    _readFile$writeFile.readFile(sourceFilePath, function (e, fileContent) {
+    _fs2['default'].readFile(sourceFilePath, function (e, fileContent) {
       if (e) {
         return cb(e);
       }
@@ -95,7 +99,7 @@ var compileFile = function compileFile(compileChunk) {
             return cb(e);
           }
 
-          _readFile$writeFile.writeFile(targetFilePath, compiledChunk, function (e) {
+          _fs2['default'].writeFile(targetFilePath, compiledChunk, function (e) {
             if (e) {
               return cb(e);
             }
@@ -131,7 +135,7 @@ var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFil
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
       };
 
-      _each.each(paths, iteratePath, cb);
+      _async2['default'].each(paths, iteratePath, cb);
     });
   };
 };

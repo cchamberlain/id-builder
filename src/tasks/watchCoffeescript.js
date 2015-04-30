@@ -19,7 +19,7 @@ const handleAdd = function(options, path, stat) {
     .replace(options.sourcePath, options.targetPath)
     .replace(`.${coffeescript.sourceExtension}`, `.${coffeescript.targetExtension}`);
 
-  coffeescript.compileFile(options, path, targetPath, function(e) {
+  coffeescript.compileFile(options, path, targetPath, e => {
     if (e) {
       log.error(e);
     }
@@ -47,7 +47,7 @@ const handleChange = function(options, path, stat) {
     .replace(options.sourcePath, options.targetPath)
     .replace(`.${coffeescript.sourceExtension}`, `.${coffeescript.targetExtension}`);
 
-  coffeescript.compileFile(options, path, targetPath, function(e) {
+  coffeescript.compileFile(options, path, targetPath, e => {
     if (e) {
       log.error(e);
     }
@@ -85,13 +85,13 @@ const handleError = function(options, e) {
 const run = function(options, cb) {
   const watcher = getWatcher();
 
-  watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', () =>  {
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

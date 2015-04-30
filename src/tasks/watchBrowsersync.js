@@ -18,7 +18,7 @@ const handleAdd = function(options, path, stat) {
     return;
   }
 
-  reload(options, path, function(e) {
+  reload(options, path, e => {
     if (e) {
       log.error(e);
     }
@@ -100,17 +100,17 @@ const run = function(options, cb) {
 
   const watcher = getWatcher();
 
-  watcher.on('all', function(...args) {
+  watcher.on('all', (...args) => {
     log.debug('watchBrowsersync all: ', ...args);
   });
 
-  watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat); });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat); });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat); });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat); });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat); });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat); });
+  watcher.on('ready', () => {
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat); });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat); });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat); });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat); });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat); });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat); });
   });
 };
 

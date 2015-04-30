@@ -6,13 +6,17 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _readFile$writeFile = require('fs');
+var _fs = require('fs');
+
+var _fs2 = _interopRequireWildcard(_fs);
 
 var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
-var _each = require('async');
+var _async = require('async');
+
+var _async2 = _interopRequireWildcard(_async);
 
 var _lsr = require('lsr');
 
@@ -83,7 +87,7 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
 var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
   _log2['default'].debug('copy.copyFile', sourceFilePath, targetFilePath);
 
-  _readFile$writeFile.readFile(sourceFilePath, function (e, readChunk) {
+  _fs2['default'].readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
     }
@@ -93,7 +97,7 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
         return cb(e);
       }
 
-      _readFile$writeFile.writeFile(targetFilePath, readChunk, function (e) {
+      _fs2['default'].writeFile(targetFilePath, readChunk, function (e) {
         if (e) {
           return cb(e);
         }
@@ -126,7 +130,7 @@ var copyAllFiles = function copyAllFiles(options, cb) {
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
 
-    _each.each(paths, iteratePath, function (e) {
+    _async2['default'].each(paths, iteratePath, function (e) {
       if (e) {
         return cb(e);
       }

@@ -21,7 +21,7 @@ const compileChunk = function(options, chunk, cb) {
     filename: options.sourcePath
   };
 
-  less.render(chunk, renderOptions, function(e, result) {
+  less.render(chunk, renderOptions, (e, result) => {
     if (e) {
       return cb(e);
     }

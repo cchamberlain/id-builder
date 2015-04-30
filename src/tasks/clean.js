@@ -5,7 +5,7 @@ import rimraf from 'rimraf';
 
 const dependencies = [];
 
-const run = (options, cb) => {
+const run = function(options, cb) {
   rimraf(`${options.path}/*`, cb);
 };
 

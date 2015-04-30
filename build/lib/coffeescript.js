@@ -22,9 +22,7 @@ var sourceExtension = 'coffee';
 var targetExtension = 'js';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(new RegExp('^' + options.sourcePath + '.+.' + sourceExtension));
-
-  return result;
+  return !!sourceFilePath.match(new RegExp('^' + options.sourcePath + '.+.' + sourceExtension));
 };
 
 var compileChunk = function compileChunk(options, chunk, cb) {

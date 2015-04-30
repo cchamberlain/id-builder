@@ -56,7 +56,7 @@ const sourceFilePathMatches = function(options, sourceFilePath, cb){
 const startServer = function(options, filePath, cb){
   log.debug('servers.startServer', options, filePath);
 
-  exists(filePath, function(result){
+  exists(filePath, result => {
     if (!result) {
       log.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
@@ -72,10 +72,10 @@ const startServer = function(options, filePath, cb){
   });
 };
 
-const stopServer = function(options, filePath, cb){
+const stopServer = function(options, filePath, cb) {
   log.debug('servers.stopServer', options, filePath);
 
-  exists(filePath, function(result){
+  exists(filePath, result => {
     if (!result) {
       log.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
@@ -92,16 +92,16 @@ const stopServer = function(options, filePath, cb){
   });
 };
 
-const restartServer = function(options, filePath, cb){
+const restartServer = function(options, filePath, cb) {
   log.debug('servers.restartServer', options, filePath);
 
-  exists(filePath, function(result){
+  exists(filePath, result => {
     if (!result) {
       log.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
       return cb();
     }
 
-    removePath(filePath, function(e){
+    removePath(filePath, e => {
       if (e) {
         return cb(e);
       }
@@ -114,7 +114,7 @@ const restartServer = function(options, filePath, cb){
 const runServers = function(options, cb){
   log.debug('servers.runServers', options);
 
-  each(options.paths, function(v, cb) {
+  each(options.paths, (v, cb) => {
     startServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };
@@ -122,7 +122,7 @@ const runServers = function(options, cb){
 const restartServers = function(options, cb){
   log.debug('servers.restartServers', options);
 
-  each(options.paths, function(v, cb) {
+  each(options.paths, (v, cb) => {
     restartServer(options, `${options.sourcePath}/${v}`, cb);
   });
 };

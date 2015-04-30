@@ -10,14 +10,16 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _directory = require('../lib/clean');
+var _rimraf = require('rimraf');
+
+var _rimraf2 = _interopRequireWildcard(_rimraf);
 
 'use strict';
 
 var dependencies = [];
 
 var run = function run(options, cb) {
-  _directory.directory(options, cb);
+  _rimraf2['default']('' + options.path + '/*', cb);
 };
 
 exports['default'] = {

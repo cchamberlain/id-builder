@@ -16,7 +16,7 @@ const handlePath = function(options, path, stat) {
   const targetPath = path
     .replace(options.sourcePath, options.targetPath);
 
-  copyFile(options, path, targetPath, function(e) {
+  copyFile(options, path, targetPath, e => {
     if (e) {
       console.error(e);
     }
@@ -46,13 +46,13 @@ const handleError = function(options, e) {
 const run = function(options, cb) {
   const watcher = getWatcher();
 
-  watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', () => {
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

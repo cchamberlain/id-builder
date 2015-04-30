@@ -306,3 +306,8 @@ project, running different environments (OTAP), etc.
 ### Continuous Integration & Deployment
 Provide integration with CI and CD, allowing you to easily deploy new
 versions of your code.
+
+### Running one test suite at a time
+Right now all the tests are always compiled to the build directory and then they
+may create files in the .tmp` directory. What would be better is to check for the
+existence of the .tmp directory 

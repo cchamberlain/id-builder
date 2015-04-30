@@ -8,7 +8,7 @@ import log from '../lib/log';
 const dependencies = [ 'clean' ];
 
 const run = function(options, cb) {
-  exists(options.sourcePath, function(result) {
+  exists(options.sourcePath, result => {
     if (!result) {
       log.taskInfo('compileLess', `skipping ${options.sourcePath} (Does not exist).`);
       return cb();

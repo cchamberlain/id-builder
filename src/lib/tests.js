@@ -31,7 +31,7 @@ const buildFilePathMatches = function(options, buildFilePath) {
 const runTests = function(options, cb) {
   log.debug('tests.runTests', options.sourcePath);
 
-  exists(options.sourcePath, function(exists) {
+  exists(options.sourcePath, exists => {
     if (!exists) {
       log.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
       return cb();
@@ -46,15 +46,15 @@ const runTests = function(options, cb) {
       options.sourcePath
     ]);
 
-    childProcess.stdout.on('data', function(chunk) {
+    childProcess.stdout.on('data', chunk => {
       return process.stdout.write(chunk);
     });
 
-    childProcess.stderr.on('data', function(chunk) {
+    childProcess.stderr.on('data', chunk => {
       return process.stderr.write(chunk);
     });
 
-    childProcess.once('close', function() {
+    childProcess.once('close', () => {
       cb();
     });
   });

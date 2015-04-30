@@ -30,7 +30,7 @@ const runServer = function(_options, cb) {
     logFileChanges: false,
   };
 
-  browserSync(options, function(e, bs) {
+  browserSync(options, (e, bs) => {
     if (e) {
       return cb(e);
     }
