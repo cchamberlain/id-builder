@@ -34,7 +34,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     result = false;
-  } else if (sourceFilePath && !!sourceFilePath.match(RegExp(`^${options.sourcePath}`))) {
+  } else if (sourceFilePath && !!sourceFilePath.match(RegExp(`^${options.sourceFilePath}`))) {
     result = true;
   } else {
     result = false;
@@ -44,8 +44,6 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
-  log.debug('copy.copyFile', sourceFilePath, targetFilePath);
-
   fs.readFile(sourceFilePath, (e, readChunk) => {
     if (e) { return cb(e); }
 
@@ -64,9 +62,7 @@ const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
 };
 
 const copyAllFiles = function(options, cb) {
-  log.debug('copy.copyAllFiles', options.sourcePath);
-
-  lsr(options.sourcePath, (e, nodes) => {
+  lsr(options.sourceDirectoryPath, (e, nodes) => {
     if (e) {
       return cb(e);
     }
@@ -77,7 +73,7 @@ const copyAllFiles = function(options, cb) {
       .value();
 
     const iteratePath = (currentSourceDirectoryPath, cb) => {
-      const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
+      const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectorPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };

@@ -14,8 +14,6 @@ import log from './log';
 const removePath = rimraf;
 
 const getFiles = function(path, cb) {
-  log.debug('fileSystem.getFiles', path);
-
   lsr(path, (e, nodes) => {
     if (e) { return cb(e); }
 
@@ -26,8 +24,6 @@ const getFiles = function(path, cb) {
 };
 
 const getDirectories = function(path, cb) {
-  log.debug('fileSystem.getDirectories', path);
-
   lsr(path, (e, nodes) => {
     if (e) { return cb(e); }
 
@@ -37,22 +33,18 @@ const getDirectories = function(path, cb) {
   });
 };
 
-const getTargetPath = function(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
-  return sourcePath
-    .replace(sourceDirectory, targetDirectory)
+const getTargetPath = function(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath) {
+  return sourceFilePath
+    .replace(sourceDirectoryPath, targetDirectoryPath)
     .replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
 const ensureFileDirectory = function(targetFilePath, cb) {
-  log.debug('fileSystem.ensureFileDirectory', targetFilePath);
-
   mkdirp(path.dirname(targetFilePath), cb);
 };
 
 const compileFile = function(compileChunk) {
   return (options, sourceFilePath, targetFilePath, cb) => {
-    log.debug('fileSystem.compileFile', sourceFilePath);
-
     fs.readFile(sourceFilePath, (e, fileContent) => {
       if (e) { return cb(e); }
 
@@ -77,9 +69,7 @@ const compileFile = function(compileChunk) {
 
 const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return (options, cb) => {
-    log.debug('fileSystem.compileAllFiles');
-
-    getFiles(options.sourcePath, (e, sourceFilePaths) => {
+    getFiles(options.sourceDirectoryPath, (e, sourceFilePaths) => {
       if (e) { return cb(); }
 
       const paths = _(sourceFilePaths)
@@ -88,7 +78,7 @@ const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExten
         .value();
 
       const iteratePath = (currentSourceFilePath, cb) => {
-        const currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);
+        const currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
 
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
       };
@@ -99,8 +89,8 @@ const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExten
 };
 
 export default {
-  compileAllFiles,
-  compileFile,
-  ensureFileDirectory,
-  removePath
+  compileAllFiles: compileAllFiles,
+  compileFile: compileFile,
+  ensureFileDirectory: ensureFileDirectory,
+  removePath: removePath
 };

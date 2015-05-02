@@ -14,7 +14,7 @@ const handlePath = function(options, path, stat) {
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath);
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
   copyFile(options, path, targetPath, e => {
     if (e) {

@@ -5,12 +5,12 @@ import { expect } from 'chai';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 
-import less from '../build/../../../lib/less';
+import coffeescript from '../build/../../../lib/coffeescript';
 import { randomString } from '../build/../../../lib/tests';
 
-describe('less', function() {
+describe('coffeescript', function() {
   beforeEach(function (cb) {
-    this.directoryPath = '.tmp/' + randomString();
+    this.directoryPath = '.tmp/' + Math.random().toString(36).slice(7);
     mkdirp(this.directoryPath, cb);
   });
 
@@ -20,7 +20,7 @@ describe('less', function() {
 
   describe('sourceExtension', function () {
     it('should be defined', function (cb) {
-      expect(less.sourceExtension).to.be.a('string')['with'].length.above(0);
+      expect(coffeescript.sourceExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
@@ -28,7 +28,7 @@ describe('less', function() {
 
   describe('targetExtension', function () {
     it('should be defined', function (cb) {
-      expect(less.targetExtension).to.be.a('string')['with'].length.above(0);
+      expect(coffeescript.targetExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });

@@ -14,26 +14,24 @@ const randomString = function() {
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
   const matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
-  const matchesWatchPath = sourceFilePath.indexOf(options.watchPath) === 0;
-  const result = matchesJavascript && matchesWatchPath;
+  const matchesWatchPath = sourceFilePath.indexOf(options.watchDirectoryPath) === 0;
 
-  return result;
+  return matchesJavascript && matchesWatchPath;
 };
 
 const buildFilePathMatches = function(options, buildFilePath) {
   const matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
-  const matchesWatchPath = buildFilePath.indexOf(options.watchPath) === 0;
-  const result = matchesJavascript && matchesWatchPath;
+  const matchesWatchPath = buildFilePath.indexOf(options.watchDirectoryPath) === 0;
 
-  return result;
+  return matchesJavascript && matchesWatchPath;
 };
 
 const runTests = function(options, cb) {
-  log.debug('tests.runTests', options.sourcePath);
+  log.debug('tests.runTests', options.sourceDirectoryPath);
 
-  exists(options.sourcePath, exists => {
+  exists(options.sourceDirectoryPath, exists => {
     if (!exists) {
-      log.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
+      log.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
       return cb();
     }
 
@@ -43,7 +41,7 @@ const runTests = function(options, cb) {
       '--colors',
       '--reporter',
       options.reporter,
-      options.sourcePath
+      options.sourceDirectoryPath
     ]);
 
     childProcess.stdout.on('data', chunk => {

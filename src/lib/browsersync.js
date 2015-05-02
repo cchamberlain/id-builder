@@ -8,8 +8,6 @@ import log from './log';
 const sourceFilePathMatches = copy.sourceFilePathMatches;
 
 const reload = function(options, path, cb) {
-  log.debug('browsersync.reload', path);
-
   browserSync.reload(path);
 
   log.taskInfo(options.taskName, `Reloaded \`${path}\``);
@@ -18,8 +16,6 @@ const reload = function(options, path, cb) {
 };
 
 const runServer = function(_options, cb) {
-  log.debug('browsersync.runServer');
-
   const options = {
     ui: {
       port: 9001

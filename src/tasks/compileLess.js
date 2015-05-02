@@ -8,13 +8,13 @@ import log from '../lib/log';
 const dependencies = [ 'clean' ];
 
 const run = function(options, cb) {
-  exists(options.sourcePath, result => {
+  exists(options.sourceFilePath, result => {
     if (!result) {
-      log.taskInfo('compileLess', `skipping ${options.sourcePath} (Does not exist).`);
+      log.taskInfo('compileLess', `skipping ${options.sourceFilePath} (Does not exist).`);
       return cb();
     }
 
-    compileFile(options, options.sourcePath, options.targetPath, cb);
+    compileFile(options, options.sourceFilePath, options.targetFilePath, cb);
   });
 };
 

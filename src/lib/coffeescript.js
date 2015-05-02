@@ -9,12 +9,10 @@ const sourceExtension = 'coffee';
 const targetExtension = 'js';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  return !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}`));
+  return !!sourceFilePath.match(new RegExp(`^${options.sourceFilePath}.+\.${sourceExtension}$`));
 };
 
 const compileChunk = function(options, chunk, cb) {
-  log.debug('coffeescript.compileChunk', options);
-
   try {
     cb(null, compile(chunk, {
       bare: true

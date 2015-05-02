@@ -10,7 +10,7 @@ import { randomString } from '../build/../../../lib/tests';
 
 describe('livescript', function() {
   beforeEach(function (cb) {
-    this.directoryPath = '.tmp/' + randomString();
+    this.directoryPath = '.tmp/' + Math.random().toString(36).slice(7);
     mkdirp(this.directoryPath, cb);
   });
 

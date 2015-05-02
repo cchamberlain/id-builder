@@ -9,14 +9,10 @@ const sourceExtension = 'ls';
 const targetExtension = 'js';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`))
-
-  return result;
+  return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}.+\.${sourceExtension}$`))
 };
 
 const compileChunk = function(options, chunk, cb) {
-  log.debug('livescript.compileChunk', options.sourcePath);
-
   try {
     cb(null, compile(chunk, {
       bare: true

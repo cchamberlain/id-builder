@@ -9,13 +9,13 @@ const sourceExtension = 'styl';
 const targetExtension = 'css';
 
 const sourceFilePathMatches = function(options, sourceFilePath){
-  const result = !!sourceFilePath.match(RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`))
+  const result = !!sourceFilePath.match(RegExp(`^${options.sourceDirectoryPath}.+\.${sourceExtension}$`))
 
   return result;
 };
 
 const compileChunk = function(options, chunk, cb){
-  log.debug('stylus.compileChunk', options.sourcePath);
+  log.debug('stylus.compileChunk', options.sourceDirectoryPath);
 
   render(chunk, cb);
 };

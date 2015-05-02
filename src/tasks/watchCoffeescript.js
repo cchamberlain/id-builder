@@ -8,7 +8,7 @@ import { removePath } from '../lib/fileSystem'
 
 const dependencies = [
   'watch'
-]
+];
 
 const handleAdd = function(options, path, stat) {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
@@ -16,7 +16,7 @@ const handleAdd = function(options, path, stat) {
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath)
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath)
     .replace(`.${coffeescript.sourceExtension}`, `.${coffeescript.targetExtension}`);
 
   coffeescript.compileFile(options, path, targetPath, e => {
@@ -31,7 +31,7 @@ const handleAddDir = function(options, path, stat) {
     return;
   }
 
-  coffeescript.compileAllFiles({ sourcePath: path }, e => {
+  coffeescript.compileAllFiles({ sourceDirectoryPath: path }, e => {
     if (e) {
       log.error(e);
     }
@@ -44,7 +44,7 @@ const handleChange = function(options, path, stat) {
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath)
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath)
     .replace(`.${coffeescript.sourceExtension}`, `.${coffeescript.targetExtension}`);
 
   coffeescript.compileFile(options, path, targetPath, e => {

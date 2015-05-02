@@ -10,7 +10,7 @@ import { randomString } from '../build/../../../lib/tests';
 
 describe('browserify', function() {
   beforeEach(function(cb) {
-    this.directoryPath = '.tmp/' + randomString();
+    this.directoryPath = '.tmp/' + Math.random().toString(36).slice(7);
 
     mkdirp(this.directoryPath, cb);
   });
@@ -42,8 +42,8 @@ describe('browserify', function() {
     describe('when the `sourceFilePath` is the `targetPath`', function() {
       it('should return `false`', function(cb) {
         const options = {
-          targetPath: 'x/y.js',
-          sourceDirectory: 'x'
+          targetFilePath: 'x/y.js',
+          sourceDirectoryPath: 'x'
         };
 
         expect(browserify.sourceFilePathMatches(options, 'x/y.js')).to.equal(false);
@@ -52,11 +52,11 @@ describe('browserify', function() {
       });
     });
 
-    describe('when the `sourceFilePath` is in the the `sourceDirectory`', function() {
+    describe('when the `sourceFilePath` is in the the `sourceDirectoryPath`', function() {
       it('should return `true`', function(cb) {
         const options = {
           targetPath: 'x/y.js',
-          sourceDirectory: 'x'
+          sourceDirectoryPath: 'x'
         };
 
         expect(browserify.sourceFilePathMatches(options, 'x/q.js')).to.equal(true);
@@ -65,11 +65,11 @@ describe('browserify', function() {
       });
     });
 
-    describe('when the `sourceFilePath` is not in the the `sourceDirectory`', function() {
+    describe('when the `sourceFilePath` is not in the the `sourceDirectoryPath`', function() {
       it('should return `false`', function(cb) {
         const options = {
           targetPath: 'x/q.js',
-          sourceDirectory: 'a'
+          sourceDirectoryPath: 'a'
         };
 
         expect(browserify.sourceFilePathMatches(options, 'x/q.js')).to.equal(false);

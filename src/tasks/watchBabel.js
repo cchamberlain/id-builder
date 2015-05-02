@@ -7,7 +7,7 @@ import { removePath } from '../lib/fileSystem'
 
 const dependencies = [
   'watch'
-]
+];
 
 const handleAdd = function(options, path, stat) {
   if (!babel.sourceFilePathMatches(options, path)) {
@@ -15,7 +15,7 @@ const handleAdd = function(options, path, stat) {
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath)
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath)
     .replace(new RegExp(`^\.${babel.sourceExtension}$`), `.${babel.targetExtension}`);
 
   babel.compileFile(options, path, targetPath, e => {
@@ -30,7 +30,7 @@ const handleAddDir = function(options, path, stat) {
     return;
   }
 
-  babel.compileAllFiles({ sourcePath: path }, e => {
+  babel.compileAllFiles({ sourceDirectoryPath: path }, e => {
     if (e) {
       log.error(e);
     }
@@ -43,7 +43,7 @@ const handleChange = function(options, path, stat) {
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath)
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath)
     .replace(new RegExp(`^\.${babel.sourceExtension}$`), `.${babel.targetExtension}`);
 
   babel.compileFile(options, path, targetPath, e => {

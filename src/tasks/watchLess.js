@@ -20,7 +20,7 @@ const handlePath = function(options, path, stat) {
     return;
   }
 
-  compileFile(options, options.sourcePath, options.targetPath, e =>  {
+  compileFile(options, options.sourceFilePath, options.targetFilePath, e =>  {
     if (e) {
       console.error(e);
     }

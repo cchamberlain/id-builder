@@ -48,9 +48,7 @@ const restartPath = function(path, cb){
 };
 
 const sourceFilePathMatches = function(options, sourceFilePath, cb){
-  const result = !!sourceFilePath.match(RegExp(`^${options.sourcePath}`))
-
-  return result;
+  return !!sourceFilePath.match(RegExp(`^${options.sourceDirectoryPath}`))
 };
 
 const startServer = function(options, filePath, cb){
@@ -115,7 +113,7 @@ const runServers = function(options, cb){
   log.debug('servers.runServers', options);
 
   each(options.paths, (v, cb) => {
-    startServer(options, `${options.sourcePath}/${v}`, cb);
+    startServer(options, `${options.sourceDirectoryPath}/${v}`, cb);
   });
 };
 
@@ -123,7 +121,7 @@ const restartServers = function(options, cb){
   log.debug('servers.restartServers', options);
 
   each(options.paths, (v, cb) => {
-    restartServer(options, `${options.sourcePath}/${v}`, cb);
+    restartServer(options, `${options.sourceDirectoryPath}/${v}`, cb);
   });
 };
 

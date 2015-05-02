@@ -5,12 +5,12 @@ import { expect } from 'chai';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 
-import coffeescript from '../build/../../../lib/coffeescript';
+import stylus from '../build/../../../lib/stylus';
 import { randomString } from '../build/../../../lib/tests';
 
-describe('coffeescript', function() {
+describe('stylus', function() {
   beforeEach(function (cb) {
-    this.directoryPath = '.tmp/' + randomString();
+    this.directoryPath = '.tmp/' + Math.random().toString(36).slice(7);
     mkdirp(this.directoryPath, cb);
   });
 
@@ -20,7 +20,7 @@ describe('coffeescript', function() {
 
   describe('sourceExtension', function () {
     it('should be defined', function (cb) {
-      expect(coffeescript.sourceExtension).to.be.a('string')['with'].length.above(0);
+      expect(stylus.sourceExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
@@ -28,7 +28,7 @@ describe('coffeescript', function() {
 
   describe('targetExtension', function () {
     it('should be defined', function (cb) {
-      expect(coffeescript.targetExtension).to.be.a('string')['with'].length.above(0);
+      expect(stylus.targetExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });

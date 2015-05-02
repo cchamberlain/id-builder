@@ -9,16 +9,12 @@ const sourceExtension = 'less';
 const targetExtension = 'css';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  const result = !!sourceFilePath.match(new RegExp(`^${options.sourceDirectory}.+\.${sourceExtension}$`))
-
-  return result;
+  return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}.+\.${sourceExtension}$`))
 };
 
 const compileChunk = function(options, chunk, cb) {
-  log.debug('less.compileChunk', options.sourcePath);
-
   const renderOptions = {
-    filename: options.sourcePath
+    filename: options.sourceFilePath
   };
 
   less.render(chunk, renderOptions, (e, result) => {
