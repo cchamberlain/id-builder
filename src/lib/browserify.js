@@ -89,7 +89,7 @@ const watch = function(options, cb) {
       return cb();
     }
 
-    ensureFileDirectory(options.targetFilePath, e => {
+    fileSystem.ensureFileDirectory(options.targetFilePath, e => {
       if (e) {
         return cb(e);
       }

@@ -24,8 +24,6 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     result = false;
-  //} else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
-  //  result = false;
   } else if (less.sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     result = false;
   } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
@@ -34,7 +32,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     result = false;
-  } else if (sourceFilePath && !!sourceFilePath.match(RegExp(`^${options.sourceFilePath}`))) {
+  } else if (sourceFilePath && !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}`))) {
     result = true;
   } else {
     result = false;
@@ -73,7 +71,7 @@ const copyAllFiles = function(options, cb) {
       .value();
 
     const iteratePath = (currentSourceDirectoryPath, cb) => {
-      const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectorPath);
+      const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
