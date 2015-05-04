@@ -10,6 +10,9 @@ import rimraf from 'rimraf';
 import babel from '../build/../../../lib/babel';
 import { randomString } from '../build/../../../lib/tests';
 
+const functionSource = 'const x = (y) => y * 2;';
+const functionOutputSource = '"use strict";\n\nvar x = function x(y) {\n  return y * 2;\n};';
+
 describe('babel', function() {
   beforeEach(function (cb) {
     this.directoryPath = '.tmp/' + Math.random().toString(36).slice(7);
@@ -84,8 +87,8 @@ describe('babel', function() {
     describe('when the `options` is an object, the chunk is valid ES6 source and the callback is a function', function () {
       it('should call the callback without an error and compiled code', function(cb) {
         const options = {};
-        const chunk = 'const x = (y) => y * 2;';
-        const expected = '"use strict";\n\nvar x = function x(y) {\n  return y * 2;\n};';
+        const chunk = functionSource;
+        const expected = functionOutputSource;
 
         babel.compileChunk(options, chunk, function(e, actual) {
           if (e) { cb(e); }
@@ -117,8 +120,8 @@ describe('babel', function() {
     describe('when compiling one source file with valid ES6', function() {
       it('should compile one build file that matches the expected output', function(cb) {
         const options = {};
-        const chunk = 'const x = (y) => y * 2;';
-        const expected = '"use strict";\n\nvar x = function x(y) {\n  return y * 2;\n};';
+        const chunk = functionSource;
+        const expected = functionOutputSource;
         const sourceFilePath = `${this.directoryPath}/src/file.js`;
         const buildFilePath = `${this.directoryPath}/build/file.js`;
 
@@ -163,8 +166,8 @@ describe('babel', function() {
           sourceDirectoryPath: this.sourceDirectoryPath,
           targetDirectoryPath: this.buildDirectoryPath
         };
-        const chunk = 'const x = (y) => y * 2;';
-        const expected = '"use strict";\n\nvar x = function x(y) {\n  return y * 2;\n};';
+        const chunk = functionSource;
+        const expected = functionOutputSource;
         const sourceFilePathOne = `${this.directoryPath}/src/one.js`;
         const buildFilePathOne = `${this.directoryPath}/build/one.js`;
         const sourceFilePathTwo = `${this.directoryPath}/src/two.js`;
