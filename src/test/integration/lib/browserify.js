@@ -1,12 +1,16 @@
 'use strict';
 
+import fs from 'fs';
+
 import log from 'loglevel';
-import { expect } from 'chai';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
+import { expect } from 'chai';
 
 import browserify from '../build/../../../lib/browserify';
 import { randomString } from '../build/../../../lib/tests';
+
+const functionSource = `const x = y => y * 2`;
 
 describe('browserify', function() {
   beforeEach(function(cb) {
@@ -80,6 +84,51 @@ describe('browserify', function() {
   });
 
   describe('compileAllFiles', function() {
+    beforeEach(function (cb) {
+      this.sourceDirectoryPath = `${this.directoryPath}/src`;
+      this.buildDirectoryPath = `${this.directoryPath}/build`;
+
+      mkdirp(this.sourceDirectoryPath, e => {
+        if (e) { cb(e); }
+
+        mkdirp(this.buildDirectoryPath, e => {
+          if (e) { cb(e); }
+
+          cb();
+        });
+      });
+    });
+
+    describe('when compiling one source file with valid ES6', function() {
+      it('should compile one build file that matches the expected output', function(cb) {
+        const sourceFilePath = `${this.directoryPath}/src/entry.js`;
+        const buildFilePath = `${this.directoryPath}/build/target.js`;
+        const options = {
+          sourceFilePath: sourceFilePath,
+          targetFilePath: buildFilePath
+        };
+        const chunk = functionSource;
+        //const expected = this.functionOutputSource;
+
+        fs.writeFile(sourceFilePath, chunk, e => {
+          if (e) { cb(e); }
+
+          console.log(0, options);
+
+          browserify.compileAllFiles(options, e => {
+            if (e) { cb(e); }
+
+            console.log(1);
+
+            // Just check that it is being written, since we can't check the
+            // contents of the output, because it contains file path specific
+            // code which isn't available at design time available at design
+            // time.
+            fs.readFile(buildFilePath, cb);
+          });
+        });
+      });
+    });
   });
 
   describe('watch', function() {

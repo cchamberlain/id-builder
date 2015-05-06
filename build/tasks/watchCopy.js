@@ -23,7 +23,7 @@ var handlePath = function handlePath(options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath);
+  var targetPath = path.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
   _sourceFilePathMatches$copyFile.copyFile(options, path, targetPath, function (e) {
     if (e) {

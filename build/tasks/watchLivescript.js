@@ -25,7 +25,7 @@ var handlePath = function handlePath(options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + _livescript2['default'].sourceExtension + '$'), '.' + _livescript2['default'].targetExtension);
+  var targetPath = path.replace(options.sourceDirectoryPath, options.targetDirectoryPath).replace(new RegExp('^.' + _livescript2['default'].sourceExtension + '$'), '.' + _livescript2['default'].targetExtension);
 
   _livescript2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {

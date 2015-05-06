@@ -65,8 +65,6 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   } else if (_coffeescript2['default'].sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     result = false;
-    //} else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
-    //  result = false;
   } else if (_less2['default'].sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     result = false;
   } else if (_livescript2['default'].sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
@@ -75,7 +73,7 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   } else if (_stylus2['default'].sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     result = false;
-  } else if (sourceFilePath && !!sourceFilePath.match(RegExp('^' + options.sourcePath))) {
+  } else if (sourceFilePath && !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath))) {
     result = true;
   } else {
     result = false;
@@ -85,8 +83,6 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
 };
 
 var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
-  _log2['default'].debug('copy.copyFile', sourceFilePath, targetFilePath);
-
   _fs2['default'].readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
@@ -111,9 +107,7 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
 };
 
 var copyAllFiles = function copyAllFiles(options, cb) {
-  _log2['default'].debug('copy.copyAllFiles', options.sourcePath);
-
-  _lsr2['default'](options.sourcePath, function (e, nodes) {
+  _lsr2['default'](options.sourceDirectoryPath, function (e, nodes) {
     if (e) {
       return cb(e);
     }
@@ -125,7 +119,7 @@ var copyAllFiles = function copyAllFiles(options, cb) {
     }).value();
 
     var iteratePath = function iteratePath(currentSourceDirectoryPath, cb) {
-      var currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
+      var currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };

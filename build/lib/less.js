@@ -24,16 +24,12 @@ var sourceExtension = 'less';
 var targetExtension = 'css';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(new RegExp('^' + options.sourceDirectory + '.+.' + sourceExtension + '$'));
-
-  return result;
+  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+.' + sourceExtension + '$'));
 };
 
 var compileChunk = function compileChunk(options, chunk, cb) {
-  _log2['default'].debug('less.compileChunk', options.sourcePath);
-
   var renderOptions = {
-    filename: options.sourcePath
+    filename: options.sourceFilePath
   };
 
   _less2['default'].render(chunk, renderOptions, function (e, result) {

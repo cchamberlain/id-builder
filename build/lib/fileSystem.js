@@ -43,8 +43,6 @@ var _log2 = _interopRequireWildcard(_log);
 var removePath = _rimraf2['default'];
 
 var getFiles = function getFiles(path, cb) {
-  _log2['default'].debug('fileSystem.getFiles', path);
-
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -57,8 +55,6 @@ var getFiles = function getFiles(path, cb) {
 };
 
 var getDirectories = function getDirectories(path, cb) {
-  _log2['default'].debug('fileSystem.getDirectories', path);
-
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -70,20 +66,16 @@ var getDirectories = function getDirectories(path, cb) {
   });
 };
 
-var getTargetPath = function getTargetPath(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
-  return sourcePath.replace(sourceDirectory, targetDirectory).replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
+var getTargetPath = function getTargetPath(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath) {
+  return sourceFilePath.replace(sourceDirectoryPath, targetDirectoryPath).replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
 var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
-  _log2['default'].debug('fileSystem.ensureFileDirectory', targetFilePath);
-
   _mkdirp2['default'](_path2['default'].dirname(targetFilePath), cb);
 };
 
 var compileFile = function compileFile(compileChunk) {
   return function (options, sourceFilePath, targetFilePath, cb) {
-    _log2['default'].debug('fileSystem.compileFile', sourceFilePath);
-
     _fs2['default'].readFile(sourceFilePath, function (e, fileContent) {
       if (e) {
         return cb(e);
@@ -116,9 +108,7 @@ var compileFile = function compileFile(compileChunk) {
 
 var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
   return function (options, cb) {
-    _log2['default'].debug('fileSystem.compileAllFiles');
-
-    getFiles(options.sourcePath, function (e, sourceFilePaths) {
+    getFiles(options.sourceDirectoryPath, function (e, sourceFilePaths) {
       if (e) {
         return cb();
       }
@@ -130,7 +120,7 @@ var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFil
       }).value();
 
       var iteratePath = function iteratePath(currentSourceFilePath, cb) {
-        var currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);
+        var currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
 
         compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
       };

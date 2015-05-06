@@ -23,7 +23,7 @@ var handlePath = function handlePath(options, path, stat) {
     return;
   }
 
-  _compileFile$sourceExtension$sourceFilePathMatches$targetExtension.compileFile(options, options.sourcePath, options.targetPath, function (e) {
+  _compileFile$sourceExtension$sourceFilePathMatches$targetExtension.compileFile(options, options.sourceFilePath, options.targetFilePath, function (e) {
     if (e) {
       console.error(e);
     }

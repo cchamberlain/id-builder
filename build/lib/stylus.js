@@ -22,13 +22,13 @@ var sourceExtension = 'styl';
 var targetExtension = 'css';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(RegExp('^' + options.sourcePath + '.+.' + sourceExtension + '$'));
+  var result = !!sourceFilePath.match(RegExp('^' + options.sourceDirectoryPath + '.+.' + sourceExtension + '$'));
 
   return result;
 };
 
 var compileChunk = function compileChunk(options, chunk, cb) {
-  _log2['default'].debug('stylus.compileChunk', options.sourcePath);
+  _log2['default'].debug('stylus.compileChunk', options.sourceDirectoryPath);
 
   _render.render(chunk, cb);
 };

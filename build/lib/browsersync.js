@@ -23,8 +23,6 @@ var _log2 = _interopRequireWildcard(_log);
 var sourceFilePathMatches = _copy2['default'].sourceFilePathMatches;
 
 var reload = function reload(options, path, cb) {
-  _log2['default'].debug('browsersync.reload', path);
-
   _browserSync2['default'].reload(path);
 
   _log2['default'].taskInfo(options.taskName, 'Reloaded `' + path + '`');
@@ -33,8 +31,6 @@ var reload = function reload(options, path, cb) {
 };
 
 var runServer = function runServer(_options, cb) {
-  _log2['default'].debug('browsersync.runServer');
-
   var options = {
     ui: {
       port: 9001

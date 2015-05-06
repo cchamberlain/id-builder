@@ -19,13 +19,13 @@ var _log2 = _interopRequireWildcard(_log);
 var dependencies = ['clean'];
 
 var run = function run(options, cb) {
-  _exists.exists(options.sourcePath, function (result) {
+  _exists.exists(options.sourceFilePath, function (result) {
     if (!result) {
-      _log2['default'].taskInfo('compileLess', 'skipping ' + options.sourcePath + ' (Does not exist).');
+      _log2['default'].taskInfo('compileLess', 'skipping ' + options.sourceFilePath + ' (Does not exist).');
       return cb();
     }
 
-    _compileFile.compileFile(options, options.sourcePath, options.targetPath, cb);
+    _compileFile.compileFile(options, options.sourceFilePath, options.targetFilePath, cb);
   });
 };
 

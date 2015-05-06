@@ -26,30 +26,28 @@ var randomString = function randomString() {
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
-  var matchesWatchPath = sourceFilePath.indexOf(options.watchPath) === 0;
-  var result = matchesJavascript && matchesWatchPath;
+  var matchesWatchPath = sourceFilePath.indexOf(options.watchDirectoryPath) === 0;
 
-  return result;
+  return matchesJavascript && matchesWatchPath;
 };
 
 var buildFilePathMatches = function buildFilePathMatches(options, buildFilePath) {
   var matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
-  var matchesWatchPath = buildFilePath.indexOf(options.watchPath) === 0;
-  var result = matchesJavascript && matchesWatchPath;
+  var matchesWatchPath = buildFilePath.indexOf(options.watchDirectoryPath) === 0;
 
-  return result;
+  return matchesJavascript && matchesWatchPath;
 };
 
 var runTests = function runTests(options, cb) {
-  _log2['default'].debug('tests.runTests', options.sourcePath);
+  _log2['default'].debug('tests.runTests', options.sourceDirectoryPath);
 
-  _exists.exists(options.sourcePath, function (exists) {
+  _exists.exists(options.sourceDirectoryPath, function (exists) {
     if (!exists) {
-      _log2['default'].taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
+      _log2['default'].taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
       return cb();
     }
 
-    var childProcess = _spawn.spawn('node', [pathToMocha, '--recursive', '--colors', '--reporter', options.reporter, options.sourcePath]);
+    var childProcess = _spawn.spawn('node', [pathToMocha, '--recursive', '--colors', '--reporter', options.reporter, options.sourceDirectoryPath]);
 
     childProcess.stdout.on('data', function (chunk) {
       return process.stdout.write(chunk);

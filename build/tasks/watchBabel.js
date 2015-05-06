@@ -27,7 +27,7 @@ var handleAdd = function handleAdd(options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + _babel2['default'].sourceExtension + '$'), '.' + _babel2['default'].targetExtension);
+  var targetPath = path.replace(options.sourceDirectoryPath, options.targetDirectoryPath).replace(new RegExp('^.' + _babel2['default'].sourceExtension + '$'), '.' + _babel2['default'].targetExtension);
 
   _babel2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {
@@ -41,7 +41,7 @@ var handleAddDir = function handleAddDir(options, path, stat) {
     return;
   }
 
-  _babel2['default'].compileAllFiles({ sourcePath: path }, function (e) {
+  _babel2['default'].compileAllFiles({ sourceDirectoryPath: path }, function (e) {
     if (e) {
       _log2['default'].error(e);
     }
@@ -53,7 +53,7 @@ var handleChange = function handleChange(options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + _babel2['default'].sourceExtension + '$'), '.' + _babel2['default'].targetExtension);
+  var targetPath = path.replace(options.sourceDirectoryPath, options.targetDirectoryPath).replace(new RegExp('^.' + _babel2['default'].sourceExtension + '$'), '.' + _babel2['default'].targetExtension);
 
   _babel2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {

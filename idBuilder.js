@@ -52,7 +52,8 @@ idBuilder({
     },
 
     runTests: {
-      enabled: true
+      enabled: true,
+      reporter: 'spec'
     },
 
     watchBabel: {
@@ -92,7 +93,8 @@ idBuilder({
     },
 
     watchTests: {
-      enabled: true
+      enabled: true,
+      reporter: 'min'
     },
 
     watch: {

@@ -59,9 +59,7 @@ var restartPath = function restartPath(path, cb) {
 };
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath, cb) {
-  var result = !!sourceFilePath.match(RegExp('^' + options.sourcePath));
-
-  return result;
+  return !!sourceFilePath.match(RegExp('^' + options.sourceDirectoryPath));
 };
 
 var startServer = function startServer(options, filePath, cb) {
@@ -126,7 +124,7 @@ var runServers = function runServers(options, cb) {
   _log2['default'].debug('servers.runServers', options);
 
   _each.each(options.paths, function (v, cb) {
-    startServer(options, '' + options.sourcePath + '/' + v, cb);
+    startServer(options, '' + options.sourceDirectoryPath + '/' + v, cb);
   });
 };
 
@@ -134,7 +132,7 @@ var restartServers = function restartServers(options, cb) {
   _log2['default'].debug('servers.restartServers', options);
 
   _each.each(options.paths, function (v, cb) {
-    restartServer(options, '' + options.sourcePath + '/' + v, cb);
+    restartServer(options, '' + options.sourceDirectoryPath + '/' + v, cb);
   });
 };
 
