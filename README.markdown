@@ -74,54 +74,48 @@ idBuilder({
       path: 'build'
     },
 
-    compileBabel: {
-      enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
-    },
-
     compileBrowserify: {
       enabled: true,
-      sourceDirectory: 'build/client/js',
-      sourcePath: 'build/client/js/app.js',
-      targetPath: 'build/client/js/app.bundle.js'
+      sourceDirectoryPath: 'build/client/js',
+      sourceFilePath: 'build/client/js/app.js',
+      targetFilePath: 'build/client/js/app.bundle.js'
     },
 
     compileCoffeescript: {
       enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
-    },
-
-    compileJade: {
-      enabled: true,
-      sourcePath: 'src/client',
-      targetPath: 'build/client'
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
     },
 
     compileLess: {
       enabled: true,
-      sourceDirectory: 'src/client/styles',
-      sourcePath: 'src/client/styles/app.less',
-      targetPath: 'build/client/styles/app.css'
+      sourceDirectoryPath: 'src/client/styles',
+      sourceFilePath: 'src/client/styles/app.less',
+      targetFilePath: 'build/client/styles/app.css'
     },
 
     compileLivescript: {
       enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
+    },
+
+    compileBabel: {
+      enabled: true,
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
     },
 
     compileStylus: {
       enabled: true,
-      sourcePath: 'src/client',
-      targetPath: 'build/client'
+      sourceDirectoryPath: 'src/client',
+      targetDirectoryPath: 'build/client'
     },
 
     compileCopy: {
       enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
     },
 
     runBrowsersyncServer: {
@@ -130,82 +124,76 @@ idBuilder({
 
     runServers: {
       enabled: true,
-      sourcePath: 'build/server',
+      sourceDirectoryPath: 'build/server',
       paths: ['app.js']
     },
 
     runTests: {
       enabled: true,
-      sourcePath: 'build/test',
+      sourceDirectoryPath: 'build/test',
       reporter: 'spec'
-    },
-
-    watchBabel: {
-      enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
     },
 
     watchBrowserify: {
       enabled: true,
-      sourceDirectory: 'build/client/js',
-      sourcePath: 'build/client/js/app.js',
-      targetPath: 'build/client/js/app.bundle.js'
+      sourceDirectoryPath: 'build/client/js',
+      sourceFilePath: 'build/client/js/app.js',
+      targetFilePath: 'build/client/js/app.bundle.js'
     },
 
     watchBrowsersync: {
       enabled: true,
-      sourcePath: 'build/client'
+      sourceDirectoryPath: 'build/client'
     },
 
     watchCoffeescript: {
       enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
-    },
-
-    watchJade: {
-      enabled: true,
-      sourcePath: 'src/client',
-      targetPath: 'build/client'
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
     },
 
     watchLess: {
       enabled: true,
-      sourceDirectory: 'src/client/styles',
-      sourcePath: 'src/client/styles/app.less',
-      targetPath: 'build/client/styles/app.css'
+      sourceDirectoryPath: 'src/client/styles',
+      sourceFilePath: 'src/client/styles/app.less',
+      targetFilePath: 'build/client/styles/app.css'
     },
 
     watchLivescript: {
       enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
     },
 
     watchServers: {
       enabled: true,
-      sourcePath: 'build/server',
+      sourceDirectoryPath: 'build/server',
       paths: ['app.js']
     },
 
     watchTests: {
       enabled: true,
-      watchPath: 'build',
-      sourcePath: 'build/test',
+      watchDirectoryPath: 'build',
+      sourceDirectoryPath: 'build/test',
       reporter: 'spec'
+    },
+
+    watchBabel: {
+      enabled: true,
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
     },
 
     watchStylus: {
       enabled: true,
-      sourcePath: 'src/client',
-      targetPath: 'build/client'
+      sourceDirectoryPath: 'src/client',
+      targetDirectoryPath: 'build/client'
     },
 
     watchCopy: {
       enabled: true,
-      sourcePath: 'src',
-      targetPath: 'build'
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
     },
 
     watch: {
