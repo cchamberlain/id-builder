@@ -28,12 +28,6 @@ export default {
       targetDirectoryPath: 'build'
     },
 
-    compileJade: {
-      enabled: true,
-      sourcedirectoryPath: 'src/client',
-      targetdirectoryPath: 'build/client'
-    },
-
     compileLess: {
       enabled: true,
       sourceDirectoryPath: 'src/client/styles',
@@ -97,12 +91,6 @@ export default {
       enabled: true,
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
-    },
-
-    watchJade: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client',
-      targetDirectoryPath: 'build/client'
     },
 
     watchLess: {

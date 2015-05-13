@@ -27,6 +27,7 @@
     "chokidar": "^1.0.0-rc5",
     "coffee-script": "^1.9.2",
     "deepmerge": "^0.2.7",
+    "difflet": "^0.2.6",
     "forever-monitor": "^1.5.2",
     "jadeify": "^4.2.0",
     "less": "^2.4.0",
@@ -77,7 +78,11 @@
       "unicodeCodePointEscapes": true
     },
     "rules": {
-      "quotes": [ 0, "single", "avoid-escape" ],
+      "quotes": [
+        0,
+        "single",
+        "avoid-escape"
+      ],
       "no-underscore-dangle": 0,
       "no-unused-vars": 0,
       "consistent-return": 0
