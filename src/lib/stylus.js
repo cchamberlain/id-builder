@@ -9,7 +9,7 @@ const sourceExtension = 'styl';
 const targetExtension = 'css';
 
 const sourceFilePathMatches = function(options, sourceFilePath){
-  const result = !!sourceFilePath.match(RegExp(`^${options.sourceDirectoryPath}.+\.${sourceExtension}$`))
+  const result = !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}.+\\.${sourceExtension}$`))
 
   return result;
 };

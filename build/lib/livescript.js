@@ -22,7 +22,7 @@ var sourceExtension = 'ls';
 var targetExtension = 'js';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+.' + sourceExtension + '$'));
+  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
 };
 
 var compileChunk = function compileChunk(options, chunk, cb) {

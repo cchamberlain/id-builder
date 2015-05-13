@@ -24,7 +24,7 @@ var sourceExtension = 'less';
 var targetExtension = 'css';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+.' + sourceExtension + '$'));
+  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
 };
 
 var compileChunk = function compileChunk(options, chunk, cb) {

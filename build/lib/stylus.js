@@ -22,7 +22,7 @@ var sourceExtension = 'styl';
 var targetExtension = 'css';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(RegExp('^' + options.sourceDirectoryPath + '.+.' + sourceExtension + '$'));
+  var result = !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
 
   return result;
 };
