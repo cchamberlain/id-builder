@@ -1,9 +1,27 @@
 'use strict';
 
-import deepmerge from 'deepmerge';
+import _ from 'lodash';
 
-import logging from './logging';
+const merge = function(x, y) {
+  const z = {};
+
+  _.each(x, function(xv, xk) {
+    const yv = y[xk];
+
+    if (_.isObject(xv) && !_.isArray(xv)) {
+      z[xk] = merge(xv, yv);
+    } else {
+      if (!_.isUndefined(yv)) {
+        z[xk] = yv;
+      } else {
+        z[xk] = xv;
+      }
+    }
+  });
+
+  return z;
+};
 
 export default function(defaults, options) {
-  return deepmerge(defaults, options);
+  return merge(defaults, options);
 };
