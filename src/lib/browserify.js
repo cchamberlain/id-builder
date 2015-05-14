@@ -8,7 +8,7 @@ import watchify from 'watchify';
 import jadeify from 'jadeify';
 
 import fileSystem from './fileSystem';
-import log from './log';
+import logging from './logging';
 
 const sourceExtension = 'coffee';
 const targetExtension = 'js';
@@ -45,7 +45,7 @@ const getBrowserifyBundle = function(options) {
 const compileAllFiles = function(options, cb) {
   exists(options.sourceFilePath, exists => {
     if (!exists) {
-      log.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
+      logging.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
       return cb();
     }
 
@@ -71,7 +71,7 @@ const compileAllFiles = function(options, cb) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, `${options.sourceFilePath} => ${options.targetFilePath}`);
+            logging.taskInfo(options.taskName, `${options.sourceFilePath} => ${options.targetFilePath}`);
             cb();
           });
         });
@@ -85,7 +85,7 @@ const compileAllFiles = function(options, cb) {
 const watch = function(options, cb) {
   exists(options.sourceFilePath, exists => {
     if (!exists) {
-      log.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
+      logging.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
       return cb();
     }
 
@@ -111,7 +111,7 @@ const watch = function(options, cb) {
               return cb(e);
             }
 
-            log.taskInfo(options.taskName, `${options.sourceFilePath} => ${options.targetFilePath}`);
+            logging.taskInfo(options.taskName, `${options.sourceFilePath} => ${options.targetFilePath}`);
           });
         });
       });

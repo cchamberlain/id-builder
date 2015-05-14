@@ -1,6 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
+import log from '../lib/logging';
 import { runServer } from '../lib/browsersync';
 
 const dependencies = [

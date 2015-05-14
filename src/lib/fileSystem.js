@@ -9,7 +9,7 @@ import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 import async from 'async';
 
-import log from './log';
+import logging from './logging';
 
 const removePath = rimraf;
 
@@ -57,7 +57,7 @@ const compileFile = function(compileChunk) {
           fs.writeFile(targetFilePath, compiledChunk, e => {
             if (e) { return cb(e); }
 
-            log.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
+            logging.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
 
             cb(null);
           });

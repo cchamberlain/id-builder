@@ -1,6 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import { start } from '../lib/watch';
 
 const dependencies = [ 'runTests' ];

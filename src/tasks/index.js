@@ -1,6 +1,7 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
+
 import clean from './clean';
 import compileBabel from './compileBabel';
 import compileBrowserify from './compileBrowserify';

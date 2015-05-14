@@ -1,6 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import {
   compileFile,
   sourceExtension,
@@ -22,7 +22,7 @@ const handlePath = function(options, path, stat) {
 
   compileFile(options, options.sourceFilePath, options.targetFilePath, e =>  {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };

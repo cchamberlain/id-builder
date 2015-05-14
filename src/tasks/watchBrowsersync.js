@@ -1,7 +1,7 @@
 'use strict';
 
 import { sourceFilePathMatches, reload } from '../lib/browsersync';
-import log from 'loglevel';
+import logging from '../lib/logging';
 import { getWatcher } from '../lib/watch';
 import { removePath } from '../lib/fileSystem'
 
@@ -20,7 +20,7 @@ const handleAdd = function(options, path, stat) {
 
   reload(options, path, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -38,7 +38,7 @@ const handleAddDir = function(options, path, stat) {
 };
 
 const handleChange = function(options, path, stat) {
-  log.debug('watchBrowserSync.handleChange', path, options, stat);
+  logging.debug('watchBrowserSync.handleChange', path, options, stat);
 
   if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
     // Only reload if it's the bundle when the file is a JavaScript file.
@@ -48,13 +48,13 @@ const handleChange = function(options, path, stat) {
     return;
   }
 
-  log.debug('watchBrowserSync.handleChange MATCH!!!', path, options, stat);
+  logging.debug('watchBrowserSync.handleChange MATCH!!!', path, options, stat);
 
   reload(options, path, function(e) {
-    log.debug('watchBrowserSync.handleChange RELOADED', path, options, stat);
+    logging.debug('watchBrowserSync.handleChange RELOADED', path, options, stat);
 
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -70,7 +70,7 @@ const handleUnlink = function(options, path, stat) {
 
   removePath(path, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -86,22 +86,22 @@ const handleUnlinkDir = function(options, path, stat) {
 
   removePath(path, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
 
 const handleError = function(options, e) {
-  log.error(e);
+  logging.taskError(e);
 };
 
 const run = function(options, cb) {
-  log.debug('watchBrowsersync.run', options);
+  logging.debug('watchBrowsersync.run', options);
 
   const watcher = getWatcher();
 
   watcher.on('all', (...args) => {
-    log.debug('watchBrowsersync all: ', ...args);
+    logging.debug('watchBrowsersync all: ', ...args);
   });
 
   watcher.on('ready', () => {

@@ -12,7 +12,7 @@ import coffeescript from './coffeescript';
 import fileSystem from './fileSystem';
 import less from './less';
 import livescript from './livescript';
-import log from './log';
+import logging from './logging';
 import stylus from './stylus';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
@@ -51,7 +51,7 @@ const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
       fs.writeFile(targetFilePath, readChunk, e => {
         if (e) { return cb(e); }
 
-        log.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
+        logging.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
 
         cb(null);
       });

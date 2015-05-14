@@ -1,6 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import livescript from '../lib/livescript';
 import { getWatcher } from '../lib/watch';
 
@@ -19,7 +19,7 @@ const handlePath = function(options, path, stat) {
 
   livescript.compileFile(options, path, targetPath, e => {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };

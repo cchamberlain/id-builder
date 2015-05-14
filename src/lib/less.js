@@ -2,7 +2,7 @@
 
 import less from 'less';
 
-import log from './log';
+import logging from './logging';
 import fileSystem from './fileSystem';
 
 const sourceExtension = 'less';

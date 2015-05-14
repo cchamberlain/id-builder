@@ -3,14 +3,14 @@
 import browserSync from 'browser-sync';
 
 import copy from './copy';
-import log from './log';
+import logging from './logging';
 
 const sourceFilePathMatches = copy.sourceFilePathMatches;
 
 const reload = function(options, path, cb) {
   browserSync.reload(path);
 
-  log.taskInfo(options.taskName, `Reloaded \`${path}\``);
+  logging.taskInfo(options.taskName, `Reloaded \`${path}\``);
 
   cb();
 };

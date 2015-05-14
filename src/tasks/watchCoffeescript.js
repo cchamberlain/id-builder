@@ -1,7 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
-
+import logging from '../lib/logging';
 import coffeescript from '../lib/coffeescript';
 import { getWatcher } from '../lib/watch';
 import { removePath } from '../lib/fileSystem'
@@ -21,7 +20,7 @@ const handleAdd = function(options, path, stat) {
 
   coffeescript.compileFile(options, path, targetPath, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -33,7 +32,7 @@ const handleAddDir = function(options, path, stat) {
 
   coffeescript.compileAllFiles({ sourceDirectoryPath: path }, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -49,7 +48,7 @@ const handleChange = function(options, path, stat) {
 
   coffeescript.compileFile(options, path, targetPath, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -61,7 +60,7 @@ const handleUnlink = function(options, path, stat) {
 
   removePath(path, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -73,13 +72,13 @@ const handleUnlinkDir = function(options, path, stat) {
 
   removePath(path, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
 
 const handleError = function(options, e) {
-  log.error(e);
+  logging.taskError(e);
 };
 
 const run = function(options, cb) {

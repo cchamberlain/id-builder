@@ -12,7 +12,7 @@ export default {
   tasks: {
     clean: {
       enabled: true,
-      path: 'build'
+      paths: [ 'build' ]
     },
 
     compileBrowserify: {
@@ -108,6 +108,7 @@ export default {
 
     watchServers: {
       enabled: true,
+      watchPaths: [],
       sourceDirectoryPath: 'build/server',
       paths: ['app.js']
     },

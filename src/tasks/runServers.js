@@ -2,7 +2,7 @@
 
 // TODO: before program exit clean up children.
 import { runServers } from '../lib/servers';
-import log from 'loglevel';
+import logging from '../lib/logging';
 
 const dependencies = [
   'compileBabel',

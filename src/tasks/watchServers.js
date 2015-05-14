@@ -1,6 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import servers  from '../lib/servers';
 import { getWatcher } from '../lib/watch';
 
@@ -9,13 +9,13 @@ const dependencies = [
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!servers.sourceFilePathMatches(options, path)) {
+  if (!servers.sourceFilePathMatchesWatchPath(options, path)) {
     return;
   }
 
   servers.restartServers(options, e => {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };

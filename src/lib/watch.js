@@ -2,8 +2,9 @@
 
 import _ from 'lodash';
 import chokidar from 'chokidar';
+import log from 'loglevel';
 
-import log from './log';
+import logging from './logging';
 
 let watcher = null;
 
@@ -12,8 +13,6 @@ const getWatcher = function() {
 };
 
 const start = function(options) {
-  log.debug('watch.start');
-
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
     return;
@@ -34,7 +33,7 @@ const start = function(options) {
   });
 
   watcher.on('all', (...args) => {
-    log.debug('watch all: ', ...args);
+    log.debug('lib/watch.start: watch all: ', ...args);
   });
 
   return watcher;

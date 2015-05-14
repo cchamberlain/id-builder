@@ -2,7 +2,7 @@
 
 import deepmerge from 'deepmerge';
 
-import log from './log';
+import logging from './logging';
 
 export default function(defaults, options) {
   return deepmerge(defaults, options);

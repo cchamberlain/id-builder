@@ -1,6 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import { buildFilePathMatches, runTests } from '../lib/tests';
 import { getWatcher } from '../lib/watch';
 
@@ -16,7 +16,7 @@ const handlePath = function(options, path, stat) {
 
   runTests(options, e => {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -42,7 +42,7 @@ const handleUnlinkDir = function(options, path, stat) {
 };
 
 const handleError = function(options, e) {
-  console.error(e);
+  logging.taskError(e);
 };
 
 const run = function(options, cb) {

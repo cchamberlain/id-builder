@@ -2,7 +2,7 @@
 
 import { render } from 'stylus';
 
-import log from './log';
+import logging from './logging';
 import fileSystem from './fileSystem';
 
 const sourceExtension = 'styl';
@@ -15,8 +15,6 @@ const sourceFilePathMatches = function(options, sourceFilePath){
 };
 
 const compileChunk = function(options, chunk, cb){
-  log.debug('stylus.compileChunk', options.sourceDirectoryPath);
-
   render(chunk, cb);
 };
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import { sourceFilePathMatches, copyFile } from '../lib/copy';
 import { getWatcher } from '../lib/watch';
 
@@ -18,7 +18,7 @@ const handlePath = function(options, path, stat) {
 
   copyFile(options, path, targetPath, e => {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };

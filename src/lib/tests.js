@@ -4,7 +4,7 @@ import { exists } from 'fs';
 import { resolve } from 'path';
 import { spawn } from 'child_process';
 
-import log from './log';
+import logging from './logging';
 
 const pathToMocha = resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
@@ -27,11 +27,9 @@ const buildFilePathMatches = function(options, buildFilePath) {
 };
 
 const runTests = function(options, cb) {
-  log.debug('tests.runTests', options.sourceDirectoryPath);
-
   exists(options.sourceDirectoryPath, exists => {
     if (!exists) {
-      log.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
+      logging.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
       return cb();
     }
 
