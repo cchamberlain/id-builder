@@ -118,6 +118,20 @@ idBuilder({
       targetDirectoryPath: 'build'
     },
 
+    compileWebpack: {
+      enabled: true,
+
+      options: {
+        context: 'build/client/js',
+        entry: 'build/client/js/app.js',
+
+        output: {
+          path: 'build/client/js',
+          filename: 'app.webpack.js'
+        }
+      }
+    },
+
     runBrowsersyncServer: {
       enabled: true
     },
@@ -194,6 +208,20 @@ idBuilder({
       enabled: true,
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
+    },
+
+    watchWebpack: {
+      enabled: true,
+
+      options: {
+        context: 'build/client/js',
+        entry: 'build/client/js/app.js',
+
+        output: {
+          path: 'build/client/js',
+          filename: 'app.webpack.js'
+        }
+      },
     },
 
     watch: {
