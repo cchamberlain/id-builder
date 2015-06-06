@@ -37,13 +37,8 @@ var prepareOptions = function prepareOptions(options) {
   return options;
 };
 
-var matchesTargetPath = function matchesTargetPath(path) {
-  var webpackOptions = global.options.tasks.compileWebpack.options;
-
-  // TODO: This is ugly.
-  var targetPath = '' + webpackOptions.path + '/' + webpackOptions.filename;
-
-  return path !== targetPath;
+var matchesTargetPath = function matchesTargetPath(options, path) {
+  return path === '' + options.path + '/' + options.filename;
 };
 
 var compileAllFiles = function compileAllFiles(options, cb) {

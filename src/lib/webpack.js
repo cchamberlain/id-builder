@@ -17,13 +17,8 @@ const prepareOptions = function(options) {
   return options;
 };
 
-const matchesTargetPath = function(path) {
-  const webpackOptions = global.options.tasks.compileWebpack.options;
-
-  // TODO: This is ugly.
-  const targetPath = `${webpackOptions.path}/${webpackOptions.filename}`;
-
-  return path !== targetPath;
+const matchesTargetPath = function(options, path) {
+  return path === `${options.path}/${options.filename}`;
 };
 
 const compileAllFiles = function(options, cb) {

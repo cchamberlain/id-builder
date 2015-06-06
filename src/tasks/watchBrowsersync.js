@@ -16,7 +16,7 @@ const dependencies = [
 const shouldContinue = function(options, path, stat) {
   let result = false;
 
-  if (path.match(/\.js$/) && browserify.matchesTargetPath(path) || webpack.matchesTargetPath(path)) {
+  if (path.match(/\.js$/) && browserify.matchesTargetPath(options, path) || webpack.matchesTargetPath(options, path)) {
     result = true;
   } else if (browsersync.sourceFilePathMatches(options, path)) {
     result = true;

@@ -20,8 +20,8 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
   return sourceFilePath !== options.targetFilePath && sourceFilePath.indexOf(options.sourceDirectoryPath) === 0;
 };
 
-const matchesTargetPath = function(path) {
-  return path !== global.options.tasks.compileBrowserify.targetPath;
+const matchesTargetPath = function(options, path) {
+  return path === options.targetPath;
 };
 
 const getBrowserifyBundle = function(options) {

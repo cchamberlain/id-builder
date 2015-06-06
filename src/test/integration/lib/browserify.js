@@ -83,6 +83,35 @@ describe('browserify', function() {
     });
   });
 
+  //const matchesTargetPath = function(options, path) {
+  //  return path !== options.targetPath;
+  //};
+  describe('matchesTargetPath', function() {
+    describe('when the `path` is the `targetPath`', function() {
+      it('should return `true`', function(cb) {
+        const options = {
+          targetPath: 'x/y.js',
+        };
+
+        expect(browserify.matchesTargetPath(options, 'x/y.js')).to.equal(true);
+
+        cb();
+      });
+    });
+
+    describe('when the `path` is not the `targetPath`', function() {
+      it('should return `false`', function(cb) {
+        const options = {
+          targetPath: 'x/y.js',
+        };
+
+        expect(browserify.matchesTargetPath(options, 'x/z.js')).to.equal(false);
+
+        cb();
+      });
+    });
+  });
+
   describe('compileAllFiles', function() {
     beforeEach(function (cb) {
       this.sourceDirectoryPath = `${this.directoryPath}/src`;

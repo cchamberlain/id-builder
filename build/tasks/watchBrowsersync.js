@@ -41,7 +41,7 @@ var dependencies = ['watch'];
 var shouldContinue = function shouldContinue(options, path, stat) {
   var result = false;
 
-  if (path.match(/\.js$/) && _browserify2['default'].matchesTargetPath(path) || _webpack2['default'].matchesTargetPath(path)) {
+  if (path.match(/\.js$/) && _browserify2['default'].matchesTargetPath(options, path) || _webpack2['default'].matchesTargetPath(options, path)) {
     result = true;
   } else if (_browsersync2['default'].sourceFilePathMatches(options, path)) {
     result = true;

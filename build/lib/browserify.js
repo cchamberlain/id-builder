@@ -45,8 +45,8 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
   return sourceFilePath !== options.targetFilePath && sourceFilePath.indexOf(options.sourceDirectoryPath) === 0;
 };
 
-var matchesTargetPath = function matchesTargetPath(path) {
-  return path !== global.options.tasks.compileBrowserify.targetPath;
+var matchesTargetPath = function matchesTargetPath(options, path) {
+  return path === options.targetPath;
 };
 
 var getBrowserifyBundle = function getBrowserifyBundle(options) {
