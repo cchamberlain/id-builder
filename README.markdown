@@ -78,7 +78,7 @@ idBuilder({
       enabled: true,
       sourceDirectoryPath: 'build/client/js',
       sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
+      targetFilePath: 'build/client/js/app.browserify.js'
     },
 
     compileCoffeescript: {
@@ -152,7 +152,7 @@ idBuilder({
       enabled: true,
       sourceDirectoryPath: 'build/client/js',
       sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
+      targetFilePath: 'build/client/js/app.browserify.js'
     },
 
     watchBrowsersync: {
@@ -256,7 +256,7 @@ are loaded in the browser. Allows you to connect many devices to the same site
 and operate on them and reload them at the same time.
 
 To use this functionality, you need to add a script to the page that serves the
-app.bundle.js.
+app.browserify.js.
 
 Start id-builder and go to http://localhost:9001 for the script to include.
 

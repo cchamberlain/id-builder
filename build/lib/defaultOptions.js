@@ -24,7 +24,7 @@ exports['default'] = {
       enabled: true,
       sourceDirectoryPath: 'build/client/js',
       sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
+      targetFilePath: 'build/client/js/app.browserify.js'
     },
 
     compileCoffeescript: {
@@ -98,7 +98,7 @@ exports['default'] = {
       enabled: true,
       sourceDirectoryPath: 'build/client/js',
       sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
+      targetFilePath: 'build/client/js/app.browserify.js'
     },
 
     watchBrowsersync: {
