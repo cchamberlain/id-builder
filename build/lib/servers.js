@@ -6,22 +6,30 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _import = require('lodash');
+
+var _import2 = _interopRequireWildcard(_import);
+
 var _exists = require('fs');
+
+var _log = require('loglevel');
+
+var _log2 = _interopRequireWildcard(_log);
 
 var _Monitor = require('forever-monitor');
 
 var _each = require('async');
 
-var _log = require('./log');
+var _logging = require('./logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 'use strict';
 
 var monitors = {};
 
 var addPath = function addPath(path, cb) {
-  _log2['default'].debug('servers.addPath', path);
+  _log2['default'].debug('lib/servers.addPath', path);
 
   var monitor = new _Monitor.Monitor(path, {
     command: 'node'
@@ -35,9 +43,7 @@ var addPath = function addPath(path, cb) {
 };
 
 var removePath = function removePath(path, cb) {
-  _log2['default'].debug('servers.removePath', path);
-
-  _log2['default'].debug('monitors', monitors);
+  _log2['default'].debug('lib/servers.removePath', path);
 
   var monitor = monitors[path];
 
@@ -49,7 +55,7 @@ var removePath = function removePath(path, cb) {
 };
 
 var restartPath = function restartPath(path, cb) {
-  _log2['default'].debug('servers.restartPath', path);
+  _log2['default'].debug('lib/servers.restartPath', path);
 
   var monitor = monitors[path];
 
@@ -59,15 +65,21 @@ var restartPath = function restartPath(path, cb) {
 };
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath, cb) {
-  return !!sourceFilePath.match(RegExp('^' + options.sourceDirectoryPath));
+  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath));
+};
+
+var sourceFilePathMatchesWatchPath = function sourceFilePathMatchesWatchPath(options, sourceFilePath, cb) {
+  return _import2['default'].any(options.watchPaths, function (watchPath) {
+    return !!sourceFilePath.match(new RegExp('^' + watchPath));
+  });
 };
 
 var startServer = function startServer(options, filePath, cb) {
-  _log2['default'].debug('servers.startServer', options, filePath);
+  _log2['default'].debug('lib/servers.startServer');
 
   _exists.exists(filePath, function (result) {
     if (!result) {
-      _log2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
+      _logging2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
       return cb();
     }
 
@@ -82,11 +94,11 @@ var startServer = function startServer(options, filePath, cb) {
 };
 
 var stopServer = function stopServer(options, filePath, cb) {
-  _log2['default'].debug('servers.stopServer', options, filePath);
+  _log2['default'].debug('lib/servers.stopServer');
 
   _exists.exists(filePath, function (result) {
     if (!result) {
-      _log2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
+      _logging2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
       return cb();
     }
 
@@ -95,18 +107,18 @@ var stopServer = function stopServer(options, filePath, cb) {
     if (monitor) {
       removePath(filePath, cb);
     } else {
-      _log2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Monitor does not exist).');
+      _logging2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Monitor does not exist).');
       cb();
     }
   });
 };
 
 var restartServer = function restartServer(options, filePath, cb) {
-  _log2['default'].debug('servers.restartServer', options, filePath);
+  _log2['default'].debug('lib/servers.restartServer');
 
   _exists.exists(filePath, function (result) {
     if (!result) {
-      _log2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
+      _logging2['default'].taskInfo(options.taskName, 'skipping ' + filePath + ' (Does not exist).');
       return cb();
     }
 
@@ -121,19 +133,19 @@ var restartServer = function restartServer(options, filePath, cb) {
 };
 
 var runServers = function runServers(options, cb) {
-  _log2['default'].debug('servers.runServers', options);
+  _log2['default'].debug('lib/servers.runServers');
 
   _each.each(options.paths, function (v, cb) {
     startServer(options, '' + options.sourceDirectoryPath + '/' + v, cb);
-  });
+  }, cb);
 };
 
 var restartServers = function restartServers(options, cb) {
-  _log2['default'].debug('servers.restartServers', options);
+  _log2['default'].debug('lib/servers.restartServers');
 
   _each.each(options.paths, function (v, cb) {
     restartServer(options, '' + options.sourceDirectoryPath + '/' + v, cb);
-  });
+  }, cb);
 };
 
 exports['default'] = {
@@ -141,6 +153,7 @@ exports['default'] = {
   removePath: removePath,
   restartPath: restartPath,
   sourceFilePathMatches: sourceFilePathMatches,
+  sourceFilePathMatchesWatchPath: sourceFilePathMatchesWatchPath,
   startServer: startServer,
   stopServer: stopServer,
   restartServer: restartServer,

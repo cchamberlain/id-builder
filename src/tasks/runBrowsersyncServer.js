@@ -1,7 +1,7 @@
 'use strict';
 
 import log from '../lib/logging';
-import { runServer } from '../lib/browsersync';
+import browsersync from '../lib/browsersync';
 
 const dependencies = [
   'compileBabel',
@@ -10,10 +10,10 @@ const dependencies = [
   'compileCopy',
   'compileLess',
   'compileLivescript',
-  'compileStylus',
+  'compileStylus'
 ];
 
-const run = runServer;
+const run = browsersync.runServer;
 
 export default {
   dependencies,

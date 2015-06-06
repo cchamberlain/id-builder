@@ -4,10 +4,11 @@ import fs from 'fs';
 import path from 'path';
 
 import _ from 'lodash';
+import async from 'async';
+import log from 'loglevel';
 import lsr from 'lsr';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
-import async from 'async';
 
 import logging from './logging';
 
@@ -43,49 +44,49 @@ const ensureFileDirectory = function(targetFilePath, cb) {
   mkdirp(path.dirname(targetFilePath), cb);
 };
 
-const compileFile = function(compileChunk) {
-  return (options, sourceFilePath, targetFilePath, cb) => {
-    fs.readFile(sourceFilePath, (e, fileContent) => {
+const compileFile = function(compileChunk, options, sourceFilePath, targetFilePath, cb) {
+  log.debug('lib/fileSystem.compileFile', sourceFilePath);
+
+  fs.readFile(sourceFilePath, (e, fileContent) => {
+    if (e) { return cb(e); }
+
+    compileChunk(options, fileContent.toString(), (e, compiledChunk) => {
       if (e) { return cb(e); }
 
-      compileChunk(options, fileContent.toString(), (e, compiledChunk) => {
+      ensureFileDirectory(targetFilePath, e => {
         if (e) { return cb(e); }
 
-        ensureFileDirectory(targetFilePath, e => {
+        fs.writeFile(targetFilePath, compiledChunk, e => {
           if (e) { return cb(e); }
 
-          fs.writeFile(targetFilePath, compiledChunk, e => {
-            if (e) { return cb(e); }
+          logging.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
 
-            logging.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
-
-            cb(null);
-          });
+          cb(null);
         });
       });
     });
-  };
+  });
 };
 
-const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
-  return (options, cb) => {
-    getFiles(options.sourceDirectoryPath, (e, sourceFilePaths) => {
-      if (e) { return cb(); }
+const compileAllFiles = function(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb) {
+  log.debug('lib/fileSystem.compileAllFiles');
 
-      const paths = _(sourceFilePaths)
-        .map(v => { return v.fullPath; })
-        .filter(v => { return sourceFilePathMatches(options, v); })
-        .value();
+  getFiles(options.sourceDirectoryPath, (e, sourceFilePaths) => {
+    if (e) { return cb(); }
 
-      const iteratePath = (currentSourceFilePath, cb) => {
-        const currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
+    const paths = _(sourceFilePaths)
+      .map(v => { return v.fullPath; })
+      .filter(v => { return sourceFilePathMatches(options, v); })
+      .value();
 
-        compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
-      };
+    const iteratePath = (currentSourceFilePath, cb) => {
+      const currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
 
-      async.each(paths, iteratePath, cb);
-    });
-  };
+      compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
+    };
+
+    async.each(paths, iteratePath, cb);
+  });
 };
 
 export default {

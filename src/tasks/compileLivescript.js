@@ -1,11 +1,11 @@
 'use strict';
 
 import logging from '../lib/logging';
-import { compileAllFiles } from '../lib/livescript';
+import livescript from '../lib/livescript';
 
 const dependencies = [ 'clean' ];
 
-const run = compileAllFiles;
+const run = livescript.compileAllFiles;
 
 export default {
   dependencies,

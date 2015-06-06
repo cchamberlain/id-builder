@@ -6,15 +6,19 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _log = require('loglevel');
+
+var _log2 = _interopRequireWildcard(_log);
+
 var _exists = require('fs');
 
 var _resolve = require('path');
 
 var _spawn = require('child_process');
 
-var _log = require('./log');
+var _logging = require('./logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 'use strict';
 
@@ -39,11 +43,11 @@ var buildFilePathMatches = function buildFilePathMatches(options, buildFilePath)
 };
 
 var runTests = function runTests(options, cb) {
-  _log2['default'].debug('tests.runTests', options.sourceDirectoryPath);
+  _log2['default'].debug('lib/tests.runTests');
 
   _exists.exists(options.sourceDirectoryPath, function (exists) {
     if (!exists) {
-      _log2['default'].taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
+      _logging2['default'].taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
       return cb();
     }
 

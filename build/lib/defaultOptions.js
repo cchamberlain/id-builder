@@ -17,7 +17,7 @@ exports['default'] = {
   tasks: {
     clean: {
       enabled: true,
-      path: 'build'
+      paths: ['build']
     },
 
     compileBrowserify: {
@@ -62,6 +62,20 @@ exports['default'] = {
       enabled: true,
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
+    },
+
+    compileWebpack: {
+      enabled: true,
+
+      options: {
+        context: 'build/client/js',
+        entry: 'build/client/js/app.js',
+
+        output: {
+          path: 'build/client/js',
+          filename: 'app.webpack.js'
+        }
+      }
     },
 
     runBrowsersyncServer: {
@@ -113,6 +127,7 @@ exports['default'] = {
 
     watchServers: {
       enabled: true,
+      watchPaths: [],
       sourceDirectoryPath: 'build/server',
       paths: ['app.js']
     },
@@ -140,6 +155,27 @@ exports['default'] = {
       enabled: true,
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
+    },
+
+    // TODO
+    watchWebpack: {
+      enabled: true,
+
+      options: {
+        context: 'build/client/js',
+        entry: 'build/client/js/app.js',
+
+        output: {
+          path: 'build/client/js',
+          filename: 'app.webpack.js'
+        }
+      },
+
+      watchOptions: {
+        aggregateTimeout: 300,
+        poll: false,
+        initial: false
+      }
     },
 
     watch: {

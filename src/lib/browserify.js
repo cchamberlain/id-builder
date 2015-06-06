@@ -4,13 +4,14 @@ import { exists, createWriteStream, writeFile } from 'fs';
 import { resolve } from 'path';
 
 import browserify from 'browserify';
-import watchify from 'watchify';
 import jadeify from 'jadeify';
+import log from 'loglevel';
+import watchify from 'watchify';
 
 import fileSystem from './fileSystem';
 import logging from './logging';
 
-const sourceExtension = 'coffee';
+const sourceExtension = 'js';
 const targetExtension = 'js';
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
@@ -19,10 +20,14 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
   return sourceFilePath !== options.targetFilePath && sourceFilePath.indexOf(options.sourceDirectoryPath) === 0;
 };
 
+const matchesTargetPath = function(path) {
+  return path !== global.options.tasks.compileBrowserify.targetPath;
+};
+
 const getBrowserifyBundle = function(options) {
   const browserifyOptions = {
     cache: {},
-    debug: true,
+    //debug: true,
     fullPaths: true,
     packageCache: {}
   };
@@ -43,6 +48,8 @@ const getBrowserifyBundle = function(options) {
 };
 
 const compileAllFiles = function(options, cb) {
+  log.debug('lib/browserify.compileAllFiles');
+
   exists(options.sourceFilePath, exists => {
     if (!exists) {
       logging.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
@@ -83,6 +90,8 @@ const compileAllFiles = function(options, cb) {
 };
 
 const watch = function(options, cb) {
+  log.debug('lib/browserify.watch');
+
   exists(options.sourceFilePath, exists => {
     if (!exists) {
       logging.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
@@ -119,7 +128,7 @@ const watch = function(options, cb) {
       const w = watchify(b);
 
       w.on('update', () => {
-        b.bundle()
+        b.bundle();
       });
 
       b.bundle();
@@ -128,9 +137,10 @@ const watch = function(options, cb) {
 };
 
 export default {
-  sourceExtension,
-  targetExtension,
-  sourceFilePathMatches,
   compileAllFiles,
+  matchesTargetPath,
+  sourceExtension,
+  sourceFilePathMatches,
+  targetExtension,
   watch
 };

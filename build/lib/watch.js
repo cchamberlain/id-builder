@@ -14,9 +14,13 @@ var _chokidar = require('chokidar');
 
 var _chokidar2 = _interopRequireWildcard(_chokidar);
 
-var _log = require('./log');
+var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
+
+var _logging = require('./logging');
+
+var _logging2 = _interopRequireWildcard(_logging);
 
 'use strict';
 
@@ -27,7 +31,7 @@ var getWatcher = function getWatcher() {
 };
 
 var start = function start(options) {
-  _log2['default'].debug('watch.start');
+  _log2['default'].debug('lib/watch.start');
 
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
@@ -39,21 +43,36 @@ var start = function start(options) {
     return watcher;
   }
 
+  _log2['default'].debug('lib/watch.start: creating watcher');
+
   // Start the watcher with the first path.
   watcher = _chokidar2['default'].watch(options.paths, {
     atomic: true,
     ignoreInitial: true,
-    ignored: /[\/\/]\./,
+    //ignored: /[\/\/]\./,
     persistent: true,
     usePolling: true
   });
 
-  watcher.on('all', function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+  _log2['default'].debug('lib/watch.start: watching paths', options.paths);
 
-    _log2['default'].debug.apply(_log2['default'], ['watch all: '].concat(args));
+  watcher.on('add', function (path, stat) {
+    _log2['default'].debug('lib/watch.start: add', path);
+  });
+  watcher.on('addDir', function (path, stat) {
+    _log2['default'].debug('lib/watch.start: addDir', path);
+  });
+  watcher.on('change', function (path, stat) {
+    _log2['default'].debug('lib/watch.start: change', path);
+  });
+  watcher.on('unlink', function (path, stat) {
+    _log2['default'].debug('lib/watch.start: unlink', path);
+  });
+  watcher.on('unlinkDir', function (path, stat) {
+    _log2['default'].debug('lib/watch.start: unlinkDir', path);
+  });
+  watcher.on('error', function (path, stat) {
+    _log2['default'].debug('lib/watch.start: error', path);
   });
 
   return watcher;

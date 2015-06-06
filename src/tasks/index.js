@@ -10,6 +10,7 @@ import compileCopy from './compileCopy';
 import compileLess from './compileLess';
 import compileLivescript from './compileLivescript';
 import compileStylus from './compileStylus';
+import compileWebpack from './compileWebpack';
 import runBrowsersyncServer from './runBrowsersyncServer';
 import runServers from './runServers';
 import runTests from './runTests';
@@ -24,6 +25,7 @@ import watchLivescript from './watchLivescript';
 import watchServers from './watchServers';
 import watchStylus from './watchStylus';
 import watchTests from './watchTests';
+import watchWebpack from './watchWebpack';
 
 export default {
   clean,
@@ -34,6 +36,7 @@ export default {
   compileLess,
   compileLivescript,
   compileStylus,
+  compileWebpack,
   runBrowsersyncServer,
   runServers,
   runTests,
@@ -47,5 +50,6 @@ export default {
   watchLivescript,
   watchServers,
   watchStylus,
-  watchTests
+  watchTests,
+  watchWebpack
 };

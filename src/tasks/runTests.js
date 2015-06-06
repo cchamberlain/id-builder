@@ -1,7 +1,7 @@
 'use strict';
 
 import logging from '../lib/logging';
-import { runTests } from '../lib/tests';
+import tests from '../lib/tests';
 
 const dependencies = [
   'compileBabel',
@@ -14,7 +14,7 @@ const dependencies = [
   'compileStylus'
 ];
 
-const run = runTests;
+const run = tests.runTests;
 
 export default {
   dependencies,

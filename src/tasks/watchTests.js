@@ -1,8 +1,8 @@
 'use strict';
 
 import logging from '../lib/logging';
-import { buildFilePathMatches, runTests } from '../lib/tests';
-import { getWatcher } from '../lib/watch';
+import tests from '../lib/tests';
+import watch from '../lib/watch';
 
 const dependencies = [
   'runTests',
@@ -10,11 +10,11 @@ const dependencies = [
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!buildFilePathMatches(options, path)) {
+  if (!tests.buildFilePathMatches(options, path)) {
     return;
   }
 
-  runTests(options, e => {
+  tests.runTests(options, e => {
     if (e) {
       logging.taskError(e);
     }
@@ -46,7 +46,7 @@ const handleError = function(options, e) {
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
   watcher.on('ready', () => {
     watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });

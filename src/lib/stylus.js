@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { render } from 'stylus';
 
 import logging from './logging';
@@ -15,12 +16,22 @@ const sourceFilePathMatches = function(options, sourceFilePath){
 };
 
 const compileChunk = function(options, chunk, cb){
+  log.debug('lib/stylus.compileChunk');
+
   render(chunk, cb);
 };
 
-const compileFile = fileSystem.compileFile(compileChunk);
+const compileFile = function(options, sourceFilePath, targetFilePath, cb) {
+  log.debug('lib/stylus.compileFile', sourceFilePath);
 
-const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+  fileSystem.compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
+};
+
+const compileAllFiles = function(options, cb) {
+  log.debug('lib/stylus.compileAllFiles');
+
+  fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
+};
 
 export default {
   sourceExtension,

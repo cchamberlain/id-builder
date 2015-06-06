@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import _ from 'lodash';
 import async from 'async';
+import log from 'loglevel';
 import lsr from 'lsr';
 
 import babel from './babel';
@@ -42,6 +43,8 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+  log.debug('lib/fileSystem.compileFile', sourceFilePath);
+
   fs.readFile(sourceFilePath, (e, readChunk) => {
     if (e) { return cb(e); }
 
@@ -60,6 +63,8 @@ const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
 };
 
 const copyAllFiles = function(options, cb) {
+  log.debug('lib/fileSystem.copyAllFiles');
+
   lsr(options.sourceDirectoryPath, (e, nodes) => {
     if (e) {
       return cb(e);

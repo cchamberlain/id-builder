@@ -2,7 +2,7 @@
 
 import logging from '../lib/logging';
 import stylus from '../lib/stylus';
-import { getWatcher } from '../lib/watch';
+import watch from '../lib/watch';
 
 const dependencies = [
   'watch'
@@ -45,7 +45,7 @@ const handleError = function(options, e) {
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
   watcher.on('ready', () => {
     watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });

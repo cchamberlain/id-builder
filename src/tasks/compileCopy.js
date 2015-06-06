@@ -1,11 +1,11 @@
 'use strict';
 
 import logging from '../lib/logging';
-import { copyAllFiles } from '../lib/copy';
+import copy from '../lib/copy';
 
 const dependencies = [ 'clean' ];
 
-const run = copyAllFiles;
+const run = copy.copyAllFiles;
 
 export default {
   dependencies,

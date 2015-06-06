@@ -1,5 +1,6 @@
 'use strict';
 
+import log from 'loglevel';
 import { exists } from 'fs';
 import { resolve } from 'path';
 import { spawn } from 'child_process';
@@ -27,6 +28,8 @@ const buildFilePathMatches = function(options, buildFilePath) {
 };
 
 const runTests = function(options, cb) {
+  log.debug('lib/tests.runTests');
+
   exists(options.sourceDirectoryPath, exists => {
     if (!exists) {
       logging.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');

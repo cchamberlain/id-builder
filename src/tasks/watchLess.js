@@ -1,26 +1,19 @@
 'use strict';
 
 import logging from '../lib/logging';
-import {
-  compileFile,
-  sourceExtension,
-  sourceFilePathMatches,
-  targetExtension
-} from '../lib/less';
-import {
-  getWatcher
-} from '../lib/watch';
+import less from '../lib/less';
+import watch from '../lib/watch';
 
 const dependencies = [
   'watch'
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!sourceFilePathMatches(options, path)) {
+  if (!less.sourceFilePathMatches(options, path)) {
     return;
   }
 
-  compileFile(options, options.sourceFilePath, options.targetFilePath, e =>  {
+  less.compileFile(options, options.sourceFilePath, options.targetFilePath, e =>  {
     if (e) {
       logging.taskError(e);
     }
@@ -48,7 +41,7 @@ const handleError = function(options, e) {
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
   watcher.on('ready', () => {
     watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });

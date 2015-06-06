@@ -6,17 +6,19 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
-var _watch = require('../lib/browserify');
+var _browserify = require('../lib/browserify');
+
+var _browserify2 = _interopRequireWildcard(_browserify);
 
 'use strict';
 
 var dependencies = ['runTests'];
 
-var run = _watch.watch;
+var run = _browserify2['default'].watch;
 
 exports['default'] = {
   dependencies: dependencies,

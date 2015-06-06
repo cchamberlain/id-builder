@@ -3,6 +3,7 @@
 import _ from 'lodash';
 import { exists } from 'fs';
 
+import log from 'loglevel';
 import { Monitor } from 'forever-monitor';
 import { each } from 'async';
 
@@ -11,6 +12,8 @@ import logging from './logging';
 const monitors = {};
 
 const addPath = function(path, cb){
+  log.debug('lib/servers.addPath', path);
+
   const monitor = new Monitor(path, {
     command: 'node'
   });
@@ -23,6 +26,8 @@ const addPath = function(path, cb){
 };
 
 const removePath = function(path, cb){
+  log.debug('lib/servers.removePath', path);
+
   const monitor = monitors[path];
 
   monitor.kill(true);
@@ -33,6 +38,8 @@ const removePath = function(path, cb){
 };
 
 const restartPath = function(path, cb){
+  log.debug('lib/servers.restartPath', path);
+
   const monitor = monitors[path];
 
   monitor.restart();
@@ -51,6 +58,8 @@ const sourceFilePathMatchesWatchPath = function(options, sourceFilePath, cb){
 };
 
 const startServer = function(options, filePath, cb){
+  log.debug('lib/servers.startServer');
+
   exists(filePath, result => {
     if (!result) {
       logging.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
@@ -68,6 +77,8 @@ const startServer = function(options, filePath, cb){
 };
 
 const stopServer = function(options, filePath, cb) {
+  log.debug('lib/servers.stopServer');
+
   exists(filePath, result => {
     if (!result) {
       logging.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
@@ -86,6 +97,8 @@ const stopServer = function(options, filePath, cb) {
 };
 
 const restartServer = function(options, filePath, cb) {
+  log.debug('lib/servers.restartServer');
+
   exists(filePath, result => {
     if (!result) {
       logging.taskInfo(options.taskName, `skipping ${filePath} (Does not exist).`);
@@ -103,12 +116,16 @@ const restartServer = function(options, filePath, cb) {
 };
 
 const runServers = function(options, cb){
+  log.debug('lib/servers.runServers');
+
   each(options.paths, (v, cb) => {
     startServer(options, `${options.sourceDirectoryPath}/${v}`, cb);
   }, cb);
 };
 
 const restartServers = function(options, cb){
+  log.debug('lib/servers.restartServers');
+
   each(options.paths, (v, cb) => {
     restartServer(options, `${options.sourceDirectoryPath}/${v}`, cb);
   }, cb);

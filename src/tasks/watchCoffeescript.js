@@ -1,9 +1,9 @@
 'use strict';
 
-import logging from '../lib/logging';
 import coffeescript from '../lib/coffeescript';
-import { getWatcher } from '../lib/watch';
-import { removePath } from '../lib/fileSystem'
+import fileSystem from '../lib/fileSystem'
+import logging from '../lib/logging';
+import watch from '../lib/watch';
 
 const dependencies = [
   'watch'
@@ -58,7 +58,7 @@ const handleUnlink = function(options, path, stat) {
     return;
   }
 
-  removePath(path, e => {
+  fileSystem.removePath(path, e => {
     if (e) {
       logging.taskError(e);
     }
@@ -70,7 +70,7 @@ const handleUnlinkDir = function(options, path, stat) {
     return;
   }
 
-  removePath(path, e => {
+  fileSystem.removePath(path, e => {
     if (e) {
       logging.taskError(e);
     }
@@ -82,7 +82,7 @@ const handleError = function(options, e) {
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
   watcher.on('ready', () =>  {
     watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });

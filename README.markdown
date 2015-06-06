@@ -268,11 +268,6 @@ inodes limit.
 
 ### Options
 
-#### Paths
-It would be a good idea to have root paths configured so other paths may be
-specified relative to these root paths. I'm not sure how to make these paths
-both configurable and DRY other then putting variables in the paths;
-
 ### Documentation
 At some point it would be good to have an automated documentation facility.
 The documentation would be JavaScript based so Languages that compile to
@@ -296,6 +291,3 @@ Provide integration with CI and CD, allowing you to easily deploy new
 versions of your code.
 
 ### Running one test suite at a time
-Right now all the tests are always compiled to the build directory and then they
-may create files in the .tmp` directory. What would be better is to check for the
-existence of the .tmp directory 

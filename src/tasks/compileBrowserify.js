@@ -1,7 +1,7 @@
 'use strict';
 
 import logging from '../lib/logging';
-import { compileAllFiles } from '../lib/browserify';
+import browserify from '../lib/browserify';
 
 const dependencies = [
   'compileBabel',
@@ -12,7 +12,7 @@ const dependencies = [
   'compileStylus'
 ];
 
-const run = compileAllFiles;
+const run = browserify.compileAllFiles;
 
 export default {
   dependencies,

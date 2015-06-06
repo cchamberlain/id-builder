@@ -10,15 +10,15 @@ var _logging = require('../lib/logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-var _babel = require('../lib/babel');
+var _webpack = require('../lib/webpack');
 
-var _babel2 = _interopRequireWildcard(_babel);
+var _webpack2 = _interopRequireWildcard(_webpack);
 
 'use strict';
 
-var dependencies = ['clean'];
+var dependencies = ['compileBabel', 'compileCoffeescript', 'compileCopy', 'compileLess', 'compileLivescript', 'compileStylus'];
 
-var run = _babel2['default'].compileAllFiles;
+var run = _webpack2['default'].compileAllFiles;
 
 exports['default'] = {
   dependencies: dependencies,

@@ -1,20 +1,20 @@
 'use strict';
 
-import { exists } from 'fs';
+import fs from 'fs';
 
-import { compileFile } from '../lib/less';
+import less from '../lib/less';
 import logging from '../lib/logging';
 
 const dependencies = [ 'clean' ];
 
 const run = function(options, cb) {
-  exists(options.sourceFilePath, result => {
+  fs.exists(options.sourceFilePath, result => {
     if (!result) {
       logging.taskInfo('compileLess', `skipping ${options.sourceFilePath} (Does not exist).`);
       return cb();
     }
 
-    compileFile(options, options.sourceFilePath, options.targetFilePath, cb);
+    less.compileFile(options, options.sourceFilePath, options.targetFilePath, cb);
   });
 };
 

@@ -6,9 +6,9 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 var _clean = require('./clean');
 
@@ -41,6 +41,10 @@ var _compileLivescript2 = _interopRequireWildcard(_compileLivescript);
 var _compileStylus = require('./compileStylus');
 
 var _compileStylus2 = _interopRequireWildcard(_compileStylus);
+
+var _compileWebpack = require('./compileWebpack');
+
+var _compileWebpack2 = _interopRequireWildcard(_compileWebpack);
 
 var _runBrowsersyncServer = require('./runBrowsersyncServer');
 
@@ -98,6 +102,10 @@ var _watchTests = require('./watchTests');
 
 var _watchTests2 = _interopRequireWildcard(_watchTests);
 
+var _watchWebpack = require('./watchWebpack');
+
+var _watchWebpack2 = _interopRequireWildcard(_watchWebpack);
+
 'use strict';
 
 exports['default'] = {
@@ -109,6 +117,7 @@ exports['default'] = {
   compileLess: _compileLess2['default'],
   compileLivescript: _compileLivescript2['default'],
   compileStylus: _compileStylus2['default'],
+  compileWebpack: _compileWebpack2['default'],
   runBrowsersyncServer: _runBrowsersyncServer2['default'],
   runServers: _runServers2['default'],
   runTests: _runTests2['default'],
@@ -122,6 +131,7 @@ exports['default'] = {
   watchLivescript: _watchLivescript2['default'],
   watchServers: _watchServers2['default'],
   watchStylus: _watchStylus2['default'],
-  watchTests: _watchTests2['default']
+  watchTests: _watchTests2['default'],
+  watchWebpack: _watchWebpack2['default']
 };
 module.exports = exports['default'];

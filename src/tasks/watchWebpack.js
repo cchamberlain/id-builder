@@ -1,14 +1,11 @@
 'use strict';
 
 import logging from '../lib/logging';
-import watch from '../lib/watch';
+import webpack from '../lib/webpack';
 
 const dependencies = [ 'runTests' ];
 
-const run = function(options, cb) {
-  watch.start(options);
-  cb();
-};
+const run = webpack.watchAllFiles;
 
 export default {
   dependencies,

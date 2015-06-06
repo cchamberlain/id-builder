@@ -1,22 +1,22 @@
 'use strict';
 
 import logging from '../lib/logging';
-import { sourceFilePathMatches, copyFile } from '../lib/copy';
-import { getWatcher } from '../lib/watch';
+import copy from '../lib/copy';
+import watch from '../lib/watch';
 
 const dependencies = [
   'watch'
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!sourceFilePathMatches(options, path)) {
+  if (!copy.sourceFilePathMatches(options, path)) {
     return;
   }
 
   const targetPath = path
     .replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
-  copyFile(options, path, targetPath, e => {
+  copy.copyFile(options, path, targetPath, e => {
     if (e) {
       logging.taskError(e);
     }
@@ -44,7 +44,7 @@ const handleError = function(options, e) {
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
   watcher.on('ready', () => {
     watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });

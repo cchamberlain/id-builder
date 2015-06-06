@@ -6,42 +6,64 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _sourceFilePathMatches$reload = require('../lib/browsersync');
-
 var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _getWatcher = require('../lib/watch');
+var _browserify = require('../lib/browserify');
 
-var _removePath = require('../lib/fileSystem');
+var _browserify2 = _interopRequireWildcard(_browserify);
+
+var _browsersync = require('../lib/browsersync');
+
+var _browsersync2 = _interopRequireWildcard(_browsersync);
+
+var _fileSystem = require('../lib/fileSystem');
+
+var _fileSystem2 = _interopRequireWildcard(_fileSystem);
+
+var _logging = require('../lib/logging');
+
+var _logging2 = _interopRequireWildcard(_logging);
+
+var _watch = require('../lib/watch');
+
+var _watch2 = _interopRequireWildcard(_watch);
+
+var _webpack = require('../lib/webpack');
+
+var _webpack2 = _interopRequireWildcard(_webpack);
 
 'use strict';
 
 var dependencies = ['watch'];
 
+var shouldContinue = function shouldContinue(options, path, stat) {
+  var result = false;
+
+  if (path.match(/\.js$/) && _browserify2['default'].matchesTargetPath(path) || _webpack2['default'].matchesTargetPath(path)) {
+    result = true;
+  } else if (_browsersync2['default'].sourceFilePathMatches(options, path)) {
+    result = true;
+  }
+
+  return result;
+};
+
 var handleAdd = function handleAdd(options, path, stat) {
-  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
-    // Only reload if it's the bundle when the file is a JavaScript file.
-    return;
-  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
-    // Only reload when needed if it isn't a js file.
+  if (!shouldContinue(options, path, stat)) {
     return;
   }
 
-  _sourceFilePathMatches$reload.reload(options, path, function (e) {
+  _browsersync2['default'].reload(options, path, function (e) {
     if (e) {
-      _log2['default'].error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
 
 var handleAddDir = function handleAddDir(options, path, stat) {
-  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
-    // Only reload if it's the bundle when the file is a JavaScript file.
-    return;
-  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
-    // Only reload when needed if it isn't a js file.
+  if (!shouldContinue(options, path, stat)) {
     return;
   }
 
@@ -49,74 +71,52 @@ var handleAddDir = function handleAddDir(options, path, stat) {
 };
 
 var handleChange = function handleChange(options, path, stat) {
-  _log2['default'].debug('watchBrowserSync.handleChange', path, options, stat);
-
-  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
-    // Only reload if it's the bundle when the file is a JavaScript file.
-    return;
-  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
-    // Only reload when needed if it isn't a js file.
+  if (!shouldContinue(options, path, stat)) {
     return;
   }
 
-  _log2['default'].debug('watchBrowserSync.handleChange MATCH!!!', path, options, stat);
-
-  _sourceFilePathMatches$reload.reload(options, path, function (e) {
-    _log2['default'].debug('watchBrowserSync.handleChange RELOADED', path, options, stat);
-
+  _browsersync2['default'].reload(options, path, function (e) {
     if (e) {
-      _log2['default'].error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
 
 var handleUnlink = function handleUnlink(options, path, stat) {
-  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
-    // Only reload if it's the bundle when the file is a JavaScript file.
-    return;
-  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
-    // Only reload when needed if it isn't a js file.
+  if (!shouldContinue(options, path, stat)) {
     return;
   }
 
-  _removePath.removePath(path, function (e) {
+  _fileSystem2['default'].removePath(path, function (e) {
     if (e) {
-      _log2['default'].error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
 
 var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
-  if (path.match(/\.js$/) && global.options.tasks.watchBrowserify.targetPath !== path) {
-    // Only reload if it's the bundle when the file is a JavaScript file.
-    return;
-  } else if (!_sourceFilePathMatches$reload.sourceFilePathMatches(options, path)) {
-    // Only reload when needed if it isn't a js file.
+  if (!shouldContinue(options, path, stat)) {
     return;
   }
 
-  _removePath.removePath(path, function (e) {
+  _fileSystem2['default'].removePath(path, function (e) {
     if (e) {
-      _log2['default'].error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
 
 var handleError = function handleError(options, e) {
-  _log2['default'].error(e);
+  _logging2['default'].taskError(e);
 };
 
 var run = function run(options, cb) {
-  _log2['default'].debug('watchBrowsersync.run', options);
+  var _arguments = arguments;
 
-  var watcher = _getWatcher.getWatcher();
+  var watcher = _watch2['default'].getWatcher();
 
   watcher.on('all', function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _log2['default'].debug.apply(_log2['default'], ['watchBrowsersync all: '].concat(args));
+    _log2['default'].debug('watchBrowsersync watcher all', _arguments);
   });
 
   watcher.on('ready', function () {

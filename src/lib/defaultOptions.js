@@ -59,6 +59,20 @@ export default {
       targetDirectoryPath: 'build'
     },
 
+    compileWebpack: {
+      enabled: true,
+
+      options: {
+        context: 'build/client/js',
+        entry: 'build/client/js/app.js',
+
+        output: {
+          path: 'build/client/js',
+          filename: 'app.webpack.js'
+        }
+      }
+    },
+
     runBrowsersyncServer: {
       enabled: true
     },
@@ -136,6 +150,27 @@ export default {
       enabled: true,
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
+    },
+
+    // TODO
+    watchWebpack: {
+      enabled: true,
+
+      options: {
+        context: 'build/client/js',
+        entry: 'build/client/js/app.js',
+
+        output: {
+          path: 'build/client/js',
+          filename: 'app.webpack.js'
+        }
+      },
+
+      watchOptions: {
+        aggregateTimeout: 300,
+        poll: false,
+        initial: false
+      }
     },
 
     watch: {

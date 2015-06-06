@@ -136,14 +136,10 @@ describe('browserify', function () {
             cb(e);
           }
 
-          console.log(0, options);
-
           _browserify2['default'].compileAllFiles(options, function (e) {
             if (e) {
               cb(e);
             }
-
-            console.log(1);
 
             // Just check that it is being written, since we can't check the
             // contents of the output, because it contains file path specific

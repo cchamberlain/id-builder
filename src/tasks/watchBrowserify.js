@@ -1,11 +1,11 @@
 'use strict';
 
 import logging from '../lib/logging';
-import { watch } from '../lib/browserify';
+import browserify from '../lib/browserify';
 
 const dependencies = [ 'runTests' ];
 
-const run = watch;
+const run = browserify.watch;
 
 export default {
   dependencies,

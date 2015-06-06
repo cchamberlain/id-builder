@@ -6,29 +6,17 @@ var idBuilder = require('./src');
 
 idBuilder({
   logging: {
-    // debug, info, warn, error
-    level: 'debug'
+    // trace, debug, info, warn, error
+    level: 'info'
   },
 
   tasks: {
-    clean: {
-      enabled: true
-    },
-
-    compileBabel: {
-      enabled: true
-    },
-
     compileBrowserify: {
       enabled: false
     },
 
     compileCoffeescript: {
       enabled: false
-    },
-
-    compileCopy: {
-      enabled: true
     },
 
     compileLess: {
@@ -43,6 +31,10 @@ idBuilder({
       enabled: false
     },
 
+    compileWebpack: {
+      enabled: false
+    },
+
     runBrowsersyncServer: {
       enabled: false
     },
@@ -52,12 +44,7 @@ idBuilder({
     },
 
     runTests: {
-      enabled: true,
       reporter: 'spec'
-    },
-
-    watchBabel: {
-      enabled: true
     },
 
     watchBrowserify: {
@@ -70,10 +57,6 @@ idBuilder({
 
     watchCoffeescript: {
       enabled: false
-    },
-
-    watchCopy: {
-      enabled: true
     },
 
     watchLess: {
@@ -93,12 +76,11 @@ idBuilder({
     },
 
     watchTests: {
-      enabled: true,
       reporter: 'min'
     },
 
-    watch: {
-      enabled: true
+    watchWebpack: {
+      enabled: false
     }
   }
 }, function afterIdBuilder(e) {

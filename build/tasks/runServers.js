@@ -8,11 +8,13 @@ Object.defineProperty(exports, '__esModule', {
 
 // TODO: before program exit clean up children.
 
-var _runServers = require('../lib/servers');
+var _servers = require('../lib/servers');
 
-var _log = require('loglevel');
+var _servers2 = _interopRequireWildcard(_servers);
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging = require('../lib/logging');
+
+var _logging2 = _interopRequireWildcard(_logging);
 
 'use strict';
 
@@ -20,7 +22,7 @@ var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 
 //'compileJade',
 'compileLess', 'compileLivescript', 'compileStylus'];
 
-var run = _runServers.runServers;
+var run = _servers2['default'].runServers;
 
 exports['default'] = {
   dependencies: dependencies,

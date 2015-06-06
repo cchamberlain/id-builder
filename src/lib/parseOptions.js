@@ -2,19 +2,19 @@
 
 import _ from 'lodash';
 
-const merge = function(x, y) {
+const merge = function(x, y = {}) {
   const z = {};
 
-  _.each(x, function(xv, xk) {
-    const yv = y[xk];
+  _.each(x, function(xValue, xKey) {
+    const yValue = y[xKey];
 
-    if (_.isObject(xv) && !_.isArray(xv)) {
-      z[xk] = merge(xv, yv);
+    if (_.isObject(xValue) && !_.isArray(xValue)) {
+      z[xKey] = merge(xValue, yValue);
     } else {
-      if (!_.isUndefined(yv)) {
-        z[xk] = yv;
+      if (!_.isUndefined(yValue)) {
+        z[xKey] = yValue;
       } else {
-        z[xk] = xv;
+        z[xKey] = xValue;
       }
     }
   });
@@ -22,6 +22,4 @@ const merge = function(x, y) {
   return z;
 };
 
-export default function(defaults, options) {
-  return merge(defaults, options);
-};
+export default merge;

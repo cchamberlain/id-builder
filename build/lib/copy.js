@@ -18,6 +18,10 @@ var _async = require('async');
 
 var _async2 = _interopRequireWildcard(_async);
 
+var _log = require('loglevel');
+
+var _log2 = _interopRequireWildcard(_log);
+
 var _lsr = require('lsr');
 
 var _lsr2 = _interopRequireWildcard(_lsr);
@@ -46,9 +50,9 @@ var _livescript = require('./livescript');
 
 var _livescript2 = _interopRequireWildcard(_livescript);
 
-var _log = require('./log');
+var _logging = require('./logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 var _stylus = require('./stylus');
 
@@ -83,6 +87,8 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
 };
 
 var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
+  _log2['default'].debug('lib/fileSystem.compileFile', sourceFilePath);
+
   _fs2['default'].readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
@@ -98,7 +104,7 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
           return cb(e);
         }
 
-        _log2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
+        _logging2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
         cb(null);
       });
@@ -107,6 +113,8 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
 };
 
 var copyAllFiles = function copyAllFiles(options, cb) {
+  _log2['default'].debug('lib/fileSystem.copyAllFiles');
+
   _lsr2['default'](options.sourceDirectoryPath, function (e, nodes) {
     if (e) {
       return cb(e);

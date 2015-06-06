@@ -18,6 +18,14 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
+var _async = require('async');
+
+var _async2 = _interopRequireWildcard(_async);
+
+var _log = require('loglevel');
+
+var _log2 = _interopRequireWildcard(_log);
+
 var _lsr = require('lsr');
 
 var _lsr2 = _interopRequireWildcard(_lsr);
@@ -30,13 +38,9 @@ var _rimraf = require('rimraf');
 
 var _rimraf2 = _interopRequireWildcard(_rimraf);
 
-var _async = require('async');
+var _logging = require('./logging');
 
-var _async2 = _interopRequireWildcard(_async);
-
-var _log = require('./log');
-
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 'use strict';
 
@@ -74,60 +78,60 @@ var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
   _mkdirp2['default'](_path2['default'].dirname(targetFilePath), cb);
 };
 
-var compileFile = function compileFile(compileChunk) {
-  return function (options, sourceFilePath, targetFilePath, cb) {
-    _fs2['default'].readFile(sourceFilePath, function (e, fileContent) {
+var compileFile = function compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb) {
+  _log2['default'].debug('lib/fileSystem.compileFile', sourceFilePath);
+
+  _fs2['default'].readFile(sourceFilePath, function (e, fileContent) {
+    if (e) {
+      return cb(e);
+    }
+
+    compileChunk(options, fileContent.toString(), function (e, compiledChunk) {
       if (e) {
         return cb(e);
       }
 
-      compileChunk(options, fileContent.toString(), function (e, compiledChunk) {
+      ensureFileDirectory(targetFilePath, function (e) {
         if (e) {
           return cb(e);
         }
 
-        ensureFileDirectory(targetFilePath, function (e) {
+        _fs2['default'].writeFile(targetFilePath, compiledChunk, function (e) {
           if (e) {
             return cb(e);
           }
 
-          _fs2['default'].writeFile(targetFilePath, compiledChunk, function (e) {
-            if (e) {
-              return cb(e);
-            }
+          _logging2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
-            _log2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
-
-            cb(null);
-          });
+          cb(null);
         });
       });
     });
-  };
+  });
 };
 
-var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
-  return function (options, cb) {
-    getFiles(options.sourceDirectoryPath, function (e, sourceFilePaths) {
-      if (e) {
-        return cb();
-      }
+var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb) {
+  _log2['default'].debug('lib/fileSystem.compileAllFiles');
 
-      var paths = _import2['default'](sourceFilePaths).map(function (v) {
-        return v.fullPath;
-      }).filter(function (v) {
-        return sourceFilePathMatches(options, v);
-      }).value();
+  getFiles(options.sourceDirectoryPath, function (e, sourceFilePaths) {
+    if (e) {
+      return cb();
+    }
 
-      var iteratePath = function iteratePath(currentSourceFilePath, cb) {
-        var currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
+    var paths = _import2['default'](sourceFilePaths).map(function (v) {
+      return v.fullPath;
+    }).filter(function (v) {
+      return sourceFilePathMatches(options, v);
+    }).value();
 
-        compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
-      };
+    var iteratePath = function iteratePath(currentSourceFilePath, cb) {
+      var currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
 
-      _async2['default'].each(paths, iteratePath, cb);
-    });
-  };
+      compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
+    };
+
+    _async2['default'].each(paths, iteratePath, cb);
+  });
 };
 
 exports['default'] = {

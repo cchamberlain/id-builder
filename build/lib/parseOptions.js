@@ -6,19 +6,43 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _deepmerge = require('deepmerge');
+var _import = require('lodash');
 
-var _deepmerge2 = _interopRequireWildcard(_deepmerge);
-
-var _log = require('./log');
-
-var _log2 = _interopRequireWildcard(_log);
+var _import2 = _interopRequireWildcard(_import);
 
 'use strict';
 
-exports['default'] = function (defaults, options) {
-  return _deepmerge2['default'](defaults, options);
-};
+var merge = (function (_merge) {
+  function merge(_x) {
+    return _merge.apply(this, arguments);
+  }
 
-;
+  merge.toString = function () {
+    return _merge.toString();
+  };
+
+  return merge;
+})(function (x) {
+  var y = arguments[1] === undefined ? {} : arguments[1];
+
+  var z = {};
+
+  _import2['default'].each(x, function (xValue, xKey) {
+    var yValue = y[xKey];
+
+    if (_import2['default'].isObject(xValue) && !_import2['default'].isArray(xValue)) {
+      z[xKey] = merge(xValue, yValue);
+    } else {
+      if (!_import2['default'].isUndefined(yValue)) {
+        z[xKey] = yValue;
+      } else {
+        z[xKey] = xValue;
+      }
+    }
+  });
+
+  return z;
+});
+
+exports['default'] = merge;
 module.exports = exports['default'];
