@@ -98,9 +98,6 @@ describe('browserify', function () {
     });
   });
 
-  //const matchesTargetPath = function(options, path) {
-  //  return path !== options.targetPath;
-  //};
   describe('matchesTargetPath', function () {
     describe('when the `path` is the `targetPath`', function () {
       it('should return `true`', function (cb) {
