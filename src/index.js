@@ -1,11 +1,11 @@
 'use strict';
 
-import minilog from 'minilog';
 import _ from 'lodash';
-import { auto } from 'async';
+import log from 'loglevel';
 import moment from 'moment';
+import { auto } from 'async';
 
-import log from './lib/log';
+import logging from './lib/logging';
 import defaultOptions from './lib/defaultOptions';
 import parseOptions from './lib/parseOptions';
 import tasks from './tasks';
@@ -19,20 +19,20 @@ const runTaskWithOptions = function(options, task, name) {
     }
 
     if (!taskOptions.enabled) {
-      //log.disabledTask(name);
+      //logging.disabledTask(name);
       return cb();
     }
 
     taskOptions.taskName = name;
 
-    log.startTask(name);
+    logging.startTask(name);
 
     task.run(taskOptions, function(e) {
       if (e) {
         return cb(e);
       }
 
-      log.finishTask(name);
+      logging.finishTask(name);
 
       cb();
     });
@@ -42,8 +42,8 @@ const runTaskWithOptions = function(options, task, name) {
 export default function(inputOptions = {}, cb) {
   const options = global.options = parseOptions(defaultOptions, inputOptions);
 
-  if (options.logging) {
-    minilog.suggest.deny(/.*/, options.logging.level)
+  if (options.logging && typeof options.logging.level === 'string' && options.logging.level.length > 0) {
+    log.setLevel(options.logging.level);
   }
 
   const autoTasks = _.reduce(tasks, function(m, v, k) {

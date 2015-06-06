@@ -6,11 +6,15 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _compile = require('coffee-script');
-
-var _log = require('./log');
+var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
+
+var _compile = require('coffee-script');
+
+var _logging = require('./logging');
+
+var _logging2 = _interopRequireWildcard(_logging);
 
 var _fileSystem = require('./fileSystem');
 
@@ -22,13 +26,11 @@ var sourceExtension = 'coffee';
 var targetExtension = 'js';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(new RegExp('^' + options.sourcePath + '.+.' + sourceExtension));
-
-  return result;
+  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
 };
 
 var compileChunk = function compileChunk(options, chunk, cb) {
-  _log2['default'].debug('coffeescript.compileChunk', options);
+  _log2['default'].debug('lib/coffeescript.compileChunk');
 
   try {
     cb(null, _compile.compile(chunk, {
@@ -39,9 +41,17 @@ var compileChunk = function compileChunk(options, chunk, cb) {
   }
 };
 
-var compileFile = _fileSystem2['default'].compileFile(compileChunk);
+var compileFile = function compileFile(options, sourceFilePath, targetFilePath, cb) {
+  _log2['default'].debug('lib/coffeescript.compileFile', sourceFilePath);
 
-var compileAllFiles = _fileSystem2['default'].compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+  _fileSystem2['default'].compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
+};
+
+var compileAllFiles = function compileAllFiles(options, cb) {
+  _log2['default'].debug('lib/coffeescript.compileAllFiles');
+
+  _fileSystem2['default'].compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
+};
 
 exports['default'] = {
   sourceExtension: sourceExtension,

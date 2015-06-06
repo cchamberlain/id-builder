@@ -6,26 +6,30 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
-var _buildFilePathMatches$runTests = require('../lib/tests');
+var _tests = require('../lib/tests');
 
-var _getWatcher = require('../lib/watch');
+var _tests2 = _interopRequireWildcard(_tests);
+
+var _watch = require('../lib/watch');
+
+var _watch2 = _interopRequireWildcard(_watch);
 
 'use strict';
 
 var dependencies = ['runTests', 'watch'];
 
 var handlePath = function handlePath(options, path, stat) {
-  if (!_buildFilePathMatches$runTests.buildFilePathMatches(options, path)) {
+  if (!_tests2['default'].buildFilePathMatches(options, path)) {
     return;
   }
 
-  _buildFilePathMatches$runTests.runTests(options, function (e) {
+  _tests2['default'].runTests(options, function (e) {
     if (e) {
-      console.error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
@@ -51,11 +55,11 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
 };
 
 var handleError = function handleError(options, e) {
-  console.error(e);
+  _logging2['default'].taskError(e);
 };
 
 var run = function run(options, cb) {
-  var watcher = _getWatcher.getWatcher();
+  var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
     watcher.on('add', function (path, stat) {

@@ -1,27 +1,26 @@
 'use strict';
 
 import less from 'less';
+import log from 'loglevel';
 
-import log from './log';
+import logging from './logging';
 import fileSystem from './fileSystem';
 
 const sourceExtension = 'less';
 const targetExtension = 'css';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  const result = !!sourceFilePath.match(new RegExp(`^${options.sourceDirectory}.+\.${sourceExtension}$`))
-
-  return result;
+  return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}.+\\.${sourceExtension}$`))
 };
 
 const compileChunk = function(options, chunk, cb) {
-  log.debug('less.compileChunk', options.sourcePath);
+  log.debug('lib/less.compileChunk');
 
   const renderOptions = {
-    filename: options.sourcePath
+    filename: options.sourceFilePath
   };
 
-  less.render(chunk, renderOptions, function(e, result) {
+  less.render(chunk, renderOptions, (e, result) => {
     if (e) {
       return cb(e);
     }
@@ -30,9 +29,17 @@ const compileChunk = function(options, chunk, cb) {
   });
 };
 
-const compileFile = fileSystem.compileFile(compileChunk);
+const compileFile = function(options, sourceFilePath, targetFilePath, cb) {
+  log.debug('lib/less.compileFile', sourceFilePath);
 
-const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+  fileSystem.compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
+};
+
+const compileAllFiles = function(options, cb) {
+  log.debug('lib/less.compileAllFiles');
+
+  fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
+};
 
 export default {
   sourceExtension,

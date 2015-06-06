@@ -1,9 +1,10 @@
 'use strict';
 
-import { readFile, writeFile } from 'fs';
+import fs from 'fs';
 
 import _ from 'lodash';
-import { each } from 'async';
+import async from 'async';
+import log from 'loglevel';
 import lsr from 'lsr';
 
 import babel from './babel';
@@ -12,7 +13,7 @@ import coffeescript from './coffeescript';
 import fileSystem from './fileSystem';
 import less from './less';
 import livescript from './livescript';
-import log from './log';
+import logging from './logging';
 import stylus from './stylus';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
@@ -24,8 +25,6 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   } else if (coffeescript.sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     result = false;
-  //} else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
-  //  result = false;
   } else if (less.sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     result = false;
   } else if (livescript.sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
@@ -34,7 +33,7 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
     result = false;
   } else if (stylus.sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     result = false;
-  } else if (sourceFilePath && !!sourceFilePath.match(RegExp(`^${options.sourcePath}`))) {
+  } else if (sourceFilePath && !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}`))) {
     result = true;
   } else {
     result = false;
@@ -44,24 +43,18 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
 };
 
 const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
-  log.debug('copy.copyFile', sourceFilePath, targetFilePath);
+  log.debug('lib/fileSystem.compileFile', sourceFilePath);
 
-  readFile(sourceFilePath, function(e, readChunk){
-    if (e) {
-      return cb(e);
-    }
+  fs.readFile(sourceFilePath, (e, readChunk) => {
+    if (e) { return cb(e); }
 
-    fileSystem.ensureFileDirectory(targetFilePath, function(e){
-      if (e) {
-        return cb(e);
-      }
+    fileSystem.ensureFileDirectory(targetFilePath, e => {
+      if (e) { return cb(e); }
 
-      writeFile(targetFilePath, readChunk, function(e){
-        if (e) {
-          return cb(e);
-        }
+      fs.writeFile(targetFilePath, readChunk, e => {
+        if (e) { return cb(e); }
 
-        log.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
+        logging.taskInfo(options.taskName, `${sourceFilePath} => ${targetFilePath}`);
 
         cb(null);
       });
@@ -70,29 +63,25 @@ const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
 };
 
 const copyAllFiles = function(options, cb) {
-  log.debug('copy.copyAllFiles', options.sourcePath);
+  log.debug('lib/fileSystem.copyAllFiles');
 
-  lsr(options.sourcePath, function(e, nodes){
+  lsr(options.sourceDirectoryPath, (e, nodes) => {
     if (e) {
       return cb(e);
     }
 
     const paths = _(nodes)
-      .filter(function(v) {
-        return !v.isDirectory() && sourceFilePathMatches(options, v.fullPath);
-      })
-      .map(function(v) {
-        return v.fullPath;
-      })
+      .filter(v => { return !v.isDirectory() && sourceFilePathMatches(options, v.fullPath); })
+      .map(v => { return v.fullPath; })
       .value();
 
-    const iteratePath = function(currentSourceDirectoryPath, cb){
-      const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
+    const iteratePath = (currentSourceDirectoryPath, cb) => {
+      const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
 
-    each(paths, iteratePath, function(e){
+    async.each(paths, iteratePath, e => {
       if (e) {
         return cb(e);
       }

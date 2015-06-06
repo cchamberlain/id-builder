@@ -1,21 +1,20 @@
 'use strict';
 
+import log from 'loglevel';
 import { compile } from 'LiveScript';
 
-import log from './log';
+import logging from './logging';
 import fileSystem from './fileSystem';
 
 const sourceExtension = 'ls';
 const targetExtension = 'js';
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
-  const result = !!sourceFilePath.match(new RegExp(`^${options.sourcePath}.+\.${sourceExtension}$`))
-
-  return result;
+  return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}.+\\.${sourceExtension}$`))
 };
 
 const compileChunk = function(options, chunk, cb) {
-  log.debug('livescript.compileChunk', options.sourcePath);
+  log.debug('lib/livescript.compileChunk');
 
   try {
     cb(null, compile(chunk, {
@@ -26,9 +25,17 @@ const compileChunk = function(options, chunk, cb) {
   }
 };
 
-const compileFile = fileSystem.compileFile(compileChunk);
+const compileFile = function(options, sourceFilePath, targetFilePath, cb) {
+  log.debug('lib/livescript.compileFile', sourceFilePath);
 
-const compileAllFiles = fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+  fileSystem.compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
+};
+
+const compileAllFiles = function(options, cb) {
+  log.debug('lib/livescript.compileAllFiles');
+
+  fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
+};
 
 export default {
   sourceExtension,

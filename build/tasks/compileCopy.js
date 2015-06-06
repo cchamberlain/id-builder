@@ -6,17 +6,19 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
-var _copyAllFiles = require('../lib/copy');
+var _copy = require('../lib/copy');
+
+var _copy2 = _interopRequireWildcard(_copy);
 
 'use strict';
 
 var dependencies = ['clean'];
 
-var run = _copyAllFiles.copyAllFiles;
+var run = _copy2['default'].copyAllFiles;
 
 exports['default'] = {
   dependencies: dependencies,

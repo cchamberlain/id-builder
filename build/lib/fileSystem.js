@@ -6,13 +6,25 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _readFile$writeFile = require('fs');
+var _fs = require('fs');
 
-var _dirname = require('path');
+var _fs2 = _interopRequireWildcard(_fs);
+
+var _path = require('path');
+
+var _path2 = _interopRequireWildcard(_path);
 
 var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
+
+var _async = require('async');
+
+var _async2 = _interopRequireWildcard(_async);
+
+var _log = require('loglevel');
+
+var _log2 = _interopRequireWildcard(_log);
 
 var _lsr = require('lsr');
 
@@ -26,21 +38,15 @@ var _rimraf = require('rimraf');
 
 var _rimraf2 = _interopRequireWildcard(_rimraf);
 
-var _each = require('async');
+var _logging = require('./logging');
 
-var _log = require('./log');
-
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 'use strict';
 
-var removePath = function removePath(path, cb) {
-  _rimraf2['default'](path, cb);
-};
+var removePath = _rimraf2['default'];
 
 var getFiles = function getFiles(path, cb) {
-  _log2['default'].debug('fileSystem.getFiles', path);
-
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -53,8 +59,6 @@ var getFiles = function getFiles(path, cb) {
 };
 
 var getDirectories = function getDirectories(path, cb) {
-  _log2['default'].debug('fileSystem.getDirectories', path);
-
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -66,74 +70,68 @@ var getDirectories = function getDirectories(path, cb) {
   });
 };
 
-var getTargetPath = function getTargetPath(sourceDirectory, targetDirectory, sourceExtension, targetExtension, sourcePath) {
-  return sourcePath.replace(sourceDirectory, targetDirectory).replace(RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
+var getTargetPath = function getTargetPath(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath) {
+  return sourceFilePath.replace(sourceDirectoryPath, targetDirectoryPath).replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 };
 
 var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
-  _log2['default'].debug('fileSystem.ensureFileDirectory', targetFilePath);
-
-  _mkdirp2['default'](_dirname.dirname(targetFilePath), cb);
+  _mkdirp2['default'](_path2['default'].dirname(targetFilePath), cb);
 };
 
-var compileFile = function compileFile(compileChunk) {
-  return function (options, sourceFilePath, targetFilePath, cb) {
-    _log2['default'].debug('fileSystem.compileFile', sourceFilePath);
+var compileFile = function compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb) {
+  _log2['default'].debug('lib/fileSystem.compileFile', sourceFilePath);
 
-    _readFile$writeFile.readFile(sourceFilePath, function (e, fileContent) {
+  _fs2['default'].readFile(sourceFilePath, function (e, fileContent) {
+    if (e) {
+      return cb(e);
+    }
+
+    compileChunk(options, fileContent.toString(), function (e, compiledChunk) {
       if (e) {
         return cb(e);
       }
 
-      compileChunk(options, fileContent.toString(), function (e, compiledChunk) {
+      ensureFileDirectory(targetFilePath, function (e) {
         if (e) {
           return cb(e);
         }
 
-        ensureFileDirectory(targetFilePath, function (e) {
+        _fs2['default'].writeFile(targetFilePath, compiledChunk, function (e) {
           if (e) {
             return cb(e);
           }
 
-          _readFile$writeFile.writeFile(targetFilePath, compiledChunk, function (e) {
-            if (e) {
-              return cb(e);
-            }
+          _logging2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
-            _log2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
-
-            cb(null);
-          });
+          cb(null);
         });
       });
     });
-  };
+  });
 };
 
-var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension) {
-  return function (options, cb) {
-    _log2['default'].debug('fileSystem.compileAllFiles');
+var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb) {
+  _log2['default'].debug('lib/fileSystem.compileAllFiles');
 
-    getFiles(options.sourcePath, function (e, sourceFilePaths) {
-      if (e) {
-        return cb();
-      }
+  getFiles(options.sourceDirectoryPath, function (e, sourceFilePaths) {
+    if (e) {
+      return cb();
+    }
 
-      var paths = _import2['default'](sourceFilePaths).map(function (v) {
-        return v.fullPath;
-      }).filter(function (v) {
-        return sourceFilePathMatches(options, v);
-      }).value();
+    var paths = _import2['default'](sourceFilePaths).map(function (v) {
+      return v.fullPath;
+    }).filter(function (v) {
+      return sourceFilePathMatches(options, v);
+    }).value();
 
-      var iteratePath = function iteratePath(currentSourceFilePath, cb) {
-        var currentTargetFilePath = getTargetPath(options.sourcePath, options.targetPath, sourceExtension, targetExtension, currentSourceFilePath);
+    var iteratePath = function iteratePath(currentSourceFilePath, cb) {
+      var currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
 
-        compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
-      };
+      compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
+    };
 
-      _each.each(paths, iteratePath, cb);
-    });
-  };
+    _async2['default'].each(paths, iteratePath, cb);
+  });
 };
 
 exports['default'] = {

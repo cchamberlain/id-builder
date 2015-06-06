@@ -1,8 +1,8 @@
 'use strict';
 
-import log from 'loglevel';
-import { buildFilePathMatches, runTests } from '../lib/tests';
-import { getWatcher } from '../lib/watch';
+import logging from '../lib/logging';
+import tests from '../lib/tests';
+import watch from '../lib/watch';
 
 const dependencies = [
   'runTests',
@@ -10,13 +10,13 @@ const dependencies = [
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!buildFilePathMatches(options, path)) {
+  if (!tests.buildFilePathMatches(options, path)) {
     return;
   }
 
-  runTests(options, function(e) {
+  tests.runTests(options, e => {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -42,19 +42,19 @@ const handleUnlinkDir = function(options, path, stat) {
 };
 
 const handleError = function(options, e) {
-  console.error(e);
+  logging.taskError(e);
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
-  watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', () => {
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

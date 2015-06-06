@@ -10,9 +10,13 @@ var _less = require('less');
 
 var _less2 = _interopRequireWildcard(_less);
 
-var _log = require('./log');
+var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
+
+var _logging = require('./logging');
+
+var _logging2 = _interopRequireWildcard(_logging);
 
 var _fileSystem = require('./fileSystem');
 
@@ -24,16 +28,14 @@ var sourceExtension = 'less';
 var targetExtension = 'css';
 
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(new RegExp('^' + options.sourceDirectory + '.+.' + sourceExtension + '$'));
-
-  return result;
+  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
 };
 
 var compileChunk = function compileChunk(options, chunk, cb) {
-  _log2['default'].debug('less.compileChunk', options.sourcePath);
+  _log2['default'].debug('lib/less.compileChunk');
 
   var renderOptions = {
-    filename: options.sourcePath
+    filename: options.sourceFilePath
   };
 
   _less2['default'].render(chunk, renderOptions, function (e, result) {
@@ -45,9 +47,17 @@ var compileChunk = function compileChunk(options, chunk, cb) {
   });
 };
 
-var compileFile = _fileSystem2['default'].compileFile(compileChunk);
+var compileFile = function compileFile(options, sourceFilePath, targetFilePath, cb) {
+  _log2['default'].debug('lib/less.compileFile', sourceFilePath);
 
-var compileAllFiles = _fileSystem2['default'].compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension);
+  _fileSystem2['default'].compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
+};
+
+var compileAllFiles = function compileAllFiles(options, cb) {
+  _log2['default'].debug('lib/less.compileAllFiles');
+
+  _fileSystem2['default'].compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
+};
 
 exports['default'] = {
   sourceExtension: sourceExtension,

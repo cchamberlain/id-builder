@@ -6,28 +6,32 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
-var _sourceFilePathMatches$copyFile = require('../lib/copy');
+var _copy = require('../lib/copy');
 
-var _getWatcher = require('../lib/watch');
+var _copy2 = _interopRequireWildcard(_copy);
+
+var _watch = require('../lib/watch');
+
+var _watch2 = _interopRequireWildcard(_watch);
 
 'use strict';
 
 var dependencies = ['watch'];
 
 var handlePath = function handlePath(options, path, stat) {
-  if (!_sourceFilePathMatches$copyFile.sourceFilePathMatches(options, path)) {
+  if (!_copy2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath);
+  var targetPath = path.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
-  _sourceFilePathMatches$copyFile.copyFile(options, path, targetPath, function (e) {
+  _copy2['default'].copyFile(options, path, targetPath, function (e) {
     if (e) {
-      console.error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
@@ -49,7 +53,7 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
 var handleError = function handleError(options, e) {};
 
 var run = function run(options, cb) {
-  var watcher = _getWatcher.getWatcher();
+  var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
     watcher.on('add', function (path, stat) {

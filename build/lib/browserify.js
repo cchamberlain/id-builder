@@ -14,45 +14,45 @@ var _browserify = require('browserify');
 
 var _browserify2 = _interopRequireWildcard(_browserify);
 
-var _watchify = require('watchify');
-
-var _watchify2 = _interopRequireWildcard(_watchify);
-
 var _jadeify = require('jadeify');
 
 var _jadeify2 = _interopRequireWildcard(_jadeify);
 
-var _ensureFileDirectory = require('./fileSystem');
-
-var _log = require('./log');
+var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
+var _watchify = require('watchify');
+
+var _watchify2 = _interopRequireWildcard(_watchify);
+
+var _fileSystem = require('./fileSystem');
+
+var _fileSystem2 = _interopRequireWildcard(_fileSystem);
+
+var _logging = require('./logging');
+
+var _logging2 = _interopRequireWildcard(_logging);
+
 'use strict';
 
-var sourceExtension = 'coffee';
+var sourceExtension = 'js';
 var targetExtension = 'js';
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
-  var result = undefined;
+  return sourceFilePath !== options.targetFilePath && sourceFilePath.indexOf(options.sourceDirectoryPath) === 0;
+};
 
-  if (sourceFilePath === options.targetPath) {
-    result = false;
-  } else if (sourceFilePath.indexOf(options.sourceDirectory) === 0) {
-    result = true;
-  } else {
-    result = false;
-  }
-
-  return result;
+var matchesTargetPath = function matchesTargetPath(options, path) {
+  return path === options.targetPath;
 };
 
 var getBrowserifyBundle = function getBrowserifyBundle(options) {
   var browserifyOptions = {
     cache: {},
-    debug: true,
+    //debug: true,
     fullPaths: true,
     packageCache: {}
   };
@@ -73,22 +73,22 @@ var getBrowserifyBundle = function getBrowserifyBundle(options) {
 };
 
 var compileAllFiles = function compileAllFiles(options, cb) {
-  _log2['default'].debug('browserify.compileAllFiles');
+  _log2['default'].debug('lib/browserify.compileAllFiles');
 
-  _exists$createWriteStream$writeFile.exists(options.sourcePath, function (exists) {
+  _exists$createWriteStream$writeFile.exists(options.sourceFilePath, function (exists) {
     if (!exists) {
-      _log2['default'].taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
+      _logging2['default'].taskInfo(options.taskName, 'skipping ' + options.sourceFilePath + ' (Does not exist)');
       return cb();
     }
 
-    _ensureFileDirectory.ensureFileDirectory(options.targetPath, function (e) {
+    _fileSystem2['default'].ensureFileDirectory(options.targetFilePath, function (e) {
       if (e) {
         return cb(e);
       }
 
       var b = getBrowserifyBundle(options);
 
-      b.add(_resolve.resolve(options.sourcePath));
+      b.add(_resolve.resolve(options.sourceFilePath));
 
       b.on('bundle', function (bundleStream) {
         var data = '';
@@ -98,12 +98,12 @@ var compileAllFiles = function compileAllFiles(options, cb) {
         });
 
         bundleStream.on('end', function (d) {
-          _exists$createWriteStream$writeFile.writeFile(options.targetPath, data, function (e) {
+          _exists$createWriteStream$writeFile.writeFile(options.targetFilePath, data, function (e) {
             if (e) {
               return cb(e);
             }
 
-            _log2['default'].taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
+            _logging2['default'].taskInfo(options.taskName, '' + options.sourceFilePath + ' => ' + options.targetFilePath);
             cb();
           });
         });
@@ -115,26 +115,24 @@ var compileAllFiles = function compileAllFiles(options, cb) {
 };
 
 var watch = function watch(options, cb) {
-  _log2['default'].debug('browserify.watch');
+  _log2['default'].debug('lib/browserify.watch');
 
-  _exists$createWriteStream$writeFile.exists(options.sourcePath, function (exists) {
+  _exists$createWriteStream$writeFile.exists(options.sourceFilePath, function (exists) {
     if (!exists) {
-      _log2['default'].taskInfo(options.taskName, 'skipping ' + options.sourcePath + ' (Does not exist)');
+      _logging2['default'].taskInfo(options.taskName, 'skipping ' + options.sourceFilePath + ' (Does not exist)');
       return cb();
     }
 
-    _ensureFileDirectory.ensureFileDirectory(options.targetPath, function (e) {
+    _fileSystem2['default'].ensureFileDirectory(options.targetFilePath, function (e) {
       if (e) {
         return cb(e);
       }
 
       var b = getBrowserifyBundle(options);
 
-      b.add(_resolve.resolve(options.sourcePath));
+      b.add(_resolve.resolve(options.sourceFilePath));
 
       b.on('bundle', function (bundleStream) {
-        _log2['default'].debug('browserify.watch on bundle');
-
         var data = '';
 
         bundleStream.on('data', function (d) {
@@ -142,14 +140,12 @@ var watch = function watch(options, cb) {
         });
 
         bundleStream.on('end', function (d) {
-          _log2['default'].debug('browserify.watch on bundle end');
-
-          _exists$createWriteStream$writeFile.writeFile(options.targetPath, data, function (e) {
+          _exists$createWriteStream$writeFile.writeFile(options.targetFilePath, data, function (e) {
             if (e) {
               return cb(e);
             }
 
-            _log2['default'].taskInfo(options.taskName, '' + options.sourcePath + ' => ' + options.targetPath);
+            _logging2['default'].taskInfo(options.taskName, '' + options.sourceFilePath + ' => ' + options.targetFilePath);
           });
         });
       });
@@ -166,10 +162,11 @@ var watch = function watch(options, cb) {
 };
 
 exports['default'] = {
-  sourceExtension: sourceExtension,
-  targetExtension: targetExtension,
-  sourceFilePathMatches: sourceFilePathMatches,
   compileAllFiles: compileAllFiles,
+  matchesTargetPath: matchesTargetPath,
+  sourceExtension: sourceExtension,
+  sourceFilePathMatches: sourceFilePathMatches,
+  targetExtension: targetExtension,
   watch: watch
 };
 module.exports = exports['default'];

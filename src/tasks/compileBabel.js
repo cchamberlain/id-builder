@@ -1,11 +1,11 @@
 'use strict';
 
-import log from 'loglevel';
-import { compileAllFiles } from '../lib/babel';
+import logging from '../lib/logging';
+import babel from '../lib/babel';
 
 const dependencies = [ 'clean' ];
 
-const run = compileAllFiles;
+const run = babel.compileAllFiles;
 
 export default {
   dependencies,

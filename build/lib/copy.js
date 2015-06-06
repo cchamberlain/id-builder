@@ -6,13 +6,21 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _readFile$writeFile = require('fs');
+var _fs = require('fs');
+
+var _fs2 = _interopRequireWildcard(_fs);
 
 var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
-var _each = require('async');
+var _async = require('async');
+
+var _async2 = _interopRequireWildcard(_async);
+
+var _log = require('loglevel');
+
+var _log2 = _interopRequireWildcard(_log);
 
 var _lsr = require('lsr');
 
@@ -42,9 +50,9 @@ var _livescript = require('./livescript');
 
 var _livescript2 = _interopRequireWildcard(_livescript);
 
-var _log = require('./log');
+var _logging = require('./logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 var _stylus = require('./stylus');
 
@@ -61,8 +69,6 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   } else if (_coffeescript2['default'].sourceFilePathMatches(globalOptions.tasks.compileCoffeescript, sourceFilePath)) {
     result = false;
-    //} else if (jade.sourceFilePathMatches(globalOptions.tasks.compileJade, sourceFilePath)) {
-    //  result = false;
   } else if (_less2['default'].sourceFilePathMatches(globalOptions.tasks.compileLess, sourceFilePath)) {
     result = false;
   } else if (_livescript2['default'].sourceFilePathMatches(globalOptions.tasks.compileLivescript, sourceFilePath)) {
@@ -71,7 +77,7 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
     result = false;
   } else if (_stylus2['default'].sourceFilePathMatches(globalOptions.tasks.compileStylus, sourceFilePath)) {
     result = false;
-  } else if (sourceFilePath && !!sourceFilePath.match(RegExp('^' + options.sourcePath))) {
+  } else if (sourceFilePath && !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath))) {
     result = true;
   } else {
     result = false;
@@ -81,9 +87,9 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
 };
 
 var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
-  _log2['default'].debug('copy.copyFile', sourceFilePath, targetFilePath);
+  _log2['default'].debug('lib/fileSystem.compileFile', sourceFilePath);
 
-  _readFile$writeFile.readFile(sourceFilePath, function (e, readChunk) {
+  _fs2['default'].readFile(sourceFilePath, function (e, readChunk) {
     if (e) {
       return cb(e);
     }
@@ -93,12 +99,12 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
         return cb(e);
       }
 
-      _readFile$writeFile.writeFile(targetFilePath, readChunk, function (e) {
+      _fs2['default'].writeFile(targetFilePath, readChunk, function (e) {
         if (e) {
           return cb(e);
         }
 
-        _log2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
+        _logging2['default'].taskInfo(options.taskName, '' + sourceFilePath + ' => ' + targetFilePath);
 
         cb(null);
       });
@@ -107,9 +113,9 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
 };
 
 var copyAllFiles = function copyAllFiles(options, cb) {
-  _log2['default'].debug('copy.copyAllFiles', options.sourcePath);
+  _log2['default'].debug('lib/fileSystem.copyAllFiles');
 
-  _lsr2['default'](options.sourcePath, function (e, nodes) {
+  _lsr2['default'](options.sourceDirectoryPath, function (e, nodes) {
     if (e) {
       return cb(e);
     }
@@ -121,12 +127,12 @@ var copyAllFiles = function copyAllFiles(options, cb) {
     }).value();
 
     var iteratePath = function iteratePath(currentSourceDirectoryPath, cb) {
-      var currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourcePath, options.targetPath);
+      var currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
     };
 
-    _each.each(paths, iteratePath, function (e) {
+    _async2['default'].each(paths, iteratePath, function (e) {
       if (e) {
         return cb(e);
       }

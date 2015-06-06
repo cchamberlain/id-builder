@@ -1,10 +1,11 @@
 'use strict';
 
+import log from 'loglevel';
 import { exists } from 'fs';
 import { resolve } from 'path';
 import { spawn } from 'child_process';
 
-import log from './log';
+import logging from './logging';
 
 const pathToMocha = resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
@@ -14,26 +15,24 @@ const randomString = function() {
 
 const sourceFilePathMatches = function(options, sourceFilePath) {
   const matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
-  const matchesWatchPath = sourceFilePath.indexOf(options.watchPath) === 0;
-  const result = matchesJavascript && matchesWatchPath;
+  const matchesWatchPath = sourceFilePath.indexOf(options.watchDirectoryPath) === 0;
 
-  return result;
+  return matchesJavascript && matchesWatchPath;
 };
 
 const buildFilePathMatches = function(options, buildFilePath) {
   const matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
-  const matchesWatchPath = buildFilePath.indexOf(options.watchPath) === 0;
-  const result = matchesJavascript && matchesWatchPath;
+  const matchesWatchPath = buildFilePath.indexOf(options.watchDirectoryPath) === 0;
 
-  return result;
+  return matchesJavascript && matchesWatchPath;
 };
 
 const runTests = function(options, cb) {
-  log.debug('tests.runTests', options.sourcePath);
+  log.debug('lib/tests.runTests');
 
-  exists(options.sourcePath, function(exists) {
+  exists(options.sourceDirectoryPath, exists => {
     if (!exists) {
-      log.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourcePath + '` not found.');
+      logging.taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
       return cb();
     }
 
@@ -43,18 +42,18 @@ const runTests = function(options, cb) {
       '--colors',
       '--reporter',
       options.reporter,
-      options.sourcePath
+      options.sourceDirectoryPath
     ]);
 
-    childProcess.stdout.on('data', function(chunk) {
+    childProcess.stdout.on('data', chunk => {
       return process.stdout.write(chunk);
     });
 
-    childProcess.stderr.on('data', function(chunk) {
+    childProcess.stderr.on('data', chunk => {
       return process.stderr.write(chunk);
     });
 
-    childProcess.once('close', function() {
+    childProcess.once('close', () => {
       cb();
     });
   });

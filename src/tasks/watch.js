@@ -1,12 +1,12 @@
 'use strict';
 
-import log from 'loglevel';
-import { start } from '../lib/watch';
+import logging from '../lib/logging';
+import watch from '../lib/watch';
 
 const dependencies = [ 'runTests' ];
 
 const run = function(options, cb) {
-  start(options);
+  watch.start(options);
   cb();
 };
 

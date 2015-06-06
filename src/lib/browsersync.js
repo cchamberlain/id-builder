@@ -1,24 +1,25 @@
 'use strict';
 
 import browserSync from 'browser-sync';
+import log from 'loglevel';
 
 import copy from './copy';
-import log from './log';
+import logging from './logging';
 
 const sourceFilePathMatches = copy.sourceFilePathMatches;
 
 const reload = function(options, path, cb) {
-  log.debug('browsersync.reload', path);
+  log.debug('lib/browsersync.reload', path);
 
   browserSync.reload(path);
 
-  log.taskInfo(options.taskName, `Reloaded \`${path}\``);
+  logging.taskInfo(options.taskName, `Reloaded \`${path}\``);
 
   cb();
 };
 
 const runServer = function(_options, cb) {
-  log.debug('browsersync.runServer');
+  log.debug('lib/browsersync.runServer');
 
   const options = {
     ui: {
@@ -27,10 +28,10 @@ const runServer = function(_options, cb) {
 
     port: 9000,
     logLevel: 'silent',
-    logFileChanges: false,
+    logFileChanges: false
   };
 
-  browserSync(options, function(e, bs) {
+  browserSync(options, (e, bs) => {
     if (e) {
       return cb(e);
     }

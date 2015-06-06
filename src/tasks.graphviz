@@ -7,7 +7,6 @@ digraph tasks {
   compileBabel -> compileBrowserify;
   compileCoffeescript -> compileBrowserify;
   compileCopy -> compileBrowserify;
-  compileJade -> compileBrowserify;
   compileLess -> compileBrowserify;
   compileLivescript -> compileBrowserify;
   compileStylus -> compileBrowserify;
@@ -19,9 +18,6 @@ digraph tasks {
   clean -> compileCopy;
   compileCopy;
 
-  clean -> compileJade;
-  compileJade;
-
   clean -> compileLess;
   compileLess;
 
@@ -31,11 +27,21 @@ digraph tasks {
   clean -> compileStylus;
   compileStylus;
 
+  watchBabel -> DiskIO [color=darkgreen, style=dotted];
+  watchBrowsersync -> DiskIO [color=darkgreen, style=dotted];
+  watchCoffeescript -> DiskIO [color=darkgreen, style=dotted];
+  watchCopy -> DiskIO [color=darkgreen, style=dotted];
+  watchLess -> DiskIO [color=darkgreen, style=dotted];
+  watchLivescript -> DiskIO [color=darkgreen, style=dotted];
+  watchServers -> DiskIO [color=darkgreen, style=dotted];
+  watchStylus -> DiskIO [color=darkgreen, style=dotted];
+  watchTests -> DiskIO [color=darkgreen, style=dotted];
+  DiskIO;
+
   compileBabel -> runBrowsersyncServer;
   compileBrowserify -> runBrowsersyncServer;
   compileCoffeescript -> runBrowsersyncServer;
   compileCopy -> runBrowsersyncServer;
-  compileJade -> runBrowsersyncServer;
   compileLess -> runBrowsersyncServer;
   compileLivescript -> runBrowsersyncServer;
   compileStylus -> runBrowsersyncServer;
@@ -45,7 +51,6 @@ digraph tasks {
   compileBrowserify -> runServers;
   compileCoffeescript -> runServers;
   compileCopy -> runServers;
-  compileJade -> runServers;
   compileLess -> runServers;
   compileLivescript -> runServers;
   compileStylus -> runServers;
@@ -55,18 +60,19 @@ digraph tasks {
   compileBrowserify -> runTests;
   compileCoffeescript -> runTests;
   compileCopy -> runTests;
-  compileJade -> runTests;
   compileLess -> runTests;
   compileLivescript -> runTests;
   compileStylus -> runTests;
   runTests;
 
+  DiskIO -> watch [color=darkgreen, style=dotted];
   runTests -> watch;
   watch;
 
   watch -> watchBabel;
   watchBabel;
 
+  DiskIO -> watchBrowserify [color=darkgreen, style=dotted];
   runTests -> watchBrowserify;
   watchBrowserify;
 
@@ -78,9 +84,6 @@ digraph tasks {
 
   watch -> watchCopy;
   watchCopy;
-
-  watch -> watchJade;
-  watchJade;
 
   watch -> watchLess;
   watchLess;

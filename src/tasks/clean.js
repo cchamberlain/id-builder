@@ -1,12 +1,17 @@
 'use strict';
 
 import log from 'loglevel';
-import { directory } from '../lib/clean';
+import async from 'async';
+import rimraf from 'rimraf';
 
-const dependencies = []
+import logging from '../lib/logging';
 
-const run = function (options, cb) {
-  directory(options, cb);
+const dependencies = [];
+
+const run = function(options, cb) {
+  async.each(options.paths, (path, cb) => {
+    rimraf(path, cb);
+  }, cb);
 };
 
 export default {

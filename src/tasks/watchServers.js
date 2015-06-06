@@ -1,21 +1,21 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import servers  from '../lib/servers';
-import { getWatcher } from '../lib/watch';
+import watch from '../lib/watch';
 
 const dependencies = [
   'watch'
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!servers.sourceFilePathMatches(options, path)) {
+  if (!servers.sourceFilePathMatchesWatchPath(options, path)) {
     return;
   }
 
-  servers.restartServers(options, function(e) {
+  servers.restartServers(options, e => {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -41,15 +41,15 @@ const handleError = function(options, e) {
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
-  watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', () => {
+    watcher.on('add', (path, stat)  => { handleAdd(options, path, stat) });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

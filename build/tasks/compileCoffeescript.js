@@ -6,17 +6,19 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
-var _compileAllFiles = require('../lib/coffeescript');
+var _coffeescript = require('../lib/coffeescript');
+
+var _coffeescript2 = _interopRequireWildcard(_coffeescript);
 
 'use strict';
 
 var dependencies = ['clean'];
 
-var run = _compileAllFiles.compileAllFiles;
+var run = _coffeescript2['default'].compileAllFiles;
 
 exports['default'] = {
   dependencies: dependencies,

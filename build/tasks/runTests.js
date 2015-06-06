@@ -6,11 +6,13 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
-var _runTests = require('../lib/tests');
+var _tests = require('../lib/tests');
+
+var _tests2 = _interopRequireWildcard(_tests);
 
 'use strict';
 
@@ -18,7 +20,7 @@ var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 
 //'compileJade',
 'compileLess', 'compileLivescript', 'compileStylus'];
 
-var run = _runTests.runTests;
+var run = _tests2['default'].runTests;
 
 exports['default'] = {
   dependencies: dependencies,

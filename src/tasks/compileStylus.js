@@ -1,11 +1,11 @@
 'use strict';
 
-import log from 'loglevel';
-import { compileAllFiles } from '../lib/stylus';
+import logging from '../lib/logging';
+import stylus from '../lib/stylus';
 
 const dependencies = [ 'clean' ];
 
-const run = compileAllFiles;
+const run = stylus.compileAllFiles;
 
 export default {
   dependencies,

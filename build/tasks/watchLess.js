@@ -6,26 +6,30 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
-var _compileFile$sourceExtension$sourceFilePathMatches$targetExtension = require('../lib/less');
+var _less = require('../lib/less');
 
-var _getWatcher = require('../lib/watch');
+var _less2 = _interopRequireWildcard(_less);
+
+var _watch = require('../lib/watch');
+
+var _watch2 = _interopRequireWildcard(_watch);
 
 'use strict';
 
 var dependencies = ['watch'];
 
 var handlePath = function handlePath(options, path, stat) {
-  if (!_compileFile$sourceExtension$sourceFilePathMatches$targetExtension.sourceFilePathMatches(options, path)) {
+  if (!_less2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
-  _compileFile$sourceExtension$sourceFilePathMatches$targetExtension.compileFile(options, options.sourcePath, options.targetPath, function (e) {
+  _less2['default'].compileFile(options, options.sourceFilePath, options.targetFilePath, function (e) {
     if (e) {
-      console.error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
@@ -47,7 +51,7 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
 var handleError = function handleError(options, e) {};
 
 var run = function run(options, cb) {
-  var watcher = _getWatcher.getWatcher();
+  var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
     watcher.on('add', function (path, stat) {

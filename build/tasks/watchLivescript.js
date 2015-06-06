@@ -6,15 +6,17 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _logging = require('../lib/logging');
 
-var _log2 = _interopRequireWildcard(_log);
+var _logging2 = _interopRequireWildcard(_logging);
 
 var _livescript = require('../lib/livescript');
 
 var _livescript2 = _interopRequireWildcard(_livescript);
 
-var _getWatcher = require('../lib/watch');
+var _watch = require('../lib/watch');
+
+var _watch2 = _interopRequireWildcard(_watch);
 
 'use strict';
 
@@ -25,11 +27,11 @@ var handlePath = function handlePath(options, path, stat) {
     return;
   }
 
-  var targetPath = path.replace(options.sourcePath, options.targetPath).replace(new RegExp('^.' + _livescript2['default'].sourceExtension + '$'), '.' + _livescript2['default'].targetExtension);
+  var targetPath = path.replace(options.sourceDirectoryPath, options.targetDirectoryPath).replace(new RegExp('^.' + _livescript2['default'].sourceExtension + '$'), '.' + _livescript2['default'].targetExtension);
 
   _livescript2['default'].compileFile(options, path, targetPath, function (e) {
     if (e) {
-      console.error(e);
+      _logging2['default'].taskError(e);
     }
   });
 };
@@ -51,7 +53,7 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
 var handleError = function handleError(options, e) {};
 
 var run = function run(options, cb) {
-  var watcher = _getWatcher.getWatcher();
+  var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
     watcher.on('add', function (path, stat) {

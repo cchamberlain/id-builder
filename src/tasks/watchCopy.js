@@ -1,24 +1,24 @@
 'use strict';
 
-import log from 'loglevel';
-import { sourceFilePathMatches, copyFile } from '../lib/copy';
-import { getWatcher } from '../lib/watch';
+import logging from '../lib/logging';
+import copy from '../lib/copy';
+import watch from '../lib/watch';
 
 const dependencies = [
   'watch'
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!sourceFilePathMatches(options, path)) {
+  if (!copy.sourceFilePathMatches(options, path)) {
     return;
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath);
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
-  copyFile(options, path, targetPath, function(e) {
+  copy.copyFile(options, path, targetPath, e => {
     if (e) {
-      console.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -44,15 +44,15 @@ const handleError = function(options, e) {
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
-  watcher.on('ready', function() {
-    watcher.on('add', function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir', function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change', function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink', function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', () => {
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat) });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

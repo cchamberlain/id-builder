@@ -1,13 +1,13 @@
 'use strict';
 
-import log from 'loglevel';
+import logging from '../lib/logging';
 import babel from '../lib/babel';
-import { getWatcher } from '../lib/watch';
-import { removePath } from '../lib/fileSystem'
+import watch from '../lib/watch';
+import fileSystem from '../lib/fileSystem'
 
 const dependencies = [
   'watch'
-]
+];
 
 const handleAdd = function(options, path, stat) {
   if (!babel.sourceFilePathMatches(options, path)) {
@@ -15,12 +15,12 @@ const handleAdd = function(options, path, stat) {
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath)
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath)
     .replace(new RegExp(`^\.${babel.sourceExtension}$`), `.${babel.targetExtension}`);
 
   babel.compileFile(options, path, targetPath, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -30,9 +30,9 @@ const handleAddDir = function(options, path, stat) {
     return;
   }
 
-  babel.compileAllFiles({ sourcePath: path }, e => {
+  babel.compileAllFiles({ sourceDirectoryPath: path }, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -43,12 +43,12 @@ const handleChange = function(options, path, stat) {
   }
 
   const targetPath = path
-    .replace(options.sourcePath, options.targetPath)
+    .replace(options.sourceDirectoryPath, options.targetDirectoryPath)
     .replace(new RegExp(`^\.${babel.sourceExtension}$`), `.${babel.targetExtension}`);
 
   babel.compileFile(options, path, targetPath, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -58,9 +58,9 @@ const handleUnlink = function(options, path, stat) {
     return;
   }
 
-  removePath(path, e => {
+  fileSystem.removePath(path, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -70,9 +70,9 @@ const handleUnlinkDir = function(options, path, stat) {
     return;
   }
 
-  removePath(path, e => {
+  fileSystem.removePath(path, e => {
     if (e) {
-      log.error(e);
+      logging.taskError(e);
     }
   });
 };
@@ -82,19 +82,19 @@ const handleError = function(options, e) {
     return;
   }
 
-  log.error(e);
+  logging.taskError(e);
 };
 
 const run = function(options, cb) {
-  const watcher = getWatcher();
+  const watcher = watch.getWatcher();
 
-  watcher.on('ready', function() {
-    watcher.on('add',       function(path, stat) { handleAdd(options, path, stat) });
-    watcher.on('addDir',    function(path, stat) { handleAddDir(options, path, stat) });
-    watcher.on('change',    function(path, stat) { handleChange(options, path, stat) });
-    watcher.on('unlink',    function(path, stat) { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', function(path, stat) { handleUnlinkDir(options, path, stat) });
-    watcher.on('error',     function(path, stat) { handleError(options, path, stat) });
+  watcher.on('ready', () => {
+    watcher.on('add', (path, stat) => { handleAdd(options, path, stat); });
+    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
+    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
+    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
+    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
+    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
 };
 

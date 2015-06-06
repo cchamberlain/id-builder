@@ -6,17 +6,19 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+var _log = require('../lib/logging');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _runServer = require('../lib/browsersync');
+var _browsersync = require('../lib/browsersync');
+
+var _browsersync2 = _interopRequireWildcard(_browsersync);
 
 'use strict';
 
 var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy', 'compileLess', 'compileLivescript', 'compileStylus'];
 
-var run = _runServer.runServer;
+var run = _browsersync2['default'].runServer;
 
 exports['default'] = {
   dependencies: dependencies,

@@ -1,8 +1,8 @@
 'use strict';
 
 // TODO: before program exit clean up children.
-import { runServers } from '../lib/servers';
-import log from 'loglevel';
+import servers from '../lib/servers';
+import logging from '../lib/logging';
 
 const dependencies = [
   'compileBabel',
@@ -15,7 +15,7 @@ const dependencies = [
   'compileStylus'
 ];
 
-const run = runServers;
+const run = servers.runServers;
 
 export default {
   dependencies,

@@ -1,11 +1,11 @@
 'use strict';
 
-import log from 'loglevel';
-import { compileAllFiles } from '../lib/coffeescript';
+import logging from '../lib/logging';
+import coffeescript from '../lib/coffeescript';
 
 const dependencies = [ 'clean' ];
 
-const run = compileAllFiles;
+const run = coffeescript.compileAllFiles;
 
 export default {
   dependencies,
