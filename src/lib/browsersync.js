@@ -8,7 +8,7 @@ import logging from './logging';
 
 const sourceFilePathMatches = copy.sourceFilePathMatches;
 
-const reload = function(options, path, cb) {
+function reload(options, path, cb) {
   log.debug('lib/browsersync.reload', path);
 
   browserSync.reload(path);
@@ -16,9 +16,9 @@ const reload = function(options, path, cb) {
   logging.taskInfo(options.taskName, `Reloaded \`${path}\``);
 
   cb();
-};
+}
 
-const runServer = function(_options, cb) {
+function runServer(_options, cb) {
   log.debug('lib/browsersync.runServer');
 
   const options = {
@@ -31,14 +31,14 @@ const runServer = function(_options, cb) {
     logFileChanges: false
   };
 
-  browserSync(options, (e, bs) => {
+  browserSync(options, (e) => {
     if (e) {
       return cb(e);
     }
 
     cb();
   });
-};
+}
 
 export default {
   sourceFilePathMatches,

@@ -1,6 +1,4 @@
-'use strict';
-
-import _ from 'lodash';
+// import _ from 'lodash';
 import { exists } from 'fs';
 
 import log from 'loglevel';
@@ -11,7 +9,7 @@ import logging from './logging';
 
 const monitors = {};
 
-const addPath = function(path, cb){
+function addPath(path, cb) {
   log.debug('lib/servers.addPath', path);
 
   const monitor = new Monitor(path, {
@@ -23,9 +21,9 @@ const addPath = function(path, cb){
   monitor.start();
 
   cb();
-};
+}
 
-const removePath = function(path, cb){
+function removePath(path, cb) {
   log.debug('lib/servers.removePath', path);
 
   const monitor = monitors[path];
@@ -35,9 +33,9 @@ const removePath = function(path, cb){
   delete monitors[path];
 
   cb();
-};
+}
 
-const restartPath = function(path, cb){
+function restartPath(path, cb) {
   log.debug('lib/servers.restartPath', path);
 
   const monitor = monitors[path];
@@ -45,19 +43,15 @@ const restartPath = function(path, cb){
   monitor.restart();
 
   cb();
-};
+}
 
-const sourceFilePathMatches = function(options, sourceFilePath, cb){
-  return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}`))
-};
+function sourceFilePathMatches(options, sourceFilePath) {
+  log.debug('sourceFilePathMatches', `^${options.sourceDirectoryPath}`, sourceFilePath);
 
-const sourceFilePathMatchesWatchPath = function(options, sourceFilePath, cb){
-  return _.any(options.watchPaths, (watchPath) => {
-    return !!sourceFilePath.match(new RegExp(`^${watchPath}`));
-  });
-};
+  return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}`));
+}
 
-const startServer = function(options, filePath, cb){
+function startServer(options, filePath, cb) {
   log.debug('lib/servers.startServer');
 
   exists(filePath, result => {
@@ -74,9 +68,9 @@ const startServer = function(options, filePath, cb){
       addPath(filePath, cb);
     }
   });
-};
+}
 
-const stopServer = function(options, filePath, cb) {
+function stopServer(options, filePath, cb) {
   log.debug('lib/servers.stopServer');
 
   exists(filePath, result => {
@@ -94,9 +88,9 @@ const stopServer = function(options, filePath, cb) {
       cb();
     }
   });
-};
+}
 
-const restartServer = function(options, filePath, cb) {
+function restartServer(options, filePath, cb) {
   log.debug('lib/servers.restartServer');
 
   exists(filePath, result => {
@@ -113,30 +107,29 @@ const restartServer = function(options, filePath, cb) {
       addPath(filePath, cb);
     });
   });
-};
+}
 
-const runServers = function(options, cb){
+function runServers(options, cb) {
   log.debug('lib/servers.runServers');
 
-  each(options.paths, (v, cb) => {
-    startServer(options, `${options.sourceDirectoryPath}/${v}`, cb);
+  each(options.paths, (v, eachCb) => {
+    startServer(options, `${options.sourceDirectoryPath}/${v}`, eachCb);
   }, cb);
-};
+}
 
-const restartServers = function(options, cb){
+function restartServers(options, cb) {
   log.debug('lib/servers.restartServers');
 
-  each(options.paths, (v, cb) => {
-    restartServer(options, `${options.sourceDirectoryPath}/${v}`, cb);
+  each(options.paths, (v, eachCb) => {
+    restartServer(options, `${options.sourceDirectoryPath}/${v}`, eachCb);
   }, cb);
-};
+}
 
 export default {
   addPath,
   removePath,
   restartPath,
   sourceFilePathMatches,
-  sourceFilePathMatchesWatchPath,
   startServer,
   stopServer,
   restartServer,

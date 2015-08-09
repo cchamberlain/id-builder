@@ -1,5 +1,7 @@
 'use strict';
 
+import log from 'loglevel';
+
 import logging from '../lib/logging';
 import servers  from '../lib/servers';
 import watch from '../lib/watch';
@@ -9,11 +11,17 @@ const dependencies = [
 ];
 
 const handlePath = function(options, path, stat) {
-  if (!servers.sourceFilePathMatchesWatchPath(options, path)) {
+  log.debug('watchServers.handlePath', options, path);
+
+  if (!servers.sourceFilePathMatches(options, path)) {
     return;
   }
 
+  log.debug('watchServers.handlePath restarting servers');
+
   servers.restartServers(options, e => {
+    log.debug('watchServers.handlePath servers restarted!');
+
     if (e) {
       logging.taskError(e);
     }
