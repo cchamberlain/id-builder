@@ -1,6 +1,4 @@
-'use strict';
-
-export default {
+gexport default {
   //sourceDirectoryPath: 'src',
   //targetDirectoryPath: 'build',
   //testsDirectoryPath: 'build/tests',

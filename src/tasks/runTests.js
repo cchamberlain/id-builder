@@ -1,5 +1,3 @@
-'use strict';
-
 import logging from '../lib/logging';
 import tests from '../lib/tests';
 

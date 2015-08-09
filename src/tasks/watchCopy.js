@@ -1,5 +1,3 @@
-'use strict';
-
 import logging from '../lib/logging';
 import copy from '../lib/copy';
 import watch from '../lib/watch';

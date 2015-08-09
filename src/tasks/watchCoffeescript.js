@@ -1,5 +1,3 @@
-'use strict';
-
 import coffeescript from '../lib/coffeescript';
 import fileSystem from '../lib/fileSystem'
 import logging from '../lib/logging';

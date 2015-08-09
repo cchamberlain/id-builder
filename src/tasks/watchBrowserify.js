@@ -1,5 +1,3 @@
-'use strict';
-
 import logging from '../lib/logging';
 import browserify from '../lib/browserify';
 

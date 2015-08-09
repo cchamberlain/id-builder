@@ -1,9 +1,7 @@
-'use strict';
-
 import log from 'loglevel';
 import { transform } from 'babel';
 
-import logging from './logging';
+// import logging from './logging';
 import fileSystem from './fileSystem'
 
 const sourceExtension = 'js';

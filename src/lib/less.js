@@ -1,5 +1,3 @@
-'use strict';
-
 import less from 'less';
 import log from 'loglevel';
 

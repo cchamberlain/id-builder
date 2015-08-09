@@ -1,5 +1,3 @@
-'use strict';
-
 import log from 'loglevel';
 import { exists } from 'fs';
 import { resolve } from 'path';

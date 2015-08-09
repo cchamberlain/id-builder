@@ -1,5 +1,3 @@
-'use strict';
-
 import _ from 'lodash';
 
 const merge = function(x, y = {}) {

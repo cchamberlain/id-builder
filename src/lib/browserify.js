@@ -1,5 +1,3 @@
-'use strict';
-
 import { exists, createWriteStream, writeFile } from 'fs';
 import { resolve } from 'path';
 

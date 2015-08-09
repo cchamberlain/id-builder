@@ -1,6 +1,4 @@
-'use strict';
-
-// TODO: before program exit clean up children.
+g// TODO: before program exit clean up children.
 import servers from '../lib/servers';
 import logging from '../lib/logging';
 

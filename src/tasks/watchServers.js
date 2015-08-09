@@ -1,5 +1,3 @@
-'use strict';
-
 import log from 'loglevel';
 
 import logging from '../lib/logging';
