@@ -24,11 +24,11 @@ var _logging2 = _interopRequireWildcard(_logging);
 
 var watcher = null;
 
-var getWatcher = function getWatcher() {
+function getWatcher() {
   return watcher;
-};
+}
 
-var start = function start(options) {
+function start(options) {
   _log2['default'].debug('lib/watch.start');
 
   // If there are no paths to watch, do nothing.
@@ -74,7 +74,7 @@ var start = function start(options) {
   });
 
   return watcher;
-};
+}
 
 exports['default'] = {
   getWatcher: getWatcher,

@@ -16,10 +16,10 @@ var _watch2 = _interopRequireWildcard(_watch);
 
 var dependencies = ['runTests'];
 
-var run = function run(options, cb) {
+function run(options, cb) {
   _watch2['default'].start(options);
   cb();
-};
+}
 
 exports['default'] = {
   dependencies: dependencies,

@@ -44,7 +44,7 @@ var _logging2 = _interopRequireWildcard(_logging);
 
 var removePath = _rimraf2['default'];
 
-var getFiles = function getFiles(path, cb) {
+function getFiles(path, cb) {
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -54,9 +54,9 @@ var getFiles = function getFiles(path, cb) {
       return v.isFile();
     }));
   });
-};
+}
 
-var getDirectories = function getDirectories(path, cb) {
+function getDirectories(path, cb) {
   _lsr2['default'](path, function (e, nodes) {
     if (e) {
       return cb(e);
@@ -66,17 +66,17 @@ var getDirectories = function getDirectories(path, cb) {
       return v.isDirectory();
     }));
   });
-};
+}
 
-var getTargetPath = function getTargetPath(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath) {
+function getTargetPath(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath) {
   return sourceFilePath.replace(sourceDirectoryPath, targetDirectoryPath).replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
-};
+}
 
-var ensureFileDirectory = function ensureFileDirectory(targetFilePath, cb) {
+function ensureFileDirectory(targetFilePath, cb) {
   _mkdirp2['default'](_path2['default'].dirname(targetFilePath), cb);
-};
+}
 
-var compileFile = function compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb) {
+function compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb) {
   _log2['default'].debug('lib/fileSystem.compileFile', sourceFilePath);
 
   _fs2['default'].readFile(sourceFilePath, function (e, fileContent) {
@@ -106,9 +106,9 @@ var compileFile = function compileFile(compileChunk, options, sourceFilePath, ta
       });
     });
   });
-};
+}
 
-var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb) {
+function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb) {
   _log2['default'].debug('lib/fileSystem.compileAllFiles');
 
   getFiles(options.sourceDirectoryPath, function (e, sourceFilePaths) {
@@ -130,7 +130,7 @@ var compileAllFiles = function compileAllFiles(sourceFilePathMatches, compileFil
 
     _async2['default'].each(paths, iteratePath, cb);
   });
-};
+}
 
 exports['default'] = {
   compileAllFiles: compileAllFiles,

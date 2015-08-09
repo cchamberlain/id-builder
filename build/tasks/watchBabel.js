@@ -24,7 +24,7 @@ var _fileSystem2 = _interopRequireWildcard(_fileSystem);
 
 var dependencies = ['watch'];
 
-var handleAdd = function handleAdd(options, path, stat) {
+function handleAdd(options, path, stat) {
   if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -36,9 +36,9 @@ var handleAdd = function handleAdd(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleAddDir = function handleAddDir(options, path, stat) {
+function handleAddDir(options, path, stat) {
   if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -48,9 +48,9 @@ var handleAddDir = function handleAddDir(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleChange = function handleChange(options, path, stat) {
+function handleChange(options, path, stat) {
   if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -62,9 +62,9 @@ var handleChange = function handleChange(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleUnlink = function handleUnlink(options, path, stat) {
+function handleUnlink(options, path, stat) {
   if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -74,9 +74,9 @@ var handleUnlink = function handleUnlink(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
+function handleUnlinkDir(options, path, stat) {
   if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -86,17 +86,17 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleError = function handleError(options, e) {
+function handleError(options, e) {
   if (!_babel2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
 
   _logging2['default'].taskError(e);
-};
+}
 
-var run = function run(options, cb) {
+function run(options, cb) {
   var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
@@ -119,7 +119,7 @@ var run = function run(options, cb) {
       handleError(options, path, stat);
     });
   });
-};
+}
 
 exports['default'] = {
   dependencies: dependencies,

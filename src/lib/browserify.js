@@ -14,21 +14,21 @@ const targetExtension = 'js';
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-const sourceFilePathMatches = function(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath)  {
   return sourceFilePath !== options.targetFilePath && sourceFilePath.indexOf(options.sourceDirectoryPath) === 0;
-};
+}
 
-const matchesTargetPath = function(options, path) {
+function matchesTargetPath(options, path)  {
   return path === options.targetPath;
-};
+}
 
-const getBrowserifyBundle = function(options) {
+function getBrowserifyBundle(options)  {
   const browserifyOptions = {
     cache: {},
     //debug: true,
     fullPaths: true,
     packageCache: {}
-  };
+  }
 
   const b = browserify(browserifyOptions);
 
@@ -38,14 +38,14 @@ const getBrowserifyBundle = function(options) {
     compileDebug: true,
     pretty: true,
     runtimePath: jadeRuntime
-  };
+  }
 
   b.transform(jadeify, jadeifyOptions);
 
   return b;
-};
+}
 
-const compileAllFiles = function(options, cb) {
+function compileAllFiles(options, cb)  {
   log.debug('lib/browserify.compileAllFiles');
 
   exists(options.sourceFilePath, exists => {
@@ -85,9 +85,9 @@ const compileAllFiles = function(options, cb) {
       b.bundle();
     });
   });
-};
+}
 
-const watch = function(options, cb) {
+function watch(options, cb)  {
   log.debug('lib/browserify.watch');
 
   exists(options.sourceFilePath, exists => {
@@ -132,7 +132,7 @@ const watch = function(options, cb) {
       b.bundle();
     });
   });
-};
+}
 
 export default {
   compileAllFiles,

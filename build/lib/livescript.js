@@ -23,11 +23,11 @@ var _fileSystem2 = _interopRequireWildcard(_fileSystem);
 var sourceExtension = 'ls';
 var targetExtension = 'js';
 
-var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath) {
   return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
-};
+}
 
-var compileChunk = function compileChunk(options, chunk, cb) {
+function compileChunk(options, chunk, cb) {
   _log2['default'].debug('lib/livescript.compileChunk');
 
   try {
@@ -37,19 +37,19 @@ var compileChunk = function compileChunk(options, chunk, cb) {
   } catch (e) {
     return cb(e);
   }
-};
+}
 
-var compileFile = function compileFile(options, sourceFilePath, targetFilePath, cb) {
+function compileFile(options, sourceFilePath, targetFilePath, cb) {
   _log2['default'].debug('lib/livescript.compileFile', sourceFilePath);
 
   _fileSystem2['default'].compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
-};
+}
 
-var compileAllFiles = function compileAllFiles(options, cb) {
+function compileAllFiles(options, cb) {
   _log2['default'].debug('lib/livescript.compileAllFiles');
 
   _fileSystem2['default'].compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
-};
+}
 
 exports['default'] = {
   sourceExtension: sourceExtension,

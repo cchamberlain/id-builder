@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-const merge = function(x, y = {}) {
-  const z = {};
+function merge(x, y = {})  {
+  const z = {}
 
   _.each(x, function(xValue, xKey) {
     const yValue = y[xKey];
@@ -18,6 +18,6 @@ const merge = function(x, y = {}) {
   });
 
   return z;
-};
+}
 
 export default merge;

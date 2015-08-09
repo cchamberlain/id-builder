@@ -26,20 +26,20 @@ var _logging = require('./logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-var prepareOptions = function prepareOptions(options) {
+function prepareOptions(options) {
   // Make the paths absolute, because webpack needs it to be absolute.
   options.context = _path2['default'].resolve(options.context);
   options.entry = _path2['default'].resolve(options.entry);
   options.output.path = _path2['default'].resolve(options.output.path);
 
   return options;
-};
+}
 
-var matchesTargetPath = function matchesTargetPath(options, path) {
+function matchesTargetPath(options, path) {
   return path === '' + options.path + '/' + options.filename;
-};
+}
 
-var compileAllFiles = function compileAllFiles(options, cb) {
+function compileAllFiles(options, cb) {
   options.options = prepareOptions(options.options);
 
   var compiler = _webpack2['default'](options.options);
@@ -63,9 +63,9 @@ var compileAllFiles = function compileAllFiles(options, cb) {
 
     cb();
   });
-};
+}
 
-var watchAllFiles = function watchAllFiles(options, cb) {
+function watchAllFiles(options, cb) {
   options.options = prepareOptions(options.options);
 
   var compiler = _webpack2['default'](options.options);
@@ -96,7 +96,7 @@ var watchAllFiles = function watchAllFiles(options, cb) {
       lastHash = stats.hash;
     }
   });
-};
+}
 
 exports['default'] = {
   compileAllFiles: compileAllFiles,

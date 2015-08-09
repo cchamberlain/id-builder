@@ -27,7 +27,7 @@ function runServer(_options, cb) {
     port: 9000,
     logLevel: 'silent',
     logFileChanges: false
-  };
+  }
 
   browserSync(options, (e) => {
     if (e) {

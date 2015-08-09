@@ -3,10 +3,10 @@ import watch from '../lib/watch';
 
 const dependencies = [ 'runTests' ];
 
-const run = function(options, cb) {
+function run(options, cb)  {
   watch.start(options);
   cb();
-};
+}
 
 export default {
   dependencies,

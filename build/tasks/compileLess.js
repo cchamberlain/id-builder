@@ -20,7 +20,7 @@ var _logging2 = _interopRequireWildcard(_logging);
 
 var dependencies = ['clean'];
 
-var run = function run(options, cb) {
+function run(options, cb) {
   _fs2['default'].exists(options.sourceFilePath, function (result) {
     if (!result) {
       _logging2['default'].taskInfo('compileLess', 'skipping ' + options.sourceFilePath + ' (Does not exist).');
@@ -29,7 +29,7 @@ var run = function run(options, cb) {
 
     _less2['default'].compileFile(options, options.sourceFilePath, options.targetFilePath, cb);
   });
-};
+}
 
 exports['default'] = {
   dependencies: dependencies,

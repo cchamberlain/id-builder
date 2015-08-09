@@ -14,7 +14,7 @@ import livescript from './livescript';
 import logging from './logging';
 import stylus from './stylus';
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath)  {
   const globalOptions = global.options;
 
   let result;
@@ -38,9 +38,9 @@ const sourceFilePathMatches = function(options, sourceFilePath) {
   }
 
   return result;
-};
+}
 
-const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
+function copyFile(options, sourceFilePath, targetFilePath, cb)  {
   log.debug('lib/fileSystem.compileFile', sourceFilePath);
 
   fs.readFile(sourceFilePath, (e, readChunk) => {
@@ -58,9 +58,9 @@ const copyFile = function(options, sourceFilePath, targetFilePath, cb) {
       });
     });
   });
-};
+}
 
-const copyAllFiles = function(options, cb) {
+function copyAllFiles(options, cb)  {
   log.debug('lib/fileSystem.copyAllFiles');
 
   lsr(options.sourceDirectoryPath, (e, nodes) => {
@@ -77,7 +77,7 @@ const copyAllFiles = function(options, cb) {
       const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
 
       copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
-    };
+    }
 
     async.each(paths, iteratePath, e => {
       if (e) {
@@ -87,7 +87,7 @@ const copyAllFiles = function(options, cb) {
       cb(null);
     });
   });
-};
+}
 
 export default {
   sourceFilePathMatches,

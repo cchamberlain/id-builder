@@ -23,29 +23,29 @@ var _fileSystem2 = _interopRequireWildcard(_fileSystem);
 var sourceExtension = 'styl';
 var targetExtension = 'css';
 
-var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath) {
   var result = !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
 
   return result;
-};
+}
 
-var compileChunk = function compileChunk(options, chunk, cb) {
+function compileChunk(options, chunk, cb) {
   _log2['default'].debug('lib/stylus.compileChunk');
 
   _render.render(chunk, cb);
-};
+}
 
-var compileFile = function compileFile(options, sourceFilePath, targetFilePath, cb) {
+function compileFile(options, sourceFilePath, targetFilePath, cb) {
   _log2['default'].debug('lib/stylus.compileFile', sourceFilePath);
 
   _fileSystem2['default'].compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
-};
+}
 
-var compileAllFiles = function compileAllFiles(options, cb) {
+function compileAllFiles(options, cb) {
   _log2['default'].debug('lib/stylus.compileAllFiles');
 
   _fileSystem2['default'].compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
-};
+}
 
 exports['default'] = {
   sourceExtension: sourceExtension,

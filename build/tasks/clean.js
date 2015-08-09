@@ -24,11 +24,11 @@ var _logging2 = _interopRequireWildcard(_logging);
 
 var dependencies = [];
 
-var run = function run(options, cb) {
+function run(options, cb) {
   _async2['default'].each(options.paths, function (path, cb) {
     _rimraf2['default'](path, cb);
   }, cb);
-};
+}
 
 exports['default'] = {
   dependencies: dependencies,

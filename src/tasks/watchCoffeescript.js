@@ -7,7 +7,7 @@ const dependencies = [
   'watch'
 ];
 
-const handleAdd = function(options, path, stat) {
+function handleAdd(options, path, stat)  {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -21,9 +21,9 @@ const handleAdd = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleAddDir = function(options, path, stat) {
+function handleAddDir(options, path, stat)  {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -33,9 +33,9 @@ const handleAddDir = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleChange = function(options, path, stat) {
+function handleChange(options, path, stat)  {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -49,9 +49,9 @@ const handleChange = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleUnlink = function(options, path, stat) {
+function handleUnlink(options, path, stat)  {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -61,9 +61,9 @@ const handleUnlink = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleUnlinkDir = function(options, path, stat) {
+function handleUnlinkDir(options, path, stat)  {
   if (!coffeescript.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -73,13 +73,13 @@ const handleUnlinkDir = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleError = function(options, e) {
+function handleError(options, e)  {
   logging.taskError(e);
-};
+}
 
-const run = function(options, cb) {
+function run(options, cb)  {
   const watcher = watch.getWatcher();
 
   watcher.on('ready', () =>  {
@@ -90,7 +90,7 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
     watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
-};
+}
 
 export default {
   dependencies,

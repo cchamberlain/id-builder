@@ -7,25 +7,25 @@ import logging from './logging';
 
 const pathToMocha = resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
-const randomString = function() {
+function randomString()  {
   return Math.random().toString(36).slice(7);
-};
+}
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath)  {
   const matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
   const matchesWatchPath = sourceFilePath.indexOf(options.watchDirectoryPath) === 0;
 
   return matchesJavascript && matchesWatchPath;
-};
+}
 
-const buildFilePathMatches = function(options, buildFilePath) {
+function buildFilePathMatches(options, buildFilePath)  {
   const matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
   const matchesWatchPath = buildFilePath.indexOf(options.watchDirectoryPath) === 0;
 
   return matchesJavascript && matchesWatchPath;
-};
+}
 
-const runTests = function(options, cb) {
+function runTests(options, cb)  {
   log.debug('lib/tests.runTests');
 
   exists(options.sourceDirectoryPath, exists => {
@@ -55,7 +55,7 @@ const runTests = function(options, cb) {
       cb();
     });
   });
-};
+}
 
 export default {
   randomString,

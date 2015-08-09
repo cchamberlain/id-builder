@@ -39,15 +39,15 @@ var targetExtension = 'js';
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath) {
   return sourceFilePath !== options.targetFilePath && sourceFilePath.indexOf(options.sourceDirectoryPath) === 0;
-};
+}
 
-var matchesTargetPath = function matchesTargetPath(options, path) {
+function matchesTargetPath(options, path) {
   return path === options.targetPath;
-};
+}
 
-var getBrowserifyBundle = function getBrowserifyBundle(options) {
+function getBrowserifyBundle(options) {
   var browserifyOptions = {
     cache: {},
     //debug: true,
@@ -68,9 +68,9 @@ var getBrowserifyBundle = function getBrowserifyBundle(options) {
   b.transform(_jadeify2['default'], jadeifyOptions);
 
   return b;
-};
+}
 
-var compileAllFiles = function compileAllFiles(options, cb) {
+function compileAllFiles(options, cb) {
   _log2['default'].debug('lib/browserify.compileAllFiles');
 
   _exists$createWriteStream$writeFile.exists(options.sourceFilePath, function (exists) {
@@ -110,9 +110,9 @@ var compileAllFiles = function compileAllFiles(options, cb) {
       b.bundle();
     });
   });
-};
+}
 
-var watch = function watch(options, cb) {
+function watch(options, cb) {
   _log2['default'].debug('lib/browserify.watch');
 
   _exists$createWriteStream$writeFile.exists(options.sourceFilePath, function (exists) {
@@ -157,7 +157,7 @@ var watch = function watch(options, cb) {
       b.bundle();
     });
   });
-};
+}
 
 exports['default'] = {
   compileAllFiles: compileAllFiles,

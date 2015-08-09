@@ -10,17 +10,7 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
-var merge = (function (_merge) {
-  function merge(_x) {
-    return _merge.apply(this, arguments);
-  }
-
-  merge.toString = function () {
-    return _merge.toString();
-  };
-
-  return merge;
-})(function (x) {
+function merge(x) {
   var y = arguments[1] === undefined ? {} : arguments[1];
 
   var z = {};
@@ -40,7 +30,7 @@ var merge = (function (_merge) {
   });
 
   return z;
-});
+}
 
 exports['default'] = merge;
 module.exports = exports['default'];

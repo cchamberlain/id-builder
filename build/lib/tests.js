@@ -22,25 +22,25 @@ var _logging2 = _interopRequireWildcard(_logging);
 
 var pathToMocha = _resolve.resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
-var randomString = function randomString() {
+function randomString() {
   return Math.random().toString(36).slice(7);
-};
+}
 
-var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath) {
   var matchesJavascript = sourceFilePath && !!sourceFilePath.match(/\.js$/);
   var matchesWatchPath = sourceFilePath.indexOf(options.watchDirectoryPath) === 0;
 
   return matchesJavascript && matchesWatchPath;
-};
+}
 
-var buildFilePathMatches = function buildFilePathMatches(options, buildFilePath) {
+function buildFilePathMatches(options, buildFilePath) {
   var matchesJavascript = buildFilePath && !!buildFilePath.match(/\.js$/);
   var matchesWatchPath = buildFilePath.indexOf(options.watchDirectoryPath) === 0;
 
   return matchesJavascript && matchesWatchPath;
-};
+}
 
-var runTests = function runTests(options, cb) {
+function runTests(options, cb) {
   _log2['default'].debug('lib/tests.runTests');
 
   _exists.exists(options.sourceDirectoryPath, function (exists) {
@@ -63,7 +63,7 @@ var runTests = function runTests(options, cb) {
       cb();
     });
   });
-};
+}
 
 exports['default'] = {
   randomString: randomString,

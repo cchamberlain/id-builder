@@ -7,16 +7,16 @@ import fileSystem from './fileSystem';
 const sourceExtension = 'less';
 const targetExtension = 'css';
 
-const sourceFilePathMatches = function(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath)  {
   return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}.+\\.${sourceExtension}$`))
-};
+}
 
-const compileChunk = function(options, chunk, cb) {
+function compileChunk(options, chunk, cb)  {
   log.debug('lib/less.compileChunk');
 
   const renderOptions = {
     filename: options.sourceFilePath
-  };
+  }
 
   less.render(chunk, renderOptions, (e, result) => {
     if (e) {
@@ -25,19 +25,19 @@ const compileChunk = function(options, chunk, cb) {
 
     return cb(null, result.css);
   });
-};
+}
 
-const compileFile = function(options, sourceFilePath, targetFilePath, cb) {
+function compileFile(options, sourceFilePath, targetFilePath, cb)  {
   log.debug('lib/less.compileFile', sourceFilePath);
 
   fileSystem.compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
-};
+}
 
-const compileAllFiles = function(options, cb) {
+function compileAllFiles(options, cb)  {
   log.debug('lib/less.compileAllFiles');
 
   fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
-};
+}
 
 export default {
   sourceExtension,

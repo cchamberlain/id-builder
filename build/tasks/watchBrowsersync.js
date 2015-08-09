@@ -36,7 +36,7 @@ var _webpack2 = _interopRequireWildcard(_webpack);
 
 var dependencies = ['watch'];
 
-var shouldContinue = function shouldContinue(options, path, stat) {
+function shouldContinue(options, path, stat) {
   var result = false;
 
   if (path.match(/\.js$/) && _browserify2['default'].matchesTargetPath(options, path) || _webpack2['default'].matchesTargetPath(options, path)) {
@@ -46,9 +46,9 @@ var shouldContinue = function shouldContinue(options, path, stat) {
   }
 
   return result;
-};
+}
 
-var handleAdd = function handleAdd(options, path, stat) {
+function handleAdd(options, path, stat) {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -58,17 +58,17 @@ var handleAdd = function handleAdd(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleAddDir = function handleAddDir(options, path, stat) {
+function handleAddDir(options, path, stat) {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
 
   // TODO: Something?
-};
+}
 
-var handleChange = function handleChange(options, path, stat) {
+function handleChange(options, path, stat) {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -78,9 +78,9 @@ var handleChange = function handleChange(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleUnlink = function handleUnlink(options, path, stat) {
+function handleUnlink(options, path, stat) {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -90,9 +90,9 @@ var handleUnlink = function handleUnlink(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
+function handleUnlinkDir(options, path, stat) {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -102,13 +102,13 @@ var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleError = function handleError(options, e) {
+function handleError(options, e) {
   _logging2['default'].taskError(e);
-};
+}
 
-var run = function run(options, cb) {
+function run(options, cb) {
   var _arguments = arguments;
 
   var watcher = _watch2['default'].getWatcher();
@@ -137,7 +137,7 @@ var run = function run(options, cb) {
       handleError(options, path, stat);
     });
   });
-};
+}
 
 exports['default'] = {
   dependencies: dependencies,

@@ -6,20 +6,20 @@ import webpack from 'webpack';
 import browsersync from './browsersync';
 import logging from './logging';
 
-const prepareOptions = function(options) {
+function prepareOptions(options)  {
   // Make the paths absolute, because webpack needs it to be absolute.
   options.context = path.resolve(options.context);
   options.entry = path.resolve(options.entry);
   options.output.path = path.resolve(options.output.path);
 
   return options;
-};
+}
 
-const matchesTargetPath = function(options, path) {
+function matchesTargetPath(options, path)  {
   return path === `${options.path}/${options.filename}`;
-};
+}
 
-const compileAllFiles = function(options, cb) {
+function compileAllFiles(options, cb)  {
   options.options = prepareOptions(options.options);
 
   const compiler = webpack(options.options);
@@ -43,9 +43,9 @@ const compileAllFiles = function(options, cb) {
 
     cb();
   });
-};
+}
 
-const watchAllFiles = function(options, cb) {
+function watchAllFiles(options, cb)  {
   options.options = prepareOptions(options.options);
 
   const compiler = webpack(options.options);
@@ -76,7 +76,7 @@ const watchAllFiles = function(options, cb) {
       lastHash = stats.hash;
     }
   });
-};
+}
 
 export default {
   compileAllFiles,

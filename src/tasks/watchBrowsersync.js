@@ -11,7 +11,7 @@ const dependencies = [
   'watch'
 ];
 
-const shouldContinue = function(options, path, stat) {
+function shouldContinue(options, path, stat)  {
   let result = false;
 
   if (path.match(/\.js$/) && browserify.matchesTargetPath(options, path) || webpack.matchesTargetPath(options, path)) {
@@ -21,9 +21,9 @@ const shouldContinue = function(options, path, stat) {
   }
 
   return result;
-};
+}
 
-const handleAdd = function(options, path, stat) {
+function handleAdd(options, path, stat)  {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -33,17 +33,17 @@ const handleAdd = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleAddDir = function(options, path, stat) {
+function handleAddDir(options, path, stat)  {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
 
   // TODO: Something?
-};
+}
 
-const handleChange = function(options, path, stat) {
+function handleChange(options, path, stat)  {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -53,9 +53,9 @@ const handleChange = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleUnlink = function(options, path, stat) {
+function handleUnlink(options, path, stat)  {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -65,9 +65,9 @@ const handleUnlink = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleUnlinkDir = function(options, path, stat) {
+function handleUnlinkDir(options, path, stat)  {
   if (!shouldContinue(options, path, stat)) {
     return;
   }
@@ -77,13 +77,13 @@ const handleUnlinkDir = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleError = function(options, e) {
+function handleError(options, e)  {
   logging.taskError(e);
-};
+}
 
-const run = function(options, cb) {
+function run(options, cb)  {
   const watcher = watch.getWatcher();
 
   watcher.on('all', () => {
@@ -98,7 +98,7 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat); });
     watcher.on('error', (path, stat) => { handleError(options, path, stat); });
   });
-};
+}
 
 export default {
   dependencies,

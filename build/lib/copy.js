@@ -58,7 +58,7 @@ var _stylus = require('./stylus');
 
 var _stylus2 = _interopRequireWildcard(_stylus);
 
-var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
+function sourceFilePathMatches(options, sourceFilePath) {
   var globalOptions = global.options;
 
   var result = undefined;
@@ -82,9 +82,9 @@ var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePa
   }
 
   return result;
-};
+}
 
-var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
+function copyFile(options, sourceFilePath, targetFilePath, cb) {
   _log2['default'].debug('lib/fileSystem.compileFile', sourceFilePath);
 
   _fs2['default'].readFile(sourceFilePath, function (e, readChunk) {
@@ -108,9 +108,9 @@ var copyFile = function copyFile(options, sourceFilePath, targetFilePath, cb) {
       });
     });
   });
-};
+}
 
-var copyAllFiles = function copyAllFiles(options, cb) {
+function copyAllFiles(options, cb) {
   _log2['default'].debug('lib/fileSystem.copyAllFiles');
 
   _lsr2['default'](options.sourceDirectoryPath, function (e, nodes) {
@@ -138,7 +138,7 @@ var copyAllFiles = function copyAllFiles(options, cb) {
       cb(null);
     });
   });
-};
+}
 
 exports['default'] = {
   sourceFilePathMatches: sourceFilePathMatches,

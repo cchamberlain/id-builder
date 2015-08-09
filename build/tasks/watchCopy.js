@@ -20,7 +20,7 @@ var _watch2 = _interopRequireWildcard(_watch);
 
 var dependencies = ['watch'];
 
-var handlePath = function handlePath(options, path, stat) {
+function handlePath(options, path, stat) {
   if (!_copy2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -32,25 +32,25 @@ var handlePath = function handlePath(options, path, stat) {
       _logging2['default'].taskError(e);
     }
   });
-};
+}
 
-var handleAdd = function handleAdd(options, path, stat) {
+function handleAdd(options, path, stat) {
   handlePath(options, path, stat);
-};
+}
 
-var handleAddDir = function handleAddDir(options, path, stat) {};
+function handleAddDir(options, path, stat) {}
 
-var handleChange = function handleChange(options, path, stat) {
+function handleChange(options, path, stat) {
   handlePath(options, path, stat);
-};
+}
 
-var handleUnlink = function handleUnlink(options, path, stat) {};
+function handleUnlink(options, path, stat) {}
 
-var handleUnlinkDir = function handleUnlinkDir(options, path, stat) {};
+function handleUnlinkDir(options, path, stat) {}
 
-var handleError = function handleError(options, e) {};
+function handleError(options, e) {}
 
-var run = function run(options, cb) {
+function run(options, cb) {
   var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
@@ -73,7 +73,7 @@ var run = function run(options, cb) {
       handleError(options, path, stat);
     });
   });
-};
+}
 
 exports['default'] = {
   dependencies: dependencies,

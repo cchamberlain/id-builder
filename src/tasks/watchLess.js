@@ -6,7 +6,7 @@ const dependencies = [
   'watch'
 ];
 
-const handlePath = function(options, path, stat) {
+function handlePath(options, path, stat)  {
   if (!less.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -16,29 +16,29 @@ const handlePath = function(options, path, stat) {
       logging.taskError(e);
     }
   });
-};
+}
 
-const handleAdd = function(options, path, stat) {
+function handleAdd(options, path, stat)  {
   handlePath(options, path, stat);
-};
+}
 
-const handleAddDir = function(options, path, stat) {
-};
+function handleAddDir(options, path, stat)  {
+}
 
-const handleChange = function(options, path, stat) {
+function handleChange(options, path, stat)  {
   handlePath(options, path, stat);
-};
+}
 
-const handleUnlink = function(options, path, stat) {
-};
+function handleUnlink(options, path, stat)  {
+}
 
-const handleUnlinkDir = function(options, path, stat) {
-};
+function handleUnlinkDir(options, path, stat)  {
+}
 
-const handleError = function(options, e) {
-};
+function handleError(options, e)  {
+}
 
-const run = function(options, cb) {
+function run(options, cb)  {
   const watcher = watch.getWatcher();
 
   watcher.on('ready', () => {
@@ -49,7 +49,7 @@ const run = function(options, cb) {
     watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
     watcher.on('error', (path, stat) => { handleError(options, path, stat) });
   });
-};
+}
 
 export default {
   dependencies,

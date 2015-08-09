@@ -6,11 +6,11 @@ import logging from './logging';
 
 let watcher = null;
 
-const getWatcher = function() {
+function getWatcher()  {
   return watcher;
-};
+}
 
-const start = function(options) {
+function start(options)  {
   log.debug('lib/watch.start');
 
   // If there are no paths to watch, do nothing.
@@ -56,7 +56,7 @@ const start = function(options) {
   });
 
   return watcher;
-};
+}
 
 export default {
   getWatcher,
