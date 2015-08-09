@@ -1,4 +1,4 @@
-gexport default {
+export default {
   //sourceDirectoryPath: 'src',
   //targetDirectoryPath: 'build',
   //testsDirectoryPath: 'build/tests',
