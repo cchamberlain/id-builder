@@ -22,11 +22,9 @@ var _logging = require('./logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-'use strict';
-
 var sourceFilePathMatches = _copy2['default'].sourceFilePathMatches;
 
-var reload = function reload(options, path, cb) {
+function reload(options, path, cb) {
   _log2['default'].debug('lib/browsersync.reload', path);
 
   _browserSync2['default'].reload(path);
@@ -34,9 +32,9 @@ var reload = function reload(options, path, cb) {
   _logging2['default'].taskInfo(options.taskName, 'Reloaded `' + path + '`');
 
   cb();
-};
+}
 
-var runServer = function runServer(_options, cb) {
+function runServer(_options, cb) {
   _log2['default'].debug('lib/browsersync.runServer');
 
   var options = {
@@ -49,14 +47,14 @@ var runServer = function runServer(_options, cb) {
     logFileChanges: false
   };
 
-  _browserSync2['default'](options, function (e, bs) {
+  _browserSync2['default'](options, function (e) {
     if (e) {
       return cb(e);
     }
 
     cb();
   });
-};
+}
 
 exports['default'] = {
   sourceFilePathMatches: sourceFilePathMatches,

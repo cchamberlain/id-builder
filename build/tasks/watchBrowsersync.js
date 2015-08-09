@@ -34,8 +34,6 @@ var _webpack = require('../lib/webpack');
 
 var _webpack2 = _interopRequireWildcard(_webpack);
 
-'use strict';
-
 var dependencies = ['watch'];
 
 var shouldContinue = function shouldContinue(options, path, stat) {

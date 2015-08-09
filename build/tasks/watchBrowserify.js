@@ -14,8 +14,6 @@ var _browserify = require('../lib/browserify');
 
 var _browserify2 = _interopRequireWildcard(_browserify);
 
-'use strict';
-
 var dependencies = ['runTests'];
 
 var run = _browserify2['default'].watch;

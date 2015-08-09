@@ -58,8 +58,6 @@ var _stylus = require('./stylus');
 
 var _stylus2 = _interopRequireWildcard(_stylus);
 
-'use strict';
-
 var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath) {
   var globalOptions = global.options;
 

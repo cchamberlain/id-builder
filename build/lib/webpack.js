@@ -26,8 +26,6 @@ var _logging = require('./logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-'use strict';
-
 var prepareOptions = function prepareOptions(options) {
   // Make the paths absolute, because webpack needs it to be absolute.
   options.context = _path2['default'].resolve(options.context);

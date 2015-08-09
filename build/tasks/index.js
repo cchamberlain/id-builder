@@ -106,8 +106,6 @@ var _watchWebpack = require('./watchWebpack');
 
 var _watchWebpack2 = _interopRequireWildcard(_watchWebpack);
 
-'use strict';
-
 exports['default'] = {
   clean: _clean2['default'],
   compileBabel: _compileBabel2['default'],

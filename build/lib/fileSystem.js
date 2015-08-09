@@ -42,8 +42,6 @@ var _logging = require('./logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-'use strict';
-
 var removePath = _rimraf2['default'];
 
 var getFiles = function getFiles(path, cb) {

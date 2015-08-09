@@ -14,8 +14,6 @@ var _babel = require('../lib/babel');
 
 var _babel2 = _interopRequireWildcard(_babel);
 
-'use strict';
-
 var dependencies = ['clean'];
 
 var run = _babel2['default'].compileAllFiles;

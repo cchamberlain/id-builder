@@ -18,8 +18,6 @@ var _watch = require('../lib/watch');
 
 var _watch2 = _interopRequireWildcard(_watch);
 
-'use strict';
-
 var dependencies = ['watch'];
 
 var handlePath = function handlePath(options, path, stat) {

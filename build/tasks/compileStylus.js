@@ -14,8 +14,6 @@ var _stylus = require('../lib/stylus');
 
 var _stylus2 = _interopRequireWildcard(_stylus);
 
-'use strict';
-
 var dependencies = ['clean'];
 
 var run = _stylus2['default'].compileAllFiles;

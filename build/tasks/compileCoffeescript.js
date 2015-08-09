@@ -14,8 +14,6 @@ var _coffeescript = require('../lib/coffeescript');
 
 var _coffeescript2 = _interopRequireWildcard(_coffeescript);
 
-'use strict';
-
 var dependencies = ['clean'];
 
 var run = _coffeescript2['default'].compileAllFiles;

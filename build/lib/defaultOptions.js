@@ -3,8 +3,6 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-'use strict';
-
 exports['default'] = {
   //sourceDirectoryPath: 'src',
   //targetDirectoryPath: 'build',

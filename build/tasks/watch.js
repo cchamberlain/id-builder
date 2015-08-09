@@ -14,8 +14,6 @@ var _watch = require('../lib/watch');
 
 var _watch2 = _interopRequireWildcard(_watch);
 
-'use strict';
-
 var dependencies = ['runTests'];
 
 var run = function run(options, cb) {

@@ -14,8 +14,6 @@ var _livescript = require('../lib/livescript');
 
 var _livescript2 = _interopRequireWildcard(_livescript);
 
-'use strict';
-
 var dependencies = ['clean'];
 
 var run = _livescript2['default'].compileAllFiles;

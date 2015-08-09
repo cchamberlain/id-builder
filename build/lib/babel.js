@@ -12,15 +12,11 @@ var _log2 = _interopRequireWildcard(_log);
 
 var _transform = require('babel');
 
-var _logging = require('./logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
+// import logging from './logging';
 
 var _fileSystem = require('./fileSystem');
 
 var _fileSystem2 = _interopRequireWildcard(_fileSystem);
-
-'use strict';
 
 var sourceExtension = 'js';
 var targetExtension = 'js';

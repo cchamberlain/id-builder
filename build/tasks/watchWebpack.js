@@ -14,8 +14,6 @@ var _webpack = require('../lib/webpack');
 
 var _webpack2 = _interopRequireWildcard(_webpack);
 
-'use strict';
-
 var dependencies = ['runTests'];
 
 var run = _webpack2['default'].watchAllFiles;

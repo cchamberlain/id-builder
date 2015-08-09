@@ -5,10 +5,7 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
-var _import = require('lodash');
-
-var _import2 = _interopRequireWildcard(_import);
+// import _ from 'lodash';
 
 var _exists = require('fs');
 
@@ -24,11 +21,9 @@ var _logging = require('./logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-'use strict';
-
 var monitors = {};
 
-var addPath = function addPath(path, cb) {
+function addPath(path, cb) {
   _log2['default'].debug('lib/servers.addPath', path);
 
   var monitor = new _Monitor.Monitor(path, {
@@ -40,9 +35,9 @@ var addPath = function addPath(path, cb) {
   monitor.start();
 
   cb();
-};
+}
 
-var removePath = function removePath(path, cb) {
+function removePath(path, cb) {
   _log2['default'].debug('lib/servers.removePath', path);
 
   var monitor = monitors[path];
@@ -52,9 +47,9 @@ var removePath = function removePath(path, cb) {
   delete monitors[path];
 
   cb();
-};
+}
 
-var restartPath = function restartPath(path, cb) {
+function restartPath(path, cb) {
   _log2['default'].debug('lib/servers.restartPath', path);
 
   var monitor = monitors[path];
@@ -62,19 +57,15 @@ var restartPath = function restartPath(path, cb) {
   monitor.restart();
 
   cb();
-};
+}
 
-var sourceFilePathMatches = function sourceFilePathMatches(options, sourceFilePath, cb) {
+function sourceFilePathMatches(options, sourceFilePath) {
+  _log2['default'].debug('sourceFilePathMatches', '^' + options.sourceDirectoryPath, sourceFilePath);
+
   return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath));
-};
+}
 
-var sourceFilePathMatchesWatchPath = function sourceFilePathMatchesWatchPath(options, sourceFilePath, cb) {
-  return _import2['default'].any(options.watchPaths, function (watchPath) {
-    return !!sourceFilePath.match(new RegExp('^' + watchPath));
-  });
-};
-
-var startServer = function startServer(options, filePath, cb) {
+function startServer(options, filePath, cb) {
   _log2['default'].debug('lib/servers.startServer');
 
   _exists.exists(filePath, function (result) {
@@ -91,9 +82,9 @@ var startServer = function startServer(options, filePath, cb) {
       addPath(filePath, cb);
     }
   });
-};
+}
 
-var stopServer = function stopServer(options, filePath, cb) {
+function stopServer(options, filePath, cb) {
   _log2['default'].debug('lib/servers.stopServer');
 
   _exists.exists(filePath, function (result) {
@@ -111,9 +102,9 @@ var stopServer = function stopServer(options, filePath, cb) {
       cb();
     }
   });
-};
+}
 
-var restartServer = function restartServer(options, filePath, cb) {
+function restartServer(options, filePath, cb) {
   _log2['default'].debug('lib/servers.restartServer');
 
   _exists.exists(filePath, function (result) {
@@ -130,30 +121,29 @@ var restartServer = function restartServer(options, filePath, cb) {
       addPath(filePath, cb);
     });
   });
-};
+}
 
-var runServers = function runServers(options, cb) {
+function runServers(options, cb) {
   _log2['default'].debug('lib/servers.runServers');
 
-  _each.each(options.paths, function (v, cb) {
-    startServer(options, '' + options.sourceDirectoryPath + '/' + v, cb);
+  _each.each(options.paths, function (v, eachCb) {
+    startServer(options, '' + options.sourceDirectoryPath + '/' + v, eachCb);
   }, cb);
-};
+}
 
-var restartServers = function restartServers(options, cb) {
+function restartServers(options, cb) {
   _log2['default'].debug('lib/servers.restartServers');
 
-  _each.each(options.paths, function (v, cb) {
-    restartServer(options, '' + options.sourceDirectoryPath + '/' + v, cb);
+  _each.each(options.paths, function (v, eachCb) {
+    restartServer(options, '' + options.sourceDirectoryPath + '/' + v, eachCb);
   }, cb);
-};
+}
 
 exports['default'] = {
   addPath: addPath,
   removePath: removePath,
   restartPath: restartPath,
   sourceFilePathMatches: sourceFilePathMatches,
-  sourceFilePathMatchesWatchPath: sourceFilePathMatchesWatchPath,
   startServer: startServer,
   stopServer: stopServer,
   restartServer: restartServer,

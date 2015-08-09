@@ -14,8 +14,6 @@ var _copy = require('../lib/copy');
 
 var _copy2 = _interopRequireWildcard(_copy);
 
-'use strict';
-
 var dependencies = ['clean'];
 
 var run = _copy2['default'].copyAllFiles;

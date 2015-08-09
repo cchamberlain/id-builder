@@ -14,8 +14,6 @@ var _tests = require('../lib/tests');
 
 var _tests2 = _interopRequireWildcard(_tests);
 
-'use strict';
-
 var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy',
 //'compileJade',
 'compileLess', 'compileLivescript', 'compileStylus'];

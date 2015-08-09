@@ -20,8 +20,6 @@ var _fileSystem = require('./fileSystem');
 
 var _fileSystem2 = _interopRequireWildcard(_fileSystem);
 
-'use strict';
-
 var sourceExtension = 'coffee';
 var targetExtension = 'js';
 

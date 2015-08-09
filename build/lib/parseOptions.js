@@ -10,8 +10,6 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
-'use strict';
-
 var merge = (function (_merge) {
   function merge(_x) {
     return _merge.apply(this, arguments);

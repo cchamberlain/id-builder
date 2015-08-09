@@ -20,8 +20,6 @@ var _fileSystem = require('./fileSystem');
 
 var _fileSystem2 = _interopRequireWildcard(_fileSystem);
 
-'use strict';
-
 var sourceExtension = 'ls';
 var targetExtension = 'js';
 

@@ -22,8 +22,6 @@ var _logging = require('./logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-'use strict';
-
 var watcher = null;
 
 var getWatcher = function getWatcher() {

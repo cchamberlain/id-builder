@@ -14,8 +14,6 @@ var _browsersync = require('../lib/browsersync');
 
 var _browsersync2 = _interopRequireWildcard(_browsersync);
 
-'use strict';
-
 var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy', 'compileLess', 'compileLivescript', 'compileStylus'];
 
 var run = _browsersync2['default'].runServer;

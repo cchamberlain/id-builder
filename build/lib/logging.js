@@ -18,8 +18,6 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-'use strict';
-
 var arrowCharacter = '→';
 var okCharacter = '✓';
 var warningCharacter = '✗';

@@ -22,8 +22,6 @@ var _watch = require('../lib/watch');
 
 var _watch2 = _interopRequireWildcard(_watch);
 
-'use strict';
-
 var dependencies = ['watch'];
 
 var handleAdd = function handleAdd(options, path, stat) {

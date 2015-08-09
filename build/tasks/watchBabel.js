@@ -22,8 +22,6 @@ var _fileSystem = require('../lib/fileSystem');
 
 var _fileSystem2 = _interopRequireWildcard(_fileSystem);
 
-'use strict';
-
 var dependencies = ['watch'];
 
 var handleAdd = function handleAdd(options, path, stat) {
