@@ -7,11 +7,11 @@ import fileSystem from './fileSystem';
 const sourceExtension = 'js';
 const targetExtension = 'js';
 
-function sourceFilePathMatches(options, sourceFilePath)  {
+function sourceFilePathMatches(options, sourceFilePath) {
   return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}.+\\.${sourceExtension}$`));
 }
 
-function compileChunk(options, chunk, cb)  {
+function compileChunk(options, chunk, cb) {
   log.debug('lib/babel.compileChunk');
 
   try {
@@ -31,13 +31,13 @@ function compileChunk(options, chunk, cb)  {
   }
 }
 
-function compileFile(options, sourceFilePath, targetFilePath, cb)  {
+function compileFile(options, sourceFilePath, targetFilePath, cb) {
   log.debug('lib/babel.compileFile', sourceFilePath);
 
   fileSystem.compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb);
 }
 
-function compileAllFiles(options, cb)  {
+function compileAllFiles(options, cb) {
   log.debug('lib/babel.compileAllFiles');
 
   fileSystem.compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);

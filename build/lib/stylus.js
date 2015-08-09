@@ -12,10 +12,6 @@ var _log2 = _interopRequireWildcard(_log);
 
 var _render = require('stylus');
 
-var _logging = require('./logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var _fileSystem = require('./fileSystem');
 
 var _fileSystem2 = _interopRequireWildcard(_fileSystem);
@@ -24,9 +20,7 @@ var sourceExtension = 'styl';
 var targetExtension = 'css';
 
 function sourceFilePathMatches(options, sourceFilePath) {
-  var result = !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
-
-  return result;
+  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
 }
 
 function compileChunk(options, chunk, cb) {

@@ -6,10 +6,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('../lib/logging');
-
-var _log2 = _interopRequireWildcard(_log);
-
 var _browsersync = require('../lib/browsersync');
 
 var _browsersync2 = _interopRequireWildcard(_browsersync);

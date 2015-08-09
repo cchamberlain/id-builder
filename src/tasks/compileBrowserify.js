@@ -1,4 +1,3 @@
-import logging from '../lib/logging';
 import browserify from '../lib/browserify';
 
 const dependencies = [

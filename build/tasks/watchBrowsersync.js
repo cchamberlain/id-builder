@@ -36,7 +36,7 @@ var _webpack2 = _interopRequireWildcard(_webpack);
 
 var dependencies = ['watch'];
 
-function shouldContinue(options, path, stat) {
+function shouldContinue(options, path) {
   var result = false;
 
   if (path.match(/\.js$/) && _browserify2['default'].matchesTargetPath(options, path) || _webpack2['default'].matchesTargetPath(options, path)) {
@@ -48,8 +48,8 @@ function shouldContinue(options, path, stat) {
   return result;
 }
 
-function handleAdd(options, path, stat) {
-  if (!shouldContinue(options, path, stat)) {
+function handleAdd(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -60,16 +60,16 @@ function handleAdd(options, path, stat) {
   });
 }
 
-function handleAddDir(options, path, stat) {
-  if (!shouldContinue(options, path, stat)) {
+function handleAddDir(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
   // TODO: Something?
 }
 
-function handleChange(options, path, stat) {
-  if (!shouldContinue(options, path, stat)) {
+function handleChange(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -80,8 +80,8 @@ function handleChange(options, path, stat) {
   });
 }
 
-function handleUnlink(options, path, stat) {
-  if (!shouldContinue(options, path, stat)) {
+function handleUnlink(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -92,8 +92,8 @@ function handleUnlink(options, path, stat) {
   });
 }
 
-function handleUnlinkDir(options, path, stat) {
-  if (!shouldContinue(options, path, stat)) {
+function handleUnlinkDir(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -108,7 +108,7 @@ function handleError(options, e) {
   _logging2['default'].taskError(e);
 }
 
-function run(options, cb) {
+function run(options) {
   var _arguments = arguments;
 
   var watcher = _watch2['default'].getWatcher();
@@ -118,23 +118,23 @@ function run(options, cb) {
   });
 
   watcher.on('ready', function () {
-    watcher.on('add', function (path, stat) {
-      handleAdd(options, path, stat);
+    watcher.on('add', function (path) {
+      handleAdd(options, path);
     });
-    watcher.on('addDir', function (path, stat) {
-      handleAddDir(options, path, stat);
+    watcher.on('addDir', function (path) {
+      handleAddDir(options, path);
     });
-    watcher.on('change', function (path, stat) {
-      handleChange(options, path, stat);
+    watcher.on('change', function (path) {
+      handleChange(options, path);
     });
-    watcher.on('unlink', function (path, stat) {
-      handleUnlink(options, path, stat);
+    watcher.on('unlink', function (path) {
+      handleUnlink(options, path);
     });
-    watcher.on('unlinkDir', function (path, stat) {
-      handleUnlinkDir(options, path, stat);
+    watcher.on('unlinkDir', function (path) {
+      handleUnlinkDir(options, path);
     });
-    watcher.on('error', function (path, stat) {
-      handleError(options, path, stat);
+    watcher.on('error', function (path) {
+      handleError(options, path);
     });
   });
 }

@@ -1,4 +1,4 @@
-import { exists, createWriteStream, writeFile } from 'fs';
+import { exists, writeFile } from 'fs';
 import { resolve } from 'path';
 
 import browserify from 'browserify';
@@ -14,21 +14,21 @@ const targetExtension = 'js';
 
 // TODO: Find a better way to match paths then just on all writes.. e.g. to
 // discern wether a file is in a bundle so a recompile is needed.
-function sourceFilePathMatches(options, sourceFilePath)  {
+function sourceFilePathMatches(options, sourceFilePath) {
   return sourceFilePath !== options.targetFilePath && sourceFilePath.indexOf(options.sourceDirectoryPath) === 0;
 }
 
-function matchesTargetPath(options, path)  {
+function matchesTargetPath(options, path) {
   return path === options.targetPath;
 }
 
-function getBrowserifyBundle(options)  {
+function getBrowserifyBundle() {
   const browserifyOptions = {
     cache: {},
-    //debug: true,
+    // debug: true,
     fullPaths: true,
     packageCache: {}
-  }
+  };
 
   const b = browserify(browserifyOptions);
 
@@ -38,18 +38,18 @@ function getBrowserifyBundle(options)  {
     compileDebug: true,
     pretty: true,
     runtimePath: jadeRuntime
-  }
+  };
 
   b.transform(jadeify, jadeifyOptions);
 
   return b;
 }
 
-function compileAllFiles(options, cb)  {
+function compileAllFiles(options, cb) {
   log.debug('lib/browserify.compileAllFiles');
 
-  exists(options.sourceFilePath, exists => {
-    if (!exists) {
+  exists(options.sourceFilePath, doesExist => {
+    if (!doesExist) {
       logging.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
       return cb();
     }
@@ -70,7 +70,7 @@ function compileAllFiles(options, cb)  {
           data += d;
         });
 
-        bundleStream.on('end', d => {
+        bundleStream.on('end', () => {
           writeFile(options.targetFilePath, data, e => {
             if (e) {
               return cb(e);
@@ -87,7 +87,7 @@ function compileAllFiles(options, cb)  {
   });
 }
 
-function watch(options, cb)  {
+function watch(options, cb) {
   log.debug('lib/browserify.watch');
 
   exists(options.sourceFilePath, exists => {
@@ -112,7 +112,7 @@ function watch(options, cb)  {
           data += d;
         });
 
-        bundleStream.on('end', d => {
+        bundleStream.on('end', () => {
           writeFile(options.targetFilePath, data, e => {
             if (e) {
               return cb(e);

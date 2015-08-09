@@ -6,10 +6,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _logging = require('../lib/logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var _webpack = require('../lib/webpack');
 
 var _webpack2 = _interopRequireWildcard(_webpack);

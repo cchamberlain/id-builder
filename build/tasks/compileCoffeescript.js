@@ -6,10 +6,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _logging = require('../lib/logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var _coffeescript = require('../lib/coffeescript');
 
 var _coffeescript2 = _interopRequireWildcard(_coffeescript);

@@ -12,7 +12,7 @@ import logging from './logging';
 
 const removePath = rimraf;
 
-function getFiles(path, cb)  {
+function getFiles(path, cb) {
   lsr(path, (e, nodes) => {
     if (e) { return cb(e); }
 
@@ -22,7 +22,8 @@ function getFiles(path, cb)  {
   });
 }
 
-function getDirectories(path, cb)  {
+/*
+function getDirectories(path, cb) {
   lsr(path, (e, nodes) => {
     if (e) { return cb(e); }
 
@@ -31,18 +32,19 @@ function getDirectories(path, cb)  {
     }));
   });
 }
+*/
 
-function getTargetPath(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath)  {
+function getTargetPath(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath) {
   return sourceFilePath
     .replace(sourceDirectoryPath, targetDirectoryPath)
     .replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);
 }
 
-function ensureFileDirectory(targetFilePath, cb)  {
+function ensureFileDirectory(targetFilePath, cb) {
   mkdirp(path.dirname(targetFilePath), cb);
 }
 
-function compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb)  {
+function compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb) {
   log.debug('lib/fileSystem.compileFile', sourceFilePath);
 
   fs.readFile(sourceFilePath, (e, fileContent) => {
@@ -66,7 +68,7 @@ function compileFile(compileChunk, options, sourceFilePath, targetFilePath, cb) 
   });
 }
 
-function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb)  {
+function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb) {
   log.debug('lib/fileSystem.compileAllFiles');
 
   getFiles(options.sourceDirectoryPath, (e, sourceFilePaths) => {

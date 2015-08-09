@@ -20,7 +20,7 @@ var _logging = require('./logging');
 
 var _logging2 = _interopRequireWildcard(_logging);
 
-var pathToMocha = _resolve.resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
+var pathToMocha = _resolve.resolve('' + __dirname + '/../../node_modules/mocha/bin/_mocha');
 
 function randomString() {
   return Math.random().toString(36).slice(7);

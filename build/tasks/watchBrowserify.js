@@ -6,10 +6,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _logging = require('../lib/logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var _browserify = require('../lib/browserify');
 
 var _browserify2 = _interopRequireWildcard(_browserify);

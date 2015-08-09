@@ -6,10 +6,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
-
-var _log2 = _interopRequireWildcard(_log);
-
 var _async = require('async');
 
 var _async2 = _interopRequireWildcard(_async);
@@ -17,10 +13,6 @@ var _async2 = _interopRequireWildcard(_async);
 var _rimraf = require('rimraf');
 
 var _rimraf2 = _interopRequireWildcard(_rimraf);
-
-var _logging = require('../lib/logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
 
 var dependencies = [];
 

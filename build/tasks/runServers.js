@@ -11,12 +11,8 @@ var _servers = require('../lib/servers');
 
 var _servers2 = _interopRequireWildcard(_servers);
 
-var _logging = require('../lib/logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy',
-//'compileJade',
+// 'compileJade',
 'compileLess', 'compileLivescript', 'compileStylus'];
 
 var run = _servers2['default'].runServers;

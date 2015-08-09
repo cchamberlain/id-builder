@@ -14,10 +14,6 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
-var _logging = require('./logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var _fileSystem = require('./fileSystem');
 
 var _fileSystem2 = _interopRequireWildcard(_fileSystem);

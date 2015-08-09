@@ -1,4 +1,3 @@
-import logging from '../lib/logging';
 import tests from '../lib/tests';
 
 const dependencies = [
@@ -6,7 +5,7 @@ const dependencies = [
   'compileBrowserify',
   'compileCoffeescript',
   'compileCopy',
-  //'compileJade',
+  // 'compileJade',
   'compileLess',
   'compileLivescript',
   'compileStylus'

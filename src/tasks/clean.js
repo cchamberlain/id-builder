@@ -1,12 +1,9 @@
-import log from 'loglevel';
 import async from 'async';
 import rimraf from 'rimraf';
 
-import logging from '../lib/logging';
-
 const dependencies = [];
 
-function run(options, cb)  {
+function run(options, cb) {
   async.each(options.paths, (path, cb) => {
     rimraf(path, cb);
   }, cb);

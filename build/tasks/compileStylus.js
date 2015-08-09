@@ -6,10 +6,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _logging = require('../lib/logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var _stylus = require('../lib/stylus');
 
 var _stylus2 = _interopRequireWildcard(_stylus);

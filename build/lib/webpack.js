@@ -10,17 +10,9 @@ var _path = require('path');
 
 var _path2 = _interopRequireWildcard(_path);
 
-var _log = require('loglevel');
-
-var _log2 = _interopRequireWildcard(_log);
-
 var _webpack = require('webpack');
 
 var _webpack2 = _interopRequireWildcard(_webpack);
-
-var _browsersync = require('./browsersync');
-
-var _browsersync2 = _interopRequireWildcard(_browsersync);
 
 var _logging = require('./logging');
 

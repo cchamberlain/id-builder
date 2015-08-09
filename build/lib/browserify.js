@@ -6,7 +6,7 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _exists$createWriteStream$writeFile = require('fs');
+var _exists$writeFile = require('fs');
 
 var _resolve = require('path');
 
@@ -47,10 +47,10 @@ function matchesTargetPath(options, path) {
   return path === options.targetPath;
 }
 
-function getBrowserifyBundle(options) {
+function getBrowserifyBundle() {
   var browserifyOptions = {
     cache: {},
-    //debug: true,
+    // debug: true,
     fullPaths: true,
     packageCache: {}
   };
@@ -73,8 +73,8 @@ function getBrowserifyBundle(options) {
 function compileAllFiles(options, cb) {
   _log2['default'].debug('lib/browserify.compileAllFiles');
 
-  _exists$createWriteStream$writeFile.exists(options.sourceFilePath, function (exists) {
-    if (!exists) {
+  _exists$writeFile.exists(options.sourceFilePath, function (doesExist) {
+    if (!doesExist) {
       _logging2['default'].taskInfo(options.taskName, 'skipping ' + options.sourceFilePath + ' (Does not exist)');
       return cb();
     }
@@ -95,8 +95,8 @@ function compileAllFiles(options, cb) {
           data += d;
         });
 
-        bundleStream.on('end', function (d) {
-          _exists$createWriteStream$writeFile.writeFile(options.targetFilePath, data, function (e) {
+        bundleStream.on('end', function () {
+          _exists$writeFile.writeFile(options.targetFilePath, data, function (e) {
             if (e) {
               return cb(e);
             }
@@ -115,7 +115,7 @@ function compileAllFiles(options, cb) {
 function watch(options, cb) {
   _log2['default'].debug('lib/browserify.watch');
 
-  _exists$createWriteStream$writeFile.exists(options.sourceFilePath, function (exists) {
+  _exists$writeFile.exists(options.sourceFilePath, function (exists) {
     if (!exists) {
       _logging2['default'].taskInfo(options.taskName, 'skipping ' + options.sourceFilePath + ' (Does not exist)');
       return cb();
@@ -137,8 +137,8 @@ function watch(options, cb) {
           data += d;
         });
 
-        bundleStream.on('end', function (d) {
-          _exists$createWriteStream$writeFile.writeFile(options.targetFilePath, data, function (e) {
+        bundleStream.on('end', function () {
+          _exists$writeFile.writeFile(options.targetFilePath, data, function (e) {
             if (e) {
               return cb(e);
             }

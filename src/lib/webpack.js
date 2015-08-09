@@ -1,12 +1,10 @@
 import path from 'path';
 
-import log from 'loglevel';
 import webpack from 'webpack';
 
-import browsersync from './browsersync';
 import logging from './logging';
 
-function prepareOptions(options)  {
+function prepareOptions(options) {
   // Make the paths absolute, because webpack needs it to be absolute.
   options.context = path.resolve(options.context);
   options.entry = path.resolve(options.entry);
@@ -15,11 +13,11 @@ function prepareOptions(options)  {
   return options;
 }
 
-function matchesTargetPath(options, path)  {
+function matchesTargetPath(options, path) {
   return path === `${options.path}/${options.filename}`;
 }
 
-function compileAllFiles(options, cb)  {
+function compileAllFiles(options, cb) {
   options.options = prepareOptions(options.options);
 
   const compiler = webpack(options.options);
@@ -45,7 +43,7 @@ function compileAllFiles(options, cb)  {
   });
 }
 
-function watchAllFiles(options, cb)  {
+function watchAllFiles(options, cb) {
   options.options = prepareOptions(options.options);
 
   const compiler = webpack(options.options);

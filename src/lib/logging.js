@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import chalk from 'chalk';
 import log from 'loglevel';
 

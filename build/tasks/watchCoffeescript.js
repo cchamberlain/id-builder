@@ -24,7 +24,7 @@ var _watch2 = _interopRequireWildcard(_watch);
 
 var dependencies = ['watch'];
 
-function handleAdd(options, path, stat) {
+function handleAdd(options, path) {
   if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -38,7 +38,7 @@ function handleAdd(options, path, stat) {
   });
 }
 
-function handleAddDir(options, path, stat) {
+function handleAddDir(options, path) {
   if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -50,7 +50,7 @@ function handleAddDir(options, path, stat) {
   });
 }
 
-function handleChange(options, path, stat) {
+function handleChange(options, path) {
   if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -64,7 +64,7 @@ function handleChange(options, path, stat) {
   });
 }
 
-function handleUnlink(options, path, stat) {
+function handleUnlink(options, path) {
   if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -76,7 +76,7 @@ function handleUnlink(options, path, stat) {
   });
 }
 
-function handleUnlinkDir(options, path, stat) {
+function handleUnlinkDir(options, path) {
   if (!_coffeescript2['default'].sourceFilePathMatches(options, path)) {
     return;
   }
@@ -92,27 +92,27 @@ function handleError(options, e) {
   _logging2['default'].taskError(e);
 }
 
-function run(options, cb) {
+function run(options) {
   var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
-    watcher.on('add', function (path, stat) {
-      handleAdd(options, path, stat);
+    watcher.on('add', function (path) {
+      handleAdd(options, path);
     });
-    watcher.on('addDir', function (path, stat) {
-      handleAddDir(options, path, stat);
+    watcher.on('addDir', function (path) {
+      handleAddDir(options, path);
     });
-    watcher.on('change', function (path, stat) {
-      handleChange(options, path, stat);
+    watcher.on('change', function (path) {
+      handleChange(options, path);
     });
-    watcher.on('unlink', function (path, stat) {
-      handleUnlink(options, path, stat);
+    watcher.on('unlink', function (path) {
+      handleUnlink(options, path);
     });
-    watcher.on('unlinkDir', function (path, stat) {
-      handleUnlinkDir(options, path, stat);
+    watcher.on('unlinkDir', function (path) {
+      handleUnlinkDir(options, path);
     });
-    watcher.on('error', function (path, stat) {
-      handleError(options, path, stat);
+    watcher.on('error', function (path) {
+      handleError(options, path);
     });
   });
 }

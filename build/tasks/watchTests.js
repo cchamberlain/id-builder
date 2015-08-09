@@ -20,7 +20,7 @@ var _watch2 = _interopRequireWildcard(_watch);
 
 var dependencies = ['runTests', 'watch'];
 
-function handlePath(options, path, stat) {
+function handlePath(options, path) {
   if (!_tests2['default'].buildFilePathMatches(options, path)) {
     return;
   }
@@ -32,51 +32,45 @@ function handlePath(options, path, stat) {
   });
 }
 
-function handleAdd(options, path, stat) {
-  handlePath(options, path, stat);
+function handleAdd(options, path) {
+  handlePath(options, path);
 }
 
-function handleAddDir(options, path, stat) {
-  handlePath(options, path, stat);
+// function handleAddDir(options, path) {
+//   handlePath(options, path);
+// }
+
+function handleChange(options, path) {
+  handlePath(options, path);
 }
 
-function handleChange(options, path, stat) {
-  handlePath(options, path, stat);
-}
+// function handleUnlink(options, path) {
+//   handlePath(options, path);
+// }
 
-function handleUnlink(options, path, stat) {
-  handlePath(options, path, stat);
-}
-
-function handleUnlinkDir(options, path, stat) {
-  handlePath(options, path, stat);
-}
+// function handleUnlinkDir(options, path) {
+//   handlePath(options, path);
+// }
 
 function handleError(options, e) {
   _logging2['default'].taskError(e);
 }
 
-function run(options, cb) {
+function run(options) {
   var watcher = _watch2['default'].getWatcher();
 
   watcher.on('ready', function () {
-    watcher.on('add', function (path, stat) {
-      handleAdd(options, path, stat);
+    watcher.on('add', function (path) {
+      handleAdd(options, path);
     });
-    watcher.on('addDir', function (path, stat) {
-      handleAddDir(options, path, stat);
+    // watcher.on('addDir', (path) => { handleAddDir(options, path); });
+    watcher.on('change', function (path) {
+      handleChange(options, path);
     });
-    watcher.on('change', function (path, stat) {
-      handleChange(options, path, stat);
-    });
-    watcher.on('unlink', function (path, stat) {
-      handleUnlink(options, path, stat);
-    });
-    watcher.on('unlinkDir', function (path, stat) {
-      handleUnlinkDir(options, path, stat);
-    });
-    watcher.on('error', function (path, stat) {
-      handleError(options, path, stat);
+    // watcher.on('unlink', (path) => { handleUnlink(options, path); });
+    // watcher.on('unlinkDir', (path) => { handleUnlinkDir(options, path); });
+    watcher.on('error', function (path) {
+      handleError(options, path);
     });
   });
 }

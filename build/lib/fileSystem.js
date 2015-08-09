@@ -56,17 +56,17 @@ function getFiles(path, cb) {
   });
 }
 
+/*
 function getDirectories(path, cb) {
-  _lsr2['default'](path, function (e, nodes) {
-    if (e) {
-      return cb(e);
-    }
+  lsr(path, (e, nodes) => {
+    if (e) { return cb(e); }
 
-    cb(null, _import2['default'](nodes).filter(function (v) {
+    cb(null, _(nodes).filter(v => {
       return v.isDirectory();
     }));
   });
 }
+*/
 
 function getTargetPath(sourceDirectoryPath, targetDirectoryPath, sourceExtension, targetExtension, sourceFilePath) {
   return sourceFilePath.replace(sourceDirectoryPath, targetDirectoryPath).replace(new RegExp('\\.' + sourceExtension + '$'), '.' + targetExtension);

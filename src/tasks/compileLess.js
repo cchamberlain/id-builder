@@ -5,7 +5,7 @@ import logging from '../lib/logging';
 
 const dependencies = [ 'clean' ];
 
-function run(options, cb)  {
+function run(options, cb) {
   fs.exists(options.sourceFilePath, result => {
     if (!result) {
       logging.taskInfo('compileLess', `skipping ${options.sourceFilePath} (Does not exist).`);

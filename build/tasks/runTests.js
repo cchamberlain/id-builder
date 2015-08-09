@@ -6,16 +6,12 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _logging = require('../lib/logging');
-
-var _logging2 = _interopRequireWildcard(_logging);
-
 var _tests = require('../lib/tests');
 
 var _tests2 = _interopRequireWildcard(_tests);
 
 var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy',
-//'compileJade',
+// 'compileJade',
 'compileLess', 'compileLivescript', 'compileStylus'];
 
 var run = _tests2['default'].runTests;

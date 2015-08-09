@@ -1,4 +1,3 @@
-import logging from '../lib/logging';
 import babel from '../lib/babel';
 
 const dependencies = [ 'clean' ];

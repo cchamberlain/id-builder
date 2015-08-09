@@ -1,4 +1,3 @@
-import log from '../lib/logging';
 import browsersync from '../lib/browsersync';
 
 const dependencies = [

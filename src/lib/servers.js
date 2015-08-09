@@ -7,7 +7,7 @@ import { each } from 'async';
 
 import logging from './logging';
 
-const monitors = {}
+const monitors = {};
 
 function addPath(path, cb) {
   log.debug('lib/servers.addPath', path);

@@ -1,9 +1,8 @@
-import logging from '../lib/logging';
 import watch from '../lib/watch';
 
 const dependencies = [ 'runTests' ];
 
-function run(options, cb)  {
+function run(options, cb) {
   watch.start(options);
   cb();
 }

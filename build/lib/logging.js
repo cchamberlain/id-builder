@@ -6,10 +6,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _moment = require('moment');
-
-var _moment2 = _interopRequireWildcard(_moment);
-
 var _chalk = require('chalk');
 
 var _chalk2 = _interopRequireWildcard(_chalk);

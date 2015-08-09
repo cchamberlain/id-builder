@@ -2,7 +2,7 @@ import log from 'loglevel';
 
 import browserify from '../lib/browserify';
 import browsersync from '../lib/browsersync';
-import fileSystem from '../lib/fileSystem'
+import fileSystem from '../lib/fileSystem';
 import logging from '../lib/logging';
 import watch from '../lib/watch';
 import webpack from '../lib/webpack';
@@ -11,7 +11,7 @@ const dependencies = [
   'watch'
 ];
 
-function shouldContinue(options, path, stat)  {
+function shouldContinue(options, path) {
   let result = false;
 
   if (path.match(/\.js$/) && browserify.matchesTargetPath(options, path) || webpack.matchesTargetPath(options, path)) {
@@ -23,8 +23,8 @@ function shouldContinue(options, path, stat)  {
   return result;
 }
 
-function handleAdd(options, path, stat)  {
-  if (!shouldContinue(options, path, stat)) {
+function handleAdd(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -35,16 +35,16 @@ function handleAdd(options, path, stat)  {
   });
 }
 
-function handleAddDir(options, path, stat)  {
-  if (!shouldContinue(options, path, stat)) {
+function handleAddDir(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
   // TODO: Something?
 }
 
-function handleChange(options, path, stat)  {
-  if (!shouldContinue(options, path, stat)) {
+function handleChange(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -55,8 +55,8 @@ function handleChange(options, path, stat)  {
   });
 }
 
-function handleUnlink(options, path, stat)  {
-  if (!shouldContinue(options, path, stat)) {
+function handleUnlink(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -67,8 +67,8 @@ function handleUnlink(options, path, stat)  {
   });
 }
 
-function handleUnlinkDir(options, path, stat)  {
-  if (!shouldContinue(options, path, stat)) {
+function handleUnlinkDir(options, path) {
+  if (!shouldContinue(options, path)) {
     return;
   }
 
@@ -79,11 +79,11 @@ function handleUnlinkDir(options, path, stat)  {
   });
 }
 
-function handleError(options, e)  {
+function handleError(options, e) {
   logging.taskError(e);
 }
 
-function run(options, cb)  {
+function run(options) {
   const watcher = watch.getWatcher();
 
   watcher.on('all', () => {
@@ -91,12 +91,12 @@ function run(options, cb)  {
   });
 
   watcher.on('ready', () => {
-    watcher.on('add', (path, stat) => { handleAdd(options, path, stat); });
-    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat); });
-    watcher.on('change', (path, stat) => { handleChange(options, path, stat); });
-    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat); });
-    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat); });
-    watcher.on('error', (path, stat) => { handleError(options, path, stat); });
+    watcher.on('add', (path) => { handleAdd(options, path); });
+    watcher.on('addDir', (path) => { handleAddDir(options, path); });
+    watcher.on('change', (path) => { handleChange(options, path); });
+    watcher.on('unlink', (path) => { handleUnlink(options, path); });
+    watcher.on('unlinkDir', (path) => { handleUnlinkDir(options, path); });
+    watcher.on('error', (path) => { handleError(options, path); });
   });
 }
 

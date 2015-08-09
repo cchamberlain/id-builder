@@ -1,7 +1,7 @@
 export default {
-  //sourceDirectoryPath: 'src',
-  //targetDirectoryPath: 'build',
-  //testsDirectoryPath: 'build/tests',
+  // sourceDirectoryPath: 'src',
+  // targetDirectoryPath: 'build',
+  // testsDirectoryPath: 'build/tests',
 
   logging: {
     level: 'info'

@@ -1,13 +1,13 @@
 import logging from '../lib/logging';
 import babel from '../lib/babel';
 import watch from '../lib/watch';
-import fileSystem from '../lib/fileSystem'
+import fileSystem from '../lib/fileSystem';
 
 const dependencies = [
   'watch'
 ];
 
-function handleAdd(options, path, stat)  {
+function handleAdd(options, path) {
   if (!babel.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -23,7 +23,7 @@ function handleAdd(options, path, stat)  {
   });
 }
 
-function handleAddDir(options, path, stat)  {
+function handleAddDir(options, path) {
   if (!babel.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -35,7 +35,7 @@ function handleAddDir(options, path, stat)  {
   });
 }
 
-function handleChange(options, path, stat)  {
+function handleChange(options, path) {
   if (!babel.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -51,7 +51,7 @@ function handleChange(options, path, stat)  {
   });
 }
 
-function handleUnlink(options, path, stat)  {
+function handleUnlink(options, path) {
   if (!babel.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -63,7 +63,7 @@ function handleUnlink(options, path, stat)  {
   });
 }
 
-function handleUnlinkDir(options, path, stat)  {
+function handleUnlinkDir(options, path) {
   if (!babel.sourceFilePathMatches(options, path)) {
     return;
   }
@@ -75,24 +75,20 @@ function handleUnlinkDir(options, path, stat)  {
   });
 }
 
-function handleError(options, e)  {
-  if (!babel.sourceFilePathMatches(options, path)) {
-    return;
-  }
-
+function handleError(options, e) {
   logging.taskError(e);
 }
 
-function run(options, cb)  {
+function run(options) {
   const watcher = watch.getWatcher();
 
   watcher.on('ready', () => {
-    watcher.on('add', (path, stat) => { handleAdd(options, path, stat); });
-    watcher.on('addDir', (path, stat) => { handleAddDir(options, path, stat) });
-    watcher.on('change', (path, stat) => { handleChange(options, path, stat) });
-    watcher.on('unlink', (path, stat) => { handleUnlink(options, path, stat) });
-    watcher.on('unlinkDir', (path, stat) => { handleUnlinkDir(options, path, stat) });
-    watcher.on('error', (path, stat) => { handleError(options, path, stat) });
+    watcher.on('add', (path) => { handleAdd(options, path); });
+    watcher.on('addDir', (path) => { handleAddDir(options, path); });
+    watcher.on('change', (path) => { handleChange(options, path); });
+    watcher.on('unlink', (path) => { handleUnlink(options, path); });
+    watcher.on('unlinkDir', (path) => { handleUnlinkDir(options, path); });
+    watcher.on('error', (path) => { handleError(options, path); });
   });
 }
 

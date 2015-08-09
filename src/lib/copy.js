@@ -14,7 +14,7 @@ import livescript from './livescript';
 import logging from './logging';
 import stylus from './stylus';
 
-function sourceFilePathMatches(options, sourceFilePath)  {
+function sourceFilePathMatches(options, sourceFilePath) {
   const globalOptions = global.options;
 
   let result;
@@ -40,7 +40,7 @@ function sourceFilePathMatches(options, sourceFilePath)  {
   return result;
 }
 
-function copyFile(options, sourceFilePath, targetFilePath, cb)  {
+function copyFile(options, sourceFilePath, targetFilePath, cb) {
   log.debug('lib/fileSystem.compileFile', sourceFilePath);
 
   fs.readFile(sourceFilePath, (e, readChunk) => {
@@ -60,7 +60,7 @@ function copyFile(options, sourceFilePath, targetFilePath, cb)  {
   });
 }
 
-function copyAllFiles(options, cb)  {
+function copyAllFiles(options, cb) {
   log.debug('lib/fileSystem.copyAllFiles');
 
   lsr(options.sourceDirectoryPath, (e, nodes) => {
