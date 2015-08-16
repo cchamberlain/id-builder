@@ -83,7 +83,7 @@ function compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, ta
       const currentTargetFilePath = getTargetPath(options.sourceDirectoryPath, options.targetDirectoryPath, sourceExtension, targetExtension, currentSourceFilePath);
 
       compileFile(options, currentSourceFilePath, currentTargetFilePath, cb);
-    }
+    };
 
     async.each(paths, iteratePath, cb);
   });
