@@ -36,8 +36,6 @@ var StylusCompile = (function (_CompileTask) {
 
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
-
-    this.dependencies = ['DirectoryCleaner'];
   }
 
   _inherits(StylusCompile, _CompileTask);

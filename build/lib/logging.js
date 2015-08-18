@@ -23,11 +23,11 @@ function taskInfo(task, message) {
 }
 
 function taskWarn(task, message) {
-  _log2['default'].warn('' + _chalk2['default'].grey(arrowCharacter) + ' ' + task + ': ' + message);
+  _log2['default'].warn('' + _chalk2['default'].orange(arrowCharacter) + ' ' + task + ': ' + message);
 }
 
 function taskError(task, message) {
-  _log2['default'].error('' + _chalk2['default'].grey(arrowCharacter) + ' ' + task + ': ' + message);
+  _log2['default'].error('' + _chalk2['default'].red(arrowCharacter) + ' ' + task + ': ' + message);
 }
 
 function disabledTask(name) {
@@ -36,6 +36,10 @@ function disabledTask(name) {
 
 function startTask(name) {
   _log2['default'].info('' + _chalk2['default'].grey(arrowCharacter) + ' ' + name);
+}
+
+function skipTask(name) {
+  _log2['default'].info('' + _chalk2['default'].grey(okCharacter) + ' ' + name);
 }
 
 function finishTask(name) {
@@ -52,6 +56,7 @@ exports['default'] = {
   taskError: taskError,
   disabledTask: disabledTask,
   startTask: startTask,
+  skipTask: skipTask,
   finishTask: finishTask
 };
 module.exports = exports['default'];

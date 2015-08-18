@@ -56,16 +56,16 @@ var Builder = (function () {
         }
 
         if (!options.enabled) {
-          return;
+          // Fake a task that does nothing
+          _this.taskInstances[name] = {
+            dependencies: []
+          };
+        } else {
+          // Pass the builder to the Task for scope.
+          options.builder = _this;
+
+          _this.taskInstances[name] = new Task(options);
         }
-
-        // TODO: Refactor this out.
-        options.taskName = name;
-
-        // Pass the builder to the Task for scope.
-        options.builder = _this;
-
-        _this.taskInstances[name] = new Task(options);
       });
     }
   }, {
@@ -93,6 +93,14 @@ var Builder = (function () {
   }, {
     key: '_createTaskCallback',
     value: function _createTaskCallback(name, task) {
+      // Make sure all callbacks get fired for dependencies wether they run or not.
+      if (!task.start) {
+        return function (cb) {
+          _logging2['default'].skipTask(name);
+          cb();
+        };
+      }
+
       return function (cb) {
         _logging2['default'].startTask(name);
 

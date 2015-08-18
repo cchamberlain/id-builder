@@ -28,16 +28,16 @@ class Builder {
       }
 
       if (!options.enabled) {
-        return;
+        // Fake a task that does nothing
+        this.taskInstances[name] = {
+          dependencies: []
+        };
+      } else {
+        // Pass the builder to the Task for scope.
+        options.builder = this;
+
+        this.taskInstances[name] = new Task(options);
       }
-
-      // TODO: Refactor this out.
-      options.taskName = name;
-
-      // Pass the builder to the Task for scope.
-      options.builder = this;
-
-      this.taskInstances[name] = new Task(options);
     });
   }
 
@@ -59,6 +59,14 @@ class Builder {
   }
 
   _createTaskCallback(name, task) {
+    // Make sure all callbacks get fired for dependencies wether they run or not.
+    if (!task.start) {
+      return (cb) => {
+        logging.skipTask(name);
+        cb();
+      };
+    }
+
     return (cb) => {
       logging.startTask(name);
 

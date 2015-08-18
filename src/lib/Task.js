@@ -6,7 +6,7 @@ class Task {
 
     this.builder = options.builder;
 
-    this.dependencies = [];
+    this.dependencies = options.dependencies || [];
   }
 
   addDependency(name) {

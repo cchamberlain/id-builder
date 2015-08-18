@@ -24,7 +24,7 @@ var Task = (function () {
 
     this.builder = options.builder;
 
-    this.dependencies = [];
+    this.dependencies = options.dependencies || [];
   }
 
   _createClass(Task, [{

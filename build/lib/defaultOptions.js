@@ -12,11 +12,15 @@ exports['default'] = {
     DirectoryCleaner: {
       enabled: true,
 
+      dependencies: [],
+
       paths: ['build']
     },
 
     BabelCompile: {
       enabled: true,
+
+      dependencies: ['DirectoryCleaner'],
 
       sourceFileExtension: 'js',
       targetFileExtension: 'js',
@@ -31,6 +35,8 @@ exports['default'] = {
     CoffeeScriptCompile: {
       enabled: true,
 
+      dependencies: ['DirectoryCleaner'],
+
       sourceFileExtension: 'coffee',
       targetFileExtension: 'js',
       sourceDirectoryPath: 'src',
@@ -44,6 +50,8 @@ exports['default'] = {
     LiveScriptCompile: {
       enabled: true,
 
+      dependencies: ['DirectoryCleaner'],
+
       sourceFileExtension: 'ls',
       targetFileExtension: 'js',
       sourceDirectoryPath: 'src',
@@ -56,6 +64,8 @@ exports['default'] = {
 
     LessCompile: {
       enabled: true,
+
+      dependencies: ['DirectoryCleaner'],
 
       sourceFilePath: 'src/client/less/app.less',
       targetFilePath: 'build/client/css/app.css',
@@ -71,6 +81,8 @@ exports['default'] = {
 
     BrowserifyCompile: {
       enabled: true,
+
+      dependencies: ['BabelCompile', 'CoffeeScriptCompile', 'LessCompile', 'LiveScriptCompile'],
 
       sourceFilePath: 'build/client/js/app.js',
       targetFilePath: 'build/client/js/app.bundle.js',
@@ -90,6 +102,8 @@ exports['default'] = {
     StylusCompile: {
       enabled: true,
 
+      dependencies: ['DirectoryCleaner'],
+
       sourceFilePath: 'src/client/stylus/app.styl',
       targetFilePath: 'build/client/css/app.css',
       sourceFileExtension: 'styl',
@@ -103,8 +117,36 @@ exports['default'] = {
     Copy: {
       enabled: true,
 
+      dependencies: ['DirectoryCleaner'],
+
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
+    },
+
+    BrowserSyncServer: {
+      enabled: true,
+
+      dependencies: ['DirectoryCleaner'],
+
+      options: {
+        ui: {
+          port: 9001
+        },
+
+        port: 9000,
+        logLevel: 'silent',
+        logFileChanges: false
+      }
+    },
+
+    AppServer: {
+      enabled: true,
+
+      dependencies: ['BrowserifyCompile'],
+
+      sourceDirectoryPath: 'build',
+
+      paths: ['server/app.js']
     }
   }
 };

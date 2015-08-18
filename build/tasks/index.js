@@ -10,6 +10,10 @@ var _BabelCompile = require('./BabelCompile');
 
 var _BabelCompile2 = _interopRequireWildcard(_BabelCompile);
 
+var _BrowserSyncServer = require('./BrowserSyncServer');
+
+var _BrowserSyncServer2 = _interopRequireWildcard(_BrowserSyncServer);
+
 var _BrowserifyCompile = require('./BrowserifyCompile');
 
 var _BrowserifyCompile2 = _interopRequireWildcard(_BrowserifyCompile);
@@ -34,12 +38,18 @@ var _LiveScriptCompile = require('./LiveScriptCompile');
 
 var _LiveScriptCompile2 = _interopRequireWildcard(_LiveScriptCompile);
 
+var _AppServer = require('./AppServer');
+
+var _AppServer2 = _interopRequireWildcard(_AppServer);
+
 var _StylusCompile = require('./StylusCompile');
 
 var _StylusCompile2 = _interopRequireWildcard(_StylusCompile);
 
 exports['default'] = {
+  AppServer: _AppServer2['default'],
   BabelCompile: _BabelCompile2['default'],
+  BrowserSyncServer: _BrowserSyncServer2['default'],
   BrowserifyCompile: _BrowserifyCompile2['default'],
   CoffeeScriptCompile: _CoffeeScriptCompile2['default'],
   Copy: _Copy2['default'],

@@ -10,8 +10,6 @@ class StylusCompile extends CompileTask {
 
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
-
-    this.dependencies = ['DirectoryCleaner'];
   }
 
   get sourceFilePathMatchExpression() {

@@ -4,12 +4,6 @@ import { each } from 'async';
 import CompileTask from '../lib/CompileTask';
 
 class Copy extends CompileTask {
-  constructor(options = {}) {
-    super(options);
-
-    this.dependencies = ['DirectoryCleaner'];
-  }
-
   get otherTasks() {
     return _.filter(this.builder.taskInstances, (v, k) => {
       if (k !== this.name) {

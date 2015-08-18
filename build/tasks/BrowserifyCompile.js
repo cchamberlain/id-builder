@@ -44,8 +44,6 @@ var BrowserifyCompile = (function (_CompileTask) {
 
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
-
-    this.dependencies = ['BabelCompile', 'CoffeeScriptCompile', 'LessCompile', 'LiveScriptCompile'];
   }
 
   _inherits(BrowserifyCompile, _CompileTask);
@@ -113,4 +111,53 @@ var BrowserifyCompile = (function (_CompileTask) {
 })(_CompileTask3['default']);
 
 exports['default'] = BrowserifyCompile;
+
+/*
+function watch(options, cb) {
+  log.debug('lib/browserify.watch');
+
+  exists(options.sourceFilePath, exists => {
+    if (!exists) {
+      logging.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);
+      return cb();
+    }
+
+    fileSystem.ensureFileDirectory(options.targetFilePath, e => {
+      if (e) {
+        return cb(e);
+      }
+
+      const b = getBrowserifyBundle(options);
+
+      b.add(resolve(options.sourceFilePath));
+
+      b.on('bundle', bundleStream => {
+        let data = '';
+
+        bundleStream.on('data', d => {
+          data += d;
+        });
+
+        bundleStream.on('end', () => {
+          writeFile(options.targetFilePath, data, e => {
+            if (e) {
+              return cb(e);
+            }
+
+            logging.taskInfo(options.taskName, `${options.sourceFilePath} => ${options.targetFilePath}`);
+          });
+        });
+      });
+
+      const w = watchify(b);
+
+      w.on('update', () => {
+        b.bundle();
+      });
+
+      b.bundle();
+    });
+  });
+}
+*/
 module.exports = exports['default'];

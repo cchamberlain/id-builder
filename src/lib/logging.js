@@ -10,11 +10,11 @@ function taskInfo(task, message) {
 }
 
 function taskWarn(task, message) {
-  log.warn(`${chalk.grey(arrowCharacter)} ${task}: ${message}`);
+  log.warn(`${chalk.orange(arrowCharacter)} ${task}: ${message}`);
 }
 
 function taskError(task, message) {
-  log.error(`${chalk.grey(arrowCharacter)} ${task}: ${message}`);
+  log.error(`${chalk.red(arrowCharacter)} ${task}: ${message}`);
 }
 
 function disabledTask(name) {
@@ -23,6 +23,10 @@ function disabledTask(name) {
 
 function startTask(name) {
   log.info(`${chalk.grey(arrowCharacter)} ${name}`);
+}
+
+function skipTask(name) {
+  log.info(`${chalk.grey(okCharacter)} ${name}`);
 }
 
 function finishTask(name) {
@@ -39,5 +43,6 @@ export default {
   taskError,
   disabledTask,
   startTask,
+  skipTask,
   finishTask
 };
