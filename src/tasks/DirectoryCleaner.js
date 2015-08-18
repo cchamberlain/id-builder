@@ -1,13 +1,22 @@
-import { each } from 'async';
+import log from 'loglevel';
 import rimraf from 'rimraf';
+import { each } from 'async';
 
 import Task from '../lib/Task';
 
 class DirectoryCleaner extends Task {
-  run(options, cb) {
-    each(options.paths, (path, cb) => {
-      rimraf(`${path}/**/*`, cb);
-    }, cb);
+  constructor(options = {}) {
+    super(options);
+
+    this.paths = options.paths;
+  }
+
+  removeDirectoryContents(path, cb) {
+    rimraf(`${path}/**/*`, cb);
+  }
+
+  run(cb) {
+    each(this.paths, this.removeDirectoryContents.bind(this), cb);
   }
 }
 

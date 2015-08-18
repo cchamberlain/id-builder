@@ -1,30 +1,46 @@
-import { readFile, writeFile } from 'fs';
-
-import lsr from 'lsr';
+import _ from 'lodash';
 import { each } from 'async';
 
-import Task from '../lib/Task';
-import copy from '../lib/copy';
-import fileSystem from '../lib/fileSystem';
+import CompileTask from '../lib/CompileTask';
 
-class Copy extends Task {
+class Copy extends CompileTask {
   constructor(options = {}) {
     super(options);
 
     this.dependencies = ['DirectoryCleaner'];
   }
 
-  sourceFilePathMatches() {
+  get otherTasks() {
+    return _.filter(this.builder.taskInstances, (v, k) => {
+      if (k !== this.name) {
+        return v;
+      }
+    });
   }
 
-  getPaths(options, cb) {
-    lsr(options.sourceDirectoryPath, (e, nodes) => {
+  // Check all other tasks for sourceFilePathMathches functions and
+  // only return true if no other matches, so don't copy files any
+  // other task is interested in.
+  doesntMatchOtherTaskSourceFilePath(node) {
+    let result = true;
+
+    _.each(this.otherTasks, (task) => {
+      if (task.sourceFilePathMatches && task.sourceFilePathMatches(node.fullPath)) {
+        result = false;
+      }
+    });
+
+    return result;
+  }
+
+  getPaths(cb) {
+    this.getFiles(this.sourceDirectoryPath, (e, nodes) => {
       if (e) {
         return cb(e);
       }
 
       const paths = _(nodes)
-        .filter(v => !v.isDirectory() && copy.sourceFilePathMatches(options, v.fullPath))
+        .filter(this.doesntMatchOtherTaskSourceFilePath.bind(this))
         .map(v => v.fullPath)
         .value();
 
@@ -32,38 +48,22 @@ class Copy extends Task {
     });
   }
 
-  copyFile(options, sourceFilePath, targetFilePath, cb) {
-    readFile(sourceFilePath, (e, readChunk) => {
-      if (e) {
-        return cb(e);
-      }
-
-      fileSystem.ensureFileDirectory(targetFilePath, e => {
-        if (e) {
-          return cb(e);
-        }
-
-        writeFile(targetFilePath, readChunk, e => {
-          if (e) {
-            return cb(e);
-          }
-
-          cb(null);
-        });
-      });
-    });
+  // Just return the chunk to perform a copy file CompileTask#compileFile.
+  // Explicitly defined to show the behaviour.
+  compileChunk(chunk, cb) {
+    cb(null, chunk);
   }
 
-  run(options, cb) {
-    this.getPaths(options, (e, paths) => {
+  run(cb) {
+    this.getPaths((e, paths) => {
       if (e) {
         return cb(e);
       }
 
       const iteratePath = (currentSourceDirectoryPath, cb) => {
-        const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(options.sourceDirectoryPath, options.targetDirectoryPath);
+        const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(this.sourceDirectoryPath, this.targetDirectoryPath);
 
-        this.copyFile(options, currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
+        this.compileFile(currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
       };
 
       each(paths, iteratePath, cb);

@@ -1,6 +1,13 @@
-import fileSystem from './fileSystem';
+import { readFile, writeFile } from 'fs';
+import { dirname } from 'path';
+
+import _ from 'lodash';
+import lsr from 'lsr';
+import mkdirp from 'mkdirp';
+import { each } from 'async';
 
 import Task from './Task';
+import logging from '../lib/logging';
 
 class CompileTask extends Task {
   constructor(options = {}) {
@@ -13,24 +20,93 @@ class CompileTask extends Task {
   }
 
   get sourceFilePathMatchExpression() {
-    return new RegExp(`^${this.sourceDirectoryPath}.+\\.${this.sourceExtension}$`);
+    return new RegExp(`^${this.sourceDirectoryPath}.+\\.${this.sourceFileExtension}$`);
   }
 
-  sourceFilePathMatches(options, sourceFilePath) {
+  sourceFilePathMatches(sourceFilePath) {
     return !!sourceFilePath.match(this.sourceFilePathMatchExpression);
   }
 
-  compileChunk() {
+  get targetPathReplaceExpression() {
+    return new RegExp(`\\.${this.sourceFileExtension}$`);
   }
 
-  compileFile() {
+  getTargetPath(sourceFilePath) {
+    return sourceFilePath
+      .replace(this.sourceDirectoryPath, this.targetDirectoryPath)
+      .replace(this.targetPathReplaceExpression, `.${this.targetFileExtension}`);
   }
 
-  compileAllFiles() {
+  getFiles(path, cb) {
+    lsr(path, (e, nodes) => {
+      if (e) {
+        return cb(e);
+      }
+
+      const filteredNodes = _.filter(nodes, v => {
+        if (v.isFile()) {
+          return v;
+        }
+      });
+
+      cb(null, filteredNodes);
+    });
   }
 
-  run(options, cb) {
-    this.compileAllFiles(cb);
+  ensureFileDirectory(targetFilePath, cb) {
+    mkdirp(dirname(targetFilePath), cb);
+  }
+
+  // Reference implementation. Just returns the chunk.
+  compileChunk(chunk, cb) {
+    cb(null, chunk);
+  }
+
+  compileFile(sourceFilePath, targetFilePath, cb) {
+    readFile(sourceFilePath, (e, fileContent) => {
+      if (e) {
+        return cb(e);
+      }
+
+      this.compileChunk(fileContent.toString(), (e, compiledChunk) => {
+        if (e) {
+          return cb(e);
+        }
+
+        this.ensureFileDirectory(targetFilePath, e => {
+          if (e) {
+            return cb(e);
+          }
+
+          writeFile(targetFilePath, compiledChunk, e => {
+            if (e) {
+              return cb(e);
+            }
+
+            logging.taskInfo(this.constructor.name, `${sourceFilePath} => ${targetFilePath}`);
+
+            cb(null);
+          });
+        });
+      });
+    });
+  }
+
+  compileAllFiles(cb) {
+    this.getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {
+      if (e) {
+        return cb(e);
+      }
+
+      const paths = _(sourceFilePaths)
+        .map(v => v.fullPath)
+        .filter(this.sourceFilePathMatches.bind(this))
+        .value();
+
+      each(paths, (currentSourceFilePath, cb) => {
+        this.compileFile(currentSourceFilePath, this.getTargetPath(currentSourceFilePath), cb);
+      }, cb);
+    });
   }
 }
 

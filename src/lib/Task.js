@@ -4,6 +4,8 @@ class Task {
   constructor(options = {}) {
     this.options = options;
 
+    this.builder = options.builder;
+
     this.dependencies = [];
   }
 
@@ -28,7 +30,7 @@ class Task {
     }
 
     // TODO: This is horrible!
-    this.__proto__.run.call(this, this.options, cb);
+    this.__proto__.run.call(this, cb);
   }
 }
 

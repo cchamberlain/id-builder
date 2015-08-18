@@ -4,7 +4,11 @@ require('babel/register');
 
 var idBuilder = require('./src');
 
-idBuilder({}, function afterIdBuilder(e) {
+idBuilder({
+  logging: {
+    level: 'debug'
+  }
+}, function afterIdBuilder(e) {
   if (e) {
     console.error(e.stack || e.message || e);
   }

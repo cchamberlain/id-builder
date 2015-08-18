@@ -1,7 +1,5 @@
-import { each } from 'async';
-import rimraf from 'rimraf';
+import { transform } from 'babel';
 
-import babel from '../lib/babel';
 import CompileTask from '../lib/CompileTask';
 
 class BabelCompile extends CompileTask {
@@ -11,17 +9,17 @@ class BabelCompile extends CompileTask {
     this.dependencies = ['DirectoryCleaner'];
   }
 
-  compileChunk() {
+  compileChunk(chunk, cb) {
+    try {
+      cb(null, transform(chunk, this.options.options).code);
+    } catch (e) {
+      return cb(e);
+    }
   }
 
-  run(options, cb) {
-    each(options.paths, (path, cb) => {
-      rimraf(path, cb);
-    }, cb);
+  run(cb) {
+    this.compileAllFiles(cb);
   }
 }
-
-// TODO: Refactor this into the CompileTask implementation;
-BabelCompile.prototype.run = babel.compileAllFiles;
 
 export default BabelCompile;

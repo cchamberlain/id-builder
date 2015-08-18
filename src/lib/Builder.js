@@ -2,7 +2,6 @@ import _ from 'lodash';
 import { auto } from 'async';
 
 import logging from './logging';
-import Task from './Task';
 
 class Builder {
   constructor(options = {}) {
@@ -34,6 +33,9 @@ class Builder {
 
       // TODO: Refactor this out.
       options.taskName = name;
+
+      // Pass the builder to the Task for scope.
+      options.builder = this;
 
       this.taskInstances[name] = new Task(options);
     });
