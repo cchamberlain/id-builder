@@ -117,7 +117,8 @@ var CompileTask = (function (_Task) {
 
         _this.compileChunk(fileContent.toString(), function (e, compiledChunk) {
           if (e) {
-            return cb(e);
+            _logging2['default'].taskWarn(_this.constructor.name, '' + sourceFilePath + ': ' + e);
+            return cb();
           }
 
           _this.ensureFileDirectory(targetFilePath, function (e) {

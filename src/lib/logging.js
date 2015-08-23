@@ -10,7 +10,7 @@ function taskInfo(task, message) {
 }
 
 function taskWarn(task, message) {
-  log.warn(`${chalk.orange(arrowCharacter)} ${task}: ${message}`);
+  log.warn(`${chalk.yellow(arrowCharacter)} ${task}: ${message}`);
 }
 
 function taskError(task, message) {

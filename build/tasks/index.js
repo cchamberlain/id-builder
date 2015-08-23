@@ -6,9 +6,21 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _BabelCompile = require('./BabelCompile');
+var _AppServer = require('./AppServer');
 
-var _BabelCompile2 = _interopRequireWildcard(_BabelCompile);
+var _AppServer2 = _interopRequireWildcard(_AppServer);
+
+var _BabelASTCompile = require('./BabelASTCompile');
+
+var _BabelASTCompile2 = _interopRequireWildcard(_BabelASTCompile);
+
+var _BabelCodeCompile = require('./BabelCodeCompile');
+
+var _BabelCodeCompile2 = _interopRequireWildcard(_BabelCodeCompile);
+
+var _BabelMapCompile = require('./BabelMapCompile');
+
+var _BabelMapCompile2 = _interopRequireWildcard(_BabelMapCompile);
 
 var _BrowserSyncServer = require('./BrowserSyncServer');
 
@@ -30,6 +42,10 @@ var _DirectoryCleaner = require('./DirectoryCleaner');
 
 var _DirectoryCleaner2 = _interopRequireWildcard(_DirectoryCleaner);
 
+var _EsprimaCompile = require('./EsprimaCompile');
+
+var _EsprimaCompile2 = _interopRequireWildcard(_EsprimaCompile);
+
 var _LessCompile = require('./LessCompile');
 
 var _LessCompile2 = _interopRequireWildcard(_LessCompile);
@@ -38,17 +54,16 @@ var _LiveScriptCompile = require('./LiveScriptCompile');
 
 var _LiveScriptCompile2 = _interopRequireWildcard(_LiveScriptCompile);
 
-var _AppServer = require('./AppServer');
-
-var _AppServer2 = _interopRequireWildcard(_AppServer);
-
 var _StylusCompile = require('./StylusCompile');
 
 var _StylusCompile2 = _interopRequireWildcard(_StylusCompile);
 
 exports['default'] = {
+  EsprimaCompile: _EsprimaCompile2['default'],
   AppServer: _AppServer2['default'],
-  BabelCompile: _BabelCompile2['default'],
+  BabelASTCompile: _BabelASTCompile2['default'],
+  BabelMapCompile: _BabelMapCompile2['default'],
+  BabelCodeCompile: _BabelCodeCompile2['default'],
   BrowserSyncServer: _BrowserSyncServer2['default'],
   BrowserifyCompile: _BrowserifyCompile2['default'],
   CoffeeScriptCompile: _CoffeeScriptCompile2['default'],

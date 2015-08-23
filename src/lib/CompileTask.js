@@ -70,7 +70,8 @@ class CompileTask extends Task {
 
       this.compileChunk(fileContent.toString(), (e, compiledChunk) => {
         if (e) {
-          return cb(e);
+          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e}`);
+          return cb();
         }
 
         this.ensureFileDirectory(targetFilePath, e => {

@@ -13,7 +13,67 @@ export default {
       paths: [ 'build' ]
     },
 
-    BabelCompile: {
+    EsprimaCompile: {
+      enabled: true,
+
+      dependencies: [
+        'DirectoryCleaner'
+      ],
+
+      sourceFileExtension: 'js',
+      targetFileExtension: 'esprima.json',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
+    },
+
+    BabelASTCompile: {
+      enabled: true,
+
+      dependencies: [
+        'DirectoryCleaner'
+      ],
+
+      sourceFileExtension: 'js',
+      targetFileExtension: 'js.ast.json',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      options: {
+        optional: [
+          'es7.asyncFunctions',
+          'es7.decorators',
+          'es7.exportExtensions',
+          'es7.objectRestSpread',
+          'es7.trailingFunctionCommas'
+        ]
+      }
+    },
+
+    BabelMapCompile: {
+      enabled: true,
+
+      dependencies: [
+        'DirectoryCleaner'
+      ],
+
+      sourceFileExtension: 'js',
+      targetFileExtension: 'js.map',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      options: {
+        optional: [
+          'es7.asyncFunctions',
+          'es7.decorators',
+          'es7.exportExtensions',
+          'es7.objectRestSpread',
+          'es7.trailingFunctionCommas'
+        ],
+        sourceMaps: true
+      }
+    },
+
+    BabelCodeCompile: {
       enabled: true,
 
       dependencies: [

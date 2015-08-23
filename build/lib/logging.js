@@ -23,7 +23,7 @@ function taskInfo(task, message) {
 }
 
 function taskWarn(task, message) {
-  _log2['default'].warn('' + _chalk2['default'].orange(arrowCharacter) + ' ' + task + ': ' + message);
+  _log2['default'].warn('' + _chalk2['default'].yellow(arrowCharacter) + ' ' + task + ': ' + message);
 }
 
 function taskError(task, message) {
