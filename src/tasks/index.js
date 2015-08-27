@@ -1,5 +1,5 @@
-import AppServer from './AppServer';
 // import BabelASTCompile from './BabelASTCompile';
+import AppServer from './AppServer';
 import BabelCodeCompile from './BabelCodeCompile';
 import BabelMapCompile from './BabelMapCompile';
 import BrowserSyncServer from './BrowserSyncServer';
@@ -10,20 +10,22 @@ import DirectoryCleaner from './DirectoryCleaner';
 import EsprimaCompile from './EsprimaCompile';
 import LessCompile from './LessCompile';
 import LiveScriptCompile from './LiveScriptCompile';
+import PlantUMLCompile from './PlantUMLCompile';
 import StylusCompile from './StylusCompile';
 
 export default {
-  EsprimaCompile,
-  AppServer,
   // BabelASTCompile,
-  BabelMapCompile,
+  AppServer,
   BabelCodeCompile,
+  BabelMapCompile,
   BrowserSyncServer,
   BrowserifyCompile,
   CoffeeScriptCompile,
   Copy,
   DirectoryCleaner,
+  EsprimaCompile,
   LessCompile,
   LiveScriptCompile,
+  PlantUMLCompile,
   StylusCompile
 };

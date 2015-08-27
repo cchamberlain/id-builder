@@ -5,14 +5,11 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+// import BabelASTCompile from './BabelASTCompile';
 
 var _AppServer = require('./AppServer');
 
 var _AppServer2 = _interopRequireWildcard(_AppServer);
-
-var _BabelASTCompile = require('./BabelASTCompile');
-
-var _BabelASTCompile2 = _interopRequireWildcard(_BabelASTCompile);
 
 var _BabelCodeCompile = require('./BabelCodeCompile');
 
@@ -54,23 +51,28 @@ var _LiveScriptCompile = require('./LiveScriptCompile');
 
 var _LiveScriptCompile2 = _interopRequireWildcard(_LiveScriptCompile);
 
+var _PlantUMLCompile = require('./PlantUMLCompile');
+
+var _PlantUMLCompile2 = _interopRequireWildcard(_PlantUMLCompile);
+
 var _StylusCompile = require('./StylusCompile');
 
 var _StylusCompile2 = _interopRequireWildcard(_StylusCompile);
 
 exports['default'] = {
-  EsprimaCompile: _EsprimaCompile2['default'],
+  // BabelASTCompile,
   AppServer: _AppServer2['default'],
-  BabelASTCompile: _BabelASTCompile2['default'],
-  BabelMapCompile: _BabelMapCompile2['default'],
   BabelCodeCompile: _BabelCodeCompile2['default'],
+  BabelMapCompile: _BabelMapCompile2['default'],
   BrowserSyncServer: _BrowserSyncServer2['default'],
   BrowserifyCompile: _BrowserifyCompile2['default'],
   CoffeeScriptCompile: _CoffeeScriptCompile2['default'],
   Copy: _Copy2['default'],
   DirectoryCleaner: _DirectoryCleaner2['default'],
+  EsprimaCompile: _EsprimaCompile2['default'],
   LessCompile: _LessCompile2['default'],
   LiveScriptCompile: _LiveScriptCompile2['default'],
+  PlantUMLCompile: _PlantUMLCompile2['default'],
   StylusCompile: _StylusCompile2['default']
 };
 module.exports = exports['default'];

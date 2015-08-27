@@ -28,6 +28,20 @@ exports['default'] = {
       targetDirectoryPath: 'build'
     },
 
+    PlantUMLCompile: {
+      enabled: true,
+
+      dependencies: ['DirectoryCleaner'],
+
+      sourceFileExtension: 'js',
+      sourceDirectoryPath: 'src',
+
+      options: {
+        ast: true,
+        whitelist: []
+      }
+    },
+
     BabelASTCompile: {
       enabled: true,
 

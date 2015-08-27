@@ -5,7 +5,10 @@ import CompileTask from '../lib/CompileTask';
 class BabelMapCompile extends CompileTask {
   compileChunk(chunk, cb) {
     try {
-      cb(null, transform(chunk, this.options.options).map);
+      const transformResult = transform(chunk, this.options.options);
+      const jsonResult = JSON.stringify(transformResult.map);
+
+      cb(null, jsonResult);
     } catch (e) {
       return cb(e);
     }
