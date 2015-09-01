@@ -60,7 +60,7 @@ function restartPath(path, cb) {
 }
 
 function sourceFilePathMatches(options, sourceFilePath) {
-  _log2['default'].debug('sourceFilePathMatches', '^' + options.sourceDirectoryPath, sourceFilePath);
+  _log2['default'].debug('lib/servers.sourceFilePathMatches', '^' + options.sourceDirectoryPath, sourceFilePath);
 
   return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath));
 }

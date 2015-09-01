@@ -10,7 +10,15 @@ var _log = require('loglevel');
 
 var _log2 = _interopRequireWildcard(_log);
 
+var _import = require('lodash');
+
+var _import2 = _interopRequireWildcard(_import);
+
 var _transform = require('babel');
+
+var _minimatch = require('minimatch');
+
+var _minimatch2 = _interopRequireWildcard(_minimatch);
 
 // import logging from './logging';
 
@@ -22,16 +30,26 @@ var sourceExtension = 'js';
 var targetExtension = 'js';
 
 function sourceFilePathMatches(options, sourceFilePath) {
-  return !!sourceFilePath.match(new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$'));
+  var isIgnored = _import2['default'].find(options.ignore, function (v) {
+    var expression = new RegExp(v);
+
+    return !!expression.exec(sourceFilePath);
+  });
+
+  if (isIgnored) {
+    return false;
+  }
+
+  var expression = new RegExp('^' + options.sourceDirectoryPath + '.+\\.' + sourceExtension + '$');
+
+  return !!sourceFilePath.match(expression);
 }
 
 function compileChunk(options, chunk, cb) {
   _log2['default'].debug('lib/babel.compileChunk');
 
   try {
-    var output = _transform.transform(chunk, {
-      optional: ['es7.asyncFunctions', 'es7.decorators', 'es7.exportExtensions', 'es7.objectRestSpread', 'es7.trailingFunctionCommas']
-    });
+    var output = _transform.transform(chunk, options.options);
 
     cb(null, output.code);
   } catch (e) {
@@ -51,12 +69,15 @@ function compileAllFiles(options, cb) {
   _fileSystem2['default'].compileAllFiles(sourceFilePathMatches, compileFile, sourceExtension, targetExtension, options, cb);
 }
 
+function compileAllPolymerComponentFiles(options, cb) {}
+
 exports['default'] = {
   sourceExtension: sourceExtension,
   targetExtension: targetExtension,
   sourceFilePathMatches: sourceFilePathMatches,
   compileChunk: compileChunk,
   compileFile: compileFile,
-  compileAllFiles: compileAllFiles
+  compileAllFiles: compileAllFiles,
+  compileAllPolymerComponentFiles: compileAllPolymerComponentFiles
 };
 module.exports = exports['default'];

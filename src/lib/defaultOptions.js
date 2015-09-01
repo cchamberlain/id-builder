@@ -42,7 +42,20 @@ export default {
     compileBabel: {
       enabled: true,
       sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
+      targetDirectoryPath: 'build',
+
+      ignore: [
+      ],
+
+      options: {
+        optional: [
+          'es7.asyncFunctions',
+          'es7.decorators',
+          'es7.exportExtensions',
+          'es7.objectRestSpread',
+          'es7.trailingFunctionCommas'
+        ]
+      }
     },
 
     compileStylus: {
@@ -135,7 +148,20 @@ export default {
     watchBabel: {
       enabled: true,
       sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
+      targetDirectoryPath: 'build',
+
+      ignore: [
+      ],
+
+      options: {
+        optional: [
+          'es7.asyncFunctions',
+          'es7.decorators',
+          'es7.exportExtensions',
+          'es7.objectRestSpread',
+          'es7.trailingFunctionCommas'
+        ]
+      }
     },
 
     watchStylus: {

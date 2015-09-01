@@ -46,7 +46,7 @@ function restartPath(path, cb) {
 }
 
 function sourceFilePathMatches(options, sourceFilePath) {
-  log.debug('sourceFilePathMatches', `^${options.sourceDirectoryPath}`, sourceFilePath);
+  log.debug('lib/servers.sourceFilePathMatches', `^${options.sourceDirectoryPath}`, sourceFilePath);
 
   return !!sourceFilePath.match(new RegExp(`^${options.sourceDirectoryPath}`));
 }
