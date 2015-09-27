@@ -32,6 +32,10 @@ var _mkdirp2 = _interopRequireDefault(_mkdirp);
 
 var _async = require('async');
 
+var _Compiler = require('./Compiler');
+
+var _Compiler2 = _interopRequireDefault(_Compiler);
+
 var _Task2 = require('./Task');
 
 var _Task3 = _interopRequireDefault(_Task2);
@@ -54,6 +58,8 @@ var CompileTask = (function (_Task) {
     this.targetFileExtension = options.targetFileExtension;
     this.sourceDirectoryPath = options.sourceDirectoryPath;
     this.targetDirectoryPath = options.targetDirectoryPath;
+
+    this.compiler = new _Compiler2['default']();
   }
 
   _createClass(CompileTask, [{
@@ -87,13 +93,6 @@ var CompileTask = (function (_Task) {
     key: 'ensureFileDirectory',
     value: function ensureFileDirectory(targetFilePath, cb) {
       (0, _mkdirp2['default'])((0, _path.dirname)(targetFilePath), cb);
-    }
-
-    // Reference implementation. Just returns the chunk.
-  }, {
-    key: 'compileChunk',
-    value: function compileChunk(chunk, cb) {
-      cb(null, chunk);
     }
   }, {
     key: 'compileFile',

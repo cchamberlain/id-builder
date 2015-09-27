@@ -6,6 +6,7 @@ import lsr from 'lsr';
 import mkdirp from 'mkdirp';
 import { each } from 'async';
 
+import Compiler from './Compiler';
 import Task from './Task';
 import logging from '../lib/logging';
 
@@ -17,6 +18,8 @@ class CompileTask extends Task {
     this.targetFileExtension = options.targetFileExtension;
     this.sourceDirectoryPath = options.sourceDirectoryPath;
     this.targetDirectoryPath = options.targetDirectoryPath;
+
+    this.compiler = new Compiler();
   }
 
   get sourceFilePathMatchExpression() {
@@ -55,11 +58,6 @@ class CompileTask extends Task {
 
   ensureFileDirectory(targetFilePath, cb) {
     mkdirp(dirname(targetFilePath), cb);
-  }
-
-  // Reference implementation. Just returns the chunk.
-  compileChunk(chunk, cb) {
-    cb(null, chunk);
   }
 
   compileFile(sourceFilePath, targetFilePath, cb) {

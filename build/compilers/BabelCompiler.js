@@ -14,43 +14,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _compilersBabelCompiler = require('../compilers/BabelCompiler');
+var _babel = require('babel');
 
-var _compilersBabelCompiler2 = _interopRequireDefault(_compilersBabelCompiler);
+var _libCompiler = require('../lib/Compiler');
 
-var _libCompileTask = require('../lib/CompileTask');
+var _libCompiler2 = _interopRequireDefault(_libCompiler);
 
-var _libCompileTask2 = _interopRequireDefault(_libCompileTask);
+var BabelCompiler = (function (_Compiler) {
+  _inherits(BabelCompiler, _Compiler);
 
-var BabelCodeCompile = (function (_CompileTask) {
-  _inherits(BabelCodeCompile, _CompileTask);
-
-  function BabelCodeCompile() {
+  function BabelCompiler() {
     var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-    _classCallCheck(this, BabelCodeCompile);
+    _classCallCheck(this, BabelCompiler);
 
-    _get(Object.getPrototypeOf(BabelCodeCompile.prototype), 'constructor', this).call(this, options);
-
-    this.compiler = new _compilersBabelCompiler2['default']();
+    _get(Object.getPrototypeOf(BabelCompiler.prototype), 'constructor', this).call(this, options);
   }
 
-  _createClass(BabelCodeCompile, [{
+  _createClass(BabelCompiler, [{
     key: 'compileChunk',
-    value: function compileChunk(chunk, cb) {
-      this.compiler.compileChunk(chunk).then(function (result) {
-        cb(null, result);
-      })['catch'](cb);
-    }
-  }, {
-    key: 'run',
-    value: function run(cb) {
-      this.compileAllFiles(cb);
+    value: function compileChunk(chunk) {
+      var _this = this;
+
+      return new Promise(function (resolve, reject) {
+        try {
+          resolve((0, _babel.transform)(chunk, _this.options.options).code);
+        } catch (e) {
+          reject(e);
+        }
+      });
     }
   }]);
 
-  return BabelCodeCompile;
-})(_libCompileTask2['default']);
+  return BabelCompiler;
+})(_libCompiler2['default']);
 
-exports['default'] = BabelCodeCompile;
+exports['default'] = BabelCompiler;
 module.exports = exports['default'];
