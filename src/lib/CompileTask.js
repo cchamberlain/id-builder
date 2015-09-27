@@ -68,7 +68,7 @@ class CompileTask extends Task {
 
       this.compileChunk(fileContent.toString(), (e, compiledChunk) => {
         if (e) {
-          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e}`);
+          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e.stack || e.message || e}`);
           return cb();
         }
 

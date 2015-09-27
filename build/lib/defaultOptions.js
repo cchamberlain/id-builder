@@ -9,7 +9,7 @@ exports['default'] = {
   },
 
   tasks: {
-    DirectoryCleaner: {
+    DirectoryCleanerTask: {
       enabled: true,
 
       dependencies: [],
@@ -17,21 +17,10 @@ exports['default'] = {
       paths: ['build']
     },
 
-    EsprimaCompile: {
+    PlantUMLCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
-
-      sourceFileExtension: 'js',
-      targetFileExtension: 'esprima.json',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    PlantUMLCompile: {
-      enabled: true,
-
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFileExtension: 'js',
       sourceDirectoryPath: 'src',
@@ -42,10 +31,10 @@ exports['default'] = {
       }
     },
 
-    BabelASTCompile: {
+    BabelASTCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFileExtension: 'js',
       targetFileExtension: 'js.ast.json',
@@ -57,10 +46,10 @@ exports['default'] = {
       }
     },
 
-    BabelMapCompile: {
+    BabelMapCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFileExtension: 'js',
       targetFileExtension: 'js.map',
@@ -73,10 +62,10 @@ exports['default'] = {
       }
     },
 
-    BabelCodeCompile: {
+    BabelCodeCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFileExtension: 'js',
       targetFileExtension: 'js',
@@ -88,10 +77,10 @@ exports['default'] = {
       }
     },
 
-    CoffeeScriptCompile: {
+    CoffeeScriptCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFileExtension: 'coffee',
       targetFileExtension: 'js',
@@ -103,10 +92,10 @@ exports['default'] = {
       }
     },
 
-    LiveScriptCompile: {
+    LiveScriptCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFileExtension: 'ls',
       targetFileExtension: 'js',
@@ -118,10 +107,10 @@ exports['default'] = {
       }
     },
 
-    LessCompile: {
+    LessCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFilePath: 'src/client/less/app.less',
       targetFilePath: 'build/client/css/app.css',
@@ -135,10 +124,10 @@ exports['default'] = {
       }
     },
 
-    BrowserifyCompile: {
+    BrowserifyCompileTask: {
       enabled: true,
 
-      dependencies: ['BabelCompile', 'CoffeeScriptCompile', 'LessCompile', 'LiveScriptCompile'],
+      dependencies: ['BabelCodeCompileTask', 'BabelMapCompileTask', 'CoffeeScriptCompileTask', 'LessCompileTask', 'LiveScriptCompileTask'],
 
       sourceFilePath: 'build/client/js/app.js',
       targetFilePath: 'build/client/js/app.bundle.js',
@@ -155,10 +144,10 @@ exports['default'] = {
       }
     },
 
-    StylusCompile: {
+    StylusCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceFilePath: 'src/client/stylus/app.styl',
       targetFilePath: 'build/client/css/app.css',
@@ -170,19 +159,19 @@ exports['default'] = {
       options: {}
     },
 
-    Copy: {
+    CopyCompileTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
     },
 
-    BrowserSyncServer: {
+    BrowserSyncServerTask: {
       enabled: true,
 
-      dependencies: ['DirectoryCleaner'],
+      dependencies: ['DirectoryCleanerTask'],
 
       options: {
         ui: {
@@ -195,10 +184,10 @@ exports['default'] = {
       }
     },
 
-    AppServer: {
+    AppServerTask: {
       enabled: true,
 
-      dependencies: ['BrowserifyCompile'],
+      dependencies: ['BrowserifyCompileTask'],
 
       sourceDirectoryPath: 'build',
 

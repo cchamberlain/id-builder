@@ -4,7 +4,7 @@ export default {
   },
 
   tasks: {
-    DirectoryCleaner: {
+    DirectoryCleanerTask: {
       enabled: true,
 
       dependencies: [
@@ -13,24 +13,11 @@ export default {
       paths: [ 'build' ]
     },
 
-    EsprimaCompile: {
+    PlantUMLCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
-      ],
-
-      sourceFileExtension: 'js',
-      targetFileExtension: 'esprima.json',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    PlantUMLCompile: {
-      enabled: true,
-
-      dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFileExtension: 'js',
@@ -42,11 +29,11 @@ export default {
       }
     },
 
-    BabelASTCompile: {
+    BabelASTCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFileExtension: 'js',
@@ -65,11 +52,11 @@ export default {
       }
     },
 
-    BabelMapCompile: {
+    BabelMapCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFileExtension: 'js',
@@ -89,11 +76,11 @@ export default {
       }
     },
 
-    BabelCodeCompile: {
+    BabelCodeCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFileExtension: 'js',
@@ -112,11 +99,11 @@ export default {
       }
     },
 
-    CoffeeScriptCompile: {
+    CoffeeScriptCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFileExtension: 'coffee',
@@ -129,11 +116,11 @@ export default {
       }
     },
 
-    LiveScriptCompile: {
+    LiveScriptCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFileExtension: 'ls',
@@ -146,11 +133,11 @@ export default {
       }
     },
 
-    LessCompile: {
+    LessCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFilePath: 'src/client/less/app.less',
@@ -165,14 +152,15 @@ export default {
       }
     },
 
-    BrowserifyCompile: {
+    BrowserifyCompileTask: {
       enabled: true,
 
       dependencies: [
-        'BabelCompile',
-        'CoffeeScriptCompile',
-        'LessCompile',
-        'LiveScriptCompile'
+        'BabelCodeCompileTask',
+        'BabelMapCompileTask',
+        'CoffeeScriptCompileTask',
+        'LessCompileTask',
+        'LiveScriptCompileTask'
       ],
 
       sourceFilePath: 'build/client/js/app.js',
@@ -190,11 +178,11 @@ export default {
       }
     },
 
-    StylusCompile: {
+    StylusCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceFilePath: 'src/client/stylus/app.styl',
@@ -207,22 +195,22 @@ export default {
       options: {}
     },
 
-    Copy: {
+    CopyCompileTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
     },
 
-    BrowserSyncServer: {
+    BrowserSyncServerTask: {
       enabled: true,
 
       dependencies: [
-        'DirectoryCleaner'
+        'DirectoryCleanerTask'
       ],
 
       options: {
@@ -236,11 +224,11 @@ export default {
       }
     },
 
-    AppServer: {
+    AppServerTask: {
       enabled: true,
 
       dependencies: [
-        'BrowserifyCompile'
+        'BrowserifyCompileTask'
       ],
 
       sourceDirectoryPath: 'build',

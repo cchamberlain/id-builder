@@ -1,4 +1,5 @@
 // import BabelASTCompile from './BabelASTCompile';
+// import PlantUMLCompileTask from './PlantUMLCompileTask';
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -7,65 +8,63 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _AppServer = require('./AppServer');
+var _AppServerTask = require('./AppServerTask');
 
-var _AppServer2 = _interopRequireDefault(_AppServer);
+var _AppServerTask2 = _interopRequireDefault(_AppServerTask);
 
-var _BabelCodeCompile = require('./BabelCodeCompile');
+var _BabelCodeCompileTask = require('./BabelCodeCompileTask');
 
-var _BabelCodeCompile2 = _interopRequireDefault(_BabelCodeCompile);
+var _BabelCodeCompileTask2 = _interopRequireDefault(_BabelCodeCompileTask);
 
-var _BabelMapCompile = require('./BabelMapCompile');
+var _BabelMapCompileTask = require('./BabelMapCompileTask');
 
-var _BabelMapCompile2 = _interopRequireDefault(_BabelMapCompile);
+var _BabelMapCompileTask2 = _interopRequireDefault(_BabelMapCompileTask);
 
-var _BrowserSyncServer = require('./BrowserSyncServer');
+var _BrowserSyncServerTask = require('./BrowserSyncServerTask');
 
-var _BrowserSyncServer2 = _interopRequireDefault(_BrowserSyncServer);
+var _BrowserSyncServerTask2 = _interopRequireDefault(_BrowserSyncServerTask);
 
-var _BrowserifyCompile = require('./BrowserifyCompile');
+var _BrowserifyCompileTask = require('./BrowserifyCompileTask');
 
-var _BrowserifyCompile2 = _interopRequireDefault(_BrowserifyCompile);
+var _BrowserifyCompileTask2 = _interopRequireDefault(_BrowserifyCompileTask);
 
-var _CoffeeScriptCompile = require('./CoffeeScriptCompile');
+var _CoffeeScriptCompileTask = require('./CoffeeScriptCompileTask');
 
-var _CoffeeScriptCompile2 = _interopRequireDefault(_CoffeeScriptCompile);
+var _CoffeeScriptCompileTask2 = _interopRequireDefault(_CoffeeScriptCompileTask);
 
-var _Copy = require('./Copy');
+var _CopyCompileTask = require('./CopyCompileTask');
 
-var _Copy2 = _interopRequireDefault(_Copy);
+var _CopyCompileTask2 = _interopRequireDefault(_CopyCompileTask);
 
-var _DirectoryCleaner = require('./DirectoryCleaner');
+var _DirectoryCleanerTask = require('./DirectoryCleanerTask');
 
-var _DirectoryCleaner2 = _interopRequireDefault(_DirectoryCleaner);
+var _DirectoryCleanerTask2 = _interopRequireDefault(_DirectoryCleanerTask);
 
-var _LessCompile = require('./LessCompile');
+var _LessCompileTask = require('./LessCompileTask');
 
-var _LessCompile2 = _interopRequireDefault(_LessCompile);
+var _LessCompileTask2 = _interopRequireDefault(_LessCompileTask);
 
-var _LiveScriptCompile = require('./LiveScriptCompile');
+var _LiveScriptCompileTask = require('./LiveScriptCompileTask');
 
-var _LiveScriptCompile2 = _interopRequireDefault(_LiveScriptCompile);
+var _LiveScriptCompileTask2 = _interopRequireDefault(_LiveScriptCompileTask);
 
-// import PlantUMLCompile from './PlantUMLCompile';
+var _StylusCompileTask = require('./StylusCompileTask');
 
-var _StylusCompile = require('./StylusCompile');
-
-var _StylusCompile2 = _interopRequireDefault(_StylusCompile);
+var _StylusCompileTask2 = _interopRequireDefault(_StylusCompileTask);
 
 exports['default'] = {
-  // BabelASTCompile,
-  AppServer: _AppServer2['default'],
-  BabelCodeCompile: _BabelCodeCompile2['default'],
-  BabelMapCompile: _BabelMapCompile2['default'],
-  BrowserSyncServer: _BrowserSyncServer2['default'],
-  BrowserifyCompile: _BrowserifyCompile2['default'],
-  CoffeeScriptCompile: _CoffeeScriptCompile2['default'],
-  Copy: _Copy2['default'],
-  DirectoryCleaner: _DirectoryCleaner2['default'],
-  LessCompile: _LessCompile2['default'],
-  LiveScriptCompile: _LiveScriptCompile2['default'],
-  // PlantUMLCompile,
-  StylusCompile: _StylusCompile2['default']
+  // BabelASTCompileTask,
+  // PlantUMLCompileTask,
+  AppServerTask: _AppServerTask2['default'],
+  BabelCodeCompileTask: _BabelCodeCompileTask2['default'],
+  BabelMapCompileTask: _BabelMapCompileTask2['default'],
+  BrowserSyncServerTask: _BrowserSyncServerTask2['default'],
+  BrowserifyCompileTask: _BrowserifyCompileTask2['default'],
+  CoffeeScriptCompileTask: _CoffeeScriptCompileTask2['default'],
+  CopyCompileTask: _CopyCompileTask2['default'],
+  DirectoryCleanerTask: _DirectoryCleanerTask2['default'],
+  LessCompileTask: _LessCompileTask2['default'],
+  LiveScriptCompileTask: _LiveScriptCompileTask2['default'],
+  StylusCompileTask: _StylusCompileTask2['default']
 };
 module.exports = exports['default'];

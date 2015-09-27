@@ -106,7 +106,7 @@ var CompileTask = (function (_Task) {
 
         _this.compileChunk(fileContent.toString(), function (e, compiledChunk) {
           if (e) {
-            _libLogging2['default'].taskWarn(_this.constructor.name, sourceFilePath + ': ' + e);
+            _libLogging2['default'].taskWarn(_this.constructor.name, sourceFilePath + ': ' + (e.stack || e.message || e));
             return cb();
           }
 
