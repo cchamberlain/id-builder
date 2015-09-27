@@ -1,18 +1,18 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 var _chokidar = require('chokidar');
 
-var _chokidar2 = _interopRequireWildcard(_chokidar);
+var _chokidar2 = _interopRequireDefault(_chokidar);
 
-var _log = require('loglevel');
+var _loglevel = require('loglevel');
 
-var _log2 = _interopRequireWildcard(_log);
+var _loglevel2 = _interopRequireDefault(_loglevel);
 
 var watcher = null;
 
@@ -21,7 +21,7 @@ function getWatcher() {
 }
 
 function start(options) {
-  _log2['default'].debug('lib/watch.start');
+  _loglevel2['default'].debug('lib/watch.start');
 
   // If there are no paths to watch, do nothing.
   if (!options.paths.length) {
@@ -33,7 +33,7 @@ function start(options) {
     return watcher;
   }
 
-  _log2['default'].debug('lib/watch.start: creating watcher');
+  _loglevel2['default'].debug('lib/watch.start: creating watcher');
 
   // Start the watcher with the first path.
   watcher = _chokidar2['default'].watch(options.paths, {
@@ -44,30 +44,30 @@ function start(options) {
     usePolling: true
   });
 
-  _log2['default'].debug('lib/watch.start: watching paths', options.paths);
+  _loglevel2['default'].debug('lib/watch.start: watching paths', options.paths);
 
   watcher.on('add', function (path) {
-    _log2['default'].debug('lib/watch.start: add', path);
+    _loglevel2['default'].debug('lib/watch.start: add', path);
   });
 
   watcher.on('addDir', function (path) {
-    _log2['default'].debug('lib/watch.start: addDir', path);
+    _loglevel2['default'].debug('lib/watch.start: addDir', path);
   });
 
   watcher.on('change', function (path) {
-    _log2['default'].debug('lib/watch.start: change', path);
+    _loglevel2['default'].debug('lib/watch.start: change', path);
   });
 
   watcher.on('unlink', function (path) {
-    _log2['default'].debug('lib/watch.start: unlink', path);
+    _loglevel2['default'].debug('lib/watch.start: unlink', path);
   });
 
   watcher.on('unlinkDir', function (path) {
-    _log2['default'].debug('lib/watch.start: unlinkDir', path);
+    _loglevel2['default'].debug('lib/watch.start: unlinkDir', path);
   });
 
   watcher.on('error', function (path) {
-    _log2['default'].debug('lib/watch.start: error', path);
+    _loglevel2['default'].debug('lib/watch.start: error', path);
   });
 
   return watcher;

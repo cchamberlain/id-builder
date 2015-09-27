@@ -1,30 +1,30 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _fs = require('fs');
 
-var _fs2 = _interopRequireWildcard(_fs);
+var _fs2 = _interopRequireDefault(_fs);
 
-var _log = require('loglevel');
+var _loglevel = require('loglevel');
 
-var _log2 = _interopRequireWildcard(_log);
+var _loglevel2 = _interopRequireDefault(_loglevel);
 
 var _mkdirp = require('mkdirp');
 
-var _mkdirp2 = _interopRequireWildcard(_mkdirp);
+var _mkdirp2 = _interopRequireDefault(_mkdirp);
 
 var _rimraf = require('rimraf');
 
-var _rimraf2 = _interopRequireWildcard(_rimraf);
+var _rimraf2 = _interopRequireDefault(_rimraf);
 
-var _expect = require('chai');
+var _chai = require('chai');
 
-var _browserify = require('../build/../../../lib/browserify');
+var _buildLibBrowserify = require('../build/../../../lib/browserify');
 
-var _browserify2 = _interopRequireWildcard(_browserify);
+var _buildLibBrowserify2 = _interopRequireDefault(_buildLibBrowserify);
 
-var _randomString = require('../build/../../../lib/tests');
+var _buildLibTests = require('../build/../../../lib/tests');
 
 var functionSource = 'const x = y => y * 2';
 
@@ -32,16 +32,16 @@ describe('browserify', function () {
   beforeEach(function (cb) {
     this.directoryPath = '.tmp/' + Math.random().toString(36).slice(7);
 
-    _mkdirp2['default'](this.directoryPath, cb);
+    (0, _mkdirp2['default'])(this.directoryPath, cb);
   });
 
   afterEach(function (cb) {
-    _rimraf2['default'](this.directoryPath, cb);
+    (0, _rimraf2['default'])(this.directoryPath, cb);
   });
 
   describe('sourceExtension', function () {
     it('should be defined', function (cb) {
-      _expect.expect(_browserify2['default'].sourceExtension).to.be.a('string')['with'].length.above(0);
+      (0, _chai.expect)(_buildLibBrowserify2['default'].sourceExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
@@ -49,7 +49,7 @@ describe('browserify', function () {
 
   describe('targetExtension', function () {
     it('should be defined', function (cb) {
-      _expect.expect(_browserify2['default'].targetExtension).to.be.a('string')['with'].length.above(0);
+      (0, _chai.expect)(_buildLibBrowserify2['default'].targetExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
@@ -65,7 +65,7 @@ describe('browserify', function () {
           sourceDirectoryPath: 'x'
         };
 
-        _expect.expect(_browserify2['default'].sourceFilePathMatches(options, 'x/y.js')).to.equal(false);
+        (0, _chai.expect)(_buildLibBrowserify2['default'].sourceFilePathMatches(options, 'x/y.js')).to.equal(false);
 
         cb();
       });
@@ -78,7 +78,7 @@ describe('browserify', function () {
           sourceDirectoryPath: 'x'
         };
 
-        _expect.expect(_browserify2['default'].sourceFilePathMatches(options, 'x/q.js')).to.equal(true);
+        (0, _chai.expect)(_buildLibBrowserify2['default'].sourceFilePathMatches(options, 'x/q.js')).to.equal(true);
 
         cb();
       });
@@ -91,7 +91,7 @@ describe('browserify', function () {
           sourceDirectoryPath: 'a'
         };
 
-        _expect.expect(_browserify2['default'].sourceFilePathMatches(options, 'x/q.js')).to.equal(false);
+        (0, _chai.expect)(_buildLibBrowserify2['default'].sourceFilePathMatches(options, 'x/q.js')).to.equal(false);
 
         cb();
       });
@@ -102,9 +102,10 @@ describe('browserify', function () {
     describe('when the `path` is the `targetPath`', function () {
       it('should return `true`', function (cb) {
         var options = {
-          targetPath: 'x/y.js' };
+          targetPath: 'x/y.js'
+        };
 
-        _expect.expect(_browserify2['default'].matchesTargetPath(options, 'x/y.js')).to.equal(true);
+        (0, _chai.expect)(_buildLibBrowserify2['default'].matchesTargetPath(options, 'x/y.js')).to.equal(true);
 
         cb();
       });
@@ -113,9 +114,10 @@ describe('browserify', function () {
     describe('when the `path` is not the `targetPath`', function () {
       it('should return `false`', function (cb) {
         var options = {
-          targetPath: 'x/y.js' };
+          targetPath: 'x/y.js'
+        };
 
-        _expect.expect(_browserify2['default'].matchesTargetPath(options, 'x/z.js')).to.equal(false);
+        (0, _chai.expect)(_buildLibBrowserify2['default'].matchesTargetPath(options, 'x/z.js')).to.equal(false);
 
         cb();
       });
@@ -126,15 +128,15 @@ describe('browserify', function () {
     beforeEach(function (cb) {
       var _this = this;
 
-      this.sourceDirectoryPath = '' + this.directoryPath + '/src';
-      this.buildDirectoryPath = '' + this.directoryPath + '/build';
+      this.sourceDirectoryPath = this.directoryPath + '/src';
+      this.buildDirectoryPath = this.directoryPath + '/build';
 
-      _mkdirp2['default'](this.sourceDirectoryPath, function (e) {
+      (0, _mkdirp2['default'])(this.sourceDirectoryPath, function (e) {
         if (e) {
           cb(e);
         }
 
-        _mkdirp2['default'](_this.buildDirectoryPath, function (e) {
+        (0, _mkdirp2['default'])(_this.buildDirectoryPath, function (e) {
           if (e) {
             cb(e);
           }
@@ -146,8 +148,8 @@ describe('browserify', function () {
 
     describe('when compiling one source file with valid ES6', function () {
       it('should compile one build file that matches the expected output', function (cb) {
-        var sourceFilePath = '' + this.directoryPath + '/src/entry.js';
-        var buildFilePath = '' + this.directoryPath + '/build/target.js';
+        var sourceFilePath = this.directoryPath + '/src/entry.js';
+        var buildFilePath = this.directoryPath + '/build/target.js';
         var options = {
           sourceFilePath: sourceFilePath,
           targetFilePath: buildFilePath
@@ -160,7 +162,7 @@ describe('browserify', function () {
             cb(e);
           }
 
-          _browserify2['default'].compileAllFiles(options, function (e) {
+          _buildLibBrowserify2['default'].compileAllFiles(options, function (e) {
             if (e) {
               cb(e);
             }

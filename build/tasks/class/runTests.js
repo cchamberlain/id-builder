@@ -1,20 +1,20 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _tests = require('../lib/tests');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _tests2 = _interopRequireWildcard(_tests);
+var _libTests = require('../lib/tests');
+
+var _libTests2 = _interopRequireDefault(_libTests);
 
 var dependencies = ['compileBabel', 'compileBrowserify', 'compileCoffeescript', 'compileCopy',
 // 'compileJade',
 'compileLess', 'compileLivescript', 'compileStylus'];
 
-var run = _tests2['default'].runTests;
+var run = _libTests2['default'].runTests;
 
 exports['default'] = {
   dependencies: dependencies,

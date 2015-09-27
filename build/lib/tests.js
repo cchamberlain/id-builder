@@ -1,26 +1,26 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _log2 = _interopRequireWildcard(_log);
+var _loglevel = require('loglevel');
 
-var _exists = require('fs');
+var _loglevel2 = _interopRequireDefault(_loglevel);
 
-var _resolve = require('path');
+var _fs = require('fs');
 
-var _spawn = require('child_process');
+var _path = require('path');
+
+var _child_process = require('child_process');
 
 var _logging = require('./logging');
 
-var _logging2 = _interopRequireWildcard(_logging);
+var _logging2 = _interopRequireDefault(_logging);
 
-var pathToMocha = _resolve.resolve('' + __dirname + '/../../node_modules/mocha/bin/_mocha');
+var pathToMocha = (0, _path.resolve)(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
 function randomString() {
   return Math.random().toString(36).slice(7);
@@ -41,15 +41,15 @@ function buildFilePathMatches(options, buildFilePath) {
 }
 
 function runTests(options, cb) {
-  _log2['default'].debug('lib/tests.runTests');
+  _loglevel2['default'].debug('lib/tests.runTests');
 
-  _exists.exists(options.sourceDirectoryPath, function (exists) {
+  (0, _fs.exists)(options.sourceDirectoryPath, function (exists) {
     if (!exists) {
       _logging2['default'].taskInfo(options.taskName, 'Skipping: Directory `' + options.sourceDirectoryPath + '` not found.');
       return cb();
     }
 
-    var childProcess = _spawn.spawn('node', [pathToMocha, '--recursive', '--colors', '--reporter', options.reporter, options.sourceDirectoryPath]);
+    var childProcess = (0, _child_process.spawn)('node', [pathToMocha, '--recursive', '--colors', '--reporter', options.reporter, options.sourceDirectoryPath]);
 
     childProcess.stdout.on('data', function (chunk) {
       return process.stdout.write(chunk);

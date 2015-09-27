@@ -1,30 +1,30 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _fs = require('fs');
 
-var _fs2 = _interopRequireWildcard(_fs);
+var _fs2 = _interopRequireDefault(_fs);
 
-var _log = require('loglevel');
+var _loglevel = require('loglevel');
 
-var _log2 = _interopRequireWildcard(_log);
+var _loglevel2 = _interopRequireDefault(_loglevel);
 
-var _expect = require('chai');
+var _chai = require('chai');
 
 var _mkdirp = require('mkdirp');
 
-var _mkdirp2 = _interopRequireWildcard(_mkdirp);
+var _mkdirp2 = _interopRequireDefault(_mkdirp);
 
 var _rimraf = require('rimraf');
 
-var _rimraf2 = _interopRequireWildcard(_rimraf);
+var _rimraf2 = _interopRequireDefault(_rimraf);
 
-var _coffeescript = require('../build/../../../lib/coffeescript');
+var _buildLibCoffeescript = require('../build/../../../lib/coffeescript');
 
-var _coffeescript2 = _interopRequireWildcard(_coffeescript);
+var _buildLibCoffeescript2 = _interopRequireDefault(_buildLibCoffeescript);
 
-var _randomString = require('../build/../../../lib/tests');
+var _buildLibTests = require('../build/../../../lib/tests');
 
 var functionSource = 'x = (y) -> y * 2';
 var functionOutputSource = 'var x;\n\nx = function(y) {\n  return y * 2;\n};\n';
@@ -32,16 +32,16 @@ var functionOutputSource = 'var x;\n\nx = function(y) {\n  return y * 2;\n};\n';
 describe('coffeescript', function () {
   beforeEach(function (cb) {
     this.directoryPath = '.tmp/' + Math.random().toString(36).slice(7);
-    _mkdirp2['default'](this.directoryPath, cb);
+    (0, _mkdirp2['default'])(this.directoryPath, cb);
   });
 
   afterEach(function (cb) {
-    _rimraf2['default'](this.directoryPath, cb);
+    (0, _rimraf2['default'])(this.directoryPath, cb);
   });
 
   describe('sourceExtension', function () {
     it('should be defined', function (cb) {
-      _expect.expect(_coffeescript2['default'].sourceExtension).to.be.a('string')['with'].length.above(0);
+      (0, _chai.expect)(_buildLibCoffeescript2['default'].sourceExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
@@ -49,7 +49,7 @@ describe('coffeescript', function () {
 
   describe('targetExtension', function () {
     it('should be defined', function (cb) {
-      _expect.expect(_coffeescript2['default'].targetExtension).to.be.a('string')['with'].length.above(0);
+      (0, _chai.expect)(_buildLibCoffeescript2['default'].targetExtension).to.be.a('string')['with'].length.above(0);
 
       cb();
     });
@@ -63,7 +63,7 @@ describe('coffeescript', function () {
             sourceDirectoryPath: 'x'
           };
 
-          _expect.expect(_coffeescript2['default'].sourceFilePathMatches(options, 'x/q.coffee')).to.equal(true);
+          (0, _chai.expect)(_buildLibCoffeescript2['default'].sourceFilePathMatches(options, 'x/q.coffee')).to.equal(true);
 
           cb();
         });
@@ -75,7 +75,7 @@ describe('coffeescript', function () {
             sourceDirectoryPath: 'x'
           };
 
-          _expect.expect(_coffeescript2['default'].sourceFilePathMatches(options, 'x/q.something')).to.equal(false);
+          (0, _chai.expect)(_buildLibCoffeescript2['default'].sourceFilePathMatches(options, 'x/q.something')).to.equal(false);
 
           cb();
         });
@@ -88,7 +88,7 @@ describe('coffeescript', function () {
           sourceDirectoryPath: 'x'
         };
 
-        _expect.expect(_coffeescript2['default'].sourceFilePathMatches(options, 'y/q.coffee')).to.equal(false);
+        (0, _chai.expect)(_buildLibCoffeescript2['default'].sourceFilePathMatches(options, 'y/q.coffee')).to.equal(false);
 
         cb();
       });
@@ -102,12 +102,12 @@ describe('coffeescript', function () {
         var chunk = functionSource;
         var expected = functionOutputSource;
 
-        _coffeescript2['default'].compileChunk(options, chunk, function (e, actual) {
+        _buildLibCoffeescript2['default'].compileChunk(options, chunk, function (e, actual) {
           if (e) {
             cb(e);
           }
 
-          _expect.expect(actual).to.equal(expected);
+          (0, _chai.expect)(actual).to.equal(expected);
 
           cb();
         });
@@ -119,15 +119,15 @@ describe('coffeescript', function () {
     beforeEach(function (cb) {
       var _this = this;
 
-      this.sourceDirectoryPath = '' + this.directoryPath + '/src';
-      this.buildDirectoryPath = '' + this.directoryPath + '/build';
+      this.sourceDirectoryPath = this.directoryPath + '/src';
+      this.buildDirectoryPath = this.directoryPath + '/build';
 
-      _mkdirp2['default'](this.sourceDirectoryPath, function (e) {
+      (0, _mkdirp2['default'])(this.sourceDirectoryPath, function (e) {
         if (e) {
           cb(e);
         }
 
-        _mkdirp2['default'](_this.buildDirectoryPath, function (e) {
+        (0, _mkdirp2['default'])(_this.buildDirectoryPath, function (e) {
           if (e) {
             cb(e);
           }
@@ -142,15 +142,15 @@ describe('coffeescript', function () {
         var options = {};
         var chunk = functionSource;
         var expected = functionOutputSource;
-        var sourceFilePath = '' + this.directoryPath + '/src/file.coffee';
-        var buildFilePath = '' + this.directoryPath + '/build/file.js';
+        var sourceFilePath = this.directoryPath + '/src/file.coffee';
+        var buildFilePath = this.directoryPath + '/build/file.js';
 
         _fs2['default'].writeFile(sourceFilePath, chunk, function (e) {
           if (e) {
             cb(e);
           }
 
-          _coffeescript2['default'].compileFile(options, sourceFilePath, buildFilePath, function (e) {
+          _buildLibCoffeescript2['default'].compileFile(options, sourceFilePath, buildFilePath, function (e) {
             if (e) {
               cb(e);
             }
@@ -160,7 +160,7 @@ describe('coffeescript', function () {
                 cb(e);
               }
 
-              _expect.expect(fileBuffer.toString()).to.equal(expected);
+              (0, _chai.expect)(fileBuffer.toString()).to.equal(expected);
 
               cb();
             });
@@ -174,15 +174,15 @@ describe('coffeescript', function () {
     beforeEach(function (cb) {
       var _this2 = this;
 
-      this.sourceDirectoryPath = '' + this.directoryPath + '/src';
-      this.buildDirectoryPath = '' + this.directoryPath + '/build';
+      this.sourceDirectoryPath = this.directoryPath + '/src';
+      this.buildDirectoryPath = this.directoryPath + '/build';
 
-      _mkdirp2['default'](this.sourceDirectoryPath, function (e) {
+      (0, _mkdirp2['default'])(this.sourceDirectoryPath, function (e) {
         if (e) {
           cb(e);
         }
 
-        _mkdirp2['default'](_this2.buildDirectoryPath, function (e) {
+        (0, _mkdirp2['default'])(_this2.buildDirectoryPath, function (e) {
           if (e) {
             cb(e);
           }
@@ -200,10 +200,10 @@ describe('coffeescript', function () {
         };
         var chunk = functionSource;
         var expected = functionOutputSource;
-        var sourceFilePathOne = '' + this.directoryPath + '/src/one.coffee';
-        var buildFilePathOne = '' + this.directoryPath + '/build/one.js';
-        var sourceFilePathTwo = '' + this.directoryPath + '/src/two.coffee';
-        var buildFilePathTwo = '' + this.directoryPath + '/build/two.js';
+        var sourceFilePathOne = this.directoryPath + '/src/one.coffee';
+        var buildFilePathOne = this.directoryPath + '/build/one.js';
+        var sourceFilePathTwo = this.directoryPath + '/src/two.coffee';
+        var buildFilePathTwo = this.directoryPath + '/build/two.js';
 
         _fs2['default'].writeFile(sourceFilePathOne, chunk, function (e) {
           if (e) {
@@ -215,7 +215,7 @@ describe('coffeescript', function () {
               cb(e);
             }
 
-            _coffeescript2['default'].compileAllFiles(options, function (e) {
+            _buildLibCoffeescript2['default'].compileAllFiles(options, function (e) {
               if (e) {
                 cb(e);
               }
@@ -230,9 +230,9 @@ describe('coffeescript', function () {
                     cb(e);
                   }
 
-                  _expect.expect(fileBufferOne.toString()).to.equal(expected);
+                  (0, _chai.expect)(fileBufferOne.toString()).to.equal(expected);
 
-                  _expect.expect(fileBufferTwo.toString()).to.equal(expected);
+                  (0, _chai.expect)(fileBufferTwo.toString()).to.equal(expected);
 
                   cb();
                 });

@@ -55,15 +55,19 @@ class BrowserifyCompile extends CompileTask {
     bundle.bundle();
   }
 
-  run(cb) {
-    exists(this.sourceFilePath, (doesExist) => {
+  compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {
+    exists(sourceFilePath, (doesExist) => {
       if (doesExist) {
-        this.compileFile(this.sourceFilePath, this.targetFilePath, cb);
+        super.compileFile(sourceFilePath, targetFilePath, cb);
       } else {
-        logging.taskInfo(this.constructor.name, `skipping ${this.sourceFilePath} (Does not exist)`);
+        logging.taskInfo(this.constructor.name, `skipping ${sourceFilePath} (Does not exist)`);
         cb();
       }
     });
+  }
+
+  run(cb) {
+    this.compileFile(this.sourceFilePath, this.targetFilePath, cb);
   }
 }
 

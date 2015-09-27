@@ -1,41 +1,41 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _log = require('loglevel');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _log2 = _interopRequireWildcard(_log);
+var _loglevel = require('loglevel');
 
-var _Builder = require('./lib/Builder');
+var _loglevel2 = _interopRequireDefault(_loglevel);
 
-var _Builder2 = _interopRequireWildcard(_Builder);
+var _libBuilder = require('./lib/Builder');
 
-var _defaultOptions = require('./lib/defaultOptions');
+var _libBuilder2 = _interopRequireDefault(_libBuilder);
 
-var _defaultOptions2 = _interopRequireWildcard(_defaultOptions);
+var _libDefaultOptions = require('./lib/defaultOptions');
 
-var _parseOptions = require('./lib/parseOptions');
+var _libDefaultOptions2 = _interopRequireDefault(_libDefaultOptions);
 
-var _parseOptions2 = _interopRequireWildcard(_parseOptions);
+var _libParseOptions = require('./lib/parseOptions');
+
+var _libParseOptions2 = _interopRequireDefault(_libParseOptions);
 
 var _tasks = require('./tasks');
 
-var _tasks2 = _interopRequireWildcard(_tasks);
+var _tasks2 = _interopRequireDefault(_tasks);
 
-exports['default'] = function (_x, cb) {
-  var inputOptions = arguments[0] === undefined ? {} : arguments[0];
+exports['default'] = function (inputOptions, cb) {
+  if (inputOptions === undefined) inputOptions = {};
 
-  var options = global.options = _parseOptions2['default'](_defaultOptions2['default'], inputOptions);
+  var options = global.options = (0, _libParseOptions2['default'])(_libDefaultOptions2['default'], inputOptions);
 
   if (options.logging && typeof options.logging.level === 'string' && options.logging.level.length > 0) {
-    _log2['default'].setLevel(options.logging.level);
+    _loglevel2['default'].setLevel(options.logging.level);
   }
 
-  var builder = new _Builder2['default'](options);
+  var builder = new _libBuilder2['default'](options);
 
   builder.addTasks(_tasks2['default']);
 

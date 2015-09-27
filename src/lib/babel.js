@@ -1,7 +1,6 @@
 import log from 'loglevel';
 import _ from 'lodash';
 import { transform } from 'babel';
-import minimatch from 'minimatch';
 
 // import logging from './logging';
 import fileSystem from './fileSystem';

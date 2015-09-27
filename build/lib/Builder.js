@@ -1,28 +1,28 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _import = require('lodash');
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _import2 = _interopRequireWildcard(_import);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _auto = require('async');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _async = require('async');
 
 var _logging = require('./logging');
 
-var _logging2 = _interopRequireWildcard(_logging);
+var _logging2 = _interopRequireDefault(_logging);
 
 var Builder = (function () {
   function Builder() {
-    var options = arguments[0] === undefined ? {} : arguments[0];
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
     _classCallCheck(this, Builder);
 
@@ -33,22 +33,22 @@ var Builder = (function () {
     this.asyncTasks = {};
   }
 
+  // Gets the options belonging to the task of `name`.
+
   _createClass(Builder, [{
     key: '_getTaskOptions',
-
-    // Gets the options belonging to the task of `name`.
     value: function _getTaskOptions(name) {
       return this.options.tasks[name];
     }
-  }, {
-    key: '_ensureTaskInstances',
 
     // Instantiates all the tasks.
     // TODO: Find a better way to do this.
+  }, {
+    key: '_ensureTaskInstances',
     value: function _ensureTaskInstances() {
       var _this = this;
 
-      _import2['default'].each(this.tasks, function (Task, name) {
+      _lodash2['default'].each(this.tasks, function (Task, name) {
         var options = _this._getTaskOptions(name);
 
         if (!options) {
@@ -68,14 +68,14 @@ var Builder = (function () {
         }
       });
     }
-  }, {
-    key: '_ensureAsyncTasks',
 
     // Converts Task to async.auto format until I find a better solution.
+  }, {
+    key: '_ensureAsyncTasks',
     value: function _ensureAsyncTasks() {
       var _this2 = this;
 
-      _import2['default'].each(this.taskInstances, function (taskInstance, name) {
+      _lodash2['default'].each(this.taskInstances, function (taskInstance, name) {
         _this2.asyncTasks[name] = taskInstance.dependencies.concat(_this2._createTaskCallback(name, taskInstance));
       });
     }
@@ -88,7 +88,7 @@ var Builder = (function () {
       // Then ensure the async tree looks the same.
       this._ensureAsyncTasks();
 
-      _auto.auto(this.asyncTasks, cb);
+      (0, _async.auto)(this.asyncTasks, cb);
     }
   }, {
     key: '_createTaskCallback',
@@ -115,17 +115,17 @@ var Builder = (function () {
         });
       };
     }
-  }, {
-    key: 'addTask',
 
     // TODO: Actually convert all the tasks to Task classes.
+  }, {
+    key: 'addTask',
     value: function addTask(task) {
       this.tasks[task.name] = task;
     }
   }, {
     key: 'addTasks',
     value: function addTasks(tasks) {
-      _import2['default'].each(tasks, this.addTask.bind(this));
+      _lodash2['default'].each(tasks, this.addTask.bind(this));
     }
   }, {
     key: 'start',
