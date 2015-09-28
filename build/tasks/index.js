@@ -52,6 +52,10 @@ var _StylusCompileTask = require('./StylusCompileTask');
 
 var _StylusCompileTask2 = _interopRequireDefault(_StylusCompileTask);
 
+var _WatchTask = require('./WatchTask');
+
+var _WatchTask2 = _interopRequireDefault(_WatchTask);
+
 exports['default'] = {
   // BabelASTCompileTask,
   // PlantUMLCompileTask,
@@ -65,6 +69,7 @@ exports['default'] = {
   DirectoryCleanerTask: _DirectoryCleanerTask2['default'],
   LessCompileTask: _LessCompileTask2['default'],
   LiveScriptCompileTask: _LiveScriptCompileTask2['default'],
-  StylusCompileTask: _StylusCompileTask2['default']
+  StylusCompileTask: _StylusCompileTask2['default'],
+  WatchTask: _WatchTask2['default']
 };
 module.exports = exports['default'];

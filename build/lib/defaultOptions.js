@@ -25,7 +25,7 @@ exports['default'] = {
       sourceFileExtension: 'js',
       sourceDirectoryPath: 'src',
 
-      options: {
+      compiler: {
         ast: true,
         whitelist: []
       }
@@ -41,7 +41,7 @@ exports['default'] = {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         optional: ['es7.asyncFunctions', 'es7.decorators', 'es7.exportExtensions', 'es7.objectRestSpread', 'es7.trailingFunctionCommas']
       }
     },
@@ -56,7 +56,7 @@ exports['default'] = {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         optional: ['es7.asyncFunctions', 'es7.decorators', 'es7.exportExtensions', 'es7.objectRestSpread', 'es7.trailingFunctionCommas'],
         sourceMaps: true
       }
@@ -72,7 +72,7 @@ exports['default'] = {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         optional: ['es7.asyncFunctions', 'es7.decorators', 'es7.exportExtensions', 'es7.objectRestSpread', 'es7.trailingFunctionCommas']
       }
     },
@@ -87,7 +87,7 @@ exports['default'] = {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         bare: true
       }
     },
@@ -102,7 +102,7 @@ exports['default'] = {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         bare: true
       }
     },
@@ -119,7 +119,7 @@ exports['default'] = {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         filename: './src/client/less/app.less'
       }
     },
@@ -133,10 +133,10 @@ exports['default'] = {
       targetFilePath: 'build/client/js/app.bundle.js',
       sourceFileExtension: 'js',
       targetFileExtension: 'js',
-      sourceDirectoryPath: 'build',
-      targetDirectoryPath: 'build',
+      sourceDirectoryPath: 'build/client',
+      targetDirectoryPath: 'build/client',
 
-      options: {
+      compiler: {
         cache: {},
         // debug: true,
         fullPaths: true,
@@ -156,7 +156,7 @@ exports['default'] = {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {}
+      compiler: {}
     },
 
     CopyCompileTask: {
@@ -192,6 +192,16 @@ exports['default'] = {
       sourceDirectoryPath: 'build',
 
       paths: ['server/app.js']
+    },
+
+    WatchTask: {
+      enabled: true,
+
+      dependencies: ['BrowserifyCompileTask'],
+
+      // sourceDirectoryPath: 'build',
+
+      paths: ['src', 'build']
     }
   }
 };

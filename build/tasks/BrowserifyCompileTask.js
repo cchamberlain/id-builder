@@ -41,12 +41,7 @@ var BrowserifyCompileTask = (function (_CompileTask) {
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
 
-    // TODO: refactor
-    this.compiler = new _compilersBrowserifyCompiler2['default']({
-      sourceFilePath: this.sourceFilePath,
-      targetFilePath: this.targetFilePath,
-      options: this.options.options
-    });
+    this.setCompiler(_compilersBrowserifyCompiler2['default']);
   }
 
   _createClass(BrowserifyCompileTask, [{
@@ -79,11 +74,6 @@ var BrowserifyCompileTask = (function (_CompileTask) {
     key: 'run',
     value: function run(cb) {
       this.compileFile(this.sourceFilePath, this.targetFilePath, cb);
-    }
-  }, {
-    key: 'sourceFilePathMatchExpression',
-    get: function get() {
-      return new RegExp('^' + this.sourceFilePath + '$');
     }
   }]);
 

@@ -18,6 +18,10 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
 var _async = require('async');
 
 var _libCompileTask = require('../lib/CompileTask');
@@ -27,6 +31,10 @@ var _libCompileTask2 = _interopRequireDefault(_libCompileTask);
 var _compilersCopyCompiler = require('../compilers/CopyCompiler');
 
 var _compilersCopyCompiler2 = _interopRequireDefault(_compilersCopyCompiler);
+
+function getNames(tasks) {
+  return (0, _lodash2['default'])(tasks).pluck('constructor').pluck('name').value();
+}
 
 var CopyCompileTask = (function (_CompileTask) {
   _inherits(CopyCompileTask, _CompileTask);
@@ -38,20 +46,37 @@ var CopyCompileTask = (function (_CompileTask) {
 
     _get(Object.getPrototypeOf(CopyCompileTask.prototype), 'constructor', this).call(this, options);
 
-    this.compiler = new _compilersCopyCompiler2['default']();
+    this.setCompiler(_compilersCopyCompiler2['default']);
+
+    _lodash2['default'].bindAll(this, ['isCompileTask', 'isntThisTask']);
   }
 
   _createClass(CopyCompileTask, [{
-    key: 'doesntMatchOtherTaskSourceFilePath',
+    key: 'isCompileTask',
+    value: function isCompileTask(task) {
+      return task instanceof _libCompileTask2['default'];
+    }
+  }, {
+    key: 'isntThisTask',
+    value: function isntThisTask(task) {
+      return task.constructor.name !== this.constructor.name;
+    }
+  }, {
+    key: 'sourceFilePathMatches',
+    value: function sourceFilePathMatches(sourceFilePath) {
+      return _get(Object.getPrototypeOf(CopyCompileTask.prototype), 'sourceFilePathMatches', this).call(this, sourceFilePath) && this.doesntMatchOtherTaskSourceFilePath(sourceFilePath);
+    }
 
     // Check all other tasks for sourceFilePathMathches functions and
     // only return true if no other matches, so don't copy files any
     // other task is interested in.
-    value: function doesntMatchOtherTaskSourceFilePath(node) {
+  }, {
+    key: 'doesntMatchOtherTaskSourceFilePath',
+    value: function doesntMatchOtherTaskSourceFilePath(path) {
       var result = true;
 
-      _lodash2['default'].each(this.otherTasks, function (task) {
-        if (task.sourceFilePathMatches && task.sourceFilePathMatches(node.fullPath)) {
+      _lodash2['default'].each(this.otherCompileTasks, function (task) {
+        if (task.sourceFilePathMatches && task.sourceFilePathMatches(path)) {
           result = false;
         }
       });
@@ -68,9 +93,9 @@ var CopyCompileTask = (function (_CompileTask) {
           return cb(e);
         }
 
-        var paths = (0, _lodash2['default'])(nodes).filter(_this.doesntMatchOtherTaskSourceFilePath.bind(_this)).map(function (v) {
+        var paths = (0, _lodash2['default'])(nodes).map(function (v) {
           return v.fullPath;
-        }).value();
+        }).filter(_this.doesntMatchOtherTaskSourceFilePath.bind(_this)).value();
 
         cb(null, paths);
       });
@@ -107,15 +132,14 @@ var CopyCompileTask = (function (_CompileTask) {
       this.compileAllFiles(cb);
     }
   }, {
-    key: 'otherTasks',
+    key: 'otherCompileTasks',
     get: function get() {
-      var _this3 = this;
-
-      return _lodash2['default'].filter(this.builder.taskInstances, function (v, k) {
-        if (k !== _this3.name) {
-          return v;
-        }
-      });
+      return (0, _lodash2['default'])(this.builder.taskInstances).filter(this.isCompileTask).filter(this.isntThisTask).value();
+    }
+  }, {
+    key: 'sourceFilePathMatchExpression',
+    get: function get() {
+      return new RegExp('^' + this.sourceDirectoryPath + '.+$');
     }
   }]);
 

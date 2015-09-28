@@ -12,16 +12,7 @@ class BrowserifyCompileTask extends CompileTask {
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
 
-    // TODO: refactor
-    this.compiler = new BrowserifyCompiler({
-      sourceFilePath: this.sourceFilePath,
-      targetFilePath: this.targetFilePath,
-      options: this.options.options
-    });
-  }
-
-  get sourceFilePathMatchExpression() {
-    return new RegExp(`^${this.sourceFilePath}$`);
+    this.setCompiler(BrowserifyCompiler);
   }
 
   compileChunk(chunk, cb) {

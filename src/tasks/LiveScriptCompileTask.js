@@ -6,9 +6,7 @@ class LiveScriptCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.compiler = new LiveScriptCompiler({
-      options: this.options.options
-    });
+    this.setCompiler(LiveScriptCompiler);
   }
 
   compileChunk(chunk, cb) {

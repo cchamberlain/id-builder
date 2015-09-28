@@ -5,7 +5,7 @@ class BabelMapCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.compiler = new BabelMapCompiler();
+    this.setCompiler(BabelMapCompiler);
   }
 
   compileChunk(chunk, cb) {

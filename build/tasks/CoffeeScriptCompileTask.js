@@ -32,7 +32,7 @@ var CoffeeScriptCompileTask = (function (_CompileTask) {
 
     _get(Object.getPrototypeOf(CoffeeScriptCompileTask.prototype), 'constructor', this).call(this, options);
 
-    this.compiler = new _compilersCoffeeScriptCompiler2['default']();
+    this.setCompiler(_compilersCoffeeScriptCompiler2['default']);
   }
 
   _createClass(CoffeeScriptCompileTask, [{

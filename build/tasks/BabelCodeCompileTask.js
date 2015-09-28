@@ -32,7 +32,7 @@ var BabelCodeCompileTask = (function (_CompileTask) {
 
     _get(Object.getPrototypeOf(BabelCodeCompileTask.prototype), 'constructor', this).call(this, options);
 
-    this.compiler = new _compilersBabelCodeCompiler2['default']();
+    this.setCompiler(_compilersBabelCodeCompiler2['default']);
   }
 
   _createClass(BabelCodeCompileTask, [{

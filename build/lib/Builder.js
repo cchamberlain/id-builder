@@ -31,6 +31,8 @@ var Builder = (function () {
     this.tasks = {};
     this.taskInstances = {};
     this.asyncTasks = {};
+
+    this.compilers = {};
   }
 
   // Gets the options belonging to the task of `name`.
@@ -126,6 +128,20 @@ var Builder = (function () {
     key: 'addTasks',
     value: function addTasks(tasks) {
       _lodash2['default'].each(tasks, this.addTask.bind(this));
+    }
+  }, {
+    key: 'addCompiler',
+    value: function addCompiler(compiler) {
+      var name = compiler.constructor.name;
+
+      this.compilers[name] = compiler;
+    }
+  }, {
+    key: 'removeCompiler',
+    value: function removeCompiler(compiler) {
+      var name = compiler.constructor.name;
+
+      delete this.compilers[name];
     }
   }, {
     key: 'start',

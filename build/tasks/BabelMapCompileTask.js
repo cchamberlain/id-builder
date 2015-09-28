@@ -32,7 +32,7 @@ var BabelMapCompileTask = (function (_CompileTask) {
 
     _get(Object.getPrototypeOf(BabelMapCompileTask.prototype), 'constructor', this).call(this, options);
 
-    this.compiler = new _compilersBabelMapCompiler2['default']();
+    this.setCompiler(_compilersBabelMapCompiler2['default']);
   }
 
   _createClass(BabelMapCompileTask, [{

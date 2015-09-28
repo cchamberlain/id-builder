@@ -22,6 +22,10 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
 var _lsr = require('lsr');
 
 var _lsr2 = _interopRequireDefault(_lsr);
@@ -59,7 +63,7 @@ var CompileTask = (function (_Task) {
     this.sourceDirectoryPath = options.sourceDirectoryPath;
     this.targetDirectoryPath = options.targetDirectoryPath;
 
-    this.compiler = new _Compiler2['default']();
+    this.setCompiler(_Compiler2['default']);
   }
 
   _createClass(CompileTask, [{
@@ -146,6 +150,20 @@ var CompileTask = (function (_Task) {
           _this2.compileFile(currentSourceFilePath, _this2.getTargetPath(currentSourceFilePath), cb);
         }, cb);
       });
+    }
+  }, {
+    key: 'setCompiler',
+    value: function setCompiler(CompilerClass) {
+      // First remove the currently set compiler from the builder.
+      if (this.compiler) {
+        this.builder.removeCompiler(this.compiler);
+      }
+
+      // Then set the the new compiler
+      this.compiler = new CompilerClass(this.options.compiler);
+
+      // And add it to the builder
+      this.builder.addCompiler(this.compiler);
     }
   }, {
     key: 'sourceFilePathMatchExpression',

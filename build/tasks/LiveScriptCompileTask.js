@@ -32,9 +32,7 @@ var LiveScriptCompileTask = (function (_CompileTask) {
 
     _get(Object.getPrototypeOf(LiveScriptCompileTask.prototype), 'constructor', this).call(this, options);
 
-    this.compiler = new _compilersLiveScriptCompiler2['default']({
-      options: this.options.options
-    });
+    this.setCompiler(_compilersLiveScriptCompiler2['default']);
   }
 
   _createClass(LiveScriptCompileTask, [{

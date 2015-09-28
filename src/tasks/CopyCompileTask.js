@@ -1,33 +1,62 @@
 import _ from 'lodash';
+
+import log from 'loglevel';
 import { each } from 'async';
 
 import CompileTask from '../lib/CompileTask';
 
 import CopyCompiler from '../compilers/CopyCompiler';
 
+function getNames(tasks) {
+  return _(tasks)
+    .pluck('constructor')
+    .pluck('name')
+    .value();
+}
+
 class CopyCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.compiler = new CopyCompiler();
+    this.setCompiler(CopyCompiler);
+
+    _.bindAll(this, [
+      'isCompileTask',
+      'isntThisTask'
+    ]);
   }
 
-  get otherTasks() {
-    return _.filter(this.builder.taskInstances, (v, k) => {
-      if (k !== this.name) {
-        return v;
-      }
-    });
+  isCompileTask(task) {
+    return task instanceof CompileTask;
+  }
+
+  isntThisTask(task) {
+    return task.constructor.name !== this.constructor.name;
+  }
+
+  get otherCompileTasks() {
+    return _(this.builder.taskInstances)
+      .filter(this.isCompileTask)
+      .filter(this.isntThisTask)
+      .value();
+  }
+
+  get sourceFilePathMatchExpression() {
+    return new RegExp(`^${this.sourceDirectoryPath}.+$`);
+  }
+
+  sourceFilePathMatches(sourceFilePath) {
+    return super.sourceFilePathMatches(sourceFilePath) && this.doesntMatchOtherTaskSourceFilePath(sourceFilePath);
   }
 
   // Check all other tasks for sourceFilePathMathches functions and
   // only return true if no other matches, so don't copy files any
   // other task is interested in.
-  doesntMatchOtherTaskSourceFilePath(node) {
+  doesntMatchOtherTaskSourceFilePath(path) {
     let result = true;
 
-    _.each(this.otherTasks, (task) => {
-      if (task.sourceFilePathMatches && task.sourceFilePathMatches(node.fullPath)) {
+    _.each(this.otherCompileTasks, (task) => {
+      if (task.sourceFilePathMatches && task.sourceFilePathMatches(path)) {
         result = false;
       }
     });
@@ -42,8 +71,8 @@ class CopyCompileTask extends CompileTask {
       }
 
       const paths = _(nodes)
-        .filter(this.doesntMatchOtherTaskSourceFilePath.bind(this))
         .map(v => v.fullPath)
+        .filter(this.doesntMatchOtherTaskSourceFilePath.bind(this))
         .value();
 
       cb(null, paths);

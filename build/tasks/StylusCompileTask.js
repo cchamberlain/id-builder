@@ -41,9 +41,7 @@ var StylusCompileTask = (function (_CompileTask) {
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
 
-    this.compiler = new _compilersStylusCompiler2['default']({
-      options: this.options.options
-    });
+    this.setCompiler(_compilersStylusCompiler2['default']);
   }
 
   _createClass(StylusCompileTask, [{

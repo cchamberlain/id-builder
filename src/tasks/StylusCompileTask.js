@@ -12,9 +12,7 @@ class StylusCompileTask extends CompileTask {
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
 
-    this.compiler = new StylusCompiler({
-      options: this.options.options
-    });
+    this.setCompiler(StylusCompiler);
   }
 
   get sourceFilePathMatchExpression() {

@@ -5,7 +5,7 @@ class CoffeeScriptCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.compiler = new CoffeeScriptCompiler();
+    this.setCompiler(CoffeeScriptCompiler);
   }
 
   compileChunk(chunk, cb) {

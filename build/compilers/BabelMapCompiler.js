@@ -20,16 +20,16 @@ var _libCompiler = require('../lib/Compiler');
 
 var _libCompiler2 = _interopRequireDefault(_libCompiler);
 
-var BabelCodeCompiler = (function (_Compiler) {
-  _inherits(BabelCodeCompiler, _Compiler);
+var BabelMapCompiler = (function (_Compiler) {
+  _inherits(BabelMapCompiler, _Compiler);
 
-  function BabelCodeCompiler() {
-    _classCallCheck(this, BabelCodeCompiler);
+  function BabelMapCompiler() {
+    _classCallCheck(this, BabelMapCompiler);
 
-    _get(Object.getPrototypeOf(BabelCodeCompiler.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(BabelMapCompiler.prototype), 'constructor', this).apply(this, arguments);
   }
 
-  _createClass(BabelCodeCompiler, [{
+  _createClass(BabelMapCompiler, [{
     key: 'compileChunk',
     value: function compileChunk(chunk) {
       var _this = this;
@@ -47,8 +47,8 @@ var BabelCodeCompiler = (function (_Compiler) {
     }
   }]);
 
-  return BabelCodeCompiler;
+  return BabelMapCompiler;
 })(_libCompiler2['default']);
 
-exports['default'] = BabelCodeCompiler;
+exports['default'] = BabelMapCompiler;
 module.exports = exports['default'];

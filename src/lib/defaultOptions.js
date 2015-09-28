@@ -23,7 +23,7 @@ export default {
       sourceFileExtension: 'js',
       sourceDirectoryPath: 'src',
 
-      options: {
+      compiler: {
         ast: true,
         whitelist: []
       }
@@ -41,7 +41,7 @@ export default {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         optional: [
           'es7.asyncFunctions',
           'es7.decorators',
@@ -64,7 +64,7 @@ export default {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         optional: [
           'es7.asyncFunctions',
           'es7.decorators',
@@ -88,7 +88,7 @@ export default {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         optional: [
           'es7.asyncFunctions',
           'es7.decorators',
@@ -111,7 +111,7 @@ export default {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         bare: true
       }
     },
@@ -128,7 +128,7 @@ export default {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         bare: true
       }
     },
@@ -147,7 +147,7 @@ export default {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {
+      compiler: {
         filename: './src/client/less/app.less'
       }
     },
@@ -167,10 +167,10 @@ export default {
       targetFilePath: 'build/client/js/app.bundle.js',
       sourceFileExtension: 'js',
       targetFileExtension: 'js',
-      sourceDirectoryPath: 'build',
-      targetDirectoryPath: 'build',
+      sourceDirectoryPath: 'build/client',
+      targetDirectoryPath: 'build/client',
 
-      options: {
+      compiler: {
         cache: {},
         // debug: true,
         fullPaths: true,
@@ -192,7 +192,7 @@ export default {
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build',
 
-      options: {}
+      compiler: {}
     },
 
     CopyCompileTask: {
@@ -234,6 +234,21 @@ export default {
       sourceDirectoryPath: 'build',
 
       paths: [ 'server/app.js' ]
+    },
+
+    WatchTask: {
+      enabled: true,
+
+      dependencies: [
+        'BrowserifyCompileTask'
+      ],
+
+      // sourceDirectoryPath: 'build',
+
+      paths: [
+        'src',
+        'build'
+      ]
     }
   }
 };

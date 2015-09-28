@@ -2,7 +2,7 @@ import { transform } from 'babel';
 
 import Compiler from '../lib/Compiler';
 
-class BabelCodeCompiler extends Compiler {
+class BabelMapCompiler extends Compiler {
   compileChunk(chunk) {
     return new Promise((resolve, reject) => {
       try {
@@ -17,4 +17,4 @@ class BabelCodeCompiler extends Compiler {
   }
 }
 
-export default BabelCodeCompiler;
+export default BabelMapCompiler;

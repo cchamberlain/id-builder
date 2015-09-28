@@ -41,9 +41,7 @@ var LessCompileTask = (function (_CompileTask) {
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
 
-    this.compiler = new _compilersLessCompiler2['default']({
-      options: this.options.options
-    });
+    this.setCompiler(_compilersLessCompiler2['default']);
   }
 
   _createClass(LessCompileTask, [{

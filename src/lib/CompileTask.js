@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'fs';
 import { dirname } from 'path';
 
 import _ from 'lodash';
+import log from 'loglevel';
 import lsr from 'lsr';
 import mkdirp from 'mkdirp';
 import { each } from 'async';
@@ -19,7 +20,7 @@ class CompileTask extends Task {
     this.sourceDirectoryPath = options.sourceDirectoryPath;
     this.targetDirectoryPath = options.targetDirectoryPath;
 
-    this.compiler = new Compiler();
+    this.setCompiler(Compiler);
   }
 
   get sourceFilePathMatchExpression() {
@@ -106,6 +107,19 @@ class CompileTask extends Task {
         this.compileFile(currentSourceFilePath, this.getTargetPath(currentSourceFilePath), cb);
       }, cb);
     });
+  }
+
+  setCompiler(CompilerClass) {
+    // First remove the currently set compiler from the builder.
+    if (this.compiler) {
+      this.builder.removeCompiler(this.compiler);
+    }
+
+    // Then set the the new compiler
+    this.compiler = new CompilerClass(this.options.compiler);
+
+    // And add it to the builder
+    this.builder.addCompiler(this.compiler);
   }
 }
 

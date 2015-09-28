@@ -10,6 +10,8 @@ class Builder {
     this.tasks = {};
     this.taskInstances = {};
     this.asyncTasks = {};
+
+    this.compilers = {};
   }
 
   // Gets the options belonging to the task of `name`.
@@ -89,6 +91,19 @@ class Builder {
 
   addTasks(tasks) {
     _.each(tasks, this.addTask.bind(this));
+  }
+
+  addCompiler(compiler) {
+    const name = compiler.constructor.name;
+
+    this.compilers[name] = compiler;
+  }
+
+  removeCompiler(compiler) {
+    const name = compiler.constructor.name;
+
+
+    delete this.compilers[name];
   }
 
   start(cb) {

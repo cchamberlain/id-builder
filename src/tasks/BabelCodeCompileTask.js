@@ -5,7 +5,7 @@ class BabelCodeCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.compiler = new BabelCodeCompiler();
+    this.setCompiler(BabelCodeCompiler);
   }
 
   compileChunk(chunk, cb) {

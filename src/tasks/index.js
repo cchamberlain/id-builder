@@ -11,6 +11,7 @@ import DirectoryCleanerTask from './DirectoryCleanerTask';
 import LessCompileTask from './LessCompileTask';
 import LiveScriptCompileTask from './LiveScriptCompileTask';
 import StylusCompileTask from './StylusCompileTask';
+import WatchTask from './WatchTask';
 
 export default {
   // BabelASTCompileTask,
@@ -25,5 +26,6 @@ export default {
   DirectoryCleanerTask,
   LessCompileTask,
   LiveScriptCompileTask,
-  StylusCompileTask
+  StylusCompileTask,
+  WatchTask
 };

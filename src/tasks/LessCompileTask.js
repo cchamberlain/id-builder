@@ -12,9 +12,7 @@ class LessCompileTask extends CompileTask {
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
 
-    this.compiler = new LessCompiler({
-      options: this.options.options
-    });
+    this.setCompiler(LessCompiler);
   }
 
   get sourceFilePathMatchExpression() {
