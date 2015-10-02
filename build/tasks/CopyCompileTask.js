@@ -101,13 +101,6 @@ var CopyCompileTask = (function (_CompileTask) {
       });
     }
   }, {
-    key: 'compileChunk',
-    value: function compileChunk(chunk, cb) {
-      this.compiler.compileChunk(chunk).then(function (result) {
-        cb(null, result);
-      })['catch'](cb);
-    }
-  }, {
     key: 'compileAllFiles',
     value: function compileAllFiles(cb) {
       var _this2 = this;

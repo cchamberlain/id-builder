@@ -29,7 +29,7 @@ var CopyCompiler = (function (_Compiler) {
 
   _createClass(CopyCompiler, [{
     key: 'compileChunk',
-    value: function compileChunk(chunk) {
+    value: function compileChunk(chunk, sourceFilePath) {
       return new Promise(function (resolve) {
         resolve(chunk);
       });

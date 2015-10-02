@@ -9,14 +9,6 @@ class LiveScriptCompileTask extends CompileTask {
     this.setCompiler(LiveScriptCompiler);
   }
 
-  compileChunk(chunk, cb) {
-    this.compiler.compileChunk(chunk)
-      .then((result) => {
-        cb(null, result);
-      })
-      .catch(cb);
-  }
-
   run(cb) {
     this.compileAllFiles(cb);
   }

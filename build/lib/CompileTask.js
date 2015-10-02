@@ -108,12 +108,13 @@ var CompileTask = (function (_Task) {
           return cb(e);
         }
 
-        _this.compileChunk(fileContent.toString(), function (e, compiledChunk) {
-          if (e) {
-            _libLogging2['default'].taskWarn(_this.constructor.name, sourceFilePath + ': ' + (e.stack || e.message || e));
-            return cb();
-          }
+        if (!_this.compiler.compileChunk) {
+          console.log(_this.compiler.constructor.name);
 
+          console.trace();
+        }
+
+        _this.compiler.compileChunk(fileContent.toString(), sourceFilePath).then(function (compiledChunk) {
           _this.ensureFileDirectory(targetFilePath, function (e) {
             if (e) {
               return cb(e);
@@ -129,6 +130,9 @@ var CompileTask = (function (_Task) {
               cb(null);
             });
           });
+        })['catch'](function (e) {
+          _libLogging2['default'].taskWarn(_this.constructor.name, sourceFilePath + ': ' + (e.stack || e.message || e));
+          return cb();
         });
       });
     }

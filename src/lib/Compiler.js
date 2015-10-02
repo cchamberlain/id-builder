@@ -3,7 +3,7 @@ class Compiler {
     this.options = options;
   }
 
-  compileChunk(chunk) {
+  compileChunk(chunk, sourceFilePath) {
     return new Promise((resolve) => {
       resolve(chunk);
     });

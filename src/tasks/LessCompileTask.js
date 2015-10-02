@@ -19,14 +19,6 @@ class LessCompileTask extends CompileTask {
     return new RegExp(`^${this.sourceFilePath}$`);
   }
 
-  compileChunk(chunk, cb) {
-    this.compiler.compileChunk(chunk)
-      .then((result) => {
-        cb(null, result);
-      })
-      .catch(cb);
-  }
-
   compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {
     exists(sourceFilePath, (doesExist) => {
       if (doesExist) {

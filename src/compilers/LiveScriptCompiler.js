@@ -3,7 +3,7 @@ import { compile } from 'LiveScript';
 import Compiler from '../lib/Compiler';
 
 class LiveScriptCompiler extends Compiler {
-  compileChunk(chunk) {
+  compileChunk(chunk, sourceFilePath) {
     return new Promise((resolve, reject) => {
       try {
         resolve(compile(chunk, this.options.options));

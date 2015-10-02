@@ -8,14 +8,6 @@ class BabelMapCompileTask extends CompileTask {
     this.setCompiler(BabelMapCompiler);
   }
 
-  compileChunk(chunk, cb) {
-    this.compiler.compileChunk(chunk)
-      .then((result) => {
-        cb(null, result);
-      })
-      .catch(cb);
-  }
-
   run(cb) {
     this.compileAllFiles(cb);
   }

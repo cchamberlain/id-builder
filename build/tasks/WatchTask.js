@@ -1,3 +1,6 @@
+// Get browserify watch working with my own watcher.
+// Ask browserify if a file matches to re-bundle
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {

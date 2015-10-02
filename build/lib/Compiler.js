@@ -19,7 +19,7 @@ var Compiler = (function () {
 
   _createClass(Compiler, [{
     key: "compileChunk",
-    value: function compileChunk(chunk) {
+    value: function compileChunk(chunk, sourceFilePath) {
       return new Promise(function (resolve) {
         resolve(chunk);
       });

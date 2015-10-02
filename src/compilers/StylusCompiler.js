@@ -3,7 +3,7 @@ import { render } from 'stylus';
 import Compiler from '../lib/Compiler';
 
 class StylusCompiler extends Compiler {
-  compileChunk(chunk) {
+  compileChunk(chunk, sourceFilePath) {
     return new Promise((resolve, reject) => {
       render(chunk, this.options.options, (e, result) => {
         if (e) {

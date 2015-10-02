@@ -45,13 +45,6 @@ var StylusCompileTask = (function (_CompileTask) {
   }
 
   _createClass(StylusCompileTask, [{
-    key: 'compileChunk',
-    value: function compileChunk(chunk, cb) {
-      this.compiler.compileChunk(chunk).then(function (result) {
-        cb(null, result);
-      })['catch'](cb);
-    }
-  }, {
     key: 'compileFile',
     value: function compileFile(sourceFilePath, targetFilePath, cb) {
       if (sourceFilePath === undefined) sourceFilePath = this.sourceFilePath;

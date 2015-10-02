@@ -1,6 +1,7 @@
 import browserify from 'browserify';
 import jadeify from 'jadeify';
 import path from 'path';
+import log from 'loglevel';
 
 import Compiler from '../lib/Compiler';
 
@@ -10,29 +11,21 @@ class BrowserifyCompiler extends Compiler {
 
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
-  }
 
-  getBrowserifyBundle() {
-    const b = browserify(this.options.options);
+    this.bundle = browserify(this.options.options);
 
-    const jadeRuntime = require.resolve('jade/runtime');
-
-    const jadeifyOptions = {
+    this.bundle.transform(jadeify, {
       compileDebug: true,
       pretty: true,
-      runtimePath: jadeRuntime
-    };
-
-    b.transform(jadeify, jadeifyOptions);
-
-    return b;
+      runtimePath: require.resolve('jade/runtime')
+    });
   }
 
-  compileChunk(chunk) {
+  compileChunk(chunk, sourceFilePath) {
     return new Promise((resolve, reject) => {
-      const bundle = this.getBrowserifyBundle();
+      const bundle = this.bundle;
 
-      bundle.add(path.resolve(this.sourceFilePath));
+      bundle.add(path.resolve(sourceFilePath));
 
       bundle.on('bundle', bundleStream => {
         let data = '';

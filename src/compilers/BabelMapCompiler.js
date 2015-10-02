@@ -3,7 +3,7 @@ import { transform } from 'babel';
 import Compiler from '../lib/Compiler';
 
 class BabelMapCompiler extends Compiler {
-  compileChunk(chunk) {
+  compileChunk(chunk, sourceFilePath) {
     return new Promise((resolve, reject) => {
       try {
         const transformResult = transform(chunk, this.options.options);

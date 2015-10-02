@@ -67,28 +67,34 @@ class CompileTask extends Task {
         return cb(e);
       }
 
-      this.compileChunk(fileContent.toString(), (e, compiledChunk) => {
-        if (e) {
-          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e.stack || e.message || e}`);
-          return cb();
-        }
+      if (!this.compiler.compileChunk) {
+        console.log(this.compiler.constructor.name);
 
-        this.ensureFileDirectory(targetFilePath, e => {
-          if (e) {
-            return cb(e);
-          }
+        console.trace();
+      }
 
-          writeFile(targetFilePath, compiledChunk, e => {
+      this.compiler.compileChunk(fileContent.toString(), sourceFilePath)
+        .then(compiledChunk => {
+          this.ensureFileDirectory(targetFilePath, e => {
             if (e) {
               return cb(e);
             }
 
-            logging.taskInfo(this.constructor.name, `${sourceFilePath} => ${targetFilePath}`);
+            writeFile(targetFilePath, compiledChunk, e => {
+              if (e) {
+                return cb(e);
+              }
 
-            cb(null);
+              logging.taskInfo(this.constructor.name, `${sourceFilePath} => ${targetFilePath}`);
+
+              cb(null);
+            });
           });
+        })
+        .catch(e => {
+          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e.stack || e.message || e}`);
+          return cb();
         });
-      });
     });
   }
 

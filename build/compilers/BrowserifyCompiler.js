@@ -26,6 +26,10 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
 var _libCompiler = require('../lib/Compiler');
 
 var _libCompiler2 = _interopRequireDefault(_libCompiler);
@@ -42,34 +46,25 @@ var BrowserifyCompiler = (function (_Compiler) {
 
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
+
+    this.bundle = (0, _browserify2['default'])(this.options.options);
+
+    this.bundle.transform(_jadeify2['default'], {
+      compileDebug: true,
+      pretty: true,
+      runtimePath: require.resolve('jade/runtime')
+    });
   }
 
   _createClass(BrowserifyCompiler, [{
-    key: 'getBrowserifyBundle',
-    value: function getBrowserifyBundle() {
-      var b = (0, _browserify2['default'])(this.options.options);
-
-      var jadeRuntime = require.resolve('jade/runtime');
-
-      var jadeifyOptions = {
-        compileDebug: true,
-        pretty: true,
-        runtimePath: jadeRuntime
-      };
-
-      b.transform(_jadeify2['default'], jadeifyOptions);
-
-      return b;
-    }
-  }, {
     key: 'compileChunk',
-    value: function compileChunk(chunk) {
+    value: function compileChunk(chunk, sourceFilePath) {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        var bundle = _this.getBrowserifyBundle();
+        var bundle = _this.bundle;
 
-        bundle.add(_path2['default'].resolve(_this.sourceFilePath));
+        bundle.add(_path2['default'].resolve(sourceFilePath));
 
         bundle.on('bundle', function (bundleStream) {
           var data = '';

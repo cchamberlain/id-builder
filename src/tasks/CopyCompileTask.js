@@ -79,14 +79,6 @@ class CopyCompileTask extends CompileTask {
     });
   }
 
-  compileChunk(chunk, cb) {
-    this.compiler.compileChunk(chunk)
-      .then((result) => {
-        cb(null, result);
-      })
-      .catch(cb);
-  }
-
   compileAllFiles(cb) {
     this.getPaths((e, paths) => {
       if (e) {

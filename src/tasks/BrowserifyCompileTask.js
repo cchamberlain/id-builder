@@ -1,4 +1,5 @@
 import { exists } from 'fs';
+import log from 'loglevel';
 
 import CompileTask from '../lib/CompileTask';
 import logging from '../lib/logging';
@@ -15,12 +16,11 @@ class BrowserifyCompileTask extends CompileTask {
     this.setCompiler(BrowserifyCompiler);
   }
 
-  compileChunk(chunk, cb) {
-    this.compiler.compileChunk(chunk)
-      .then((result) => {
-        cb(null, result);
-      })
-      .catch(cb);
+  sourceFilePathMatches(sourceFilePath) {
+    log.debug(`BrowserifyCompileTask#sourceFilePathMatches`, sourceFilePath, this.compiler.bundle /*.pipeline.get('deps')*/);
+
+    // Take a look in the browserify deps
+    return !!sourceFilePath.match(this.sourceFilePathMatchExpression);
   }
 
   compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {

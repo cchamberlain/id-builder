@@ -1,3 +1,6 @@
+// Get browserify watch working with my own watcher.
+// Ask browserify if a file matches to re-bundle 
+
 import _ from 'lodash';
 import chokidar from 'chokidar';
 import log from 'loglevel';

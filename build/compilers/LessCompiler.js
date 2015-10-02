@@ -31,7 +31,7 @@ var LessCompiler = (function (_Compiler) {
 
   _createClass(LessCompiler, [{
     key: 'compileChunk',
-    value: function compileChunk(chunk) {
+    value: function compileChunk(chunk, sourceFilePath) {
       var _this = this;
 
       return new Promise(function (resolve, reject) {

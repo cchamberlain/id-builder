@@ -8,14 +8,6 @@ class CoffeeScriptCompileTask extends CompileTask {
     this.setCompiler(CoffeeScriptCompiler);
   }
 
-  compileChunk(chunk, cb) {
-    this.compiler.compileChunk(chunk)
-      .then((result) => {
-        cb(null, result);
-      })
-      .catch(cb);
-  }
-
   run(cb) {
     this.compileAllFiles(cb);
   }

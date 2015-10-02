@@ -31,7 +31,7 @@ var LiveScriptCompiler = (function (_Compiler) {
 
   _createClass(LiveScriptCompiler, [{
     key: 'compileChunk',
-    value: function compileChunk(chunk) {
+    value: function compileChunk(chunk, sourceFilePath) {
       var _this = this;
 
       return new Promise(function (resolve, reject) {

@@ -36,13 +36,6 @@ var BabelMapCompileTask = (function (_CompileTask) {
   }
 
   _createClass(BabelMapCompileTask, [{
-    key: 'compileChunk',
-    value: function compileChunk(chunk, cb) {
-      this.compiler.compileChunk(chunk).then(function (result) {
-        cb(null, result);
-      })['catch'](cb);
-    }
-  }, {
     key: 'run',
     value: function run(cb) {
       this.compileAllFiles(cb);

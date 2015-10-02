@@ -36,13 +36,6 @@ var BabelCodeCompileTask = (function (_CompileTask) {
   }
 
   _createClass(BabelCodeCompileTask, [{
-    key: 'compileChunk',
-    value: function compileChunk(chunk, cb) {
-      this.compiler.compileChunk(chunk).then(function (result) {
-        cb(null, result);
-      })['catch'](cb);
-    }
-  }, {
     key: 'run',
     value: function run(cb) {
       this.compileAllFiles(cb);

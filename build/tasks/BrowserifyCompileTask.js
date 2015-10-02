@@ -16,6 +16,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
 
 var _fs = require('fs');
 
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
 var _libCompileTask = require('../lib/CompileTask');
 
 var _libCompileTask2 = _interopRequireDefault(_libCompileTask);
@@ -45,11 +49,12 @@ var BrowserifyCompileTask = (function (_CompileTask) {
   }
 
   _createClass(BrowserifyCompileTask, [{
-    key: 'compileChunk',
-    value: function compileChunk(chunk, cb) {
-      this.compiler.compileChunk(chunk).then(function (result) {
-        cb(null, result);
-      })['catch'](cb);
+    key: 'sourceFilePathMatches',
+    value: function sourceFilePathMatches(sourceFilePath) {
+      _loglevel2['default'].debug('BrowserifyCompileTask#sourceFilePathMatches', sourceFilePath, this.compiler.bundle /*.pipeline.get('deps')*/);
+
+      // Take a look in the browserify deps
+      return !!sourceFilePath.match(this.sourceFilePathMatchExpression);
     }
   }, {
     key: 'compileFile',

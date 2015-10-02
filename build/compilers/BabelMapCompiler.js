@@ -31,7 +31,7 @@ var BabelMapCompiler = (function (_Compiler) {
 
   _createClass(BabelMapCompiler, [{
     key: 'compileChunk',
-    value: function compileChunk(chunk) {
+    value: function compileChunk(chunk, sourceFilePath) {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
