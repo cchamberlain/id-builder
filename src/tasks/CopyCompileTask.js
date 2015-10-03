@@ -71,6 +71,7 @@ class CopyCompileTask extends CompileTask {
         return cb(e);
       }
 
+
       const paths = _(nodes)
         .map(v => v.fullPath)
         .filter(this.doesntMatchOtherTaskSourceFilePath.bind(this))

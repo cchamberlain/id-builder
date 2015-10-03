@@ -1,6 +1,3 @@
-// Get browserify watch working with my own watcher.
-// Ask browserify if a file matches to re-bundle
-
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -21,6 +18,10 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _browserSync = require('browser-sync');
+
+var _browserSync2 = _interopRequireDefault(_browserSync);
+
 var _chokidar = require('chokidar');
 
 var _chokidar2 = _interopRequireDefault(_chokidar);
@@ -28,9 +29,6 @@ var _chokidar2 = _interopRequireDefault(_chokidar);
 var _loglevel = require('loglevel');
 
 var _loglevel2 = _interopRequireDefault(_loglevel);
-
-// import { each } from 'async';
-// import { noop } from 'lodash';
 
 var _libCompileTask = require('../lib/CompileTask');
 
@@ -73,46 +71,69 @@ var WatchTask = (function (_Task) {
       _loglevel2['default'].debug('WatchTask#_handleAddDir', path);
     }
   }, {
-    key: '_handleChange',
-    value: function _handleChange(path) {
-      var compileTask = this.getCompilerTaskForPath(path);
+    key: '_handleChangeBrowsersync',
+    value: function _handleChangeBrowsersync(path) {
+      var browserSyncTask = this.getBrowserSyncTask();
 
-      if (compileTask) {
-        var targetPath = compileTask.getTargetPath(path);
+      browserSyncTask.reload(path);
+    }
+  }, {
+    key: '_handleChangeCompileTask',
+    value: function _handleChangeCompileTask(path, compileTask) {
+      var targetPath = compileTask.getTargetPath(path);
 
-        compileTask.compileFile(path, targetPath, function (e) {
+      compileTask.compileFile(path, targetPath, function (e) {
+        if (e) {
+          return logError(e);
+        }
+      });
+    }
+  }, {
+    key: '_handleChangeTestTask',
+    value: function _handleChangeTestTask(path) {
+      var testTask = this.getTestTask();
+
+      if (testTask) {
+        var shouldReload = !!(0, _lodash2['default'])(testTask.watchDirectoryPaths).filter(function (directoryPath) {
+          if (_lodash2['default'].startsWith(path, directoryPath)) {
+            return true;
+          }
+        }).value().length;
+
+        if (shouldReload) {
+          testTask.runTests(function (error) {
+            if (error) {
+              return logError(error);
+            }
+          });
+        }
+      }
+    }
+  }, {
+    key: '_handleChangeServerTask',
+    value: function _handleChangeServerTask(path) {
+      var serverTask = this.getServerTaskForPath(path);
+
+      if (serverTask) {
+        serverTask.restartServer(path, function (e) {
           if (e) {
             return logError(e);
           }
         });
+      }
+    }
+  }, {
+    key: '_handleChange',
+    value: function _handleChange(path) {
+      this._handleChangeBrowsersync(path);
+
+      var compileTask = this.getCompilerTaskForPath(path);
+
+      if (compileTask) {
+        this._handleChangeCompileTask(path, compileTask);
       } else {
-        var testTask = this.getTestTask();
-
-        if (testTask) {
-          var shouldReload = !!(0, _lodash2['default'])(testTask.watchDirectoryPaths).filter(function (directoryPath) {
-            if (_lodash2['default'].startsWith(path, directoryPath)) {
-              return true;
-            }
-          }).value().length;
-
-          if (shouldReload) {
-            testTask.runTests(function (error) {
-              if (error) {
-                return logError(error);
-              }
-            });
-          }
-        }
-
-        var serverTask = this.getServerTaskForPath(path);
-
-        if (serverTask) {
-          serverTask.restartServer(path, function (e) {
-            if (e) {
-              return logError(e);
-            }
-          });
-        }
+        this._handleChangeTestTask(path);
+        this._handleChangeServerTask(path);
       }
     }
   }, {
@@ -148,6 +169,12 @@ var WatchTask = (function (_Task) {
     value: function getServerTask() {
       // TODO: Is this horrible?
       return this.builder.taskInstances.ServerTask;
+    }
+  }, {
+    key: 'getBrowserSyncTask',
+    value: function getBrowserSyncTask() {
+      // TODO: Is this horrible?
+      return this.builder.taskInstances.BrowserSyncServerTask;
     }
   }, {
     key: 'getCompilerTaskForPath',

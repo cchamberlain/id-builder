@@ -1,11 +1,7 @@
-// Get browserify watch working with my own watcher.
-// Ask browserify if a file matches to re-bundle
-
 import _ from 'lodash';
+import browserSync from 'browser-sync';
 import chokidar from 'chokidar';
 import log from 'loglevel';
-// import { each } from 'async';
-// import { noop } from 'lodash';
 
 import CompileTask from '../lib/CompileTask';
 import Task from '../lib/Task';
@@ -41,48 +37,67 @@ class WatchTask extends Task {
     log.debug('WatchTask#_handleAddDir', path);
   }
 
-  _handleChange(path) {
-    let compileTask = this.getCompilerTaskForPath(path);
+  _handleChangeBrowsersync(path) {
+    const browserSyncTask = this.getBrowserSyncTask();
 
-    if (compileTask) {
-      const targetPath = compileTask.getTargetPath(path);
+    browserSyncTask.reload(path);
+  }
 
-      compileTask.compileFile(path, targetPath, (e) => {
+  _handleChangeCompileTask(path, compileTask) {
+    const targetPath = compileTask.getTargetPath(path);
+
+    compileTask.compileFile(path, targetPath, (e) => {
+      if (e) {
+        return logError(e);
+      }
+    });
+  }
+
+  _handleChangeTestTask(path) {
+    const testTask = this.getTestTask();
+
+    if (testTask) {
+      const shouldReload = !!_(testTask.watchDirectoryPaths)
+        .filter(directoryPath => {
+          if (_.startsWith(path, directoryPath)) {
+            return true;
+          }
+        })
+        .value()
+        .length;
+
+      if (shouldReload) {
+        testTask.runTests(error => {
+          if (error) {
+            return logError(error);
+          }
+        });
+      }
+    }
+  }
+
+  _handleChangeServerTask(path) {
+    const serverTask = this.getServerTaskForPath(path);
+
+    if (serverTask) {
+      serverTask.restartServer(path, (e) => {
         if (e) {
           return logError(e);
         }
       });
+    }
+  }
+
+  _handleChange(path) {
+    this._handleChangeBrowsersync(path);
+
+    let compileTask = this.getCompilerTaskForPath(path);
+
+    if (compileTask) {
+      this._handleChangeCompileTask(path, compileTask);
     } else {
-      const testTask = this.getTestTask();
-
-      if (testTask) {
-        const shouldReload = !!_(testTask.watchDirectoryPaths)
-          .filter(directoryPath => {
-            if (_.startsWith(path, directoryPath)) {
-              return true;
-            }
-          })
-          .value()
-          .length;
-
-        if (shouldReload) {
-          testTask.runTests(error => {
-            if (error) {
-              return logError(error);
-            }
-          });
-        }
-      }
-
-      const serverTask = this.getServerTaskForPath(path);
-
-      if (serverTask) {
-        serverTask.restartServer(path, (e) => {
-          if (e) {
-            return logError(e);
-          }
-        });
-      }
+      this._handleChangeTestTask(path);
+      this._handleChangeServerTask(path);
     }
   }
 
@@ -114,6 +129,11 @@ class WatchTask extends Task {
   getServerTask() {
     // TODO: Is this horrible?
     return this.builder.taskInstances.ServerTask;
+  }
+
+  getBrowserSyncTask() {
+    // TODO: Is this horrible?
+    return this.builder.taskInstances.BrowserSyncServerTask;
   }
 
   getCompilerTaskForPath(path) {

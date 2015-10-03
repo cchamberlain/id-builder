@@ -13,22 +13,6 @@ export default {
       paths: [ 'build' ]
     },
 
-    PlantUMLCompileTask: {
-      enabled: true,
-
-      dependencies: [
-        'DirectoryCleanerTask'
-      ],
-
-      sourceFileExtension: 'js',
-      sourceDirectoryPath: 'src',
-
-      compiler: {
-        ast: true,
-        whitelist: []
-      }
-    },
-
     BabelASTCompileTask: {
       enabled: true,
 
@@ -211,6 +195,10 @@ export default {
         'DirectoryCleanerTask'
       ],
 
+      paths: [
+        'build'
+      ],
+
       options: {
         ui: {
           port: 9001
@@ -276,3 +264,22 @@ export default {
     }
   }
 };
+
+
+/*
+ PlantUMLCompileTask: {
+ enabled: true,
+
+ dependencies: [
+ 'DirectoryCleanerTask'
+ ],
+
+ sourceFileExtension: 'js',
+ sourceDirectoryPath: 'src',
+
+ compiler: {
+ ast: true,
+ whitelist: []
+ }
+ },
+ */
