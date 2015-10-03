@@ -14,6 +14,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _fs = require('fs');
 
 var _loglevel = require('loglevel');
@@ -51,10 +55,12 @@ var BrowserifyCompileTask = (function (_CompileTask) {
   _createClass(BrowserifyCompileTask, [{
     key: 'sourceFilePathMatches',
     value: function sourceFilePathMatches(sourceFilePath) {
-      _loglevel2['default'].debug('BrowserifyCompileTask#sourceFilePathMatches', sourceFilePath, this.compiler.bundle /*.pipeline.get('deps')*/);
-
-      // Take a look in the browserify deps
-      return !!sourceFilePath.match(this.sourceFilePathMatchExpression);
+      return this.compiler.hasDependency(sourceFilePath);
+    }
+  }, {
+    key: 'getTargetPath',
+    value: function getTargetPath() {
+      return this.targetFilePath;
     }
   }, {
     key: 'compileFile',
@@ -64,6 +70,8 @@ var BrowserifyCompileTask = (function (_CompileTask) {
       var _this = this;
 
       if (targetFilePath === undefined) targetFilePath = this.targetFilePath;
+
+      this.compiler.setBundle();
 
       (0, _fs.exists)(sourceFilePath, function (doesExist) {
         if (doesExist) {

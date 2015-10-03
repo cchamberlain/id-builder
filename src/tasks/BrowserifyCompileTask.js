@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { exists } from 'fs';
 import log from 'loglevel';
 
@@ -17,13 +18,16 @@ class BrowserifyCompileTask extends CompileTask {
   }
 
   sourceFilePathMatches(sourceFilePath) {
-    log.debug(`BrowserifyCompileTask#sourceFilePathMatches`, sourceFilePath, this.compiler.bundle /*.pipeline.get('deps')*/);
+    return this.compiler.hasDependency(sourceFilePath);
+  }
 
-    // Take a look in the browserify deps
-    return !!sourceFilePath.match(this.sourceFilePathMatchExpression);
+  getTargetPath() {
+    return this.targetFilePath;
   }
 
   compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {
+    this.compiler.setBundle();
+
     exists(sourceFilePath, (doesExist) => {
       if (doesExist) {
         super.compileFile(sourceFilePath, targetFilePath, cb);

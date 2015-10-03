@@ -75,23 +75,27 @@ var WatchTask = (function (_Task) {
   }, {
     key: '_handleChange',
     value: function _handleChange(path) {
-      _loglevel2['default'].debug('WatchTask#_handleChange', path);
+      var task = this.getCompilerTaskForPath(path);
 
-      var task = this.getTaskForPath(path);
+      if (task) {
+        var targetPath = task.getTargetPath(path);
 
-      _loglevel2['default'].debug('WatchTask#_handleChange task:', task && task.constructor.name || 'not found');
+        task.compileFile(path, targetPath, function (e) {
+          if (e) {
+            return logError(e);
+          }
+        });
+      } else {
+        task = this.getServerTaskForPath(path);
 
-      if (!task) {
-        return;
-      }
-
-      var targetPath = task.getTargetPath(path);
-
-      task.compileFile(path, targetPath, function (e) {
-        if (e) {
-          return logError(e);
+        if (task) {
+          task.restartServer(path, function (e) {
+            if (e) {
+              return logError(e);
+            }
+          });
         }
-      });
+      }
     }
   }, {
     key: '_handleUnlink',
@@ -116,13 +120,28 @@ var WatchTask = (function (_Task) {
       }).value();
     }
   }, {
-    key: 'getTaskForPath',
-    value: function getTaskForPath(path) {
+    key: 'getServerTask',
+    value: function getServerTask() {
+      // TODO: Is this horrible?
+      return this.builder.taskInstances.AppServerTask;
+    }
+  }, {
+    key: 'getCompilerTaskForPath',
+    value: function getCompilerTaskForPath(path) {
       var compilerTasks = this.getCompilerTasks();
 
       return _lodash2['default'].find(compilerTasks, function (task) {
         return task.sourceFilePathMatches(path);
       });
+    }
+  }, {
+    key: 'getServerTaskForPath',
+    value: function getServerTaskForPath(path) {
+      var serverTask = this.getServerTask();
+
+      if (serverTask.sourceFilePathMatches(path)) {
+        return serverTask;
+      }
     }
   }, {
     key: 'setWatcher',

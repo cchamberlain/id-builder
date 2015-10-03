@@ -171,10 +171,8 @@ export default {
       targetDirectoryPath: 'build/client',
 
       compiler: {
-        cache: {},
-        // debug: true,
         fullPaths: true,
-        packageCache: {}
+        debug: true
       }
     },
 
@@ -231,9 +229,15 @@ export default {
         'BrowserifyCompileTask'
       ],
 
-      sourceDirectoryPath: 'build',
+      // Since this isn't a CompileTask, this property could be changed into a
+      // `sourceDirectoryPaths` property that lists multiple. This way, only the
+      // paths in the 'common' and 'server' directories are triggering server
+      // reloads.
+      sourceDirectoryPaths: [
+        'build/server'
+      ],
 
-      paths: [ 'server/app.js' ]
+      paths: [ 'build/server/app.js' ]
     },
 
     WatchTask: {

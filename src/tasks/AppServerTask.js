@@ -1,6 +1,7 @@
 import { exists } from 'fs';
 
-import { noop } from 'lodash';
+import _ from 'lodash';
+import log from 'loglevel';
 import { Monitor } from 'forever-monitor';
 import { each } from 'async';
 
@@ -11,7 +12,18 @@ class AppServerTask extends Task {
   constructor(options = {}) {
     super(options);
 
-    this.sourceDirectoryPath = options.sourceDirectoryPath;
+    _.bindAll(this, [
+      'addPath',
+      'removePath',
+      'restartPath',
+      'sourceFilePathMatches',
+      'startServer',
+      'stopServer',
+      'restartServer',
+      'run'
+    ]);
+
+    this.sourceDirectoryPaths = options.sourceDirectoryPaths;
 
     this.monitors = {};
   }
@@ -25,15 +37,24 @@ class AppServerTask extends Task {
 
     monitor.start();
 
+    logging.taskInfo(this.constructor.name, `Started ${path}`);
+
     cb();
   }
 
   removePath(path, cb) {
     const monitor = this.monitors[path];
 
+    if (!monitor) {
+      logging.taskInfo(this.constructor.name, `Monitor not found for ${path}`);
+      cb();
+    }
+
     monitor.kill(true);
 
     delete this.monitors[path];
+
+    logging.taskInfo(this.constructor.name, `Stopped ${path}`);
 
     cb();
   }
@@ -47,7 +68,10 @@ class AppServerTask extends Task {
   }
 
   sourceFilePathMatches(sourceFilePath) {
-    return !!sourceFilePath.match(new RegExp(`^${this.sourceDirectoryPath}`));
+    return !!_(this.sourceDirectoryPaths)
+      .any(sourceDirectoryPath => {
+        return sourceFilePath.match(new RegExp(`^${sourceDirectoryPath}`));
+      });
   }
 
   startServer(filePath, cb) {
@@ -103,11 +127,7 @@ class AppServerTask extends Task {
   }
 
   run() {
-    console.log('WHAT');
-
-    each(this.options.paths, (v, cb) => {
-      this.startServer(`${this.sourceDirectoryPath}/${v}`, cb);
-    }, noop);
+    each(this.options.paths, this.startServer, _.noop);
   }
 }
 

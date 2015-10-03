@@ -14,6 +14,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _browserify = require('browserify');
 
 var _browserify2 = _interopRequireDefault(_browserify);
@@ -44,19 +48,53 @@ var BrowserifyCompiler = (function (_Compiler) {
 
     _get(Object.getPrototypeOf(BrowserifyCompiler.prototype), 'constructor', this).call(this, options);
 
+    _lodash2['default'].bindAll(this, ['handleBundleDependency']);
+
     this.sourceFilePath = options.sourceFilePath;
     this.targetFilePath = options.targetFilePath;
 
-    this.bundle = (0, _browserify2['default'])(this.options.options);
-
-    this.bundle.transform(_jadeify2['default'], {
-      compileDebug: true,
-      pretty: true,
-      runtimePath: require.resolve('jade/runtime')
-    });
+    this.setBundle();
   }
 
   _createClass(BrowserifyCompiler, [{
+    key: 'setBundle',
+    value: function setBundle() {
+      this.bundle = (0, _browserify2['default'])(this.options.options);
+      this.bundleDependencies = [];
+
+      this.bundle.on('dep', this.handleBundleDependency);
+
+      this.bundle.transform(_jadeify2['default'], {
+        compileDebug: true,
+        pretty: true,
+        runtimePath: require.resolve('jade/runtime')
+      });
+    }
+  }, {
+    key: 'hasDependency',
+    value: function hasDependency(_dependencyPath) {
+      var dependencyPath = _path2['default'].resolve(_dependencyPath);
+
+      return (0, _lodash2['default'])(this.bundleDependencies).contains(dependencyPath);
+    }
+  }, {
+    key: 'addDependency',
+    value: function addDependency(path) {
+      this.bundleDependencies = (0, _lodash2['default'])(this.bundleDependencies).union([path]).value();
+    }
+  }, {
+    key: 'removeDependency',
+    value: function removeDependency(path) {
+      this.bundleDependencies = (0, _lodash2['default'])(this.bundleDependencies).without(path).value();
+    }
+  }, {
+    key: 'handleBundleDependency',
+    value: function handleBundleDependency(_ref) {
+      var file = _ref.file;
+
+      this.addDependency(file);
+    }
+  }, {
     key: 'compileChunk',
     value: function compileChunk(chunk, sourceFilePath) {
       var _this = this;

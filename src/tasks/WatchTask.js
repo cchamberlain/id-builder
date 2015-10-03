@@ -1,5 +1,5 @@
 // Get browserify watch working with my own watcher.
-// Ask browserify if a file matches to re-bundle 
+// Ask browserify if a file matches to re-bundle
 
 import _ from 'lodash';
 import chokidar from 'chokidar';
@@ -42,23 +42,27 @@ class WatchTask extends Task {
   }
 
   _handleChange(path) {
-    log.debug(`WatchTask#_handleChange`, path);
+    let task = this.getCompilerTaskForPath(path);
 
-    const task = this.getTaskForPath(path);
+    if (task) {
+      const targetPath = task.getTargetPath(path);
 
-    log.debug(`WatchTask#_handleChange task:`, task && task.constructor.name || 'not found');
+      task.compileFile(path, targetPath, (e) => {
+        if (e) {
+          return logError(e);
+        }
+      });
+    } else {
+      task = this.getServerTaskForPath(path);
 
-    if (!task) {
-      return;
-    }
-
-    const targetPath = task.getTargetPath(path);
-
-    task.compileFile(path, targetPath, (e) => {
-      if (e) {
-        return logError(e);
+      if (task) {
+        task.restartServer(path, (e) => {
+          if (e) {
+            return logError(e);
+          }
+        });
       }
-    });
+    }
   }
 
   _handleUnlink(path) {
@@ -81,12 +85,25 @@ class WatchTask extends Task {
       .value();
   }
 
-  getTaskForPath(path) {
+  getServerTask() {
+    // TODO: Is this horrible?
+    return this.builder.taskInstances.AppServerTask;
+  }
+
+  getCompilerTaskForPath(path) {
     const compilerTasks = this.getCompilerTasks();
 
     return _.find(compilerTasks, task => {
       return task.sourceFilePathMatches(path);
     });
+  }
+
+  getServerTaskForPath(path) {
+    const serverTask = this.getServerTask();
+
+    if (serverTask.sourceFilePathMatches(path)) {
+      return serverTask;
+    }
   }
 
   setWatcher() {

@@ -18,6 +18,12 @@ var _fs = require('fs');
 
 var _lodash = require('lodash');
 
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
 var _foreverMonitor = require('forever-monitor');
 
 var _async = require('async');
@@ -40,7 +46,9 @@ var AppServerTask = (function (_Task) {
 
     _get(Object.getPrototypeOf(AppServerTask.prototype), 'constructor', this).call(this, options);
 
-    this.sourceDirectoryPath = options.sourceDirectoryPath;
+    _lodash2['default'].bindAll(this, ['addPath', 'removePath', 'restartPath', 'sourceFilePathMatches', 'startServer', 'stopServer', 'restartServer', 'run']);
+
+    this.sourceDirectoryPaths = options.sourceDirectoryPaths;
 
     this.monitors = {};
   }
@@ -56,6 +64,8 @@ var AppServerTask = (function (_Task) {
 
       monitor.start();
 
+      _libLogging2['default'].taskInfo(this.constructor.name, 'Started ' + path);
+
       cb();
     }
   }, {
@@ -63,9 +73,16 @@ var AppServerTask = (function (_Task) {
     value: function removePath(path, cb) {
       var monitor = this.monitors[path];
 
+      if (!monitor) {
+        _libLogging2['default'].taskInfo(this.constructor.name, 'Monitor not found for ' + path);
+        cb();
+      }
+
       monitor.kill(true);
 
       delete this.monitors[path];
+
+      _libLogging2['default'].taskInfo(this.constructor.name, 'Stopped ' + path);
 
       cb();
     }
@@ -81,7 +98,9 @@ var AppServerTask = (function (_Task) {
   }, {
     key: 'sourceFilePathMatches',
     value: function sourceFilePathMatches(sourceFilePath) {
-      return !!sourceFilePath.match(new RegExp('^' + this.sourceDirectoryPath));
+      return !!(0, _lodash2['default'])(this.sourceDirectoryPaths).any(function (sourceDirectoryPath) {
+        return sourceFilePath.match(new RegExp('^' + sourceDirectoryPath));
+      });
     }
   }, {
     key: 'startServer',
@@ -147,13 +166,7 @@ var AppServerTask = (function (_Task) {
   }, {
     key: 'run',
     value: function run() {
-      var _this4 = this;
-
-      console.log('WHAT');
-
-      (0, _async.each)(this.options.paths, function (v, cb) {
-        _this4.startServer(_this4.sourceDirectoryPath + '/' + v, cb);
-      }, _lodash.noop);
+      (0, _async.each)(this.options.paths, this.startServer, _lodash2['default'].noop);
     }
   }]);
 
