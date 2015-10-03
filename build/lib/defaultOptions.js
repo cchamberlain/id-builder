@@ -203,6 +203,8 @@ exports['default'] = {
 
       sourceDirectoryPaths: ['build/test'],
 
+      watchDirectoryPaths: ['build'],
+
       mocha: {
         reporter: 'spec'
       }

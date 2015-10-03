@@ -75,21 +75,39 @@ var WatchTask = (function (_Task) {
   }, {
     key: '_handleChange',
     value: function _handleChange(path) {
-      var task = this.getCompilerTaskForPath(path);
+      var compileTask = this.getCompilerTaskForPath(path);
 
-      if (task) {
-        var targetPath = task.getTargetPath(path);
+      if (compileTask) {
+        var targetPath = compileTask.getTargetPath(path);
 
-        task.compileFile(path, targetPath, function (e) {
+        compileTask.compileFile(path, targetPath, function (e) {
           if (e) {
             return logError(e);
           }
         });
       } else {
-        task = this.getServerTaskForPath(path);
+        var testTask = this.getTestTask();
 
-        if (task) {
-          task.restartServer(path, function (e) {
+        if (testTask) {
+          var shouldReload = !!(0, _lodash2['default'])(testTask.watchDirectoryPaths).filter(function (directoryPath) {
+            if (_lodash2['default'].startsWith(path, directoryPath)) {
+              return true;
+            }
+          }).value().length;
+
+          if (shouldReload) {
+            testTask.runTests(function (error) {
+              if (error) {
+                return logError(error);
+              }
+            });
+          }
+        }
+
+        var serverTask = this.getServerTaskForPath(path);
+
+        if (serverTask) {
+          serverTask.restartServer(path, function (e) {
             if (e) {
               return logError(e);
             }
@@ -118,6 +136,12 @@ var WatchTask = (function (_Task) {
       return (0, _lodash2['default'])(this.builder.taskInstances).filter(function (v) {
         return v instanceof _libCompileTask2['default'];
       }).value();
+    }
+  }, {
+    key: 'getTestTask',
+    value: function getTestTask() {
+      // TODO: Is this horrible?
+      return this.builder.taskInstances.TestTask;
     }
   }, {
     key: 'getServerTask',

@@ -42,21 +42,42 @@ class WatchTask extends Task {
   }
 
   _handleChange(path) {
-    let task = this.getCompilerTaskForPath(path);
+    let compileTask = this.getCompilerTaskForPath(path);
 
-    if (task) {
-      const targetPath = task.getTargetPath(path);
+    if (compileTask) {
+      const targetPath = compileTask.getTargetPath(path);
 
-      task.compileFile(path, targetPath, (e) => {
+      compileTask.compileFile(path, targetPath, (e) => {
         if (e) {
           return logError(e);
         }
       });
     } else {
-      task = this.getServerTaskForPath(path);
+      const testTask = this.getTestTask();
 
-      if (task) {
-        task.restartServer(path, (e) => {
+      if (testTask) {
+        const shouldReload = !!_(testTask.watchDirectoryPaths)
+          .filter(directoryPath => {
+            if (_.startsWith(path, directoryPath)) {
+              return true;
+            }
+          })
+          .value()
+          .length;
+
+        if (shouldReload) {
+          testTask.runTests(error => {
+            if (error) {
+              return logError(error);
+            }
+          });
+        }
+      }
+
+      const serverTask = this.getServerTaskForPath(path);
+
+      if (serverTask) {
+        serverTask.restartServer(path, (e) => {
           if (e) {
             return logError(e);
           }
@@ -83,6 +104,11 @@ class WatchTask extends Task {
         return v instanceof CompileTask;
       })
       .value();
+  }
+
+  getTestTask() {
+    // TODO: Is this horrible?
+    return this.builder.taskInstances.TestTask;
   }
 
   getServerTask() {

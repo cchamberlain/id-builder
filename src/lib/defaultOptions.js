@@ -251,6 +251,10 @@ export default {
         'build/test'
       ],
 
+      watchDirectoryPaths: [
+        'build'
+      ],
+
       mocha: {
         reporter: 'spec'
       }

@@ -22,6 +22,7 @@ class TestTask extends Task {
     this.mochaOptions = options.mocha;
 
     this.sourceDirectoryPaths = options.sourceDirectoryPaths;
+    this.watchDirectoryPaths = options.watchDirectoryPaths;
   }
 
   getTestFilesPromises() {
