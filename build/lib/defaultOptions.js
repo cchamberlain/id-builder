@@ -182,7 +182,7 @@ exports['default'] = {
       }
     },
 
-    AppServerTask: {
+    ServerTask: {
       enabled: true,
 
       dependencies: ['TestTask'],

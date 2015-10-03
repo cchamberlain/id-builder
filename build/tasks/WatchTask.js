@@ -147,7 +147,7 @@ var WatchTask = (function (_Task) {
     key: 'getServerTask',
     value: function getServerTask() {
       // TODO: Is this horrible?
-      return this.builder.taskInstances.AppServerTask;
+      return this.builder.taskInstances.ServerTask;
     }
   }, {
     key: 'getCompilerTaskForPath',

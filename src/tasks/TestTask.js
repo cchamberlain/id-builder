@@ -1,5 +1,5 @@
 // - TestTask sluit niet goed af.
-// - TestTask moet voor AppServerTask gebeuren. Eerst valideren dat het werkt,
+// - TestTask moet voor ServerTask gebeuren. Eerst valideren dat het werkt,
 //   dan draaien.
 
 import cp from 'child_process';

@@ -1,6 +1,6 @@
 // import BabelASTCompile from './BabelASTCompile';
 // import PlantUMLCompileTask from './PlantUMLCompileTask';
-import AppServerTask from './AppServerTask';
+import ServerTask from './ServerTask';
 import BabelCodeCompileTask from './BabelCodeCompileTask';
 import BabelMapCompileTask from './BabelMapCompileTask';
 import BrowserSyncServerTask from './BrowserSyncServerTask';
@@ -17,7 +17,7 @@ import WatchTask from './WatchTask';
 export default {
   // BabelASTCompileTask,
   // PlantUMLCompileTask,
-  AppServerTask,
+  ServerTask,
   BabelCodeCompileTask,
   BabelMapCompileTask,
   BrowserSyncServerTask,

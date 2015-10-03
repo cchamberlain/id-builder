@@ -8,9 +8,9 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _AppServerTask = require('./AppServerTask');
+var _ServerTask = require('./ServerTask');
 
-var _AppServerTask2 = _interopRequireDefault(_AppServerTask);
+var _ServerTask2 = _interopRequireDefault(_ServerTask);
 
 var _BabelCodeCompileTask = require('./BabelCodeCompileTask');
 
@@ -63,7 +63,7 @@ var _WatchTask2 = _interopRequireDefault(_WatchTask);
 exports['default'] = {
   // BabelASTCompileTask,
   // PlantUMLCompileTask,
-  AppServerTask: _AppServerTask2['default'],
+  ServerTask: _ServerTask2['default'],
   BabelCodeCompileTask: _BabelCodeCompileTask2['default'],
   BabelMapCompileTask: _BabelMapCompileTask2['default'],
   BrowserSyncServerTask: _BrowserSyncServerTask2['default'],

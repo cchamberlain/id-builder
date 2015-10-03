@@ -8,7 +8,7 @@ import { each } from 'async';
 import logging from '../lib/logging';
 import Task from '../lib/Task';
 
-class AppServerTask extends Task {
+class ServerTask extends Task {
   constructor(options = {}) {
     super(options);
 
@@ -131,4 +131,4 @@ class AppServerTask extends Task {
   }
 }
 
-export default AppServerTask;
+export default ServerTask;

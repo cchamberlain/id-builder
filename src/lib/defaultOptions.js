@@ -222,7 +222,7 @@ export default {
       }
     },
 
-    AppServerTask: {
+    ServerTask: {
       enabled: true,
 
       dependencies: [

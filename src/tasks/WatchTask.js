@@ -113,7 +113,7 @@ class WatchTask extends Task {
 
   getServerTask() {
     // TODO: Is this horrible?
-    return this.builder.taskInstances.AppServerTask;
+    return this.builder.taskInstances.ServerTask;
   }
 
   getCompilerTaskForPath(path) {
