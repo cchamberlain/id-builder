@@ -28,6 +28,10 @@ var _libCompileTask = require('../lib/CompileTask');
 
 var _libCompileTask2 = _interopRequireDefault(_libCompileTask);
 
+var _libGetFiles = require('../lib/getFiles');
+
+var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
+
 var _compilersCopyCompiler = require('../compilers/CopyCompiler');
 
 var _compilersCopyCompiler2 = _interopRequireDefault(_compilersCopyCompiler);
@@ -88,7 +92,7 @@ var CopyCompileTask = (function (_CompileTask) {
     value: function getPaths(cb) {
       var _this = this;
 
-      this.getFiles(this.sourceDirectoryPath, function (e, nodes) {
+      (0, _libGetFiles2['default'])(this.sourceDirectoryPath, function (e, nodes) {
         if (e) {
           return cb(e);
         }

@@ -3,13 +3,13 @@ import { dirname } from 'path';
 
 import _ from 'lodash';
 import log from 'loglevel';
-import lsr from 'lsr';
 import mkdirp from 'mkdirp';
 import { each } from 'async';
 
 import Compiler from './Compiler';
 import Task from './Task';
 import logging from '../lib/logging';
+import getFiles from '../lib/getFiles';
 
 class CompileTask extends Task {
   constructor(options = {}) {
@@ -39,22 +39,6 @@ class CompileTask extends Task {
     return sourceFilePath
       .replace(this.sourceDirectoryPath, this.targetDirectoryPath)
       .replace(this.targetPathReplaceExpression, `.${this.targetFileExtension}`);
-  }
-
-  getFiles(path, cb) {
-    lsr(path, (e, nodes) => {
-      if (e) {
-        return cb(e);
-      }
-
-      const filteredNodes = _.filter(nodes, v => {
-        if (v.isFile()) {
-          return v;
-        }
-      });
-
-      cb(null, filteredNodes);
-    });
   }
 
   ensureFileDirectory(targetFilePath, cb) {
@@ -99,7 +83,7 @@ class CompileTask extends Task {
   }
 
   compileAllFiles(cb) {
-    this.getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {
+    getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {
       if (e) {
         return cb(e);
       }

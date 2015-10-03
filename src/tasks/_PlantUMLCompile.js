@@ -7,6 +7,7 @@ import circularJSON from 'circular-json';
 
 import CompileTask from '../lib/CompileTask';
 import logging from '../lib/logging';
+import getFiles from '../lib/getFiles';
 
 let DERP = true;
 
@@ -162,7 +163,7 @@ class PlantUMLCompile extends CompileTask {
   }
 
   compileAllFiles(cb) {
-    this.getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {
+    getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {
       if (e) {
         return cb(e);
       }

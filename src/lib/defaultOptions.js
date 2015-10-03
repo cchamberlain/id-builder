@@ -240,6 +240,18 @@ export default {
       paths: [ 'build/server/app.js' ]
     },
 
+    TestTask: {
+      enabled: true,
+
+      dependencies: [
+        'BrowserifyCompileTask'
+      ],
+
+      sourceDirectoryPaths: [
+        'build/test'
+      ]
+    },
+
     WatchTask: {
       enabled: true,
 

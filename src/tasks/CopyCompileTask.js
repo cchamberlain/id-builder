@@ -4,6 +4,7 @@ import log from 'loglevel';
 import { each } from 'async';
 
 import CompileTask from '../lib/CompileTask';
+import getFiles from '../lib/getFiles';
 
 import CopyCompiler from '../compilers/CopyCompiler';
 
@@ -65,7 +66,7 @@ class CopyCompileTask extends CompileTask {
   }
 
   getPaths(cb) {
-    this.getFiles(this.sourceDirectoryPath, (e, nodes) => {
+    getFiles(this.sourceDirectoryPath, (e, nodes) => {
       if (e) {
         return cb(e);
       }

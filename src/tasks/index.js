@@ -11,6 +11,7 @@ import DirectoryCleanerTask from './DirectoryCleanerTask';
 import LessCompileTask from './LessCompileTask';
 import LiveScriptCompileTask from './LiveScriptCompileTask';
 import StylusCompileTask from './StylusCompileTask';
+import TestTask from './TestTask';
 import WatchTask from './WatchTask';
 
 export default {
@@ -27,5 +28,6 @@ export default {
   LessCompileTask,
   LiveScriptCompileTask,
   StylusCompileTask,
+  TestTask,
   WatchTask
 };

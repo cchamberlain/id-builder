@@ -52,6 +52,10 @@ var _StylusCompileTask = require('./StylusCompileTask');
 
 var _StylusCompileTask2 = _interopRequireDefault(_StylusCompileTask);
 
+var _TestTask = require('./TestTask');
+
+var _TestTask2 = _interopRequireDefault(_TestTask);
+
 var _WatchTask = require('./WatchTask');
 
 var _WatchTask2 = _interopRequireDefault(_WatchTask);
@@ -70,6 +74,7 @@ exports['default'] = {
   LessCompileTask: _LessCompileTask2['default'],
   LiveScriptCompileTask: _LiveScriptCompileTask2['default'],
   StylusCompileTask: _StylusCompileTask2['default'],
+  TestTask: _TestTask2['default'],
   WatchTask: _WatchTask2['default']
 };
 module.exports = exports['default'];

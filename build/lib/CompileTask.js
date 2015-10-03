@@ -26,10 +26,6 @@ var _loglevel = require('loglevel');
 
 var _loglevel2 = _interopRequireDefault(_loglevel);
 
-var _lsr = require('lsr');
-
-var _lsr2 = _interopRequireDefault(_lsr);
-
 var _mkdirp = require('mkdirp');
 
 var _mkdirp2 = _interopRequireDefault(_mkdirp);
@@ -47,6 +43,10 @@ var _Task3 = _interopRequireDefault(_Task2);
 var _libLogging = require('../lib/logging');
 
 var _libLogging2 = _interopRequireDefault(_libLogging);
+
+var _libGetFiles = require('../lib/getFiles');
+
+var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
 
 var CompileTask = (function (_Task) {
   _inherits(CompileTask, _Task);
@@ -75,23 +75,6 @@ var CompileTask = (function (_Task) {
     key: 'getTargetPath',
     value: function getTargetPath(sourceFilePath) {
       return sourceFilePath.replace(this.sourceDirectoryPath, this.targetDirectoryPath).replace(this.targetPathReplaceExpression, '.' + this.targetFileExtension);
-    }
-  }, {
-    key: 'getFiles',
-    value: function getFiles(path, cb) {
-      (0, _lsr2['default'])(path, function (e, nodes) {
-        if (e) {
-          return cb(e);
-        }
-
-        var filteredNodes = _lodash2['default'].filter(nodes, function (v) {
-          if (v.isFile()) {
-            return v;
-          }
-        });
-
-        cb(null, filteredNodes);
-      });
     }
   }, {
     key: 'ensureFileDirectory',
@@ -141,7 +124,7 @@ var CompileTask = (function (_Task) {
     value: function compileAllFiles(cb) {
       var _this2 = this;
 
-      this.getFiles(this.sourceDirectoryPath, function (e, sourceFilePaths) {
+      (0, _libGetFiles2['default'])(this.sourceDirectoryPath, function (e, sourceFilePaths) {
         if (e) {
           return cb(e);
         }

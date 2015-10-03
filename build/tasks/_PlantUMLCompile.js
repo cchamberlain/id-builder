@@ -36,6 +36,10 @@ var _libLogging = require('../lib/logging');
 
 var _libLogging2 = _interopRequireDefault(_libLogging);
 
+var _libGetFiles = require('../lib/getFiles');
+
+var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
+
 var DERP = true;
 
 /**
@@ -222,7 +226,7 @@ var PlantUMLCompile = (function (_CompileTask) {
     value: function compileAllFiles(cb) {
       var _this2 = this;
 
-      this.getFiles(this.sourceDirectoryPath, function (e, sourceFilePaths) {
+      (0, _libGetFiles2['default'])(this.sourceDirectoryPath, function (e, sourceFilePaths) {
         if (e) {
           return cb(e);
         }
