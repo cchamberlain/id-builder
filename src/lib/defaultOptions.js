@@ -226,7 +226,7 @@ export default {
       enabled: true,
 
       dependencies: [
-        'BrowserifyCompileTask'
+        'TestTask'
       ],
 
       // Since this isn't a CompileTask, this property could be changed into a
@@ -249,14 +249,18 @@ export default {
 
       sourceDirectoryPaths: [
         'build/test'
-      ]
+      ],
+
+      mocha: {
+        reporter: 'spec'
+      }
     },
 
     WatchTask: {
       enabled: true,
 
       dependencies: [
-        'BrowserifyCompileTask'
+        'TestTask'
       ],
 
       // sourceDirectoryPath: 'build',

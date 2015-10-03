@@ -185,7 +185,7 @@ exports['default'] = {
     AppServerTask: {
       enabled: true,
 
-      dependencies: ['BrowserifyCompileTask'],
+      dependencies: ['TestTask'],
 
       // Since this isn't a CompileTask, this property could be changed into a
       // `sourceDirectoryPaths` property that lists multiple. This way, only the
@@ -201,13 +201,17 @@ exports['default'] = {
 
       dependencies: ['BrowserifyCompileTask'],
 
-      sourceDirectoryPaths: ['build/test']
+      sourceDirectoryPaths: ['build/test'],
+
+      mocha: {
+        reporter: 'spec'
+      }
     },
 
     WatchTask: {
       enabled: true,
 
-      dependencies: ['BrowserifyCompileTask'],
+      dependencies: ['TestTask'],
 
       // sourceDirectoryPath: 'build',
 
