@@ -16,10 +16,6 @@ var _BabelCodeCompileTask = require('./BabelCodeCompileTask');
 
 var _BabelCodeCompileTask2 = _interopRequireDefault(_BabelCodeCompileTask);
 
-var _BabelMapCompileTask = require('./BabelMapCompileTask');
-
-var _BabelMapCompileTask2 = _interopRequireDefault(_BabelMapCompileTask);
-
 var _BrowserSyncServerTask = require('./BrowserSyncServerTask');
 
 var _BrowserSyncServerTask2 = _interopRequireDefault(_BrowserSyncServerTask);
@@ -65,7 +61,6 @@ exports['default'] = {
   // PlantUMLCompileTask,
   ServerTask: _ServerTask2['default'],
   BabelCodeCompileTask: _BabelCodeCompileTask2['default'],
-  BabelMapCompileTask: _BabelMapCompileTask2['default'],
   BrowserSyncServerTask: _BrowserSyncServerTask2['default'],
   BrowserifyCompileTask: _BrowserifyCompileTask2['default'],
   CoffeeScriptCompileTask: _CoffeeScriptCompileTask2['default'],

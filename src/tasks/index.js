@@ -2,7 +2,6 @@
 // import PlantUMLCompileTask from './PlantUMLCompileTask';
 import ServerTask from './ServerTask';
 import BabelCodeCompileTask from './BabelCodeCompileTask';
-import BabelMapCompileTask from './BabelMapCompileTask';
 import BrowserSyncServerTask from './BrowserSyncServerTask';
 import BrowserifyCompileTask from './BrowserifyCompileTask';
 import CoffeeScriptCompileTask from './CoffeeScriptCompileTask';
@@ -19,7 +18,6 @@ export default {
   // PlantUMLCompileTask,
   ServerTask,
   BabelCodeCompileTask,
-  BabelMapCompileTask,
   BrowserSyncServerTask,
   BrowserifyCompileTask,
   CoffeeScriptCompileTask,

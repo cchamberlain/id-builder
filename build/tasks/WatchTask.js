@@ -50,8 +50,6 @@ var WatchTask = (function (_Task) {
 
     _classCallCheck(this, WatchTask);
 
-    _loglevel2['default'].debug('WatchTask#constructor');
-
     _get(Object.getPrototypeOf(WatchTask.prototype), 'constructor', this).call(this, options);
 
     this.watcher = null;
@@ -63,12 +61,15 @@ var WatchTask = (function (_Task) {
   _createClass(WatchTask, [{
     key: '_handleAdd',
     value: function _handleAdd(path) {
-      _loglevel2['default'].debug('WatchTask#_handleAdd', path);
+      this._handleChange(path);
     }
   }, {
     key: '_handleAddDir',
     value: function _handleAddDir(path) {
-      _loglevel2['default'].debug('WatchTask#_handleAddDir', path);
+      // Get all files in path (recursive).
+      // Do a handleChange for all files in path.
+      // This is shitty with Browserify. Somehow I need to only browserify at the
+      // end of all the other compiles.
     }
   }, {
     key: '_handleChangeBrowsersync',
@@ -126,13 +127,13 @@ var WatchTask = (function (_Task) {
     key: '_handleChange',
     value: function _handleChange(path) {
       this._handleChangeBrowsersync(path);
+      this._handleChangeTestTask(path);
 
       var compileTask = this.getCompilerTaskForPath(path);
 
       if (compileTask) {
         this._handleChangeCompileTask(path, compileTask);
       } else {
-        this._handleChangeTestTask(path);
         this._handleChangeServerTask(path);
       }
     }
@@ -149,7 +150,7 @@ var WatchTask = (function (_Task) {
   }, {
     key: '_handleError',
     value: function _handleError(error) {
-      _loglevel2['default'].debug('WatchTask#_handleError', error);
+      _loglevel2['default'].error(error.stack || error.message || error);
     }
   }, {
     key: 'getCompilerTasks',

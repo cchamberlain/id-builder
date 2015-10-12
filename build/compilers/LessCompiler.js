@@ -14,7 +14,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
 var _less = require('less');
+
+var _less2 = _interopRequireDefault(_less);
 
 var _libCompiler = require('../lib/Compiler');
 
@@ -35,7 +41,7 @@ var LessCompiler = (function (_Compiler) {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        (0, _less.render)(chunk, _this.options.options, function (e, result) {
+        _less2['default'].render(chunk, _this.options, function (e, result) {
           if (e) {
             return reject(e);
           }

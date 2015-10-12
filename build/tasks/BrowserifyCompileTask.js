@@ -65,19 +65,15 @@ var BrowserifyCompileTask = (function (_CompileTask) {
   }, {
     key: 'compileFile',
     value: function compileFile(sourceFilePath, targetFilePath, cb) {
-      if (sourceFilePath === undefined) sourceFilePath = this.sourceFilePath;
-
       var _this = this;
-
-      if (targetFilePath === undefined) targetFilePath = this.targetFilePath;
 
       this.compiler.setBundle();
 
-      (0, _fs.exists)(sourceFilePath, function (doesExist) {
+      (0, _fs.exists)(this.sourceFilePath, function (doesExist) {
         if (doesExist) {
-          _get(Object.getPrototypeOf(BrowserifyCompileTask.prototype), 'compileFile', _this).call(_this, sourceFilePath, targetFilePath, cb);
+          _get(Object.getPrototypeOf(BrowserifyCompileTask.prototype), 'compileFile', _this).call(_this, _this.sourceFilePath, _this.targetFilePath, cb);
         } else {
-          _libLogging2['default'].taskInfo(_this.constructor.name, 'skipping ' + sourceFilePath + ' (Does not exist)');
+          _libLogging2['default'].taskInfo(_this.constructor.name, 'skipping ' + _this.sourceFilePath + ' (Does not exist)');
 
           cb();
         }

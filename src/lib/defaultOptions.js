@@ -13,53 +13,6 @@ export default {
       paths: [ 'build' ]
     },
 
-    BabelASTCompileTask: {
-      enabled: true,
-
-      dependencies: [
-        'DirectoryCleanerTask'
-      ],
-
-      sourceFileExtension: 'js',
-      targetFileExtension: 'js.ast.json',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build',
-
-      compiler: {
-        optional: [
-          'es7.asyncFunctions',
-          'es7.decorators',
-          'es7.exportExtensions',
-          'es7.objectRestSpread',
-          'es7.trailingFunctionCommas'
-        ]
-      }
-    },
-
-    BabelMapCompileTask: {
-      enabled: true,
-
-      dependencies: [
-        'DirectoryCleanerTask'
-      ],
-
-      sourceFileExtension: 'js',
-      targetFileExtension: 'js.map',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build',
-
-      compiler: {
-        optional: [
-          'es7.asyncFunctions',
-          'es7.decorators',
-          'es7.exportExtensions',
-          'es7.objectRestSpread',
-          'es7.trailingFunctionCommas'
-        ],
-        sourceMaps: true
-      }
-    },
-
     BabelCodeCompileTask: {
       enabled: true,
 
@@ -73,12 +26,8 @@ export default {
       targetDirectoryPath: 'build',
 
       compiler: {
+        sourceMaps: 'inline',
         optional: [
-          'es7.asyncFunctions',
-          'es7.decorators',
-          'es7.exportExtensions',
-          'es7.objectRestSpread',
-          'es7.trailingFunctionCommas'
         ]
       }
     },
@@ -132,7 +81,8 @@ export default {
       targetDirectoryPath: 'build',
 
       compiler: {
-        filename: './src/client/less/app.less'
+        rootPath: 'src/client/less',
+        filename: 'src/client/less/app.less'
       }
     },
 
@@ -141,7 +91,6 @@ export default {
 
       dependencies: [
         'BabelCodeCompileTask',
-        'BabelMapCompileTask',
         'CoffeeScriptCompileTask',
         'LessCompileTask',
         'LiveScriptCompileTask'
@@ -244,7 +193,7 @@ export default {
       ],
 
       mocha: {
-        reporter: 'spec'
+        reporter: 'min'
       }
     },
 
@@ -265,6 +214,26 @@ export default {
   }
 };
 
+/*
+ BabelASTCompileTask: {
+ enabled: true,
+
+ dependencies: [
+ 'DirectoryCleanerTask'
+ ],
+
+ sourceFileExtension: 'js',
+ targetFileExtension: 'js.ast.json',
+ sourceDirectoryPath: 'src',
+ targetDirectoryPath: 'build',
+
+ compiler: {
+ sourceMaps: 'inline',
+ optional: [
+ ]
+ }
+ },
+ */
 
 /*
  PlantUMLCompileTask: {

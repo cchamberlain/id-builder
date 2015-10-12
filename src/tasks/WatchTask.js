@@ -12,8 +12,6 @@ function logError(error) {
 
 class WatchTask extends Task {
   constructor(options = {}) {
-    log.debug('WatchTask#constructor');
-
     super(options);
 
     this.watcher = null;
@@ -30,11 +28,14 @@ class WatchTask extends Task {
   }
 
   _handleAdd(path) {
-    log.debug('WatchTask#_handleAdd', path);
+    this._handleChange(path);
   }
 
   _handleAddDir(path) {
-    log.debug('WatchTask#_handleAddDir', path);
+    // Get all files in path (recursive).
+    // Do a handleChange for all files in path.
+    // This is shitty with Browserify. Somehow I need to only browserify at the
+    // end of all the other compiles.
   }
 
   _handleChangeBrowsersync(path) {
@@ -90,13 +91,13 @@ class WatchTask extends Task {
 
   _handleChange(path) {
     this._handleChangeBrowsersync(path);
+    this._handleChangeTestTask(path);
 
     let compileTask = this.getCompilerTaskForPath(path);
 
     if (compileTask) {
       this._handleChangeCompileTask(path, compileTask);
     } else {
-      this._handleChangeTestTask(path);
       this._handleChangeServerTask(path);
     }
   }
@@ -110,7 +111,7 @@ class WatchTask extends Task {
   }
 
   _handleError(error) {
-    log.debug('WatchTask#_handleError', error);
+    log.error(error.stack || error.message || error);
   }
 
   getCompilerTasks() {
