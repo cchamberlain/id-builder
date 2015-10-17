@@ -10,7 +10,7 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-function merge(x) {
+function parseOptions(x) {
   var y = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   var z = {};
@@ -19,7 +19,7 @@ function merge(x) {
     var yValue = y[xKey];
 
     if (_lodash2['default'].isObject(xValue) && !_lodash2['default'].isArray(xValue)) {
-      z[xKey] = merge(xValue, yValue);
+      z[xKey] = parseOptions(xValue, yValue);
     } else {
       if (!_lodash2['default'].isUndefined(yValue)) {
         z[xKey] = yValue;
@@ -32,5 +32,5 @@ function merge(x) {
   return z;
 }
 
-exports['default'] = merge;
+exports['default'] = parseOptions;
 module.exports = exports['default'];

@@ -6,7 +6,7 @@ import _ from 'lodash';
  * Contains all the options. Emits events when changes occur.
  * @class Options
  */
-class Options extends events.EventEmitter {
+export default class Options extends events.EventEmitter {
   constructor(options = {}) {
     super(options);
 

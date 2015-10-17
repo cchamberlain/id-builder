@@ -1,4 +1,4 @@
-class Compiler {
+export default class Compiler {
   constructor(options = {}) {
     this.options = options;
   }
@@ -9,5 +9,3 @@ class Compiler {
     });
   }
 }
-
-export default Compiler;

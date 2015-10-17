@@ -17,7 +17,7 @@
   
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/Industrial/id-builder" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -51,13 +51,10 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html">Builder</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/CompileTask.js~CompileTask.html">CompileTask</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Options.js~Options.html">Options</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Task.js~Task.html">Task</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getFiles">getFiles</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseOptions">parseOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-builder">builder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-compileTask">compileTask</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-compiler">compiler</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-task">task</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">tasks</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tasks/BabelCodeCompileTask.js~BabelCodeCompileTask.html">BabelCodeCompileTask</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tasks/BrowserSyncServerTask.js~BrowserSyncServerTask.html">BrowserSyncServerTask</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tasks/BrowserifyCompileTask.js~BrowserifyCompileTask.html">BrowserifyCompileTask</a></span></span></li>
@@ -111,7 +108,7 @@ import getFiles from &apos;../lib/getFiles&apos;;
  *    path, compiling all files that match.
  * @class CompileTask
  */
-class CompileTask extends Task {
+export default class CompileTask extends Task {
   constructor(options = {}) {
     super(options);
 
@@ -261,8 +258,6 @@ class CompileTask extends Task {
     });
   }
 }
-
-export default CompileTask;
 </code></pre>
 
 </div>

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import lsr from 'lsr';
 
-function getFiles(path, cb) {
+export default function getFiles(path, cb) {
   lsr(path, (e, nodes) => {
     if (e) {
       return cb(e);
@@ -12,5 +12,3 @@ function getFiles(path, cb) {
       .value());
   });
 }
-
-export default getFiles;

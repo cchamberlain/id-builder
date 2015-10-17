@@ -1011,7 +1011,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import _ from 'lodash';\nimport { auto } from 'async';\n\nimport logging from './logging';\n\n/**\n * The builder runs the tasks.\n * TODO: Find a better solution then format juggling for async.auto.\n * @class Builder\n */\nclass Builder {\n  constructor(options = {}) {\n    this.options = options;\n\n    this.tasks = {};\n    this.taskInstances = {};\n    this.asyncTasks = {};\n\n    this.compilers = {};\n  }\n\n  /**\n   * Gets the options belonging to the task of `name`.\n   * @param {String} name The name of the task.\n   * @returns {Object} the options of the task.\n   * @private\n   */\n  _getTaskOptions(name) {\n    return this.options.tasks[name];\n  }\n\n  /**\n   * Instantiates all the tasks.\n   * @private\n   */\n  _ensureTaskInstances() {\n    _.each(this.tasks, (Task, name) => {\n      const options = this._getTaskOptions(name);\n\n      if (!options) {\n        throw new Error(`No options found for task \"${name}\".`);\n      }\n\n      if (!options.enabled) {\n        // Fake a task that does nothing\n        this.taskInstances[name] = {\n          dependencies: []\n        };\n      } else {\n        // Pass the builder to the Task for scope.\n        options.builder = this;\n\n        this.taskInstances[name] = new Task(options);\n      }\n    });\n  }\n\n  /**\n   * Converts Task to async.auto format until I find a better solution.\n   * @private\n   */\n  _ensureAsyncTasks() {\n    _.each(this.taskInstances, (taskInstance, name) => {\n      this.asyncTasks[name] = taskInstance.dependencies.concat(this._createTaskCallback(name, taskInstance));\n    });\n  }\n\n  /**\n   * Runs all tasks asynchronously and in parallel with dependencies first.\n   * @param {Function} cb The callback function.\n   * @private\n   */\n  _runTasks(cb) {\n    // First instantiate all tasks with their options.\n    this._ensureTaskInstances();\n\n    // Then ensure the async tree looks the same.\n    this._ensureAsyncTasks();\n\n    auto(this.asyncTasks, cb);\n  }\n\n  /**\n   * Creates a callback for a task to be ran.\n   * TODO: Better describe what this does.\n   * @param {String} name The name of the task.\n   * @param {Task} task The Task.\n   * @returns {Function} The callback function.\n   * @private\n   */\n  _createTaskCallback(name, task) {\n    // Make sure all callbacks get fired for dependencies, whether they run or\n    // not.\n    // TODO: Explain better what this does. This description is not enough.\n    if (!task.start) {\n      return (cb) => {\n        logging.skipTask(name);\n        cb();\n      };\n    }\n\n    return (cb) => {\n      logging.startTask(name);\n\n      task.start(e => {\n        if (e) {\n          return cb(e);\n        }\n\n        logging.finishTask(name);\n\n        cb();\n      });\n    };\n  }\n\n  /**\n   * Adds a Task.\n   * @param {Task} task The task.\n   * @return Builder The instance.\n   */\n  addTask(task) {\n    this.tasks[task.name] = task;\n\n    return this;\n  }\n\n  /**\n   * Adds an Array of Task's.\n   * @param {Array} tasks The tasks.\n   * @return Builder The instance.\n   */\n  addTasks(tasks) {\n    _.each(tasks, this.addTask.bind(this));\n\n    return this;\n  }\n\n  /**\n   * Adds a compiler.\n   * @param {Compiler} compiler The compiler.\n   * @return Builder The instance.\n   */\n  addCompiler(compiler) {\n    const name = compiler.constructor.name;\n\n    this.compilers[name] = compiler;\n\n    return this;\n  }\n\n  /**\n   * Removes a compiler.\n   * @param {Compiler} compiler The compiler.\n   * @return Builder The instance.\n   */\n  removeCompiler(compiler) {\n    const name = compiler.constructor.name;\n\n    delete this.compilers[name];\n\n    return this;\n  }\n\n  /**\n   * Starts the builder.\n   * @param {Function} cb The callback function.\n   */\n  start(cb) {\n    this._runTasks(cb);\n  }\n}\n\nexport default Builder;\n"
+    "content": "import _ from 'lodash';\nimport { auto } from 'async';\n\nimport logging from './logging';\n\n/**\n * The builder runs the tasks.\n * TODO: Find a better solution then format juggling for async.auto.\n * @class Builder\n */\nexport default class Builder {\n  constructor(options = {}) {\n    this.options = options;\n\n    this.tasks = {};\n    this.taskInstances = {};\n    this.asyncTasks = {};\n\n    this.compilers = {};\n  }\n\n  /**\n   * Gets the options belonging to the task of `name`.\n   * @param {String} name The name of the task.\n   * @returns {Object} the options of the task.\n   * @private\n   */\n  _getTaskOptions(name) {\n    return this.options.tasks[name];\n  }\n\n  /**\n   * Instantiates all the tasks.\n   * @private\n   */\n  _ensureTaskInstances() {\n    _.each(this.tasks, (Task, name) => {\n      const options = this._getTaskOptions(name);\n\n      if (!options) {\n        throw new Error(`No options found for task \"${name}\".`);\n      }\n\n      if (!options.enabled) {\n        // Fake a task that does nothing\n        this.taskInstances[name] = {\n          dependencies: []\n        };\n      } else {\n        // Pass the builder to the Task for scope.\n        options.builder = this;\n\n        this.taskInstances[name] = new Task(options);\n      }\n    });\n  }\n\n  /**\n   * Converts Task to async.auto format until I find a better solution.\n   * @private\n   */\n  _ensureAsyncTasks() {\n    _.each(this.taskInstances, (taskInstance, name) => {\n      this.asyncTasks[name] = taskInstance.dependencies.concat(this._createTaskCallback(name, taskInstance));\n    });\n  }\n\n  /**\n   * Runs all tasks asynchronously and in parallel with dependencies first.\n   * @param {Function} cb The callback function.\n   * @private\n   */\n  _runTasks(cb) {\n    // First instantiate all tasks with their options.\n    this._ensureTaskInstances();\n\n    // Then ensure the async tree looks the same.\n    this._ensureAsyncTasks();\n\n    auto(this.asyncTasks, cb);\n  }\n\n  /**\n   * Creates a callback for a task to be ran.\n   * TODO: Better describe what this does.\n   * @param {String} name The name of the task.\n   * @param {Task} task The Task.\n   * @returns {Function} The callback function.\n   * @private\n   */\n  _createTaskCallback(name, task) {\n    // Make sure all callbacks get fired for dependencies, whether they run or\n    // not.\n    // TODO: Explain better what this does. This description is not enough.\n    if (!task.start) {\n      return (cb) => {\n        logging.skipTask(name);\n        cb();\n      };\n    }\n\n    return (cb) => {\n      logging.startTask(name);\n\n      task.start(e => {\n        if (e) {\n          return cb(e);\n        }\n\n        logging.finishTask(name);\n\n        cb();\n      });\n    };\n  }\n\n  /**\n   * Adds a Task.\n   * @param {Task} task The task.\n   * @return Builder The instance.\n   */\n  addTask(task) {\n    this.tasks[task.name] = task;\n\n    return this;\n  }\n\n  /**\n   * Adds an Array of Task's.\n   * @param {Array} tasks The tasks.\n   * @return Builder The instance.\n   */\n  addTasks(tasks) {\n    _.each(tasks, this.addTask.bind(this));\n\n    return this;\n  }\n\n  /**\n   * Adds a compiler.\n   * @param {Compiler} compiler The compiler.\n   * @return Builder The instance.\n   */\n  addCompiler(compiler) {\n    const name = compiler.constructor.name;\n\n    this.compilers[name] = compiler;\n\n    return this;\n  }\n\n  /**\n   * Removes a compiler.\n   * @param {Compiler} compiler The compiler.\n   * @return Builder The instance.\n   */\n  removeCompiler(compiler) {\n    const name = compiler.constructor.name;\n\n    delete this.compilers[name];\n\n    return this;\n  }\n\n  /**\n   * Starts the builder.\n   * @param {Function} cb The callback function.\n   */\n  start(cb) {\n    this._runTasks(cb);\n  }\n}\n"
   },
   {
     "__docId__": 48,
@@ -1450,27 +1450,6 @@
   },
   {
     "__docId__": 65,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "builder",
-    "memberof": "src/lib/Builder.js",
-    "longname": "src/lib/Builder.js~builder",
-    "access": null,
-    "export": true,
-    "importPath": "id-builder/src/lib/Builder.js",
-    "importStyle": "builder",
-    "description": null,
-    "lineNumber": 174,
-    "undocument": true,
-    "type": {
-      "types": [
-        "src/lib/Builder.js~Builder"
-      ]
-    }
-  },
-  {
-    "__docId__": 66,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1480,10 +1459,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { readFile, writeFile } from 'fs';\nimport { dirname } from 'path';\n\nimport _ from 'lodash';\nimport log from 'loglevel';\nimport mkdirp from 'mkdirp';\nimport { each } from 'async';\n\nimport Compiler from './Compiler';\nimport Task from './Task';\nimport logging from '../lib/logging';\nimport getFiles from '../lib/getFiles';\n\n/**\n * Compiles code from one language to another using a Compiler. May compile in\n * three ways:\n *  - Compiling a chunk (string) to another chunk.\n *  - Compiling a file from a source path to a target path.\n *  - Compiling a directory of files recursively from a source path to a target\n *    path, compiling all files that match.\n * @class CompileTask\n */\nclass CompileTask extends Task {\n  constructor(options = {}) {\n    super(options);\n\n    this.sourceFileExtension = options.sourceFileExtension;\n    this.targetFileExtension = options.targetFileExtension;\n    this.sourceDirectoryPath = options.sourceDirectoryPath;\n    this.targetDirectoryPath = options.targetDirectoryPath;\n\n    this.setCompiler(Compiler);\n  }\n\n  /**\n   * Returns the expression used by the `sourceFilePathMatches` method.\n   * @return {RegExp} The regular expression.\n   */\n  get sourceFilePathMatchExpression() {\n    return new RegExp(`^${this.sourceDirectoryPath}.+\\\\.${this.sourceFileExtension}$`);\n  }\n\n  /**\n   * Returns `true` when a file path matches.\n   * @param {String} sourceFilePath The source file path.\n   * @return {boolean}\n   */\n  sourceFilePathMatches(sourceFilePath) {\n    return !!sourceFilePath.match(this.sourceFilePathMatchExpression);\n  }\n\n  /**\n   * Returns the expression used by the `getTargetPath` method.\n   * @return {RegExp} The regular expression.\n   */\n  get targetPathReplaceExpression() {\n    return new RegExp(`\\\\.${this.sourceFileExtension}$`);\n  }\n\n  /**\n   * Gets the target file path for a source file path.\n   * TODO: Rename to getTargetFilePath, because it is the path of a file.\n   * @param {String} sourceFilePath The source file path.\n   * @return {String} The target file path.\n   */\n  getTargetPath(sourceFilePath) {\n    return sourceFilePath\n      .replace(this.sourceDirectoryPath, this.targetDirectoryPath)\n      .replace(this.targetPathReplaceExpression, `.${this.targetFileExtension}`);\n  }\n\n  /**\n   * Sets the compiler used to compile chunks. Also adds the Compiler to the\n   * Builder but ensures only one Compiler per instance is active in the\n   * Builder.\n   * TODO: Explain why it's a good thing to only have one compiler in the\n   *       builder per compile task.\n   * TODO: Refactor: Move this to the Builder class.\n   * @param {Class} CompilerClass The compiler class used to compile chunks.\n   * @returns CompileTask The instance.\n   */\n  setCompiler(CompilerClass) {\n    // First remove the currently set compiler from the builder.\n    if (this.compiler) {\n      this.builder.removeCompiler(this.compiler);\n    }\n\n    // Then set the the new compiler\n    this.compiler = new CompilerClass(this.options.compiler);\n\n    // And add it to the builder\n    this.builder.addCompiler(this.compiler);\n\n    return this;\n  }\n\n  /**\n   * Ensures that a directory is available to write a file to. Creates all\n   * parent directories of the file path.\n   * @param {String} targetFilePath The target file path.\n   * @param {Function} cb The callback function.\n   */\n  ensureFileDirectory(targetFilePath, cb) {\n    mkdirp(dirname(targetFilePath), cb);\n  }\n\n  /**\n   * Reads a file from the `sourceFilePath`, compiles it using the set compiler\n   * and writes it to the `targetFilePath`.\n   * @param {String} sourceFilePath The source file path.\n   * @param {String} targetFilePath The target file path.\n   * @param {Function} cb The callback function.\n   */\n  compileFile(sourceFilePath, targetFilePath, cb) {\n    readFile(sourceFilePath, (e, fileContent) => {\n      if (e) {\n        return cb(e);\n      }\n\n      if (!this.compiler.compileChunk) {\n        console.log(this.compiler.constructor.name);\n\n        console.trace();\n      }\n\n      this.compiler.compileChunk(fileContent.toString(), sourceFilePath)\n        .then(compiledChunk => {\n          this.ensureFileDirectory(targetFilePath, e => {\n            if (e) {\n              return cb(e);\n            }\n\n            writeFile(targetFilePath, compiledChunk, e => {\n              if (e) {\n                return cb(e);\n              }\n\n              logging.taskInfo(this.constructor.name, `${sourceFilePath} => ${targetFilePath}`);\n\n              cb(null);\n            });\n          });\n        })\n        .catch(e => {\n          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e.stack || e.message || e}`);\n          return cb();\n        });\n    });\n  }\n\n  /**\n   * Compiles a directory of files recursively from a source path to a target\n   * path, compiling all files that match.\n   * @param {Function} cb The callback function.\n   */\n  compileAllFiles(cb) {\n    getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {\n      if (e) {\n        return cb(e);\n      }\n\n      const paths = _(sourceFilePaths)\n        .map(v => v.fullPath)\n        .filter(this.sourceFilePathMatches.bind(this))\n        .value();\n\n      each(paths, (currentSourceFilePath, cb) => {\n        this.compileFile(currentSourceFilePath, this.getTargetPath(currentSourceFilePath), cb);\n      }, cb);\n    });\n  }\n}\n\nexport default CompileTask;\n"
+    "content": "import { readFile, writeFile } from 'fs';\nimport { dirname } from 'path';\n\nimport _ from 'lodash';\nimport log from 'loglevel';\nimport mkdirp from 'mkdirp';\nimport { each } from 'async';\n\nimport Compiler from './Compiler';\nimport Task from './Task';\nimport logging from '../lib/logging';\nimport getFiles from '../lib/getFiles';\n\n/**\n * Compiles code from one language to another using a Compiler. May compile in\n * three ways:\n *  - Compiling a chunk (string) to another chunk.\n *  - Compiling a file from a source path to a target path.\n *  - Compiling a directory of files recursively from a source path to a target\n *    path, compiling all files that match.\n * @class CompileTask\n */\nexport default class CompileTask extends Task {\n  constructor(options = {}) {\n    super(options);\n\n    this.sourceFileExtension = options.sourceFileExtension;\n    this.targetFileExtension = options.targetFileExtension;\n    this.sourceDirectoryPath = options.sourceDirectoryPath;\n    this.targetDirectoryPath = options.targetDirectoryPath;\n\n    this.setCompiler(Compiler);\n  }\n\n  /**\n   * Returns the expression used by the `sourceFilePathMatches` method.\n   * @return {RegExp} The regular expression.\n   */\n  get sourceFilePathMatchExpression() {\n    return new RegExp(`^${this.sourceDirectoryPath}.+\\\\.${this.sourceFileExtension}$`);\n  }\n\n  /**\n   * Returns `true` when a file path matches.\n   * @param {String} sourceFilePath The source file path.\n   * @return {boolean}\n   */\n  sourceFilePathMatches(sourceFilePath) {\n    return !!sourceFilePath.match(this.sourceFilePathMatchExpression);\n  }\n\n  /**\n   * Returns the expression used by the `getTargetPath` method.\n   * @return {RegExp} The regular expression.\n   */\n  get targetPathReplaceExpression() {\n    return new RegExp(`\\\\.${this.sourceFileExtension}$`);\n  }\n\n  /**\n   * Gets the target file path for a source file path.\n   * TODO: Rename to getTargetFilePath, because it is the path of a file.\n   * @param {String} sourceFilePath The source file path.\n   * @return {String} The target file path.\n   */\n  getTargetPath(sourceFilePath) {\n    return sourceFilePath\n      .replace(this.sourceDirectoryPath, this.targetDirectoryPath)\n      .replace(this.targetPathReplaceExpression, `.${this.targetFileExtension}`);\n  }\n\n  /**\n   * Sets the compiler used to compile chunks. Also adds the Compiler to the\n   * Builder but ensures only one Compiler per instance is active in the\n   * Builder.\n   * TODO: Explain why it's a good thing to only have one compiler in the\n   *       builder per compile task.\n   * TODO: Refactor: Move this to the Builder class.\n   * @param {Class} CompilerClass The compiler class used to compile chunks.\n   * @returns CompileTask The instance.\n   */\n  setCompiler(CompilerClass) {\n    // First remove the currently set compiler from the builder.\n    if (this.compiler) {\n      this.builder.removeCompiler(this.compiler);\n    }\n\n    // Then set the the new compiler\n    this.compiler = new CompilerClass(this.options.compiler);\n\n    // And add it to the builder\n    this.builder.addCompiler(this.compiler);\n\n    return this;\n  }\n\n  /**\n   * Ensures that a directory is available to write a file to. Creates all\n   * parent directories of the file path.\n   * @param {String} targetFilePath The target file path.\n   * @param {Function} cb The callback function.\n   */\n  ensureFileDirectory(targetFilePath, cb) {\n    mkdirp(dirname(targetFilePath), cb);\n  }\n\n  /**\n   * Reads a file from the `sourceFilePath`, compiles it using the set compiler\n   * and writes it to the `targetFilePath`.\n   * @param {String} sourceFilePath The source file path.\n   * @param {String} targetFilePath The target file path.\n   * @param {Function} cb The callback function.\n   */\n  compileFile(sourceFilePath, targetFilePath, cb) {\n    readFile(sourceFilePath, (e, fileContent) => {\n      if (e) {\n        return cb(e);\n      }\n\n      if (!this.compiler.compileChunk) {\n        console.log(this.compiler.constructor.name);\n\n        console.trace();\n      }\n\n      this.compiler.compileChunk(fileContent.toString(), sourceFilePath)\n        .then(compiledChunk => {\n          this.ensureFileDirectory(targetFilePath, e => {\n            if (e) {\n              return cb(e);\n            }\n\n            writeFile(targetFilePath, compiledChunk, e => {\n              if (e) {\n                return cb(e);\n              }\n\n              logging.taskInfo(this.constructor.name, `${sourceFilePath} => ${targetFilePath}`);\n\n              cb(null);\n            });\n          });\n        })\n        .catch(e => {\n          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e.stack || e.message || e}`);\n          return cb();\n        });\n    });\n  }\n\n  /**\n   * Compiles a directory of files recursively from a source path to a target\n   * path, compiling all files that match.\n   * @param {Function} cb The callback function.\n   */\n  compileAllFiles(cb) {\n    getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {\n      if (e) {\n        return cb(e);\n      }\n\n      const paths = _(sourceFilePaths)\n        .map(v => v.fullPath)\n        .filter(this.sourceFilePathMatches.bind(this))\n        .value();\n\n      each(paths, (currentSourceFilePath, cb) => {\n        this.compileFile(currentSourceFilePath, this.getTargetPath(currentSourceFilePath), cb);\n      }, cb);\n    });\n  }\n}\n"
   },
   {
-    "__docId__": 67,
+    "__docId__": 66,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1508,7 +1487,7 @@
     ]
   },
   {
-    "__docId__": 68,
+    "__docId__": 67,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1533,7 +1512,7 @@
     "generator": false
   },
   {
-    "__docId__": 69,
+    "__docId__": 68,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1551,7 +1530,7 @@
     }
   },
   {
-    "__docId__": 70,
+    "__docId__": 69,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1569,7 +1548,7 @@
     }
   },
   {
-    "__docId__": 71,
+    "__docId__": 70,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1587,7 +1566,7 @@
     }
   },
   {
-    "__docId__": 72,
+    "__docId__": 71,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1605,7 +1584,7 @@
     }
   },
   {
-    "__docId__": 73,
+    "__docId__": 72,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1631,7 +1610,7 @@
     "generator": false
   },
   {
-    "__docId__": 74,
+    "__docId__": 73,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1664,7 +1643,7 @@
     "generator": false
   },
   {
-    "__docId__": 75,
+    "__docId__": 74,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1690,7 +1669,7 @@
     "generator": false
   },
   {
-    "__docId__": 76,
+    "__docId__": 75,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1723,7 +1702,7 @@
     "generator": false
   },
   {
-    "__docId__": 77,
+    "__docId__": 76,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1762,7 +1741,7 @@
     "generator": false
   },
   {
-    "__docId__": 78,
+    "__docId__": 77,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1780,7 +1759,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 78,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1815,7 +1794,7 @@
     "generator": false
   },
   {
-    "__docId__": 80,
+    "__docId__": 79,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1860,7 +1839,7 @@
     "generator": false
   },
   {
-    "__docId__": 81,
+    "__docId__": 80,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1885,28 +1864,7 @@
     "generator": false
   },
   {
-    "__docId__": 82,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "compileTask",
-    "memberof": "src/lib/CompileTask.js",
-    "longname": "src/lib/CompileTask.js~compileTask",
-    "access": null,
-    "export": true,
-    "importPath": "id-builder/src/lib/CompileTask.js",
-    "importStyle": "compileTask",
-    "description": null,
-    "lineNumber": 174,
-    "undocument": true,
-    "type": {
-      "types": [
-        "src/lib/CompileTask.js~CompileTask"
-      ]
-    }
-  },
-  {
-    "__docId__": 83,
+    "__docId__": 81,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1916,10 +1874,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "class Compiler {\n  constructor(options = {}) {\n    this.options = options;\n  }\n\n  compileChunk(chunk, sourceFilePath) {\n    return new Promise((resolve) => {\n      resolve(chunk);\n    });\n  }\n}\n\nexport default Compiler;\n"
+    "content": "export default class Compiler {\n  constructor(options = {}) {\n    this.options = options;\n  }\n\n  compileChunk(chunk, sourceFilePath) {\n    return new Promise((resolve) => {\n      resolve(chunk);\n    });\n  }\n}\n"
   },
   {
-    "__docId__": 84,
+    "__docId__": 82,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1936,7 +1894,7 @@
     "interface": false
   },
   {
-    "__docId__": 85,
+    "__docId__": 83,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1961,7 +1919,7 @@
     "generator": false
   },
   {
-    "__docId__": 86,
+    "__docId__": 84,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1979,7 +1937,7 @@
     }
   },
   {
-    "__docId__": 87,
+    "__docId__": 85,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2012,28 +1970,7 @@
     "generator": false
   },
   {
-    "__docId__": 88,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "compiler",
-    "memberof": "src/lib/Compiler.js",
-    "longname": "src/lib/Compiler.js~compiler",
-    "access": null,
-    "export": true,
-    "importPath": "id-builder/src/lib/Compiler.js",
-    "importStyle": "compiler",
-    "description": null,
-    "lineNumber": 13,
-    "undocument": true,
-    "type": {
-      "types": [
-        "src/lib/Compiler.js~Compiler"
-      ]
-    }
-  },
-  {
-    "__docId__": 89,
+    "__docId__": 86,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2043,10 +1980,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import events from 'events';\n\nimport _ from 'lodash';\n\n/**\n * Contains all the options. Emits events when changes occur.\n * @class Options\n */\nclass Options extends events.EventEmitter {\n  constructor(options = {}) {\n    super(options);\n\n    this._values = options;\n  }\n\n  /**\n   * Emits that a change has happened.\n   * @param key\n   * @param value\n   * @private\n   */\n  _emitChange(key, value) {\n    this.emit(`change:${key}`, value);\n    this.emit(`change`, value);\n  }\n\n  /**\n   * Gets the (nested) key from the object.\n   * @param {String} key\n   * @returns {*}\n   */\n  get(key) {\n    return _.get(this._values, key);\n  }\n\n  /**\n   * Sets the value of the (nested) key to `value`.\n   * @param {String} key\n   * @param {*} value\n   * @returns {Options}\n   */\n  set(key, value) {\n    _.set(this._values, key, value);\n\n    this._emitChange(key, value);\n\n    return this;\n  }\n\n  /**\n   * Sets the value of the (nested) key to `undefined`. Does not delete the key.\n   * @param {String} key\n   * @returns {Options}\n   */\n  del(key) {\n    _.set(this._values, key, undefined);\n\n    this._emitChange(key, 'undefined');\n\n    return this;\n  }\n\n  /**\n   * Merges `object` into the current options, overriding values.\n   * TODO: use _.defaultsDeep\n   * @param {Object} object\n   * @returns {Options}\n   */\n  merge(object) {\n    return this;\n  }\n}\n"
+    "content": "import events from 'events';\n\nimport _ from 'lodash';\n\n/**\n * Contains all the options. Emits events when changes occur.\n * @class Options\n */\nexport default class Options extends events.EventEmitter {\n  constructor(options = {}) {\n    super(options);\n\n    this._values = options;\n  }\n\n  /**\n   * Emits that a change has happened.\n   * @param key\n   * @param value\n   * @private\n   */\n  _emitChange(key, value) {\n    this.emit(`change:${key}`, value);\n    this.emit(`change`, value);\n  }\n\n  /**\n   * Gets the (nested) key from the object.\n   * @param {String} key\n   * @returns {*}\n   */\n  get(key) {\n    return _.get(this._values, key);\n  }\n\n  /**\n   * Sets the value of the (nested) key to `value`.\n   * @param {String} key\n   * @param {*} value\n   * @returns {Options}\n   */\n  set(key, value) {\n    _.set(this._values, key, value);\n\n    this._emitChange(key, value);\n\n    return this;\n  }\n\n  /**\n   * Sets the value of the (nested) key to `undefined`. Does not delete the key.\n   * @param {String} key\n   * @returns {Options}\n   */\n  del(key) {\n    _.set(this._values, key, undefined);\n\n    this._emitChange(key, 'undefined');\n\n    return this;\n  }\n\n  /**\n   * Merges `object` into the current options, overriding values.\n   * TODO: use _.defaultsDeep\n   * @param {Object} object\n   * @returns {Options}\n   */\n  merge(object) {\n    return this;\n  }\n}\n"
   },
   {
-    "__docId__": 90,
+    "__docId__": 87,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2054,9 +1991,9 @@
     "memberof": "src/lib/Options.js",
     "longname": "src/lib/Options.js~Options",
     "access": null,
-    "export": false,
+    "export": true,
     "importPath": "id-builder/src/lib/Options.js",
-    "importStyle": null,
+    "importStyle": "Options",
     "description": "Contains all the options. Emits events when changes occur.",
     "lineNumber": 9,
     "unknown": [
@@ -2071,7 +2008,7 @@
     ]
   },
   {
-    "__docId__": 91,
+    "__docId__": 88,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2096,7 +2033,7 @@
     "generator": false
   },
   {
-    "__docId__": 92,
+    "__docId__": 89,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2114,7 +2051,7 @@
     }
   },
   {
-    "__docId__": 93,
+    "__docId__": 90,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2149,7 +2086,7 @@
     "generator": false
   },
   {
-    "__docId__": 94,
+    "__docId__": 91,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2188,7 +2125,7 @@
     "generator": false
   },
   {
-    "__docId__": 95,
+    "__docId__": 92,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2237,7 +2174,7 @@
     "generator": false
   },
   {
-    "__docId__": 96,
+    "__docId__": 93,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2276,7 +2213,7 @@
     "generator": false
   },
   {
-    "__docId__": 97,
+    "__docId__": 94,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2315,7 +2252,7 @@
     "generator": false
   },
   {
-    "__docId__": 98,
+    "__docId__": 95,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2325,10 +2262,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import _ from 'lodash';\n\n/**\n * Represents one thing to be done. May be a long running task.\n * TODO: add a removeDependencies(array) method.\n * @class Task\n */\nclass Task {\n  constructor(options = {}) {\n    this.options = options;\n\n    this.builder = options.builder;\n\n    this.dependencies = options.dependencies || [];\n  }\n\n  /**\n   * Adds a dependency.\n   * @param {String} name The name of the dependency.\n   * @return Task The instance.\n   */\n  addDependency(name) {\n    this.dependencies.push(name);\n    this.dependencies = _.uniq(this.dependencies);\n\n    return this;\n  }\n\n  /**\n   * Removes a dependency.\n   * @param {String} name The name of the dependency.\n   * @return Task The instance.\n   */\n  removeDependency(name) {\n    this.dependencies = _.without(this.dependencies, name);\n\n    return this;\n  }\n\n  /**\n   * Adds an Array of strings as dependencies.\n   * @param {Array} dependencies An array of strings.\n   * @return Task The instance.\n   */\n  addDependencies(dependencies) {\n    _.each(dependencies, (dependency) => {\n      this.addDependency(dependency);\n    });\n\n    return this;\n  }\n\n  /**\n   * Starts the task.\n   * @param {Function} cb The callback function.\n   */\n  start(cb) {\n    if (!this.run) {\n      throw new Error('No run function set.');\n    }\n\n    // TODO: This is horrible!\n    this.__proto__.run.call(this, cb);\n  }\n}\n\nexport default Task;\n"
+    "content": "import _ from 'lodash';\n\n/**\n * Represents one thing to be done. May be a long running task.\n * TODO: add a removeDependencies(array) method.\n * @class Task\n */\nexport default class Task {\n  constructor(options = {}) {\n    this.options = options;\n\n    this.builder = options.builder;\n\n    this.dependencies = options.dependencies || [];\n  }\n\n  /**\n   * Adds a dependency.\n   * @param {String} name The name of the dependency.\n   * @return Task The instance.\n   */\n  addDependency(name) {\n    this.dependencies.push(name);\n    this.dependencies = _.uniq(this.dependencies);\n\n    return this;\n  }\n\n  /**\n   * Removes a dependency.\n   * @param {String} name The name of the dependency.\n   * @return Task The instance.\n   */\n  removeDependency(name) {\n    this.dependencies = _.without(this.dependencies, name);\n\n    return this;\n  }\n\n  /**\n   * Adds an Array of strings as dependencies.\n   * @param {Array} dependencies An array of strings.\n   * @return Task The instance.\n   */\n  addDependencies(dependencies) {\n    _.each(dependencies, (dependency) => {\n      this.addDependency(dependency);\n    });\n\n    return this;\n  }\n\n  /**\n   * Starts the task.\n   * @param {Function} cb The callback function.\n   */\n  start(cb) {\n    if (!this.run) {\n      throw new Error('No run function set.');\n    }\n\n    // TODO: This is horrible!\n    this.__proto__.run.call(this, cb);\n  }\n}\n"
   },
   {
-    "__docId__": 99,
+    "__docId__": 96,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2350,7 +2287,7 @@
     "interface": false
   },
   {
-    "__docId__": 100,
+    "__docId__": 97,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2375,7 +2312,7 @@
     "generator": false
   },
   {
-    "__docId__": 101,
+    "__docId__": 98,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2393,7 +2330,7 @@
     }
   },
   {
-    "__docId__": 102,
+    "__docId__": 99,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2411,7 +2348,7 @@
     }
   },
   {
-    "__docId__": 103,
+    "__docId__": 100,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2429,7 +2366,7 @@
     }
   },
   {
-    "__docId__": 104,
+    "__docId__": 101,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2462,7 +2399,7 @@
     "generator": false
   },
   {
-    "__docId__": 105,
+    "__docId__": 102,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2480,7 +2417,7 @@
     }
   },
   {
-    "__docId__": 106,
+    "__docId__": 103,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2513,7 +2450,7 @@
     "generator": false
   },
   {
-    "__docId__": 107,
+    "__docId__": 104,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2531,7 +2468,7 @@
     }
   },
   {
-    "__docId__": 108,
+    "__docId__": 105,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2564,7 +2501,7 @@
     "generator": false
   },
   {
-    "__docId__": 109,
+    "__docId__": 106,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2589,28 +2526,7 @@
     "generator": false
   },
   {
-    "__docId__": 110,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "task",
-    "memberof": "src/lib/Task.js",
-    "longname": "src/lib/Task.js~task",
-    "access": null,
-    "export": true,
-    "importPath": "id-builder/src/lib/Task.js",
-    "importStyle": "task",
-    "description": null,
-    "lineNumber": 67,
-    "undocument": true,
-    "type": {
-      "types": [
-        "src/lib/Task.js~Task"
-      ]
-    }
-  },
-  {
-    "__docId__": 111,
+    "__docId__": 107,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2623,7 +2539,7 @@
     "content": "export default {\n  logging: {\n    level: 'info'\n  },\n\n  tasks: {\n    DirectoryCleanerTask: {\n      enabled: true,\n\n      dependencies: [\n      ],\n\n      paths: [ 'build' ]\n    },\n\n    BabelCodeCompileTask: {\n      enabled: true,\n\n      dependencies: [\n        'DirectoryCleanerTask'\n      ],\n\n      sourceFileExtension: 'js',\n      targetFileExtension: 'js',\n      sourceDirectoryPath: 'src',\n      targetDirectoryPath: 'build',\n\n      compiler: {\n        sourceMaps: 'inline',\n        optional: [\n        ]\n      }\n    },\n\n    CoffeeScriptCompileTask: {\n      enabled: true,\n\n      dependencies: [\n        'DirectoryCleanerTask'\n      ],\n\n      sourceFileExtension: 'coffee',\n      targetFileExtension: 'js',\n      sourceDirectoryPath: 'src',\n      targetDirectoryPath: 'build',\n\n      compiler: {\n        bare: true\n      }\n    },\n\n    LiveScriptCompileTask: {\n      enabled: true,\n\n      dependencies: [\n        'DirectoryCleanerTask'\n      ],\n\n      sourceFileExtension: 'ls',\n      targetFileExtension: 'js',\n      sourceDirectoryPath: 'src',\n      targetDirectoryPath: 'build',\n\n      compiler: {\n        bare: true\n      }\n    },\n\n    LessCompileTask: {\n      enabled: true,\n\n      dependencies: [\n        'DirectoryCleanerTask'\n      ],\n\n      sourceFilePath: 'src/client/less/app.less',\n      targetFilePath: 'build/client/css/app.css',\n      sourceFileExtension: 'less',\n      targetFileExtension: 'css',\n      sourceDirectoryPath: 'src',\n      targetDirectoryPath: 'build',\n\n      compiler: {\n        rootPath: 'src/client/less',\n        filename: 'src/client/less/app.less'\n      }\n    },\n\n    BrowserifyCompileTask: {\n      enabled: true,\n\n      dependencies: [\n        'BabelCodeCompileTask',\n        'CoffeeScriptCompileTask',\n        'LessCompileTask',\n        'LiveScriptCompileTask'\n      ],\n\n      sourceFilePath: 'build/client/js/app.js',\n      targetFilePath: 'build/client/js/app.bundle.js',\n      sourceFileExtension: 'js',\n      targetFileExtension: 'js',\n      sourceDirectoryPath: 'build/client',\n      targetDirectoryPath: 'build/client',\n\n      compiler: {\n        fullPaths: true,\n        debug: true\n      }\n    },\n\n    StylusCompileTask: {\n      enabled: true,\n\n      dependencies: [\n        'DirectoryCleanerTask'\n      ],\n\n      sourceFilePath: 'src/client/stylus/app.styl',\n      targetFilePath: 'build/client/css/app.css',\n      sourceFileExtension: 'styl',\n      targetFileExtension: 'css',\n      sourceDirectoryPath: 'src',\n      targetDirectoryPath: 'build',\n\n      compiler: {}\n    },\n\n    CopyCompileTask: {\n      enabled: true,\n\n      dependencies: [\n        'DirectoryCleanerTask'\n      ],\n\n      sourceDirectoryPath: 'src',\n      targetDirectoryPath: 'build'\n    },\n\n    BrowserSyncServerTask: {\n      enabled: true,\n\n      dependencies: [\n        'DirectoryCleanerTask'\n      ],\n\n      paths: [\n        'build'\n      ],\n\n      options: {\n        ui: {\n          port: 9001\n        },\n\n        port: 9000,\n        logLevel: 'silent',\n        logFileChanges: false\n      }\n    },\n\n    ServerTask: {\n      enabled: true,\n\n      dependencies: [\n        'TestTask'\n      ],\n\n      // Since this isn't a CompileTask, this property could be changed into a\n      // `sourceDirectoryPaths` property that lists multiple. This way, only the\n      // paths in the 'common' and 'server' directories are triggering server\n      // reloads.\n      sourceDirectoryPaths: [\n        'build/server'\n      ],\n\n      paths: [ 'build/server/app.js' ]\n    },\n\n    TestTask: {\n      enabled: true,\n\n      dependencies: [\n        'BrowserifyCompileTask'\n      ],\n\n      sourceDirectoryPaths: [\n        'build/test'\n      ],\n\n      watchDirectoryPaths: [\n        'build'\n      ],\n\n      mocha: {\n        reporter: 'min'\n      }\n    },\n\n    WatchTask: {\n      enabled: true,\n\n      dependencies: [\n        'TestTask'\n      ],\n\n      // sourceDirectoryPath: 'build',\n\n      paths: [\n        'src',\n        'build'\n      ]\n    }\n  }\n};\n\n/*\n BabelASTCompileTask: {\n enabled: true,\n\n dependencies: [\n 'DirectoryCleanerTask'\n ],\n\n sourceFileExtension: 'js',\n targetFileExtension: 'js.ast.json',\n sourceDirectoryPath: 'src',\n targetDirectoryPath: 'build',\n\n compiler: {\n sourceMaps: 'inline',\n optional: [\n ]\n }\n },\n */\n\n/*\n PlantUMLCompileTask: {\n enabled: true,\n\n dependencies: [\n 'DirectoryCleanerTask'\n ],\n\n sourceFileExtension: 'js',\n sourceDirectoryPath: 'src',\n\n compiler: {\n ast: true,\n whitelist: []\n }\n },\n */\n"
   },
   {
-    "__docId__": 112,
+    "__docId__": 108,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2633,10 +2549,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import _ from 'lodash';\nimport lsr from 'lsr';\n\nfunction getFiles(path, cb) {\n  lsr(path, (e, nodes) => {\n    if (e) {\n      return cb(e);\n    }\n\n    cb(null, _(nodes)\n      .filter(v => v.isFile() && v)\n      .value());\n  });\n}\n\nexport default getFiles;\n"
+    "content": "import _ from 'lodash';\nimport lsr from 'lsr';\n\nexport default function getFiles(path, cb) {\n  lsr(path, (e, nodes) => {\n    if (e) {\n      return cb(e);\n    }\n\n    cb(null, _(nodes)\n      .filter(v => v.isFile() && v)\n      .value());\n  });\n}\n"
   },
   {
-    "__docId__": 113,
+    "__docId__": 109,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2667,7 +2583,7 @@
     "generator": false
   },
   {
-    "__docId__": 114,
+    "__docId__": 110,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2680,7 +2596,7 @@
     "content": "import chalk from 'chalk';\nimport log from 'loglevel';\n\nconst arrowCharacter = '→';\nconst okCharacter = '✓';\nconst warningCharacter = '✗';\n\nfunction taskInfo(task, message) {\n  log.info(`  ${task} ${chalk.grey(message)}`);\n}\n\nfunction taskWarn(task, message) {\n  log.warn(`${chalk.yellow(arrowCharacter)} ${task}: ${message}`);\n}\n\nfunction taskError(task, message) {\n  log.error(`${chalk.red(arrowCharacter)} ${task}: ${message}`);\n}\n\nfunction disabledTask(name) {\n  log.warn(`${chalk.yellow(warningCharacter)} ${name}`);\n}\n\nfunction startTask(name) {\n  log.info(`${chalk.grey(arrowCharacter)} ${name}`);\n}\n\nfunction skipTask(name) {\n  log.info(`${chalk.grey(okCharacter)} ${name}`);\n}\n\nfunction finishTask(name) {\n  log.info(`${chalk.green(okCharacter)} ${chalk.green(name)}`);\n}\n\nexport default {\n  arrowCharacter,\n  okCharacter,\n  warningCharacter,\n\n  taskInfo,\n  taskWarn,\n  taskError,\n  disabledTask,\n  startTask,\n  skipTask,\n  finishTask\n};\n"
   },
   {
-    "__docId__": 115,
+    "__docId__": 111,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2701,7 +2617,7 @@
     }
   },
   {
-    "__docId__": 116,
+    "__docId__": 112,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2722,7 +2638,7 @@
     }
   },
   {
-    "__docId__": 117,
+    "__docId__": 113,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2743,7 +2659,7 @@
     }
   },
   {
-    "__docId__": 118,
+    "__docId__": 114,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2774,7 +2690,7 @@
     "generator": false
   },
   {
-    "__docId__": 119,
+    "__docId__": 115,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2805,7 +2721,7 @@
     "generator": false
   },
   {
-    "__docId__": 120,
+    "__docId__": 116,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2836,7 +2752,7 @@
     "generator": false
   },
   {
-    "__docId__": 121,
+    "__docId__": 117,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2861,7 +2777,7 @@
     "generator": false
   },
   {
-    "__docId__": 122,
+    "__docId__": 118,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2886,7 +2802,7 @@
     "generator": false
   },
   {
-    "__docId__": 123,
+    "__docId__": 119,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2911,7 +2827,7 @@
     "generator": false
   },
   {
-    "__docId__": 124,
+    "__docId__": 120,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2936,7 +2852,7 @@
     "generator": false
   },
   {
-    "__docId__": 125,
+    "__docId__": 121,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2949,7 +2865,7 @@
     "content": "import _ from 'lodash';\n\nfunction parseOptions(x, y = {}) {\n  const z = {};\n\n  _.each(x, function(xValue, xKey) {\n    const yValue = y[xKey];\n\n    if (_.isObject(xValue) && !_.isArray(xValue)) {\n      z[xKey] = parseOptions(xValue, yValue);\n    } else {\n      if (!_.isUndefined(yValue)) {\n        z[xKey] = yValue;\n      } else {\n        z[xKey] = xValue;\n      }\n    }\n  });\n\n  return z;\n}\n\nexport default parseOptions;\n"
   },
   {
-    "__docId__": 126,
+    "__docId__": 122,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2988,7 +2904,7 @@
     "generator": false
   },
   {
-    "__docId__": 127,
+    "__docId__": 123,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -3001,7 +2917,7 @@
     "content": "import BabelCodeCompiler from '../compilers/BabelCodeCompiler';\nimport CompileTask from '../lib/CompileTask';\n\nclass BabelCodeCompileTask extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    this.setCompiler(BabelCodeCompiler);\n  }\n\n  run(cb) {\n    this.compileAllFiles(cb);\n  }\n}\n\nexport default BabelCodeCompileTask;\n"
   },
   {
-    "__docId__": 128,
+    "__docId__": 124,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3021,7 +2937,7 @@
     ]
   },
   {
-    "__docId__": 129,
+    "__docId__": 125,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -3046,7 +2962,7 @@
     "generator": false
   },
   {
-    "__docId__": 130,
+    "__docId__": 126,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3068,7 +2984,7 @@
     "generator": false
   },
   {
-    "__docId__": 131,
+    "__docId__": 127,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -3089,7 +3005,7 @@
     }
   },
   {
-    "__docId__": 132,
+    "__docId__": 128,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -3102,7 +3018,7 @@
     "content": "import _ from 'lodash';\nimport browserSync from 'browser-sync';\nimport log from 'loglevel';\n\nimport logging from '../lib/logging';\nimport Task from '../lib/Task';\n\nclass BrowserSyncServerTask extends Task {\n  constructor(options = {}) {\n    super(options);\n\n    this.paths = options.paths;\n  }\n\n  reload(path) {\n    const shouldReload = !!_(this.paths)\n      .filter(directoryPath => {\n        if (_.startsWith(path, directoryPath)) {\n          return true;\n        }\n      })\n      .value()\n      .length;\n\n    if (shouldReload) {\n      browserSync.reload(path);\n\n      logging.taskInfo(this.constructor.name, `Reloaded \\`${path}\\``);\n    }\n  }\n\n  run(cb) {\n    log.debug(`BrowserSyncServerTask#run`);\n\n    browserSync(this.options.options, (e) => {\n      if (e) {\n        return cb(e);\n      }\n\n      logging.taskInfo(this.constructor.name, `API Server running at 127.0.0.1:${this.options.options.port}`);\n      logging.taskInfo(this.constructor.name, `HTTP Server running at 127.0.0.1:${this.options.options.ui.port}`);\n    });\n  }\n}\n\nexport default BrowserSyncServerTask;\n"
   },
   {
-    "__docId__": 133,
+    "__docId__": 129,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3122,7 +3038,7 @@
     ]
   },
   {
-    "__docId__": 134,
+    "__docId__": 130,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -3147,7 +3063,7 @@
     "generator": false
   },
   {
-    "__docId__": 135,
+    "__docId__": 131,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -3165,7 +3081,7 @@
     }
   },
   {
-    "__docId__": 136,
+    "__docId__": 132,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3187,7 +3103,7 @@
     "generator": false
   },
   {
-    "__docId__": 137,
+    "__docId__": 133,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3209,7 +3125,7 @@
     "generator": false
   },
   {
-    "__docId__": 138,
+    "__docId__": 134,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -3230,7 +3146,7 @@
     }
   },
   {
-    "__docId__": 139,
+    "__docId__": 135,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -3243,7 +3159,7 @@
     "content": "import _ from 'lodash';\nimport { exists } from 'fs';\nimport log from 'loglevel';\n\nimport CompileTask from '../lib/CompileTask';\nimport logging from '../lib/logging';\n\nimport BrowserifyCompiler from '../compilers/BrowserifyCompiler';\n\nclass BrowserifyCompileTask extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    this.sourceFilePath = options.sourceFilePath;\n    this.targetFilePath = options.targetFilePath;\n\n    this.setCompiler(BrowserifyCompiler);\n  }\n\n  sourceFilePathMatches(sourceFilePath) {\n    return this.compiler.hasDependency(sourceFilePath);\n  }\n\n  getTargetPath() {\n    return this.targetFilePath;\n  }\n\n  compileFile(sourceFilePath, targetFilePath, cb) {\n    this.compiler.setBundle();\n\n    exists(this.sourceFilePath, (doesExist) => {\n      if (doesExist) {\n        super.compileFile(this.sourceFilePath, this.targetFilePath, cb);\n      } else {\n        logging.taskInfo(this.constructor.name, `skipping ${this.sourceFilePath} (Does not exist)`);\n\n        cb();\n      }\n    });\n  }\n\n  run(cb) {\n    this.compileFile(this.sourceFilePath, this.targetFilePath, cb);\n  }\n}\n\nexport default BrowserifyCompileTask;\n\n/*\nfunction watch(options, cb) {\n  log.debug('lib/browserify.watch');\n\n  exists(options.sourceFilePath, exists => {\n    if (!exists) {\n      logging.taskInfo(options.taskName, `skipping ${options.sourceFilePath} (Does not exist)`);\n      return cb();\n    }\n\n    fileSystem.ensureFileDirectory(options.targetFilePath, e => {\n      if (e) {\n        return cb(e);\n      }\n\n      const b = getBrowserifyBundle(options);\n\n      b.add(resolve(options.sourceFilePath));\n\n      b.on('bundle', bundleStream => {\n        let data = '';\n\n        bundleStream.on('data', d => {\n          data += d;\n        });\n\n        bundleStream.on('end', () => {\n          writeFile(options.targetFilePath, data, e => {\n            if (e) {\n              return cb(e);\n            }\n\n            logging.taskInfo(options.taskName, `${options.sourceFilePath} => ${options.targetFilePath}`);\n          });\n        });\n      });\n\n      const w = watchify(b);\n\n      w.on('update', () => {\n        b.bundle();\n      });\n\n      b.bundle();\n    });\n  });\n}\n*/\n"
   },
   {
-    "__docId__": 140,
+    "__docId__": 136,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3263,7 +3179,7 @@
     ]
   },
   {
-    "__docId__": 141,
+    "__docId__": 137,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -3288,7 +3204,7 @@
     "generator": false
   },
   {
-    "__docId__": 142,
+    "__docId__": 138,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -3306,7 +3222,7 @@
     }
   },
   {
-    "__docId__": 143,
+    "__docId__": 139,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -3324,7 +3240,7 @@
     }
   },
   {
-    "__docId__": 144,
+    "__docId__": 140,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3351,7 +3267,7 @@
     "generator": false
   },
   {
-    "__docId__": 145,
+    "__docId__": 141,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3371,7 +3287,7 @@
     "generator": false
   },
   {
-    "__docId__": 146,
+    "__docId__": 142,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3405,7 +3321,7 @@
     "generator": false
   },
   {
-    "__docId__": 147,
+    "__docId__": 143,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3427,7 +3343,7 @@
     "generator": false
   },
   {
-    "__docId__": 148,
+    "__docId__": 144,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -3448,7 +3364,7 @@
     }
   },
   {
-    "__docId__": 149,
+    "__docId__": 145,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -3461,7 +3377,7 @@
     "content": "import CompileTask from '../lib/CompileTask';\nimport CoffeeScriptCompiler from '../compilers/CoffeeScriptCompiler';\n\nclass CoffeeScriptCompileTask extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    this.setCompiler(CoffeeScriptCompiler);\n  }\n\n  run(cb) {\n    this.compileAllFiles(cb);\n  }\n}\n\nexport default CoffeeScriptCompileTask;\n"
   },
   {
-    "__docId__": 150,
+    "__docId__": 146,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3481,7 +3397,7 @@
     ]
   },
   {
-    "__docId__": 151,
+    "__docId__": 147,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -3506,7 +3422,7 @@
     "generator": false
   },
   {
-    "__docId__": 152,
+    "__docId__": 148,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3528,7 +3444,7 @@
     "generator": false
   },
   {
-    "__docId__": 153,
+    "__docId__": 149,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -3549,7 +3465,7 @@
     }
   },
   {
-    "__docId__": 154,
+    "__docId__": 150,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -3562,7 +3478,7 @@
     "content": "import _ from 'lodash';\n\nimport log from 'loglevel';\nimport { each } from 'async';\n\nimport CompileTask from '../lib/CompileTask';\nimport getFiles from '../lib/getFiles';\n\nimport CopyCompiler from '../compilers/CopyCompiler';\n\nfunction getNames(tasks) {\n  return _(tasks)\n    .pluck('constructor')\n    .pluck('name')\n    .value();\n}\n\nclass CopyCompileTask extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    this.setCompiler(CopyCompiler);\n\n    _.bindAll(this, [\n      'isCompileTask',\n      'isntThisTask'\n    ]);\n  }\n\n  isCompileTask(task) {\n    return task instanceof CompileTask;\n  }\n\n  isntThisTask(task) {\n    return task.constructor.name !== this.constructor.name;\n  }\n\n  get otherCompileTasks() {\n    return _(this.builder.taskInstances)\n      .filter(this.isCompileTask)\n      .filter(this.isntThisTask)\n      .value();\n  }\n\n  get sourceFilePathMatchExpression() {\n    return new RegExp(`^${this.sourceDirectoryPath}.+$`);\n  }\n\n  sourceFilePathMatches(sourceFilePath) {\n    return super.sourceFilePathMatches(sourceFilePath) && this.doesntMatchOtherTaskSourceFilePath(sourceFilePath);\n  }\n\n  // Check all other tasks for sourceFilePathMathches functions and\n  // only return true if no other matches, so don't copy files any\n  // other task is interested in.\n  doesntMatchOtherTaskSourceFilePath(path) {\n    let result = true;\n\n    _.each(this.otherCompileTasks, (task) => {\n      if (task.sourceFilePathMatches && task.sourceFilePathMatches(path)) {\n        result = false;\n      }\n    });\n\n    return result;\n  }\n\n  getPaths(cb) {\n    getFiles(this.sourceDirectoryPath, (e, nodes) => {\n      if (e) {\n        return cb(e);\n      }\n\n\n      const paths = _(nodes)\n        .map(v => v.fullPath)\n        .filter(this.doesntMatchOtherTaskSourceFilePath.bind(this))\n        .value();\n\n      cb(null, paths);\n    });\n  }\n\n  compileAllFiles(cb) {\n    this.getPaths((e, paths) => {\n      if (e) {\n        return cb(e);\n      }\n\n      const iteratePath = (currentSourceDirectoryPath, cb) => {\n        const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(this.sourceDirectoryPath, this.targetDirectoryPath);\n\n        this.compileFile(currentSourceDirectoryPath, currentTargetDirectoryPath, cb);\n      };\n\n      each(paths, iteratePath, cb);\n    });\n  }\n\n  run(cb) {\n    this.compileAllFiles(cb);\n  }\n}\n\nexport default CopyCompileTask;\n"
   },
   {
-    "__docId__": 155,
+    "__docId__": 151,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -3592,7 +3508,7 @@
     "generator": false
   },
   {
-    "__docId__": 156,
+    "__docId__": 152,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3612,7 +3528,7 @@
     ]
   },
   {
-    "__docId__": 157,
+    "__docId__": 153,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -3637,7 +3553,7 @@
     "generator": false
   },
   {
-    "__docId__": 158,
+    "__docId__": 154,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3664,7 +3580,7 @@
     "generator": false
   },
   {
-    "__docId__": 159,
+    "__docId__": 155,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3691,7 +3607,7 @@
     "generator": false
   },
   {
-    "__docId__": 160,
+    "__docId__": 156,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -3710,7 +3626,7 @@
     "generator": false
   },
   {
-    "__docId__": 161,
+    "__docId__": 157,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -3729,7 +3645,7 @@
     "generator": false
   },
   {
-    "__docId__": 162,
+    "__docId__": 158,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3756,7 +3672,7 @@
     "generator": false
   },
   {
-    "__docId__": 163,
+    "__docId__": 159,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3783,7 +3699,7 @@
     "generator": false
   },
   {
-    "__docId__": 164,
+    "__docId__": 160,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3805,7 +3721,7 @@
     "generator": false
   },
   {
-    "__docId__": 165,
+    "__docId__": 161,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3827,7 +3743,7 @@
     "generator": false
   },
   {
-    "__docId__": 166,
+    "__docId__": 162,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3849,7 +3765,7 @@
     "generator": false
   },
   {
-    "__docId__": 167,
+    "__docId__": 163,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -3870,7 +3786,7 @@
     }
   },
   {
-    "__docId__": 168,
+    "__docId__": 164,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -3883,7 +3799,7 @@
     "content": "import log from 'loglevel';\nimport rimraf from 'rimraf';\nimport { each } from 'async';\n\nimport Task from '../lib/Task';\n\nclass DirectoryCleanerTask extends Task {\n  constructor(options = {}) {\n    super(options);\n\n    this.paths = options.paths;\n  }\n\n  removeDirectoryContents(path, cb) {\n    rimraf(`${path}/**/*`, cb);\n  }\n\n  run(cb) {\n    each(this.paths, this.removeDirectoryContents.bind(this), cb);\n  }\n}\n\nexport default DirectoryCleanerTask;\n"
   },
   {
-    "__docId__": 169,
+    "__docId__": 165,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3903,7 +3819,7 @@
     ]
   },
   {
-    "__docId__": 170,
+    "__docId__": 166,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -3928,7 +3844,7 @@
     "generator": false
   },
   {
-    "__docId__": 171,
+    "__docId__": 167,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -3946,7 +3862,7 @@
     }
   },
   {
-    "__docId__": 172,
+    "__docId__": 168,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3974,7 +3890,7 @@
     "generator": false
   },
   {
-    "__docId__": 173,
+    "__docId__": 169,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3996,7 +3912,7 @@
     "generator": false
   },
   {
-    "__docId__": 174,
+    "__docId__": 170,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -4017,7 +3933,7 @@
     }
   },
   {
-    "__docId__": 175,
+    "__docId__": 171,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -4030,7 +3946,7 @@
     "content": "import { exists } from 'fs';\n\nimport logging from '../lib/logging';\nimport CompileTask from '../lib/CompileTask';\n\nimport LessCompiler from '../compilers/LessCompiler';\n\nclass LessCompileTask extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    this.sourceFilePath = options.sourceFilePath;\n    this.targetFilePath = options.targetFilePath;\n\n    this.setCompiler(LessCompiler);\n  }\n\n  get sourceFilePathMatchExpression() {\n    return new RegExp(`^${this.sourceFilePath}$`);\n  }\n\n  compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {\n    exists(sourceFilePath, (doesExist) => {\n      if (doesExist) {\n        super.compileFile(sourceFilePath, targetFilePath, cb);\n      } else {\n        logging.taskInfo(this.constructor.name, `skipping ${sourceFilePath} (Does not exist)`);\n        cb();\n      }\n    });\n  }\n\n  run(cb) {\n    this.compileFile(this.sourceFilePath, this.targetFilePath, cb);\n  }\n}\n\nexport default LessCompileTask;\n"
   },
   {
-    "__docId__": 176,
+    "__docId__": 172,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4050,7 +3966,7 @@
     ]
   },
   {
-    "__docId__": 177,
+    "__docId__": 173,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -4075,7 +3991,7 @@
     "generator": false
   },
   {
-    "__docId__": 178,
+    "__docId__": 174,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4093,7 +4009,7 @@
     }
   },
   {
-    "__docId__": 179,
+    "__docId__": 175,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4111,7 +4027,7 @@
     }
   },
   {
-    "__docId__": 180,
+    "__docId__": 176,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -4130,7 +4046,7 @@
     "generator": false
   },
   {
-    "__docId__": 181,
+    "__docId__": 177,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4166,7 +4082,7 @@
     "generator": false
   },
   {
-    "__docId__": 182,
+    "__docId__": 178,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4188,7 +4104,7 @@
     "generator": false
   },
   {
-    "__docId__": 183,
+    "__docId__": 179,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -4209,7 +4125,7 @@
     }
   },
   {
-    "__docId__": 184,
+    "__docId__": 180,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -4222,7 +4138,7 @@
     "content": "import CompileTask from '../lib/CompileTask';\n\nimport LiveScriptCompiler from '../compilers/LiveScriptCompiler';\n\nclass LiveScriptCompileTask extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    this.setCompiler(LiveScriptCompiler);\n  }\n\n  run(cb) {\n    this.compileAllFiles(cb);\n  }\n}\n\nexport default LiveScriptCompileTask;\n"
   },
   {
-    "__docId__": 185,
+    "__docId__": 181,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4242,7 +4158,7 @@
     ]
   },
   {
-    "__docId__": 186,
+    "__docId__": 182,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -4267,7 +4183,7 @@
     "generator": false
   },
   {
-    "__docId__": 187,
+    "__docId__": 183,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4289,7 +4205,7 @@
     "generator": false
   },
   {
-    "__docId__": 188,
+    "__docId__": 184,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -4310,7 +4226,7 @@
     }
   },
   {
-    "__docId__": 189,
+    "__docId__": 185,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -4323,7 +4239,7 @@
     "content": "import { exists } from 'fs';\n\nimport _ from 'lodash';\nimport log from 'loglevel';\nimport { Monitor } from 'forever-monitor';\nimport { each } from 'async';\n\nimport logging from '../lib/logging';\nimport Task from '../lib/Task';\n\nclass ServerTask extends Task {\n  constructor(options = {}) {\n    super(options);\n\n    _.bindAll(this, [\n      'addPath',\n      'removePath',\n      'restartPath',\n      'sourceFilePathMatches',\n      'startServer',\n      'stopServer',\n      'restartServer',\n      'run'\n    ]);\n\n    this.sourceDirectoryPaths = options.sourceDirectoryPaths;\n\n    this.monitors = {};\n  }\n\n  addPath(path, cb) {\n    const monitor = new Monitor(path, {\n      command: 'node'\n    });\n\n    this.monitors[path] = monitor;\n\n    monitor.start();\n\n    logging.taskInfo(this.constructor.name, `Started ${path}`);\n\n    cb();\n  }\n\n  removePath(path, cb) {\n    const monitor = this.monitors[path];\n\n    if (!monitor) {\n      logging.taskInfo(this.constructor.name, `Monitor not found for ${path}`);\n      cb();\n    }\n\n    monitor.kill(true);\n\n    delete this.monitors[path];\n\n    logging.taskInfo(this.constructor.name, `Stopped ${path}`);\n\n    cb();\n  }\n\n  restartPath(path, cb) {\n    const monitor = this.monitors[path];\n\n    monitor.restart();\n\n    cb();\n  }\n\n  sourceFilePathMatches(sourceFilePath) {\n    return !!_(this.sourceDirectoryPaths)\n      .any(sourceDirectoryPath => {\n        return sourceFilePath.match(new RegExp(`^${sourceDirectoryPath}`));\n      });\n  }\n\n  startServer(filePath, cb) {\n    exists(filePath, result => {\n      if (!result) {\n        logging.taskInfo(this.constructor.name, `skipping ${filePath} (Does not exist).`);\n        return cb();\n      }\n\n      const monitor = this.monitors[filePath];\n\n      if (monitor) {\n        this.restartPath(filePath, cb);\n      } else {\n        this.addPath(filePath, cb);\n      }\n    });\n  }\n\n  stopServer(filePath, cb) {\n    exists(filePath, result => {\n      if (!result) {\n        logging.taskInfo(this.constructor.name, `skipping ${filePath} (Does not exist).`);\n        return cb();\n      }\n\n      const monitor = this.monitors[filePath];\n\n      if (monitor) {\n        this.removePath(filePath, cb);\n      } else {\n        logging.taskInfo(this.constructor.name, `skipping ${filePath} (Monitor does not exist).`);\n        cb();\n      }\n    });\n  }\n\n  restartServer(filePath, cb) {\n    exists(filePath, result => {\n      if (!result) {\n        logging.taskInfo(this.constructor.name, `skipping ${filePath} (Does not exist).`);\n        return cb();\n      }\n\n      this.removePath(filePath, e => {\n        if (e) {\n          return cb(e);\n        }\n\n        this.addPath(filePath, cb);\n      });\n    });\n  }\n\n  run() {\n    each(this.options.paths, this.startServer, _.noop);\n  }\n}\n\nexport default ServerTask;\n"
   },
   {
-    "__docId__": 190,
+    "__docId__": 186,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4343,7 +4259,7 @@
     ]
   },
   {
-    "__docId__": 191,
+    "__docId__": 187,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -4368,7 +4284,7 @@
     "generator": false
   },
   {
-    "__docId__": 192,
+    "__docId__": 188,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4386,7 +4302,7 @@
     }
   },
   {
-    "__docId__": 193,
+    "__docId__": 189,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4404,7 +4320,7 @@
     }
   },
   {
-    "__docId__": 194,
+    "__docId__": 190,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4432,7 +4348,7 @@
     "generator": false
   },
   {
-    "__docId__": 195,
+    "__docId__": 191,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4460,7 +4376,7 @@
     "generator": false
   },
   {
-    "__docId__": 196,
+    "__docId__": 192,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4488,7 +4404,7 @@
     "generator": false
   },
   {
-    "__docId__": 197,
+    "__docId__": 193,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4515,7 +4431,7 @@
     "generator": false
   },
   {
-    "__docId__": 198,
+    "__docId__": 194,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4543,7 +4459,7 @@
     "generator": false
   },
   {
-    "__docId__": 199,
+    "__docId__": 195,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4571,7 +4487,7 @@
     "generator": false
   },
   {
-    "__docId__": 200,
+    "__docId__": 196,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4599,7 +4515,7 @@
     "generator": false
   },
   {
-    "__docId__": 201,
+    "__docId__": 197,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4614,7 +4530,7 @@
     "generator": false
   },
   {
-    "__docId__": 202,
+    "__docId__": 198,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -4635,7 +4551,7 @@
     }
   },
   {
-    "__docId__": 203,
+    "__docId__": 199,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -4648,7 +4564,7 @@
     "content": "import { exists } from 'fs';\n\nimport logging from '../lib/logging';\nimport CompileTask from '../lib/CompileTask';\n\nimport StylusCompiler from '../compilers/StylusCompiler';\n\nclass StylusCompileTask extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    this.sourceFilePath = options.sourceFilePath;\n    this.targetFilePath = options.targetFilePath;\n\n    this.setCompiler(StylusCompiler);\n  }\n\n  get sourceFilePathMatchExpression() {\n    return new RegExp(`^${this.sourceFilePath}$`);\n  }\n\n  compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {\n    exists(sourceFilePath, (doesExist) => {\n      if (doesExist) {\n        super.compileFile(sourceFilePath, targetFilePath, cb);\n      } else {\n        logging.taskInfo(this.constructor.name, `skipping ${sourceFilePath} (Does not exist)`);\n        cb();\n      }\n    });\n  }\n\n  run(cb) {\n    this.compileFile(this.sourceFilePath, this.targetFilePath, cb);\n  }\n}\n\nexport default StylusCompileTask;\n"
   },
   {
-    "__docId__": 204,
+    "__docId__": 200,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4668,7 +4584,7 @@
     ]
   },
   {
-    "__docId__": 205,
+    "__docId__": 201,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -4693,7 +4609,7 @@
     "generator": false
   },
   {
-    "__docId__": 206,
+    "__docId__": 202,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4711,7 +4627,7 @@
     }
   },
   {
-    "__docId__": 207,
+    "__docId__": 203,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4729,7 +4645,7 @@
     }
   },
   {
-    "__docId__": 208,
+    "__docId__": 204,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -4748,7 +4664,7 @@
     "generator": false
   },
   {
-    "__docId__": 209,
+    "__docId__": 205,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4784,7 +4700,7 @@
     "generator": false
   },
   {
-    "__docId__": 210,
+    "__docId__": 206,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4806,7 +4722,7 @@
     "generator": false
   },
   {
-    "__docId__": 211,
+    "__docId__": 207,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -4827,7 +4743,7 @@
     }
   },
   {
-    "__docId__": 212,
+    "__docId__": 208,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -4840,7 +4756,7 @@
     "content": "// - TestTask sluit niet goed af.\n// - TestTask moet voor ServerTask gebeuren. Eerst valideren dat het werkt,\n//   dan draaien.\n\nimport cp from 'child_process';\nimport fs from 'fs';\nimport path from 'path';\nimport vm from 'vm';\n\nimport _ from 'lodash';\nimport log from 'loglevel';\n\nimport Task from '../lib/Task';\nimport getFiles from '../lib/getFiles';\n\nconst pathToMocha = path.resolve(`${__dirname}/../../node_modules/mocha/bin/_mocha`);\n\nclass TestTask extends Task {\n  constructor(options = {}) {\n    super(options);\n\n    this.mochaOptions = options.mocha;\n\n    this.sourceDirectoryPaths = options.sourceDirectoryPaths;\n    this.watchDirectoryPaths = options.watchDirectoryPaths;\n  }\n\n  getTestFilesPromises() {\n    return _(this.sourceDirectoryPaths)\n      .map(directoryPath => {\n        return new Promise((resolve, reject) => {\n          this.runTestDirectory(directoryPath, error => {\n            if (error) {\n              return reject(error);\n            }\n\n            resolve();\n          });\n        });\n      })\n      .value();\n  }\n\n  runTestDirectory(directoryPath, cb) {\n    fs.exists(directoryPath, exists => {\n      if (!exists) {\n        logging.taskInfo(this.constructor.name, `Skipping: Directory \"${directoryPath}\" not found.`);\n        return cb();\n      }\n\n      const childProcess = cp.spawn('node', [\n        pathToMocha,\n        '--recursive',\n        '--colors',\n        '--reporter',\n        this.mochaOptions.reporter,\n        directoryPath\n      ]);\n\n      childProcess.stdout.on('data', chunk => {\n        return process.stdout.write(chunk);\n      });\n\n      childProcess.stderr.on('data', chunk => {\n        return process.stderr.write(chunk);\n      });\n\n      childProcess.once('close', () => {\n        cb();\n      });\n    });\n  }\n\n  runTests(cb) {\n    Promise.all(this.getTestFilesPromises())\n      .then(() => {\n        cb();\n      })\n      .catch(cb);\n  }\n\n  run(cb) {\n    this.runTests((error) => {\n      if (error) {\n        return cb(error);\n      }\n\n      cb()\n    });\n  }\n}\n\nexport default TestTask;\n"
   },
   {
-    "__docId__": 213,
+    "__docId__": 209,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -4861,7 +4777,7 @@
     }
   },
   {
-    "__docId__": 214,
+    "__docId__": 210,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4881,7 +4797,7 @@
     ]
   },
   {
-    "__docId__": 215,
+    "__docId__": 211,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -4906,7 +4822,7 @@
     "generator": false
   },
   {
-    "__docId__": 216,
+    "__docId__": 212,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4924,7 +4840,7 @@
     }
   },
   {
-    "__docId__": 217,
+    "__docId__": 213,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4942,7 +4858,7 @@
     }
   },
   {
-    "__docId__": 218,
+    "__docId__": 214,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -4960,7 +4876,7 @@
     }
   },
   {
-    "__docId__": 219,
+    "__docId__": 215,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4980,7 +4896,7 @@
     "generator": false
   },
   {
-    "__docId__": 220,
+    "__docId__": 216,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5008,7 +4924,7 @@
     "generator": false
   },
   {
-    "__docId__": 221,
+    "__docId__": 217,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5030,7 +4946,7 @@
     "generator": false
   },
   {
-    "__docId__": 222,
+    "__docId__": 218,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5052,7 +4968,7 @@
     "generator": false
   },
   {
-    "__docId__": 223,
+    "__docId__": 219,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -5073,7 +4989,7 @@
     }
   },
   {
-    "__docId__": 224,
+    "__docId__": 220,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -5086,7 +5002,7 @@
     "content": "import _ from 'lodash';\nimport browserSync from 'browser-sync';\nimport chokidar from 'chokidar';\nimport log from 'loglevel';\n\nimport CompileTask from '../lib/CompileTask';\nimport Task from '../lib/Task';\n\nfunction logError(error) {\n  log.error(error.stack || error.message || error);\n}\n\nclass WatchTask extends Task {\n  constructor(options = {}) {\n    super(options);\n\n    this.watcher = null;\n    this.compilers = null;\n\n    _.bindAll(this, [\n      '_handleAdd',\n      '_handleAddDir',\n      '_handleChange',\n      '_handleUnlink',\n      '_handleUnlinkDir',\n      '_handleError'\n    ]);\n  }\n\n  _handleAdd(path) {\n    this._handleChange(path);\n  }\n\n  _handleAddDir(path) {\n    // Get all files in path (recursive).\n    // Do a handleChange for all files in path.\n    // This is shitty with Browserify. Somehow I need to only browserify at the\n    // end of all the other compiles.\n  }\n\n  _handleChangeBrowsersync(path) {\n    const browserSyncTask = this.getBrowserSyncTask();\n\n    browserSyncTask.reload(path);\n  }\n\n  _handleChangeCompileTask(path, compileTask) {\n    const targetPath = compileTask.getTargetPath(path);\n\n    compileTask.compileFile(path, targetPath, (e) => {\n      if (e) {\n        return logError(e);\n      }\n    });\n  }\n\n  _handleChangeTestTask(path) {\n    const testTask = this.getTestTask();\n\n    if (testTask) {\n      const shouldReload = !!_(testTask.watchDirectoryPaths)\n        .filter(directoryPath => {\n          if (_.startsWith(path, directoryPath)) {\n            return true;\n          }\n        })\n        .value()\n        .length;\n\n      if (shouldReload) {\n        testTask.runTests(error => {\n          if (error) {\n            return logError(error);\n          }\n        });\n      }\n    }\n  }\n\n  _handleChangeServerTask(path) {\n    const serverTask = this.getServerTaskForPath(path);\n\n    if (serverTask) {\n      serverTask.restartServer(path, (e) => {\n        if (e) {\n          return logError(e);\n        }\n      });\n    }\n  }\n\n  _handleChange(path) {\n    this._handleChangeBrowsersync(path);\n    this._handleChangeTestTask(path);\n\n    let compileTask = this.getCompilerTaskForPath(path);\n\n    if (compileTask) {\n      this._handleChangeCompileTask(path, compileTask);\n    } else {\n      this._handleChangeServerTask(path);\n    }\n  }\n\n  _handleUnlink(path) {\n    log.debug('WatchTask#_handleUnlink', path);\n  }\n\n  _handleUnlinkDir(path) {\n    log.debug('WatchTask#_handleUnlinkDir', path);\n  }\n\n  _handleError(error) {\n    log.error(error.stack || error.message || error);\n  }\n\n  getCompilerTasks() {\n    return _(this.builder.taskInstances)\n      .filter(v => {\n        return v instanceof CompileTask;\n      })\n      .value();\n  }\n\n  getTestTask() {\n    // TODO: Is this horrible?\n    return this.builder.taskInstances.TestTask;\n  }\n\n  getServerTask() {\n    // TODO: Is this horrible?\n    return this.builder.taskInstances.ServerTask;\n  }\n\n  getBrowserSyncTask() {\n    // TODO: Is this horrible?\n    return this.builder.taskInstances.BrowserSyncServerTask;\n  }\n\n  getCompilerTaskForPath(path) {\n    const compilerTasks = this.getCompilerTasks();\n\n    return _.find(compilerTasks, task => {\n      return task.sourceFilePathMatches(path);\n    });\n  }\n\n  getServerTaskForPath(path) {\n    const serverTask = this.getServerTask();\n\n    if (serverTask.sourceFilePathMatches(path)) {\n      return serverTask;\n    }\n  }\n\n  setWatcher() {\n    this.watcher = chokidar.watch(this.options.paths, {\n      atomic: true,\n      ignoreInitial: true,\n      // ignored: /[\\/\\/]\\./,\n      persistent: true,\n      usePolling: true\n    });\n  }\n\n  setEventHandlers() {\n    this.watcher.on('add', this._handleAdd);\n    this.watcher.on('addDir', this._handleAddDir);\n    this.watcher.on('change', this._handleChange);\n    this.watcher.on('unlink', this._handleUnlink);\n    this.watcher.on('unlinkDir', this._handleUnlinkDir);\n    this.watcher.on('error', this._handleError);\n  }\n\n  run() {\n    this.setWatcher();\n    this.setEventHandlers();\n  }\n}\n\nexport default WatchTask;\n"
   },
   {
-    "__docId__": 225,
+    "__docId__": 221,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -5111,7 +5027,7 @@
     "generator": false
   },
   {
-    "__docId__": 226,
+    "__docId__": 222,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -5131,7 +5047,7 @@
     ]
   },
   {
-    "__docId__": 227,
+    "__docId__": 223,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -5156,7 +5072,7 @@
     "generator": false
   },
   {
-    "__docId__": 228,
+    "__docId__": 224,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -5174,7 +5090,7 @@
     }
   },
   {
-    "__docId__": 229,
+    "__docId__": 225,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -5192,7 +5108,7 @@
     }
   },
   {
-    "__docId__": 230,
+    "__docId__": 226,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5214,7 +5130,7 @@
     "generator": false
   },
   {
-    "__docId__": 231,
+    "__docId__": 227,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5236,7 +5152,7 @@
     "generator": false
   },
   {
-    "__docId__": 232,
+    "__docId__": 228,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5258,7 +5174,7 @@
     "generator": false
   },
   {
-    "__docId__": 233,
+    "__docId__": 229,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5286,7 +5202,7 @@
     "generator": false
   },
   {
-    "__docId__": 234,
+    "__docId__": 230,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5308,7 +5224,7 @@
     "generator": false
   },
   {
-    "__docId__": 235,
+    "__docId__": 231,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5330,7 +5246,7 @@
     "generator": false
   },
   {
-    "__docId__": 236,
+    "__docId__": 232,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5352,7 +5268,7 @@
     "generator": false
   },
   {
-    "__docId__": 237,
+    "__docId__": 233,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5374,7 +5290,7 @@
     "generator": false
   },
   {
-    "__docId__": 238,
+    "__docId__": 234,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5396,7 +5312,7 @@
     "generator": false
   },
   {
-    "__docId__": 239,
+    "__docId__": 235,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5418,7 +5334,7 @@
     "generator": false
   },
   {
-    "__docId__": 240,
+    "__docId__": 236,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5438,7 +5354,7 @@
     "generator": false
   },
   {
-    "__docId__": 241,
+    "__docId__": 237,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5458,7 +5374,7 @@
     "generator": false
   },
   {
-    "__docId__": 242,
+    "__docId__": 238,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5478,7 +5394,7 @@
     "generator": false
   },
   {
-    "__docId__": 243,
+    "__docId__": 239,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5498,7 +5414,7 @@
     "generator": false
   },
   {
-    "__docId__": 244,
+    "__docId__": 240,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5525,7 +5441,7 @@
     "generator": false
   },
   {
-    "__docId__": 245,
+    "__docId__": 241,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5552,7 +5468,7 @@
     "generator": false
   },
   {
-    "__docId__": 246,
+    "__docId__": 242,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5567,7 +5483,7 @@
     "generator": false
   },
   {
-    "__docId__": 247,
+    "__docId__": 243,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -5585,7 +5501,7 @@
     }
   },
   {
-    "__docId__": 248,
+    "__docId__": 244,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5600,7 +5516,7 @@
     "generator": false
   },
   {
-    "__docId__": 249,
+    "__docId__": 245,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5615,7 +5531,7 @@
     "generator": false
   },
   {
-    "__docId__": 250,
+    "__docId__": 246,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -5636,7 +5552,7 @@
     }
   },
   {
-    "__docId__": 251,
+    "__docId__": 247,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -5649,7 +5565,7 @@
     "content": "import  { readFile } from 'fs';\n\nimport _ from 'lodash';\nimport { each } from 'async'\nimport { transform } from 'babel';\nimport circularJSON from 'circular-json';\n\nimport CompileTask from '../lib/CompileTask';\nimport logging from '../lib/logging';\nimport getFiles from '../lib/getFiles';\n\nlet DERP = true;\n\n/**\n * Constructs a PlantUML version of all classes fed to the compiler and puts\n * them into one diagram. Only supports a very specific subset of ES6\n * functionality;\n *  - Every module included in the graph contains one class.\n *  - Class names are unique (for now).\n */\nclass PlantUMLCompile extends CompileTask {\n  constructor(options = {}) {\n    super(options);\n\n    // Stores all classes to be used in the PlantUML output.\n    this.classes = {};\n  }\n\n  /**\n   * Adds a class to the classes.\n   * @param name\n   */\n  addClass(name) {\n    this.classes[name] = {};\n  }\n\n  /**\n   * Removes a class from the classes.\n   * @param name\n   */\n  removeClass(name) {\n    delete this.classes[name];\n  }\n\n  /**\n   * Returns true if the AST contains a class token, otherwise it returns false.\n   * @param {Object} ast\n   * @returns {Boolean}\n   */\n  hasClass(ast) {\n    return _.findWhere(ast.tokens, {\n      value: 'class'\n    });\n  }\n\n  /**\n   * Returns true if the class extends another, otherwise it returns false.\n   * @param ast\n   * @returns {boolean}\n   */\n  doesClassExtend(ast) {\n    return false;\n  }\n\n  /**\n   * Returns the name of the parent class.\n   * @param ast\n   */\n  getClassParent(ast) {\n  }\n\n  /**\n   * Adds the parent class as parent to this one.\n   * @param className\n   * @param classParent\n   */\n  addClassParent(className, classParent) {\n  }\n\n  /**\n   * Sets the parent of the class, if any.\n   * @param className\n   * @param ast\n   */\n  setClassParent(className, ast) {\n    if (this.doesClassExtend(ast)) {\n      const classExtendName = this.getClassParent(ast);\n\n      this.addClassParent(className, classExtendName);\n    }\n  }\n\n  /**\n   * Sets the methods of the class, if any.\n   * @param className\n   * @param ast\n   */\n  setClassMethods(className, ast) {\n  }\n\n  /**\n   * Returns the name of the class in the AST of a module.\n   * @param ast\n   */\n  getClassName(ast) {\n    logging.taskInfo(this.constructor.name, `getClassName ${ast}`);\n\n    logging.taskInfo(this.constructor.name, `getClassName keys ${_.keys(ast)}`);\n  }\n\n  /**\n   * Converts a chunk of ES6 code - containing a complete module - to a class.\n   * in-memory model inside the instance.\n   * @param chunk\n   */\n  convert(sourceFilePath, chunk) {\n    const ast = transform(chunk, this.options.options).ast;\n\n    if (this.hasClass(ast)) {\n      if (DERP) {\n        logging.taskInfo(this.constructor.name, `convert found class ${className}, ${sourceFilePath}`);\n        logging.taskInfo(this.constructor.name, `AST: ${circularJSON.stringify(ast)}`);\n\n        const className = this.getClassName(ast);\n\n        this.addClass(className);\n\n        this.setClassParent(className, ast);\n        this.setClassMethods(className, ast);\n        DERP = false;\n      }\n    }\n\n    throw new Error('Not yet implemented');\n  }\n\n  compileChunk(sourceFilePath, chunk, cb) {\n    try {\n      cb(null, this.convert(sourceFilePath, chunk));\n    } catch (e) {\n      return cb(e);\n    }\n  }\n\n  compileFile(sourceFilePath, cb) {\n    logging.taskInfo(this.constructor.name, `compileFile ${sourceFilePath}`);\n\n    readFile(sourceFilePath, (e, fileContent) => {\n      if (e) {\n        return cb(e);\n      }\n\n      this.compileChunk(sourceFilePath, fileContent.toString(), (e, compiledChunk) => {\n        if (e) {\n          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e}`);\n\n          return cb();\n        }\n\n        cb(null, compiledChunk);\n      });\n    });\n  }\n\n  compileAllFiles(cb) {\n    getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {\n      if (e) {\n        return cb(e);\n      }\n\n      const paths = _(sourceFilePaths)\n        .map(v => v.fullPath)\n        .filter(this.sourceFilePathMatches.bind(this))\n        .value();\n\n      each(paths, (currentSourceFilePath, cb) => {\n        this.compileFile(currentSourceFilePath, cb);\n      }, (e, results) => {\n        if (e) {\n          return cb(e);\n\n          console.log('results', results.length);\n        }\n      });\n    });\n  }\n\n  run(cb) {\n    this.compileAllFiles(cb);\n  }\n}\n\nexport default PlantUMLCompile;\n"
   },
   {
-    "__docId__": 252,
+    "__docId__": 248,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -5670,7 +5586,7 @@
     }
   },
   {
-    "__docId__": 253,
+    "__docId__": 249,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -5689,7 +5605,7 @@
     ]
   },
   {
-    "__docId__": 254,
+    "__docId__": 250,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -5714,7 +5630,7 @@
     "generator": false
   },
   {
-    "__docId__": 255,
+    "__docId__": 251,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -5732,7 +5648,7 @@
     }
   },
   {
-    "__docId__": 256,
+    "__docId__": 252,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5757,7 +5673,7 @@
     "generator": false
   },
   {
-    "__docId__": 257,
+    "__docId__": 253,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5782,7 +5698,7 @@
     "generator": false
   },
   {
-    "__docId__": 258,
+    "__docId__": 254,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5821,7 +5737,7 @@
     "generator": false
   },
   {
-    "__docId__": 259,
+    "__docId__": 255,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5860,7 +5776,7 @@
     "generator": false
   },
   {
-    "__docId__": 260,
+    "__docId__": 256,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5885,7 +5801,7 @@
     "generator": false
   },
   {
-    "__docId__": 261,
+    "__docId__": 257,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5920,7 +5836,7 @@
     "generator": false
   },
   {
-    "__docId__": 262,
+    "__docId__": 258,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5955,7 +5871,7 @@
     "generator": false
   },
   {
-    "__docId__": 263,
+    "__docId__": 259,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5990,7 +5906,7 @@
     "generator": false
   },
   {
-    "__docId__": 264,
+    "__docId__": 260,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6015,7 +5931,7 @@
     "generator": false
   },
   {
-    "__docId__": 265,
+    "__docId__": 261,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6040,7 +5956,7 @@
     "generator": false
   },
   {
-    "__docId__": 266,
+    "__docId__": 262,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6079,7 +5995,7 @@
     "generator": false
   },
   {
-    "__docId__": 267,
+    "__docId__": 263,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6107,7 +6023,7 @@
     "generator": false
   },
   {
-    "__docId__": 268,
+    "__docId__": 264,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6129,7 +6045,7 @@
     "generator": false
   },
   {
-    "__docId__": 269,
+    "__docId__": 265,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6151,7 +6067,7 @@
     "generator": false
   },
   {
-    "__docId__": 270,
+    "__docId__": 266,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6172,7 +6088,7 @@
     }
   },
   {
-    "__docId__": 271,
+    "__docId__": 267,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6185,7 +6101,7 @@
     "content": "// import BabelASTCompile from './BabelASTCompile';\n// import PlantUMLCompileTask from './PlantUMLCompileTask';\nimport ServerTask from './ServerTask';\nimport BabelCodeCompileTask from './BabelCodeCompileTask';\nimport BrowserSyncServerTask from './BrowserSyncServerTask';\nimport BrowserifyCompileTask from './BrowserifyCompileTask';\nimport CoffeeScriptCompileTask from './CoffeeScriptCompileTask';\nimport CopyCompileTask from './CopyCompileTask';\nimport DirectoryCleanerTask from './DirectoryCleanerTask';\nimport LessCompileTask from './LessCompileTask';\nimport LiveScriptCompileTask from './LiveScriptCompileTask';\nimport StylusCompileTask from './StylusCompileTask';\nimport TestTask from './TestTask';\nimport WatchTask from './WatchTask';\n\nexport default {\n  // BabelASTCompileTask,\n  // PlantUMLCompileTask,\n  ServerTask,\n  BabelCodeCompileTask,\n  BrowserSyncServerTask,\n  BrowserifyCompileTask,\n  CoffeeScriptCompileTask,\n  CopyCompileTask,\n  DirectoryCleanerTask,\n  LessCompileTask,\n  LiveScriptCompileTask,\n  StylusCompileTask,\n  TestTask,\n  WatchTask\n};\n"
   },
   {
-    "__docId__": 272,
+    "__docId__": 268,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6195,10 +6111,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import tape from 'tape';\n\ndescribe('Task', () => {\n  it('should test', (cb) => {\n    cb();\n  });\n});\n"
+    "content": "import tape from 'tape';\n\n/**\n * @test {Task}\n */\ndescribe('Task', () => {\n  it('should test', (cb) => {\n    cb();\n  });\n});\n"
   },
   {
-    "__docId__": 274,
+    "__docId__": 270,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6211,7 +6127,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 275,
+    "__docId__": 271,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6224,7 +6140,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 276,
+    "__docId__": 272,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6237,7 +6153,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 277,
+    "__docId__": 273,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6250,7 +6166,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 278,
+    "__docId__": 274,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6263,7 +6179,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 279,
+    "__docId__": 275,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6276,7 +6192,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 280,
+    "__docId__": 276,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6289,7 +6205,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 281,
+    "__docId__": 277,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6302,7 +6218,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 282,
+    "__docId__": 278,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6315,7 +6231,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 283,
+    "__docId__": 279,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6328,7 +6244,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 284,
+    "__docId__": 280,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6341,7 +6257,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 285,
+    "__docId__": 281,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6354,7 +6270,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 286,
+    "__docId__": 282,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6367,7 +6283,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 287,
+    "__docId__": 283,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6380,7 +6296,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 288,
+    "__docId__": 284,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6393,7 +6309,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 289,
+    "__docId__": 285,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6406,7 +6322,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 290,
+    "__docId__": 286,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6419,7 +6335,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 291,
+    "__docId__": 287,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6432,7 +6348,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 292,
+    "__docId__": 288,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6445,7 +6361,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 293,
+    "__docId__": 289,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6458,7 +6374,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 294,
+    "__docId__": 290,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6471,7 +6387,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 295,
+    "__docId__": 291,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6484,7 +6400,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 296,
+    "__docId__": 292,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6497,7 +6413,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 297,
+    "__docId__": 293,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6510,7 +6426,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 298,
+    "__docId__": 294,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6523,7 +6439,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 299,
+    "__docId__": 295,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6536,7 +6452,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 300,
+    "__docId__": 296,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6549,7 +6465,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 301,
+    "__docId__": 297,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6562,7 +6478,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 302,
+    "__docId__": 298,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6575,7 +6491,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 303,
+    "__docId__": 299,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6588,7 +6504,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 304,
+    "__docId__": 300,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6601,7 +6517,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 305,
+    "__docId__": 301,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6614,7 +6530,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 306,
+    "__docId__": 302,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6627,7 +6543,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 307,
+    "__docId__": 303,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6640,7 +6556,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 308,
+    "__docId__": 304,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6653,7 +6569,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 309,
+    "__docId__": 305,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6666,7 +6582,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 310,
+    "__docId__": 306,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6679,7 +6595,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 311,
+    "__docId__": 307,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6692,7 +6608,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 312,
+    "__docId__": 308,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6705,7 +6621,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 313,
+    "__docId__": 309,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6718,7 +6634,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 314,
+    "__docId__": 310,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6731,7 +6647,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 315,
+    "__docId__": 311,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6744,7 +6660,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 316,
+    "__docId__": 312,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6757,7 +6673,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 317,
+    "__docId__": 313,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6770,7 +6686,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 318,
+    "__docId__": 314,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6783,7 +6699,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 319,
+    "__docId__": 315,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6796,7 +6712,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 320,
+    "__docId__": 316,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6809,7 +6725,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 322,
+    "__docId__": 318,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6822,7 +6738,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 323,
+    "__docId__": 319,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6835,7 +6751,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 324,
+    "__docId__": 320,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6848,7 +6764,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 325,
+    "__docId__": 321,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6861,7 +6777,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 326,
+    "__docId__": 322,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6874,7 +6790,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 327,
+    "__docId__": 323,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6887,7 +6803,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 328,
+    "__docId__": 324,
     "kind": "external",
     "static": true,
     "variation": null,

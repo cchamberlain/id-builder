@@ -108,6 +108,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "id-builder/src/lib/options.js~options",
+    "class/src/lib/Options.js~Options.html",
+    "<span>Options</span> <span class=\"search-result-import-path\">id-builder/src/lib/Options.js</span>",
+    "class"
+  ],
+  [
     "id-builder/src/tasks/_plantumlcompile.js~plantumlcompile",
     "class/src/tasks/_PlantUMLCompile.js~PlantUMLCompile.html",
     "<span>PlantUMLCompile</span> <span class=\"search-result-import-path\">id-builder/src/tasks/_PlantUMLCompile.js</span>",
@@ -192,27 +198,9 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "id-builder/src/lib/builder.js~builder",
-    "variable/index.html#static-variable-builder",
-    "<span>builder</span> <span class=\"search-result-import-path\">id-builder/src/lib/Builder.js</span>",
-    "variable"
-  ],
-  [
     "id-builder/src/tasks/coffeescriptcompiletask.js~coffeescriptcompiletask",
     "variable/index.html#static-variable-coffeeScriptCompileTask",
     "<span>coffeeScriptCompileTask</span> <span class=\"search-result-import-path\">id-builder/src/tasks/CoffeeScriptCompileTask.js</span>",
-    "variable"
-  ],
-  [
-    "id-builder/src/lib/compiletask.js~compiletask",
-    "variable/index.html#static-variable-compileTask",
-    "<span>compileTask</span> <span class=\"search-result-import-path\">id-builder/src/lib/CompileTask.js</span>",
-    "variable"
-  ],
-  [
-    "id-builder/src/lib/compiler.js~compiler",
-    "variable/index.html#static-variable-compiler",
-    "<span>compiler</span> <span class=\"search-result-import-path\">id-builder/src/lib/Compiler.js</span>",
     "variable"
   ],
   [
@@ -297,12 +285,6 @@ window.esdocSearchIndex = [
     "id-builder/src/compilers/styluscompiler.js~styluscompiler",
     "variable/index.html#static-variable-stylusCompiler",
     "<span>stylusCompiler</span> <span class=\"search-result-import-path\">id-builder/src/compilers/StylusCompiler.js</span>",
-    "variable"
-  ],
-  [
-    "id-builder/src/lib/task.js~task",
-    "variable/index.html#static-variable-task",
-    "<span>task</span> <span class=\"search-result-import-path\">id-builder/src/lib/Task.js</span>",
     "variable"
   ],
   [
@@ -1000,6 +982,36 @@ window.esdocSearchIndex = [
     "file/src/lib/Options.js.html",
     "src/lib/Options.js",
     "file"
+  ],
+  [
+    "src/lib/options.js~options#constructor",
+    "class/src/lib/Options.js~Options.html#instance-constructor-constructor",
+    "src/lib/Options.js~Options#constructor",
+    "method"
+  ],
+  [
+    "src/lib/options.js~options#del",
+    "class/src/lib/Options.js~Options.html#instance-method-del",
+    "src/lib/Options.js~Options#del",
+    "method"
+  ],
+  [
+    "src/lib/options.js~options#get",
+    "class/src/lib/Options.js~Options.html#instance-method-get",
+    "src/lib/Options.js~Options#get",
+    "method"
+  ],
+  [
+    "src/lib/options.js~options#merge",
+    "class/src/lib/Options.js~Options.html#instance-method-merge",
+    "src/lib/Options.js~Options#merge",
+    "method"
+  ],
+  [
+    "src/lib/options.js~options#set",
+    "class/src/lib/Options.js~Options.html#instance-method-set",
+    "src/lib/Options.js~Options#set",
+    "method"
   ],
   [
     "src/lib/task.js",

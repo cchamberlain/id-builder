@@ -5,7 +5,7 @@ import _ from 'lodash';
  * TODO: add a removeDependencies(array) method.
  * @class Task
  */
-class Task {
+export default class Task {
   constructor(options = {}) {
     this.options = options;
 
@@ -63,5 +63,3 @@ class Task {
     this.__proto__.run.call(this, cb);
   }
 }
-
-export default Task;

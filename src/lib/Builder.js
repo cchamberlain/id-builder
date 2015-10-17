@@ -8,7 +8,7 @@ import logging from './logging';
  * TODO: Find a better solution then format juggling for async.auto.
  * @class Builder
  */
-class Builder {
+export default class Builder {
   constructor(options = {}) {
     this.options = options;
 
@@ -170,5 +170,3 @@ class Builder {
     this._runTasks(cb);
   }
 }
-
-export default Builder;

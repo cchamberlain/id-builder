@@ -20,7 +20,7 @@ import getFiles from '../lib/getFiles';
  *    path, compiling all files that match.
  * @class CompileTask
  */
-class CompileTask extends Task {
+export default class CompileTask extends Task {
   constructor(options = {}) {
     super(options);
 
@@ -170,5 +170,3 @@ class CompileTask extends Task {
     });
   }
 }
-
-export default CompileTask;

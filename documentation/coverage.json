@@ -1,7 +1,7 @@
 {
-  "coverage": "15.73%",
-  "expectCount": 197,
-  "actualCount": 31,
+  "coverage": "18.09%",
+  "expectCount": 199,
+  "actualCount": 36,
   "files": {
     "src/tasks/BabelCodeCompileTask.js": {
       "expectCount": 4,
@@ -87,11 +87,10 @@
       ]
     },
     "src/lib/Builder.js": {
-      "expectCount": 13,
+      "expectCount": 12,
       "actualCount": 6,
       "undocumentLines": [
         17,
-        174,
         19,
         12,
         13,
@@ -110,10 +109,9 @@
       ]
     },
     "src/lib/CompileTask.js": {
-      "expectCount": 16,
+      "expectCount": 15,
       "actualCount": 9,
       "undocumentLines": [
-        174,
         89,
         24,
         29,
@@ -123,12 +121,11 @@
       ]
     },
     "src/lib/Compiler.js": {
-      "expectCount": 5,
+      "expectCount": 4,
       "actualCount": 0,
       "undocumentLines": [
         1,
         6,
-        13,
         2,
         3
       ]
@@ -214,6 +211,13 @@
         17
       ]
     },
+    "src/lib/Options.js": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        10
+      ]
+    },
     "src/tasks/_PlantUMLCompile.js": {
       "expectCount": 18,
       "actualCount": 11,
@@ -270,14 +274,13 @@
       ]
     },
     "src/lib/Task.js": {
-      "expectCount": 10,
+      "expectCount": 9,
       "actualCount": 5,
       "undocumentLines": [
         12,
         9,
         14,
-        10,
-        67
+        10
       ]
     },
     "src/tasks/TestTask.js": {

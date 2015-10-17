@@ -1,4 +1,9 @@
 {
   "source": "./src",
-  "destination": "./documentation"
+  "destination": "./documentation",
+  "index": "./README.markdown",
+  "test": {
+    "type": "mocha",
+    "source": "./src/test"
+  }
 }
