@@ -37,7 +37,7 @@ restarts on changes and reloads the browser for you.
   $ mkdir -p src/client src/server src/tests build;
   ```
 
-2. Create a file with any name in your project for example `idBuilder.js`.
+2. Create a file with any name in your project for example `id-builder.js`.
    ```javascript
    var idBuilder = require('id-builder');
 
