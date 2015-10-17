@@ -3,185 +3,220 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-'use strict';
-
 exports['default'] = {
-  //sourceDirectoryPath: 'src',
-  //targetDirectoryPath: 'build',
-  //testsDirectoryPath: 'build/tests',
-
   logging: {
     level: 'info'
   },
 
   tasks: {
-    clean: {
+    DirectoryCleanerTask: {
       enabled: true,
+
+      dependencies: [],
+
       paths: ['build']
     },
 
-    compileBrowserify: {
+    BabelCodeCompileTask: {
       enabled: true,
-      sourceDirectoryPath: 'build/client/js',
-      sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
-    },
 
-    compileCoffeescript: {
-      enabled: true,
+      dependencies: ['DirectoryCleanerTask'],
+
+      sourceFileExtension: 'js',
+      targetFileExtension: 'js',
       sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
+      targetDirectoryPath: 'build',
 
-    compileLess: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client/styles',
-      sourceFilePath: 'src/client/styles/app.less',
-      targetFilePath: 'build/client/styles/app.css'
-    },
-
-    compileLivescript: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    compileBabel: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    compileStylus: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client',
-      targetDirectoryPath: 'build/client'
-    },
-
-    compileCopy: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    compileWebpack: {
-      enabled: true,
-
-      options: {
-        context: 'build/client/js',
-        entry: 'build/client/js/app.js',
-
-        output: {
-          path: 'build/client/js',
-          filename: 'app.webpack.js'
-        }
+      compiler: {
+        sourceMaps: 'inline',
+        optional: []
       }
     },
 
-    runBrowsersyncServer: {
-      enabled: true
-    },
-
-    runServers: {
+    CoffeeScriptCompileTask: {
       enabled: true,
-      sourceDirectoryPath: 'build/server',
-      paths: ['app.js']
-    },
 
-    runTests: {
-      enabled: true,
-      sourceDirectoryPath: 'build/test',
-      reporter: 'spec'
-    },
+      dependencies: ['DirectoryCleanerTask'],
 
-    watchBrowserify: {
-      enabled: true,
-      sourceDirectoryPath: 'build/client/js',
-      sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
-    },
-
-    watchBrowsersync: {
-      enabled: true,
-      sourceDirectoryPath: 'build/client'
-    },
-
-    watchCoffeescript: {
-      enabled: true,
+      sourceFileExtension: 'coffee',
+      targetFileExtension: 'js',
       sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
+      targetDirectoryPath: 'build',
 
-    watchLess: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client/styles',
-      sourceFilePath: 'src/client/styles/app.less',
-      targetFilePath: 'build/client/styles/app.css'
-    },
-
-    watchLivescript: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    watchServers: {
-      enabled: true,
-      watchPaths: [],
-      sourceDirectoryPath: 'build/server',
-      paths: ['app.js']
-    },
-
-    watchTests: {
-      enabled: true,
-      watchDirectoryPath: 'build',
-      sourceDirectoryPath: 'build/test',
-      reporter: 'spec'
-    },
-
-    watchBabel: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    watchStylus: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client',
-      targetDirectoryPath: 'build/client'
-    },
-
-    watchCopy: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    // TODO
-    watchWebpack: {
-      enabled: true,
-
-      options: {
-        context: 'build/client/js',
-        entry: 'build/client/js/app.js',
-
-        output: {
-          path: 'build/client/js',
-          filename: 'app.webpack.js'
-        }
-      },
-
-      watchOptions: {
-        aggregateTimeout: 300,
-        poll: false,
-        initial: false
+      compiler: {
+        bare: true
       }
     },
 
-    watch: {
+    LiveScriptCompileTask: {
       enabled: true,
+
+      dependencies: ['DirectoryCleanerTask'],
+
+      sourceFileExtension: 'ls',
+      targetFileExtension: 'js',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      compiler: {
+        bare: true
+      }
+    },
+
+    LessCompileTask: {
+      enabled: true,
+
+      dependencies: ['DirectoryCleanerTask'],
+
+      sourceFilePath: 'src/client/less/app.less',
+      targetFilePath: 'build/client/css/app.css',
+      sourceFileExtension: 'less',
+      targetFileExtension: 'css',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      compiler: {
+        rootPath: 'src/client/less',
+        filename: 'src/client/less/app.less'
+      }
+    },
+
+    BrowserifyCompileTask: {
+      enabled: true,
+
+      dependencies: ['BabelCodeCompileTask', 'CoffeeScriptCompileTask', 'LessCompileTask', 'LiveScriptCompileTask'],
+
+      sourceFilePath: 'build/client/js/app.js',
+      targetFilePath: 'build/client/js/app.bundle.js',
+      sourceFileExtension: 'js',
+      targetFileExtension: 'js',
+      sourceDirectoryPath: 'build/client',
+      targetDirectoryPath: 'build/client',
+
+      compiler: {
+        fullPaths: true,
+        debug: true
+      }
+    },
+
+    StylusCompileTask: {
+      enabled: true,
+
+      dependencies: ['DirectoryCleanerTask'],
+
+      sourceFilePath: 'src/client/stylus/app.styl',
+      targetFilePath: 'build/client/css/app.css',
+      sourceFileExtension: 'styl',
+      targetFileExtension: 'css',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      compiler: {}
+    },
+
+    CopyCompileTask: {
+      enabled: true,
+
+      dependencies: ['DirectoryCleanerTask'],
+
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build'
+    },
+
+    BrowserSyncServerTask: {
+      enabled: true,
+
+      dependencies: ['DirectoryCleanerTask'],
+
+      paths: ['build'],
+
+      options: {
+        ui: {
+          port: 9001
+        },
+
+        port: 9000,
+        logLevel: 'silent',
+        logFileChanges: false
+      }
+    },
+
+    ServerTask: {
+      enabled: true,
+
+      dependencies: ['TestTask'],
+
+      // Since this isn't a CompileTask, this property could be changed into a
+      // `sourceDirectoryPaths` property that lists multiple. This way, only the
+      // paths in the 'common' and 'server' directories are triggering server
+      // reloads.
+      sourceDirectoryPaths: ['build/server'],
+
+      paths: ['build/server/app.js']
+    },
+
+    TestTask: {
+      enabled: true,
+
+      dependencies: ['BrowserifyCompileTask'],
+
+      sourceDirectoryPaths: ['build/test'],
+
+      watchDirectoryPaths: ['build'],
+
+      mocha: {
+        reporter: 'min'
+      }
+    },
+
+    WatchTask: {
+      enabled: true,
+
+      dependencies: ['TestTask'],
+
+      // sourceDirectoryPath: 'build',
+
       paths: ['src', 'build']
     }
   }
 };
+
+/*
+ BabelASTCompileTask: {
+ enabled: true,
+
+ dependencies: [
+ 'DirectoryCleanerTask'
+ ],
+
+ sourceFileExtension: 'js',
+ targetFileExtension: 'js.ast.json',
+ sourceDirectoryPath: 'src',
+ targetDirectoryPath: 'build',
+
+ compiler: {
+ sourceMaps: 'inline',
+ optional: [
+ ]
+ }
+ },
+ */
+
+/*
+ PlantUMLCompileTask: {
+ enabled: true,
+
+ dependencies: [
+ 'DirectoryCleanerTask'
+ ],
+
+ sourceFileExtension: 'js',
+ sourceDirectoryPath: 'src',
+
+ compiler: {
+ ast: true,
+ whitelist: []
+ }
+ },
+ */
 module.exports = exports['default'];

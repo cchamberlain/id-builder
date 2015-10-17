@@ -78,7 +78,7 @@ idBuilder({
       enabled: true,
       sourceDirectoryPath: 'build/client/js',
       sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
+      targetFilePath: 'build/client/js/app.browserify.js'
     },
 
     compileCoffeescript: {
@@ -152,7 +152,7 @@ idBuilder({
       enabled: true,
       sourceDirectoryPath: 'build/client/js',
       sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js'
+      targetFilePath: 'build/client/js/app.browserify.js'
     },
 
     watchBrowsersync: {
@@ -256,7 +256,7 @@ are loaded in the browser. Allows you to connect many devices to the same site
 and operate on them and reload them at the same time.
 
 To use this functionality, you need to add a script to the page that serves the
-app.bundle.js.
+app.browserify.js.
 
 Start id-builder and go to http://localhost:9001 for the script to include.
 
@@ -319,3 +319,22 @@ Provide integration with CI and CD, allowing you to easily deploy new
 versions of your code.
 
 ### Running one test suite at a time
+
+### UML YES NO REALLY NO I WANT IT :D
+The ES6 specification is now finished meaning work could be underway to support
+it in ESPrima which means generating ES6 modules with classes from a JSON
+definition becomes a possibility. Since UML is easily represented in JSON,
+generating UML from ES6 is also possible.
+
+This would mean you could make a UML editor environment that could read and
+write ES6 class files, live. It could even support asynchronous syntax with the
+async/await statements.
+
+If you take real care of the contents of the methods of the classes you could
+not only perform all structural changes in the UML GUI but also offer an
+interface where you could 'enter' the method and change the implementation code
+directly.
+
+Consider this: I click on a Model class and select Add Property, configure the
+options and default value, press save and my browser window reloads the edit
+screen showing the new property.

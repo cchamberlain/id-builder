@@ -1,7 +1,3 @@
-'use strict';
-
-import moment from 'moment';
-
 import chalk from 'chalk';
 import log from 'loglevel';
 
@@ -9,29 +5,33 @@ const arrowCharacter = '→';
 const okCharacter = '✓';
 const warningCharacter = '✗';
 
-const taskInfo = function(task, message){
+function taskInfo(task, message) {
   log.info(`  ${task} ${chalk.grey(message)}`);
-};
+}
 
-const taskWarn = function(task, message){
-  log.warn(`${chalk.grey(arrowCharacter)} ${task}: ${message}`);
-};
+function taskWarn(task, message) {
+  log.warn(`${chalk.yellow(arrowCharacter)} ${task}: ${message}`);
+}
 
-const taskError = function(task, message){
-  log.error(`${chalk.grey(arrowCharacter)} ${task}: ${message}`);
-};
+function taskError(task, message) {
+  log.error(`${chalk.red(arrowCharacter)} ${task}: ${message}`);
+}
 
-const disabledTask = function(name){
+function disabledTask(name) {
   log.warn(`${chalk.yellow(warningCharacter)} ${name}`);
-};
+}
 
-const startTask = function(name){
+function startTask(name) {
   log.info(`${chalk.grey(arrowCharacter)} ${name}`);
-};
+}
 
-const finishTask = function(name){
+function skipTask(name) {
+  log.info(`${chalk.grey(okCharacter)} ${name}`);
+}
+
+function finishTask(name) {
   log.info(`${chalk.green(okCharacter)} ${chalk.green(name)}`);
-};
+}
 
 export default {
   arrowCharacter,
@@ -43,5 +43,6 @@ export default {
   taskError,
   disabledTask,
   startTask,
+  skipTask,
   finishTask
 };
