@@ -14,6 +14,12 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+/**
+ * Represents one thing to be done. May be a long running task.
+ * TODO: add a removeDependencies(array) method.
+ * @class Task
+ */
+
 var Task = (function () {
   function Task() {
     var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -27,12 +33,39 @@ var Task = (function () {
     this.dependencies = options.dependencies || [];
   }
 
+  /**
+   * Adds a dependency.
+   * @param {String} name The name of the dependency.
+   * @return Task The instance.
+   */
+
   _createClass(Task, [{
     key: 'addDependency',
     value: function addDependency(name) {
       this.dependencies.push(name);
       this.dependencies = _lodash2['default'].uniq(this.dependencies);
+
+      return this;
     }
+
+    /**
+     * Removes a dependency.
+     * @param {String} name The name of the dependency.
+     * @return Task The instance.
+     */
+  }, {
+    key: 'removeDependency',
+    value: function removeDependency(name) {
+      this.dependencies = _lodash2['default'].without(this.dependencies, name);
+
+      return this;
+    }
+
+    /**
+     * Adds an Array of strings as dependencies.
+     * @param {Array} dependencies An array of strings.
+     * @return Task The instance.
+     */
   }, {
     key: 'addDependencies',
     value: function addDependencies(dependencies) {
@@ -41,12 +74,14 @@ var Task = (function () {
       _lodash2['default'].each(dependencies, function (dependency) {
         _this.addDependency(dependency);
       });
+
+      return this;
     }
-  }, {
-    key: 'removeDependency',
-    value: function removeDependency(name) {
-      this.dependencies = _lodash2['default'].without(this.dependencies, name);
-    }
+
+    /**
+     * Starts the task.
+     * @param {Function} cb The callback function.
+     */
   }, {
     key: 'start',
     value: function start(cb) {

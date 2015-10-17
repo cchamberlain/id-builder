@@ -48,6 +48,16 @@ var _libGetFiles = require('../lib/getFiles');
 
 var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
 
+/**
+ * Compiles code from one language to another using a Compiler. May compile in
+ * three ways:
+ *  - Compiling a chunk (string) to another chunk.
+ *  - Compiling a file from a source path to a target path.
+ *  - Compiling a directory of files recursively from a source path to a target
+ *    path, compiling all files that match.
+ * @class CompileTask
+ */
+
 var CompileTask = (function (_Task) {
   _inherits(CompileTask, _Task);
 
@@ -66,21 +76,86 @@ var CompileTask = (function (_Task) {
     this.setCompiler(_Compiler2['default']);
   }
 
+  /**
+   * Returns the expression used by the `sourceFilePathMatches` method.
+   * @return {RegExp} The regular expression.
+   */
+
   _createClass(CompileTask, [{
     key: 'sourceFilePathMatches',
+
+    /**
+     * Returns `true` when a file path matches.
+     * @param {String} sourceFilePath The source file path.
+     * @return {boolean}
+     */
     value: function sourceFilePathMatches(sourceFilePath) {
       return !!sourceFilePath.match(this.sourceFilePathMatchExpression);
     }
+
+    /**
+     * Returns the expression used by the `getTargetPath` method.
+     * @return {RegExp} The regular expression.
+     */
   }, {
     key: 'getTargetPath',
+
+    /**
+     * Gets the target file path for a source file path.
+     * TODO: Rename to getTargetFilePath, because it is the path of a file.
+     * @param {String} sourceFilePath The source file path.
+     * @return {String} The target file path.
+     */
     value: function getTargetPath(sourceFilePath) {
       return sourceFilePath.replace(this.sourceDirectoryPath, this.targetDirectoryPath).replace(this.targetPathReplaceExpression, '.' + this.targetFileExtension);
     }
+
+    /**
+     * Sets the compiler used to compile chunks. Also adds the Compiler to the
+     * Builder but ensures only one Compiler per instance is active in the
+     * Builder.
+     * TODO: Explain why it's a good thing to only have one compiler in the
+     *       builder per compile task.
+     * TODO: Refactor: Move this to the Builder class.
+     * @param {Class} CompilerClass The compiler class used to compile chunks.
+     * @returns CompileTask The instance.
+     */
+  }, {
+    key: 'setCompiler',
+    value: function setCompiler(CompilerClass) {
+      // First remove the currently set compiler from the builder.
+      if (this.compiler) {
+        this.builder.removeCompiler(this.compiler);
+      }
+
+      // Then set the the new compiler
+      this.compiler = new CompilerClass(this.options.compiler);
+
+      // And add it to the builder
+      this.builder.addCompiler(this.compiler);
+
+      return this;
+    }
+
+    /**
+     * Ensures that a directory is available to write a file to. Creates all
+     * parent directories of the file path.
+     * @param {String} targetFilePath The target file path.
+     * @param {Function} cb The callback function.
+     */
   }, {
     key: 'ensureFileDirectory',
     value: function ensureFileDirectory(targetFilePath, cb) {
       (0, _mkdirp2['default'])((0, _path.dirname)(targetFilePath), cb);
     }
+
+    /**
+     * Reads a file from the `sourceFilePath`, compiles it using the set compiler
+     * and writes it to the `targetFilePath`.
+     * @param {String} sourceFilePath The source file path.
+     * @param {String} targetFilePath The target file path.
+     * @param {Function} cb The callback function.
+     */
   }, {
     key: 'compileFile',
     value: function compileFile(sourceFilePath, targetFilePath, cb) {
@@ -119,6 +194,12 @@ var CompileTask = (function (_Task) {
         });
       });
     }
+
+    /**
+     * Compiles a directory of files recursively from a source path to a target
+     * path, compiling all files that match.
+     * @param {Function} cb The callback function.
+     */
   }, {
     key: 'compileAllFiles',
     value: function compileAllFiles(cb) {
@@ -137,20 +218,6 @@ var CompileTask = (function (_Task) {
           _this2.compileFile(currentSourceFilePath, _this2.getTargetPath(currentSourceFilePath), cb);
         }, cb);
       });
-    }
-  }, {
-    key: 'setCompiler',
-    value: function setCompiler(CompilerClass) {
-      // First remove the currently set compiler from the builder.
-      if (this.compiler) {
-        this.builder.removeCompiler(this.compiler);
-      }
-
-      // Then set the the new compiler
-      this.compiler = new CompilerClass(this.options.compiler);
-
-      // And add it to the builder
-      this.builder.addCompiler(this.compiler);
     }
   }, {
     key: 'sourceFilePathMatchExpression',

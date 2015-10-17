@@ -1,13 +1,13 @@
 import _ from 'lodash';
 
-function merge(x, y = {}) {
+function parseOptions(x, y = {}) {
   const z = {};
 
   _.each(x, function(xValue, xKey) {
     const yValue = y[xKey];
 
     if (_.isObject(xValue) && !_.isArray(xValue)) {
-      z[xKey] = merge(xValue, yValue);
+      z[xKey] = parseOptions(xValue, yValue);
     } else {
       if (!_.isUndefined(yValue)) {
         z[xKey] = yValue;
@@ -20,4 +20,4 @@ function merge(x, y = {}) {
   return z;
 }
 
-export default merge;
+export default parseOptions;
