@@ -37,7 +37,7 @@ restarts on changes and reloads the browser for you.
   $ mkdir -p src/client src/server src/tests build;
   ```
 
-2. Create a file with any name in your project for example `idBuilder.js`.
+2. Create a file with any name in your project for example `id-builder.js`.
    ```javascript
    var idBuilder = require('id-builder');
 
@@ -64,277 +64,217 @@ Default options:
 ```javascript
 idBuilder({
   logging: {
-    // debug, info, warn, error
     level: 'info'
   },
 
   tasks: {
-    clean: {
+    DirectoryCleanerTask: {
       enabled: true,
-      path: 'build'
+
+      dependencies: [
+      ],
+
+      paths: [ 'build' ]
     },
 
-    compileBrowserify: {
+    BabelCodeCompileTask: {
       enabled: true,
-      sourceDirectoryPath: 'build/client/js',
-      sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.browserify.js'
-    },
 
-    compileCoffeescript: {
-      enabled: true,
+      dependencies: [
+        'DirectoryCleanerTask'
+      ],
+
+      sourceFileExtension: 'js',
+      targetFileExtension: 'js',
       sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
+      targetDirectoryPath: 'build',
 
-    compileLess: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client/styles',
-      sourceFilePath: 'src/client/styles/app.less',
-      targetFilePath: 'build/client/styles/app.css'
-    },
-
-    compileLivescript: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    compileBabel: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    compileStylus: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client',
-      targetDirectoryPath: 'build/client'
-    },
-
-    compileCopy: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    compileWebpack: {
-      enabled: true,
-
-      options: {
-        context: 'build/client/js',
-        entry: 'build/client/js/app.js',
-
-        output: {
-          path: 'build/client/js',
-          filename: 'app.webpack.js'
-        }
+      compiler: {
+        sourceMaps: 'inline',
+        optional: [
+        ]
       }
     },
 
-    runBrowsersyncServer: {
-      enabled: true
+    CoffeeScriptCompileTask: {
+      enabled: true,
+
+      dependencies: [
+        'DirectoryCleanerTask'
+      ],
+
+      sourceFileExtension: 'coffee',
+      targetFileExtension: 'js',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      compiler: {
+        bare: true
+      }
     },
 
-    runServers: {
+    LiveScriptCompileTask: {
       enabled: true,
-      sourceDirectoryPath: 'build/server',
-      paths: ['app.js']
+
+      dependencies: [
+        'DirectoryCleanerTask'
+      ],
+
+      sourceFileExtension: 'ls',
+      targetFileExtension: 'js',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      compiler: {
+        bare: true
+      }
     },
 
-    runTests: {
+    LessCompileTask: {
       enabled: true,
-      sourceDirectoryPath: 'build/test',
-      reporter: 'spec'
+
+      dependencies: [
+        'DirectoryCleanerTask'
+      ],
+
+      sourceFilePath: 'src/client/less/app.less',
+      targetFilePath: 'build/client/css/app.css',
+      sourceFileExtension: 'less',
+      targetFileExtension: 'css',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      compiler: {
+        rootPath: 'src/client/less',
+        filename: 'src/client/less/app.less'
+      }
     },
 
-    watchBrowserify: {
+    BrowserifyCompileTask: {
       enabled: true,
-      sourceDirectoryPath: 'build/client/js',
+
+      dependencies: [
+        'BabelCodeCompileTask',
+        'CoffeeScriptCompileTask',
+        'LessCompileTask',
+        'LiveScriptCompileTask'
+      ],
+
       sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.browserify.js'
+      targetFilePath: 'build/client/js/app.bundle.js',
+      sourceFileExtension: 'js',
+      targetFileExtension: 'js',
+      sourceDirectoryPath: 'build/client',
+      targetDirectoryPath: 'build/client',
+
+      compiler: {
+        fullPaths: true,
+        debug: true
+      }
     },
 
-    watchBrowsersync: {
+    StylusCompileTask: {
       enabled: true,
-      sourceDirectoryPath: 'build/client'
+
+      dependencies: [
+        'DirectoryCleanerTask'
+      ],
+
+      sourceFilePath: 'src/client/stylus/app.styl',
+      targetFilePath: 'build/client/css/app.css',
+      sourceFileExtension: 'styl',
+      targetFileExtension: 'css',
+      sourceDirectoryPath: 'src',
+      targetDirectoryPath: 'build',
+
+      compiler: {}
     },
 
-    watchCoffeescript: {
+    CopyCompileTask: {
       enabled: true,
+
+      dependencies: [
+        'DirectoryCleanerTask'
+      ],
+
       sourceDirectoryPath: 'src',
       targetDirectoryPath: 'build'
     },
 
-    watchLess: {
+    BrowserSyncServerTask: {
       enabled: true,
-      sourceDirectoryPath: 'src/client/styles',
-      sourceFilePath: 'src/client/styles/app.less',
-      targetFilePath: 'build/client/styles/app.css'
-    },
 
-    watchLivescript: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
+      dependencies: [
+        'DirectoryCleanerTask'
+      ],
 
-    watchServers: {
-      enabled: true,
-      sourceDirectoryPath: 'build/server',
-      paths: ['app.js']
-    },
-
-    watchTests: {
-      enabled: true,
-      watchDirectoryPath: 'build',
-      sourceDirectoryPath: 'build/test',
-      reporter: 'spec'
-    },
-
-    watchBabel: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    watchStylus: {
-      enabled: true,
-      sourceDirectoryPath: 'src/client',
-      targetDirectoryPath: 'build/client'
-    },
-
-    watchCopy: {
-      enabled: true,
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
-    },
-
-    watchWebpack: {
-      enabled: true,
+      paths: [
+        'build'
+      ],
 
       options: {
-        context: 'build/client/js',
-        entry: 'build/client/js/app.js',
+        ui: {
+          port: 9001
+        },
 
-        output: {
-          path: 'build/client/js',
-          filename: 'app.webpack.js'
-        }
-      },
+        port: 9000,
+        logLevel: 'silent',
+        logFileChanges: false
+      }
     },
 
-    watch: {
+    ServerTask: {
       enabled: true,
-      paths: ['src', 'build']
+
+      dependencies: [
+        'TestTask'
+      ],
+
+      // Since this isn't a CompileTask, this property could be changed into a
+      // `sourceDirectoryPaths` property that lists multiple. This way, only the
+      // paths in the 'common' and 'server' directories are triggering server
+      // reloads.
+      sourceDirectoryPaths: [
+        'build/server'
+      ],
+
+      paths: [ 'build/server/app.js' ]
+    },
+
+    TestTask: {
+      enabled: true,
+
+      dependencies: [
+        'BrowserifyCompileTask'
+      ],
+
+      sourceDirectoryPaths: [
+        'build/test'
+      ],
+
+      watchDirectoryPaths: [
+        'build'
+      ],
+
+      mocha: {
+        reporter: 'min'
+      }
+    },
+
+    WatchTask: {
+      enabled: true,
+
+      dependencies: [
+        'TestTask'
+      ],
+
+      // sourceDirectoryPath: 'build',
+
+      paths: [
+        'src',
+        'build'
+      ]
     }
   }
 });
 ```
-
-## Tasks
-
-### Clean
-Removes all files from the build directory.
-
-### Copy
-Copies files that are not compiled to another format.
-
-### Compile
-These tasks all compile an input language to HTML, JavaScript or CSS.
-
-#### Babel
-Compiles ES6 to ES5.
-
-#### Browserify
-Compiles all Client code into one file. Uses
-[Browserify](https://github.com/substack/node-browserify).
-
-### Browsersync
-Reloads the browser (or refreshes on CSS changes) when files change on disk that
-are loaded in the browser. Allows you to connect many devices to the same site
-and operate on them and reload them at the same time.
-
-To use this functionality, you need to add a script to the page that serves the
-app.browserify.js.
-
-Start id-builder and go to http://localhost:9001 for the script to include.
-
-#### CoffeeScript
-Compiles CoffeeScript files to JavaScript.
-
-#### Jade
-Compiles Jade files to JavaScript.
-
-#### Less
-Compiles Less files to CSS.
-
-#### LiveScript
-Compiles LiveScript files to JavaScript.
-
-#### Stylus
-Compiles Stylus files to CSS.
-
-### Run
-These tasks run one or more processes to facilitate the development process.
-
-#### Servers
-Runs one or more servers used in your project. These run under separate
-processes and are started/stopped/restarted together.
-
-#### Tests
-Runs all the tests. For now, the only output is to the console. Later this
-could include growl style desktop notifications, etc.
-
-### Watch
-Watches for changes in the source and test directory and takes appropriate
-actions. There is a separate watch task for each compile and run task. There is
-only one watcher in your entire project to increase speed and not hit the
-inodes limit.
-
-## Planned Features
-
-### Options
-
-### Documentation
-At some point it would be good to have an automated documentation facility.
-The documentation would be JavaScript based so Languages that compile to
-JavaScript should include the documentation in their output.
-
-### Command Line
-It would be nice to be able to start tasks (and all their dependencies before
-them) based on a command line interface.
-
-### Web Interface
-Building on the command line interface, one of the commands could start a
-webserver hosting a webapplication to manage process instead of having to use
-the commandline.
-
-Acting as a 'central hub' to your project, it could include code stats, test run
-stats, complete control over all the processes that are running for your
-project, running different environments (OTAP), etc.
-
-### Continuous Integration & Deployment
-Provide integration with CI and CD, allowing you to easily deploy new
-versions of your code.
-
-### Running one test suite at a time
-
-### UML YES NO REALLY NO I WANT IT :D
-The ES6 specification is now finished meaning work could be underway to support
-it in ESPrima which means generating ES6 modules with classes from a JSON
-definition becomes a possibility. Since UML is easily represented in JSON,
-generating UML from ES6 is also possible.
-
-This would mean you could make a UML editor environment that could read and
-write ES6 class files, live. It could even support asynchronous syntax with the
-async/await statements.
-
-If you take real care of the contents of the methods of the classes you could
-not only perform all structural changes in the UML GUI but also offer an
-interface where you could 'enter' the method and change the implementation code
-directly.
-
-Consider this: I click on a Model class and select Add Property, configure the
-options and default value, press save and my browser window reloads the edit
-screen showing the new property.
