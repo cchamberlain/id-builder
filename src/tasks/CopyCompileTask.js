@@ -36,7 +36,7 @@ class CopyCompileTask extends CompileTask {
   }
 
   get otherCompileTasks() {
-    return _(this.builder.taskInstances)
+    return _(this.taskQueue.taskInstances)
       .filter(this.isCompileTask)
       .filter(this.isntThisTask)
       .value();

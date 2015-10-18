@@ -112,27 +112,27 @@ var CompileTask = (function (_Task) {
 
     /**
      * Sets the compiler used to compile chunks. Also adds the Compiler to the
-     * Builder but ensures only one Compiler per instance is active in the
-     * Builder.
+     * TaskQueue but ensures only one Compiler per instance is active in the
+     * TaskQueue.
      * TODO: Explain why it's a good thing to only have one compiler in the
-     *       builder per compile task.
-     * TODO: Refactor: Move this to the Builder class.
+     *       taskQueue per compile task.
+     * TODO: Refactor: Move this to the TaskQueue class.
      * @param {Class} CompilerClass The compiler class used to compile chunks.
      * @returns CompileTask The instance.
      */
   }, {
     key: 'setCompiler',
     value: function setCompiler(CompilerClass) {
-      // First remove the currently set compiler from the builder.
+      // First remove the currently set compiler from the taskqueue.
       if (this.compiler) {
-        this.builder.removeCompiler(this.compiler);
+        this.taskQueue.removeCompiler(this.compiler);
       }
 
       // Then set the the new compiler
       this.compiler = new CompilerClass(this.options.compiler);
 
-      // And add it to the builder
-      this.builder.addCompiler(this.compiler);
+      // And add it to the taskQueue
+      this.taskQueue.addCompiler(this.compiler);
 
       return this;
     }

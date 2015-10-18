@@ -4,11 +4,11 @@ import { auto } from 'async';
 import logging from './logging';
 
 /**
- * The builder runs the tasks.
+ * The taskQueue runs the tasks.
  * TODO: Find a better solution then format juggling for async.auto.
- * @class Builder
+ * @class TaskQueue
  */
-export default class Builder {
+export default class TaskQueue {
   constructor(options = {}) {
     this.options = options;
 
@@ -47,8 +47,8 @@ export default class Builder {
           dependencies: []
         };
       } else {
-        // Pass the builder to the Task for scope.
-        options.builder = this;
+        // Pass the taskQueue to the Task for scope.
+        options.taskQueue = this;
 
         this.taskInstances[name] = new Task(options);
       }
@@ -117,7 +117,7 @@ export default class Builder {
   /**
    * Adds a Task.
    * @param {Task} task The task.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   addTask(task) {
     this.tasks[task.name] = task;
@@ -128,7 +128,7 @@ export default class Builder {
   /**
    * Adds an Array of Task's.
    * @param {Array} tasks The tasks.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   addTasks(tasks) {
     _.each(tasks, this.addTask.bind(this));
@@ -139,7 +139,7 @@ export default class Builder {
   /**
    * Adds a compiler.
    * @param {Compiler} compiler The compiler.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   addCompiler(compiler) {
     const name = compiler.constructor.name;
@@ -152,7 +152,7 @@ export default class Builder {
   /**
    * Removes a compiler.
    * @param {Compiler} compiler The compiler.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   removeCompiler(compiler) {
     const name = compiler.constructor.name;
@@ -163,7 +163,7 @@ export default class Builder {
   }
 
   /**
-   * Starts the builder.
+   * Starts the taskQueue.
    * @param {Function} cb The callback function.
    */
   start(cb) {

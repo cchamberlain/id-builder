@@ -21,16 +21,16 @@ var _logging = require('./logging');
 var _logging2 = _interopRequireDefault(_logging);
 
 /**
- * The builder runs the tasks.
+ * The taskQueue runs the tasks.
  * TODO: Find a better solution then format juggling for async.auto.
- * @class Builder
+ * @class TaskQueue
  */
 
-var Builder = (function () {
-  function Builder() {
+var TaskQueue = (function () {
+  function TaskQueue() {
     var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-    _classCallCheck(this, Builder);
+    _classCallCheck(this, TaskQueue);
 
     this.options = options;
 
@@ -48,7 +48,7 @@ var Builder = (function () {
    * @private
    */
 
-  _createClass(Builder, [{
+  _createClass(TaskQueue, [{
     key: '_getTaskOptions',
     value: function _getTaskOptions(name) {
       return this.options.tasks[name];
@@ -76,8 +76,8 @@ var Builder = (function () {
             dependencies: []
           };
         } else {
-          // Pass the builder to the Task for scope.
-          options.builder = _this;
+          // Pass the taskQueue to the Task for scope.
+          options.taskQueue = _this;
 
           _this.taskInstances[name] = new Task(options);
         }
@@ -154,7 +154,7 @@ var Builder = (function () {
     /**
      * Adds a Task.
      * @param {Task} task The task.
-     * @return Builder The instance.
+     * @return TaskQueue The instance.
      */
   }, {
     key: 'addTask',
@@ -167,7 +167,7 @@ var Builder = (function () {
     /**
      * Adds an Array of Task's.
      * @param {Array} tasks The tasks.
-     * @return Builder The instance.
+     * @return TaskQueue The instance.
      */
   }, {
     key: 'addTasks',
@@ -180,7 +180,7 @@ var Builder = (function () {
     /**
      * Adds a compiler.
      * @param {Compiler} compiler The compiler.
-     * @return Builder The instance.
+     * @return TaskQueue The instance.
      */
   }, {
     key: 'addCompiler',
@@ -195,7 +195,7 @@ var Builder = (function () {
     /**
      * Removes a compiler.
      * @param {Compiler} compiler The compiler.
-     * @return Builder The instance.
+     * @return TaskQueue The instance.
      */
   }, {
     key: 'removeCompiler',
@@ -208,7 +208,7 @@ var Builder = (function () {
     }
 
     /**
-     * Starts the builder.
+     * Starts the taskQueue.
      * @param {Function} cb The callback function.
      */
   }, {
@@ -218,8 +218,8 @@ var Builder = (function () {
     }
   }]);
 
-  return Builder;
+  return TaskQueue;
 })();
 
-exports['default'] = Builder;
+exports['default'] = TaskQueue;
 module.exports = exports['default'];

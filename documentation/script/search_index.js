@@ -43,8 +43,8 @@ window.esdocSearchIndex = [
   ],
   [
     "id-builder/src/lib/builder.js~builder",
-    "class/src/lib/Builder.js~Builder.html",
-    "<span>Builder</span> <span class=\"search-result-import-path\">id-builder/src/lib/Builder.js</span>",
+    "class/src/lib/TaskQueue.js~TaskQueue.html",
+    "<span>TaskQueue</span> <span class=\"search-result-import-path\">id-builder/src/lib/TaskQueue.js</span>",
     "class"
   ],
   [
@@ -793,74 +793,74 @@ window.esdocSearchIndex = [
   ],
   [
     "src/lib/builder.js",
-    "file/src/lib/Builder.js.html",
-    "src/lib/Builder.js",
+    "file/src/lib/TaskQueue.js.html",
+    "src/lib/TaskQueue.js",
     "file"
   ],
   [
     "src/lib/builder.js~builder#addcompiler",
-    "class/src/lib/Builder.js~Builder.html#instance-method-addCompiler",
-    "src/lib/Builder.js~Builder#addCompiler",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-addCompiler",
+    "src/lib/TaskQueue.js~TaskQueue#addCompiler",
     "method"
   ],
   [
     "src/lib/builder.js~builder#addtask",
-    "class/src/lib/Builder.js~Builder.html#instance-method-addTask",
-    "src/lib/Builder.js~Builder#addTask",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-addTask",
+    "src/lib/TaskQueue.js~TaskQueue#addTask",
     "method"
   ],
   [
     "src/lib/builder.js~builder#addtasks",
-    "class/src/lib/Builder.js~Builder.html#instance-method-addTasks",
-    "src/lib/Builder.js~Builder#addTasks",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-addTasks",
+    "src/lib/TaskQueue.js~TaskQueue#addTasks",
     "method"
   ],
   [
     "src/lib/builder.js~builder#asynctasks",
-    "class/src/lib/Builder.js~Builder.html#instance-member-asyncTasks",
-    "src/lib/Builder.js~Builder#asyncTasks",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-member-asyncTasks",
+    "src/lib/TaskQueue.js~TaskQueue#asyncTasks",
     "member"
   ],
   [
     "src/lib/builder.js~builder#compilers",
-    "class/src/lib/Builder.js~Builder.html#instance-member-compilers",
-    "src/lib/Builder.js~Builder#compilers",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-member-compilers",
+    "src/lib/TaskQueue.js~TaskQueue#compilers",
     "member"
   ],
   [
     "src/lib/builder.js~builder#constructor",
-    "class/src/lib/Builder.js~Builder.html#instance-constructor-constructor",
-    "src/lib/Builder.js~Builder#constructor",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-constructor-constructor",
+    "src/lib/TaskQueue.js~TaskQueue#constructor",
     "method"
   ],
   [
     "src/lib/builder.js~builder#options",
-    "class/src/lib/Builder.js~Builder.html#instance-member-options",
-    "src/lib/Builder.js~Builder#options",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-member-options",
+    "src/lib/TaskQueue.js~TaskQueue#options",
     "member"
   ],
   [
     "src/lib/builder.js~builder#removecompiler",
-    "class/src/lib/Builder.js~Builder.html#instance-method-removeCompiler",
-    "src/lib/Builder.js~Builder#removeCompiler",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-removeCompiler",
+    "src/lib/TaskQueue.js~TaskQueue#removeCompiler",
     "method"
   ],
   [
     "src/lib/builder.js~builder#start",
-    "class/src/lib/Builder.js~Builder.html#instance-method-start",
-    "src/lib/Builder.js~Builder#start",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-start",
+    "src/lib/TaskQueue.js~TaskQueue#start",
     "method"
   ],
   [
     "src/lib/builder.js~builder#taskinstances",
-    "class/src/lib/Builder.js~Builder.html#instance-member-taskInstances",
-    "src/lib/Builder.js~Builder#taskInstances",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-member-taskInstances",
+    "src/lib/TaskQueue.js~TaskQueue#taskInstances",
     "member"
   ],
   [
     "src/lib/builder.js~builder#tasks",
-    "class/src/lib/Builder.js~Builder.html#instance-member-tasks",
-    "src/lib/Builder.js~Builder#tasks",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-member-tasks",
+    "src/lib/TaskQueue.js~TaskQueue#tasks",
     "member"
   ],
   [

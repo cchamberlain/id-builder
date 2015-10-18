@@ -155,7 +155,7 @@ var WatchTask = (function (_Task) {
   }, {
     key: 'getCompilerTasks',
     value: function getCompilerTasks() {
-      return (0, _lodash2['default'])(this.builder.taskInstances).filter(function (v) {
+      return (0, _lodash2['default'])(this.taskQueue.taskInstances).filter(function (v) {
         return v instanceof _libCompileTask2['default'];
       }).value();
     }
@@ -163,19 +163,19 @@ var WatchTask = (function (_Task) {
     key: 'getTestTask',
     value: function getTestTask() {
       // TODO: Is this horrible?
-      return this.builder.taskInstances.TestTask;
+      return this.taskQueue.taskInstances.TestTask;
     }
   }, {
     key: 'getServerTask',
     value: function getServerTask() {
       // TODO: Is this horrible?
-      return this.builder.taskInstances.ServerTask;
+      return this.taskQueue.taskInstances.ServerTask;
     }
   }, {
     key: 'getBrowserSyncTask',
     value: function getBrowserSyncTask() {
       // TODO: Is this horrible?
-      return this.builder.taskInstances.BrowserSyncServerTask;
+      return this.taskQueue.taskInstances.BrowserSyncServerTask;
     }
   }, {
     key: 'getCompilerTaskForPath',

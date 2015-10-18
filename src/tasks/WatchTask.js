@@ -115,7 +115,7 @@ class WatchTask extends Task {
   }
 
   getCompilerTasks() {
-    return _(this.builder.taskInstances)
+    return _(this.taskQueue.taskInstances)
       .filter(v => {
         return v instanceof CompileTask;
       })
@@ -124,17 +124,17 @@ class WatchTask extends Task {
 
   getTestTask() {
     // TODO: Is this horrible?
-    return this.builder.taskInstances.TestTask;
+    return this.taskQueue.taskInstances.TestTask;
   }
 
   getServerTask() {
     // TODO: Is this horrible?
-    return this.builder.taskInstances.ServerTask;
+    return this.taskQueue.taskInstances.ServerTask;
   }
 
   getBrowserSyncTask() {
     // TODO: Is this horrible?
-    return this.builder.taskInstances.BrowserSyncServerTask;
+    return this.taskQueue.taskInstances.BrowserSyncServerTask;
   }
 
   getCompilerTaskForPath(path) {

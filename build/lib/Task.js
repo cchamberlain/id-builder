@@ -28,7 +28,7 @@ var Task = (function () {
 
     this.options = options;
 
-    this.builder = options.builder;
+    this.taskQueue = options.taskQueue;
 
     this.dependencies = options.dependencies || [];
   }

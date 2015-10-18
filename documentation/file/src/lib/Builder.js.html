@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/lib/Builder.js | API Document</title>
+  <title data-ice="title">src/lib/TaskQueue.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
+
+
 </head>
 <body class="layout-container">
 
 <header>
   <a href="./">Home</a>
-  
+
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   <a href="test.html" data-ice="testLink">Test</a>
@@ -30,7 +30,7 @@
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
-    
+
   <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-index">index</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">compilers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/compilers/BabelCodeCompiler.js~BabelCodeCompiler.html">BabelCodeCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/compilers/BabelMapCompiler.js~BabelMapCompiler.html">BabelMapCompiler</a></span></span></li>
@@ -48,7 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lessCompiler">lessCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-liveScriptCompiler">liveScriptCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-stylusCompiler">stylusCompiler</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html">Builder</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html">TaskQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/CompileTask.js~CompileTask.html">CompileTask</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Options.js~Options.html">Options</a></span></span></li>
@@ -85,7 +85,7 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/lib/Builder.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/lib/TaskQueue.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import _ from &apos;lodash&apos;;
 import { auto } from &apos;async&apos;;
 
@@ -94,9 +94,9 @@ import logging from &apos;./logging&apos;;
 /**
  * The builder runs the tasks.
  * TODO: Find a better solution then format juggling for async.auto.
- * @class Builder
+ * @class TaskQueue
  */
-export default class Builder {
+export default class TaskQueue {
   constructor(options = {}) {
     this.options = options;
 
@@ -205,7 +205,7 @@ export default class Builder {
   /**
    * Adds a Task.
    * @param {Task} task The task.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   addTask(task) {
     this.tasks[task.name] = task;
@@ -216,7 +216,7 @@ export default class Builder {
   /**
    * Adds an Array of Task&apos;s.
    * @param {Array} tasks The tasks.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   addTasks(tasks) {
     _.each(tasks, this.addTask.bind(this));
@@ -227,7 +227,7 @@ export default class Builder {
   /**
    * Adds a compiler.
    * @param {Compiler} compiler The compiler.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   addCompiler(compiler) {
     const name = compiler.constructor.name;
@@ -240,7 +240,7 @@ export default class Builder {
   /**
    * Removes a compiler.
    * @param {Compiler} compiler The compiler.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   removeCompiler(compiler) {
     const name = compiler.constructor.name;

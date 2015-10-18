@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import Builder from './lib/Builder';
+import TaskQueue from './lib/TaskQueue';
 import defaultOptions from './lib/defaultOptions';
 import parseOptions from './lib/parseOptions';
 
@@ -13,9 +13,9 @@ export default function(inputOptions = {}, cb) {
     log.setLevel(options.logging.level);
   }
 
-  const builder = new Builder(options);
+  const taskQueue = new TaskQueue(options);
 
-  builder.addTasks(tasks);
+  taskQueue.addTasks(tasks);
 
-  builder.start(cb);
+  taskQueue.start(cb);
 }

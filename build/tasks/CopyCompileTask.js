@@ -131,7 +131,7 @@ var CopyCompileTask = (function (_CompileTask) {
   }, {
     key: 'otherCompileTasks',
     get: function get() {
-      return (0, _lodash2['default'])(this.builder.taskInstances).filter(this.isCompileTask).filter(this.isntThisTask).value();
+      return (0, _lodash2['default'])(this.taskQueue.taskInstances).filter(this.isCompileTask).filter(this.isntThisTask).value();
     }
   }, {
     key: 'sourceFilePathMatchExpression',
