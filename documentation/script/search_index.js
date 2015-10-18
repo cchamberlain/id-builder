@@ -805,14 +805,14 @@ window.esdocSearchIndex = [
   ],
   [
     "src/lib/builder.js~builder#addtask",
-    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-addTask",
-    "src/lib/TaskQueue.js~TaskQueue#addTask",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-addTaskClass",
+    "src/lib/TaskQueue.js~TaskQueue#addTaskClass",
     "method"
   ],
   [
     "src/lib/builder.js~builder#addtasks",
-    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-addTasks",
-    "src/lib/TaskQueue.js~TaskQueue#addTasks",
+    "class/src/lib/TaskQueue.js~TaskQueue.html#instance-method-addTaskClasses",
+    "src/lib/TaskQueue.js~TaskQueue#addTaskClasses",
     "method"
   ],
   [

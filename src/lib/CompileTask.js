@@ -1,15 +1,16 @@
-import { readFile, writeFile } from 'fs';
-import { dirname } from 'path';
+import fs from 'fs';
+import path from 'path';
 
 import _ from 'lodash';
 import log from 'loglevel';
 import mkdirp from 'mkdirp';
-import { each } from 'async';
+import async from 'async';
 
 import Compiler from './Compiler';
 import Task from './Task';
-import logging from '../lib/logging';
 import getFiles from '../lib/getFiles';
+import logging from '../lib/logging';
+import promise from '../lib/promise';
 
 /**
  * Compiles code from one language to another using a Compiler. May compile in
@@ -24,10 +25,11 @@ export default class CompileTask extends Task {
   constructor(options = {}) {
     super(options);
 
-    this.sourceFileExtension = options.sourceFileExtension;
-    this.targetFileExtension = options.targetFileExtension;
-    this.sourceDirectoryPath = options.sourceDirectoryPath;
-    this.targetDirectoryPath = options.targetDirectoryPath;
+    this.sourceFileExtension = this.configuration.sourceFileExtension;
+    this.targetFileExtension = this.configuration.targetFileExtension;
+    this.sourceDirectoryPath = this.configuration.sourceDirectoryPath;
+    this.targetDirectoryPath = this.configuration.targetDirectoryPath;
+    this.compilerOptions = this.configuration.compiler;
 
     this.setCompiler(Compiler);
   }
@@ -86,7 +88,7 @@ export default class CompileTask extends Task {
     }
 
     // Then set the the new compiler
-    this.compiler = new CompilerClass(this.options.compiler);
+    this.compiler = new CompilerClass(this.compilerOptions);
 
     // And add it to the taskQueue
     this.taskQueue.addCompiler(this.compiler);
@@ -98,10 +100,9 @@ export default class CompileTask extends Task {
    * Ensures that a directory is available to write a file to. Creates all
    * parent directories of the file path.
    * @param {String} targetFilePath The target file path.
-   * @param {Function} cb The callback function.
    */
-  ensureFileDirectory(targetFilePath, cb) {
-    mkdirp(dirname(targetFilePath), cb);
+  async ensureFileDirectory(targetFilePath) {
+    await promise.promiseFromNodeCallback(mkdirp, path.dirname(targetFilePath));
   }
 
   /**
@@ -109,64 +110,44 @@ export default class CompileTask extends Task {
    * and writes it to the `targetFilePath`.
    * @param {String} sourceFilePath The source file path.
    * @param {String} targetFilePath The target file path.
-   * @param {Function} cb The callback function.
    */
-  compileFile(sourceFilePath, targetFilePath, cb) {
-    readFile(sourceFilePath, (e, fileContent) => {
-      if (e) {
-        return cb(e);
-      }
+  async compileFile(sourceFilePath, targetFilePath) {
+    const fileContent = await promise.promiseFromNodeCallback(fs.readFile, sourceFilePath);
 
-      if (!this.compiler.compileChunk) {
-        console.log(this.compiler.constructor.name);
+    try {
+      const compiledChunk = await this.compiler.compileChunk(fileContent.toString(), sourceFilePath)
 
-        console.trace();
-      }
+      await this.ensureFileDirectory(targetFilePath);
 
-      this.compiler.compileChunk(fileContent.toString(), sourceFilePath)
-        .then(compiledChunk => {
-          this.ensureFileDirectory(targetFilePath, e => {
-            if (e) {
-              return cb(e);
-            }
+      await promise.promiseFromNodeCallback(fs.writeFile, targetFilePath, compiledChunk);
 
-            writeFile(targetFilePath, compiledChunk, e => {
-              if (e) {
-                return cb(e);
-              }
-
-              logging.taskInfo(this.constructor.name, `${sourceFilePath} => ${targetFilePath}`);
-
-              cb(null);
-            });
-          });
-        })
-        .catch(e => {
-          logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${e.stack || e.message || e}`);
-          return cb();
-        });
-    });
+      logging.taskInfo(this.constructor.name, `${sourceFilePath} => ${targetFilePath}`);
+    } catch(error) {
+      logging.taskWarn(this.constructor.name, `${sourceFilePath}: ${error.stack || error.message || error}`);
+    }
   }
 
   /**
    * Compiles a directory of files recursively from a source path to a target
    * path, compiling all files that match.
-   * @param {Function} cb The callback function.
    */
-  compileAllFiles(cb) {
-    getFiles(this.sourceDirectoryPath, (e, sourceFilePaths) => {
-      if (e) {
-        return cb(e);
-      }
+  async compileAllFiles() {
+    const sourceFiles = await getFiles(this.sourceDirectoryPath);
 
-      const paths = _(sourceFilePaths)
-        .map(v => v.fullPath)
-        .filter(this.sourceFilePathMatches.bind(this))
-        .value();
+    const matchingSourceFilePaths = _(sourceFiles)
+      .map(v => v.fullPath)
+      .filter(this.sourceFilePathMatches.bind(this))
+      .value();
 
-      each(paths, (currentSourceFilePath, cb) => {
-        this.compileFile(currentSourceFilePath, this.getTargetPath(currentSourceFilePath), cb);
-      }, cb);
-    });
+    const compileFilePromises = _.map(matchingSourceFilePaths, path => this.compileFile(path, this.getTargetPath(path)));
+
+    await Promise.all(compileFilePromises);
+  }
+
+  /**
+   * Runs the task.
+   */
+  async run() {
+    await this.compileAllFiles();
   }
 }

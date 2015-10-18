@@ -1,14 +1,12 @@
 import _ from 'lodash';
+import log from 'loglevel'
 import lsr from 'lsr';
 
-export default function getFiles(path, cb) {
-  lsr(path, (e, nodes) => {
-    if (e) {
-      return cb(e);
-    }
+import promise from './promise';
 
-    cb(null, _(nodes)
-      .filter(v => v.isFile() && v)
-      .value());
-  });
+export default async function getFiles(path) {
+  // TODO: Why is it two wrapped arrays?
+  const paths = (await promise.promiseFromNodeCallback(lsr, path))[0];
+
+  return _.filter(paths, v => v.isFile() && v);
 }

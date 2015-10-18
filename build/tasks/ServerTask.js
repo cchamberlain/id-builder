@@ -16,6 +16,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
 
 var _fs = require('fs');
 
+var _fs2 = _interopRequireDefault(_fs);
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -27,6 +29,12 @@ var _loglevel2 = _interopRequireDefault(_loglevel);
 var _foreverMonitor = require('forever-monitor');
 
 var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
+var _libPromise = require('../lib/promise');
+
+var _libPromise2 = _interopRequireDefault(_libPromise);
 
 var _libLogging = require('../lib/logging');
 
@@ -48,14 +56,16 @@ var ServerTask = (function (_Task) {
 
     _lodash2['default'].bindAll(this, ['addPath', 'removePath', 'restartPath', 'sourceFilePathMatches', 'startServer', 'stopServer', 'restartServer', 'run']);
 
-    this.sourceDirectoryPaths = options.sourceDirectoryPaths;
+    this.sourceDirectoryPaths = this.configuration.sourceDirectoryPaths;
 
     this.monitors = {};
   }
 
   _createClass(ServerTask, [{
     key: 'addPath',
-    value: function addPath(path, cb) {
+    value: function addPath(path) {
+      // log.debug(`ServerTask#addPath(${path})`);
+
       var monitor = new _foreverMonitor.Monitor(path, {
         command: 'node'
       });
@@ -65,17 +75,16 @@ var ServerTask = (function (_Task) {
       monitor.start();
 
       _libLogging2['default'].taskInfo(this.constructor.name, 'Started ' + path);
-
-      cb();
     }
   }, {
     key: 'removePath',
-    value: function removePath(path, cb) {
+    value: function removePath(path) {
+      // log.debug(`ServerTask#removePath(${path})`);
+
       var monitor = this.monitors[path];
 
       if (!monitor) {
         _libLogging2['default'].taskInfo(this.constructor.name, 'Monitor not found for ' + path);
-        cb();
       }
 
       monitor.kill(true);
@@ -83,17 +92,15 @@ var ServerTask = (function (_Task) {
       delete this.monitors[path];
 
       _libLogging2['default'].taskInfo(this.constructor.name, 'Stopped ' + path);
-
-      cb();
     }
   }, {
     key: 'restartPath',
-    value: function restartPath(path, cb) {
+    value: function restartPath(path) {
+      // log.debug(`ServerTask#restartPath(${path})`);
+
       var monitor = this.monitors[path];
 
       monitor.restart();
-
-      cb();
     }
   }, {
     key: 'sourceFilePathMatches',
@@ -104,69 +111,127 @@ var ServerTask = (function (_Task) {
     }
   }, {
     key: 'startServer',
-    value: function startServer(filePath, cb) {
-      var _this = this;
+    value: function startServer(filePath) {
+      var doesExist, monitor;
+      return regeneratorRuntime.async(function startServer$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromCallback(_fs2['default'].exists, filePath));
 
-      (0, _fs.exists)(filePath, function (result) {
-        if (!result) {
-          _libLogging2['default'].taskInfo(_this.constructor.name, 'skipping ' + filePath + ' (Does not exist).');
-          return cb();
+          case 2:
+            doesExist = context$2$0.sent;
+
+            if (doesExist) {
+              context$2$0.next = 6;
+              break;
+            }
+
+            _libLogging2['default'].taskInfo(this.constructor.name, 'Skipping: "' + filePath + '" (Does not exist).');
+
+            return context$2$0.abrupt('return');
+
+          case 6:
+            monitor = this.monitors[filePath];
+
+            if (monitor) {
+              this.restartPath(filePath);
+            } else {
+              this.addPath(filePath);
+            }
+
+            return context$2$0.abrupt('return', new Promise.resolve());
+
+          case 9:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        var monitor = _this.monitors[filePath];
-
-        if (monitor) {
-          _this.restartPath(filePath, cb);
-        } else {
-          _this.addPath(filePath, cb);
-        }
-      });
+      }, null, this);
     }
   }, {
     key: 'stopServer',
-    value: function stopServer(filePath, cb) {
-      var _this2 = this;
+    value: function stopServer(filePath) {
+      var doesExist, monitor;
+      return regeneratorRuntime.async(function stopServer$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromCallback(_fs2['default'].exists, filePath));
 
-      (0, _fs.exists)(filePath, function (result) {
-        if (!result) {
-          _libLogging2['default'].taskInfo(_this2.constructor.name, 'skipping ' + filePath + ' (Does not exist).');
-          return cb();
+          case 2:
+            doesExist = context$2$0.sent;
+
+            if (doesExist) {
+              context$2$0.next = 6;
+              break;
+            }
+
+            _libLogging2['default'].taskInfo(this.constructor.name, 'Skipping: "' + filePath + '" (Does not exist).');
+
+            return context$2$0.abrupt('return');
+
+          case 6:
+            monitor = this.monitors[filePath];
+
+            if (monitor) {
+              this.removePath(filePath);
+            } else {
+              _libLogging2['default'].taskInfo(this.constructor.name, 'skipping ' + filePath + ' (Monitor does not exist).');
+            }
+
+          case 8:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        var monitor = _this2.monitors[filePath];
-
-        if (monitor) {
-          _this2.removePath(filePath, cb);
-        } else {
-          _libLogging2['default'].taskInfo(_this2.constructor.name, 'skipping ' + filePath + ' (Monitor does not exist).');
-          cb();
-        }
-      });
+      }, null, this);
     }
   }, {
     key: 'restartServer',
-    value: function restartServer(filePath, cb) {
-      var _this3 = this;
+    value: function restartServer(filePath) {
+      var doesExist;
+      return regeneratorRuntime.async(function restartServer$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromCallback(_fs2['default'].exists, filePath));
 
-      (0, _fs.exists)(filePath, function (result) {
-        if (!result) {
-          _libLogging2['default'].taskInfo(_this3.constructor.name, 'skipping ' + filePath + ' (Does not exist).');
-          return cb();
+          case 2:
+            doesExist = context$2$0.sent;
+
+            if (doesExist) {
+              context$2$0.next = 6;
+              break;
+            }
+
+            _libLogging2['default'].taskInfo(this.constructor.name, 'Skipping: "' + filePath + '" (Does not exist).');
+
+            return context$2$0.abrupt('return');
+
+          case 6:
+
+            this.removePath(filePath);
+            this.addPath(filePath);
+
+          case 8:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        _this3.removePath(filePath, function (e) {
-          if (e) {
-            return cb(e);
-          }
-
-          _this3.addPath(filePath, cb);
-        });
-      });
+      }, null, this);
     }
   }, {
     key: 'run',
     value: function run() {
-      (0, _async.each)(this.options.paths, this.startServer, _lodash2['default'].noop);
+      return regeneratorRuntime.async(function run$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(Promise.all(_lodash2['default'].map(this.configuration.paths, this.startServer)));
+
+          case 2:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
   }]);
 
@@ -175,3 +240,9 @@ var ServerTask = (function (_Task) {
 
 exports['default'] = ServerTask;
 module.exports = exports['default'];
+
+// log.debug(`ServerTask#startServer(${filePath})`);
+
+// log.debug(`ServerTask#stopServer(${filePath})`);
+
+// log.debug(`ServerTask#restartServer(${filePath})`);

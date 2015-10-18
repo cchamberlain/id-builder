@@ -14,11 +14,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
-
-var _fs = require('fs');
 
 var _loglevel = require('loglevel');
 
@@ -31,6 +33,10 @@ var _libCompileTask2 = _interopRequireDefault(_libCompileTask);
 var _libLogging = require('../lib/logging');
 
 var _libLogging2 = _interopRequireDefault(_libLogging);
+
+var _libPromise = require('../lib/promise');
+
+var _libPromise2 = _interopRequireDefault(_libPromise);
 
 var _compilersBrowserifyCompiler = require('../compilers/BrowserifyCompiler');
 
@@ -46,8 +52,8 @@ var BrowserifyCompileTask = (function (_CompileTask) {
 
     _get(Object.getPrototypeOf(BrowserifyCompileTask.prototype), 'constructor', this).call(this, options);
 
-    this.sourceFilePath = options.sourceFilePath;
-    this.targetFilePath = options.targetFilePath;
+    this.sourceFilePath = this.configuration.sourceFilePath;
+    this.targetFilePath = this.configuration.targetFilePath;
 
     this.setCompiler(_compilersBrowserifyCompiler2['default']);
   }
@@ -64,25 +70,54 @@ var BrowserifyCompileTask = (function (_CompileTask) {
     }
   }, {
     key: 'compileFile',
-    value: function compileFile(sourceFilePath, targetFilePath, cb) {
-      var _this = this;
+    value: function compileFile() {
+      var doesExist;
+      return regeneratorRuntime.async(function compileFile$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            // log.debug(`BrowserifyCompileTask#compileFile`);
 
-      this.compiler.setBundle();
+            this.compiler.setBundle();
 
-      (0, _fs.exists)(this.sourceFilePath, function (doesExist) {
-        if (doesExist) {
-          _get(Object.getPrototypeOf(BrowserifyCompileTask.prototype), 'compileFile', _this).call(_this, _this.sourceFilePath, _this.targetFilePath, cb);
-        } else {
-          _libLogging2['default'].taskInfo(_this.constructor.name, 'skipping ' + _this.sourceFilePath + ' (Does not exist)');
+            context$2$0.next = 3;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromCallback(_fs2['default'].exists, this.sourceFilePath));
 
-          cb();
+          case 3:
+            doesExist = context$2$0.sent;
+
+            if (doesExist) {
+              context$2$0.next = 7;
+              break;
+            }
+
+            _libLogging2['default'].taskInfo(this.constructor.name, 'skipping ' + this.sourceFilePath + ' (Does not exist)');
+
+            return context$2$0.abrupt('return');
+
+          case 7:
+            context$2$0.next = 9;
+            return regeneratorRuntime.awrap(_get(Object.getPrototypeOf(BrowserifyCompileTask.prototype), 'compileFile', this).call(this, this.sourceFilePath, this.targetFilePath));
+
+          case 9:
+          case 'end':
+            return context$2$0.stop();
         }
-      });
+      }, null, this);
     }
   }, {
     key: 'run',
-    value: function run(cb) {
-      this.compileFile(this.sourceFilePath, this.targetFilePath, cb);
+    value: function run() {
+      return regeneratorRuntime.async(function run$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(this.compileFile());
+
+          case 2:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
   }]);
 

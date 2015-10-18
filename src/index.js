@@ -1,5 +1,6 @@
 import log from 'loglevel';
 
+import Configuration from './lib/Configuration';
 import TaskQueue from './lib/TaskQueue';
 import defaultOptions from './lib/defaultOptions';
 import parseOptions from './lib/parseOptions';
@@ -13,9 +14,11 @@ export default function(inputOptions = {}, cb) {
     log.setLevel(options.logging.level);
   }
 
-  const taskQueue = new TaskQueue(options);
+  const configuration = new Configuration(options);
 
-  taskQueue.addTasks(tasks);
+  const taskQueue = new TaskQueue(configuration);
+
+  taskQueue.addTaskClasses(tasks);
 
   taskQueue.start(cb);
 }

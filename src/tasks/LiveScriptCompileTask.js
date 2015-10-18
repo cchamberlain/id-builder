@@ -1,3 +1,5 @@
+import log from 'loglevel';
+
 import CompileTask from '../lib/CompileTask';
 
 import LiveScriptCompiler from '../compilers/LiveScriptCompiler';
@@ -7,10 +9,6 @@ class LiveScriptCompileTask extends CompileTask {
     super(options);
 
     this.setCompiler(LiveScriptCompiler);
-  }
-
-  run(cb) {
-    this.compileAllFiles(cb);
   }
 }
 

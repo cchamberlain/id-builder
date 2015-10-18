@@ -59,7 +59,7 @@ var _WatchTask2 = _interopRequireDefault(_WatchTask);
 exports['default'] = {
   // BabelASTCompileTask,
   // PlantUMLCompileTask,
-  ServerTask: _ServerTask2['default'],
+
   BabelCodeCompileTask: _BabelCodeCompileTask2['default'],
   BrowserSyncServerTask: _BrowserSyncServerTask2['default'],
   BrowserifyCompileTask: _BrowserifyCompileTask2['default'],
@@ -68,6 +68,7 @@ exports['default'] = {
   DirectoryCleanerTask: _DirectoryCleanerTask2['default'],
   LessCompileTask: _LessCompileTask2['default'],
   LiveScriptCompileTask: _LiveScriptCompileTask2['default'],
+  ServerTask: _ServerTask2['default'],
   StylusCompileTask: _StylusCompileTask2['default'],
   TestTask: _TestTask2['default'],
   WatchTask: _WatchTask2['default']

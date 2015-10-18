@@ -103,7 +103,7 @@ export default function(inputOptions = {}, cb) {
 
   const builder = new TaskQueue(options);
 
-  builder.addTasks(tasks);
+  builder.addTaskClasses(tasks);
 
   builder.start(cb);
 }

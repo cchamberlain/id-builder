@@ -170,7 +170,7 @@ var PlantUMLCompile = (function (_CompileTask) {
   }, {
     key: 'convert',
     value: function convert(sourceFilePath, chunk) {
-      var ast = (0, _babel.transform)(chunk, this.options.options).ast;
+      var ast = (0, _babel.transform)(chunk, this.configuration.options).ast;
 
       if (this.hasClass(ast)) {
         if (DERP) {

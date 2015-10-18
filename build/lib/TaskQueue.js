@@ -16,6 +16,16 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _async = require('async');
 
+var _async2 = _interopRequireDefault(_async);
+
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
+var _Configuration = require('./Configuration');
+
+var _Configuration2 = _interopRequireDefault(_Configuration);
+
 var _logging = require('./logging');
 
 var _logging2 = _interopRequireDefault(_logging);
@@ -27,59 +37,55 @@ var _logging2 = _interopRequireDefault(_logging);
  */
 
 var TaskQueue = (function () {
-  function TaskQueue() {
-    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+  function TaskQueue(configuration) {
     _classCallCheck(this, TaskQueue);
 
-    this.options = options;
+    // log.debug(`TaskQueue#constructor`);
 
-    this.tasks = {};
+    this.configuration = configuration;
+
+    // TODO: Document.
+    this.taskClasses = {};
+
+    // TODO: Document.
     this.taskInstances = {};
+
+    // TODO: Document.
     this.asyncTasks = {};
 
+    // TODO: Document.
     this.compilers = {};
   }
 
   /**
-   * Gets the options belonging to the task of `name`.
-   * @param {String} name The name of the task.
-   * @returns {Object} the options of the task.
+   * Instantiates all the tasks.
    * @private
    */
 
   _createClass(TaskQueue, [{
-    key: '_getTaskOptions',
-    value: function _getTaskOptions(name) {
-      return this.options.tasks[name];
-    }
-
-    /**
-     * Instantiates all the tasks.
-     * @private
-     */
-  }, {
     key: '_ensureTaskInstances',
     value: function _ensureTaskInstances() {
       var _this = this;
 
-      _lodash2['default'].each(this.tasks, function (Task, name) {
-        var options = _this._getTaskOptions(name);
+      // log.debug(`TaskQueue#_ensureTaskInstances`);
 
-        if (!options) {
+      _lodash2['default'].each(this.taskClasses, function (Task, name) {
+        // TODO: Refactor: Move this into `Task`.
+        var taskOptions = _this.configuration.get('tasks.' + name);
+
+        if (!taskOptions) {
           throw new Error('No options found for task "' + name + '".');
         }
 
-        if (!options.enabled) {
+        if (!taskOptions.enabled) {
           // Fake a task that does nothing
           _this.taskInstances[name] = {
             dependencies: []
           };
         } else {
-          // Pass the taskQueue to the Task for scope.
-          options.taskQueue = _this;
-
-          _this.taskInstances[name] = new Task(options);
+          _this.taskInstances[name] = new Task({
+            taskQueue: _this
+          });
         }
       });
     }
@@ -93,6 +99,8 @@ var TaskQueue = (function () {
     value: function _ensureAsyncTasks() {
       var _this2 = this;
 
+      // log.debug(`TaskQueue#_ensureAsyncTasks`);
+
       _lodash2['default'].each(this.taskInstances, function (taskInstance, name) {
         _this2.asyncTasks[name] = taskInstance.dependencies.concat(_this2._createTaskCallback(name, taskInstance));
       });
@@ -100,19 +108,39 @@ var TaskQueue = (function () {
 
     /**
      * Runs all tasks asynchronously and in parallel with dependencies first.
-     * @param {Function} cb The callback function.
      * @private
      */
   }, {
     key: '_runTasks',
-    value: function _runTasks(cb) {
-      // First instantiate all tasks with their options.
-      this._ensureTaskInstances();
+    value: function _runTasks() {
+      return regeneratorRuntime.async(function _runTasks$(context$2$0) {
+        var _this3 = this;
 
-      // Then ensure the async tree looks the same.
-      this._ensureAsyncTasks();
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            // log.debug(`TaskQueue#_runTasks`);
 
-      (0, _async.auto)(this.asyncTasks, cb);
+            // First instantiate all tasks with their options.
+            this._ensureTaskInstances();
+
+            // Then ensure the async tree looks the same.
+            this._ensureAsyncTasks();
+
+            return context$2$0.abrupt('return', new Promise(function (resolve, reject) {
+              _async2['default'].auto(_this3.asyncTasks, function (error, result) {
+                if (error) {
+                  return reject(error);
+                }
+
+                resolve(result);
+              });
+            }));
+
+          case 3:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
 
     /**
@@ -139,52 +167,56 @@ var TaskQueue = (function () {
       return function (cb) {
         _logging2['default'].startTask(name);
 
-        task.start(function (e) {
-          if (e) {
-            return cb(e);
-          }
-
+        task.start().then(function () {
           _logging2['default'].finishTask(name);
 
           cb();
+        })['catch'](function (error) {
+          cb(error);
         });
       };
     }
 
     /**
      * Adds a Task.
-     * @param {Task} task The task.
+     * @param {Task} taskClass The task class.
      * @return TaskQueue The instance.
      */
   }, {
-    key: 'addTask',
-    value: function addTask(task) {
-      this.tasks[task.name] = task;
+    key: 'addTaskClass',
+    value: function addTaskClass(taskClass) {
+      // log.debug(`TaskQueue#addTaskClass ${taskClass.name}`);
+
+      this.taskClasses[taskClass.name] = taskClass;
 
       return this;
     }
 
     /**
-     * Adds an Array of Task's.
-     * @param {Array} tasks The tasks.
+     * Adds an Array of Task classes.
+     * @param {Array} tasks The task classes.
      * @return TaskQueue The instance.
      */
   }, {
-    key: 'addTasks',
-    value: function addTasks(tasks) {
-      _lodash2['default'].each(tasks, this.addTask.bind(this));
+    key: 'addTaskClasses',
+    value: function addTaskClasses(tasks) {
+      // log.debug(`TaskQueue#addTaskClasses`);
+
+      _lodash2['default'].each(tasks, this.addTaskClass.bind(this));
 
       return this;
     }
 
     /**
-     * Adds a compiler.
+     * Adds a `Compiler`.
      * @param {Compiler} compiler The compiler.
      * @return TaskQueue The instance.
      */
   }, {
     key: 'addCompiler',
     value: function addCompiler(compiler) {
+      // log.debug(`TaskQueue#addCompiler`);
+
       var name = compiler.constructor.name;
 
       this.compilers[name] = compiler;
@@ -200,6 +232,8 @@ var TaskQueue = (function () {
   }, {
     key: 'removeCompiler',
     value: function removeCompiler(compiler) {
+      // log.debug(`TaskQueue#removeCompiler`);
+
       var name = compiler.constructor.name;
 
       delete this.compilers[name];
@@ -209,12 +243,21 @@ var TaskQueue = (function () {
 
     /**
      * Starts the taskQueue.
-     * @param {Function} cb The callback function.
      */
   }, {
     key: 'start',
-    value: function start(cb) {
-      this._runTasks(cb);
+    value: function start() {
+      return regeneratorRuntime.async(function start$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(this._runTasks());
+
+          case 2:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
   }]);
 
@@ -223,3 +266,5 @@ var TaskQueue = (function () {
 
 exports['default'] = TaskQueue;
 module.exports = exports['default'];
+
+// log.debug(`TaskQueue#start`);

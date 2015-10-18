@@ -207,7 +207,7 @@ export default class TaskQueue {
    * @param {Task} task The task.
    * @return TaskQueue The instance.
    */
-  addTask(task) {
+  addTaskClass(task) {
     this.tasks[task.name] = task;
 
     return this;
@@ -218,8 +218,8 @@ export default class TaskQueue {
    * @param {Array} tasks The tasks.
    * @return TaskQueue The instance.
    */
-  addTasks(tasks) {
-    _.each(tasks, this.addTask.bind(this));
+  addTaskClasses(tasks) {
+    _.each(tasks, this.addTaskClass.bind(this));
 
     return this;
   }

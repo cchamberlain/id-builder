@@ -10,6 +10,10 @@ var _loglevel = require('loglevel');
 
 var _loglevel2 = _interopRequireDefault(_loglevel);
 
+var _libConfiguration = require('./lib/Configuration');
+
+var _libConfiguration2 = _interopRequireDefault(_libConfiguration);
+
 var _libTaskQueue = require('./lib/TaskQueue');
 
 var _libTaskQueue2 = _interopRequireDefault(_libTaskQueue);
@@ -35,9 +39,11 @@ exports['default'] = function (inputOptions, cb) {
     _loglevel2['default'].setLevel(options.logging.level);
   }
 
-  var taskQueue = new _libTaskQueue2['default'](options);
+  var configuration = new _libConfiguration2['default'](options);
 
-  taskQueue.addTasks(_tasks2['default']);
+  var taskQueue = new _libTaskQueue2['default'](configuration);
+
+  taskQueue.addTaskClasses(_tasks2['default']);
 
   taskQueue.start(cb);
 };
