@@ -94,6 +94,28 @@ describe('Configuration', function () {
             cb();
           });
         });
+
+        describe('when a deeper key contains a variable', function () {
+          it('should return the value of the key, replacing the variable with the value of the key the variable points to.', function (cb) {
+            var configuration = new _libConfiguration2['default']({
+              HERP: 'DERP',
+              some: {
+                foo: 'bar',
+                answer: '42',
+                deep: [{
+                  key: '{HERP}/{some.foo}/{some.answer}value'
+                }]
+              }
+            });
+
+            var expected = [{ key: 'DERP/bar/42value' }];
+            var actual = configuration.get('some.deep');
+
+            _assert2['default'].deepEqual(expected, actual);
+
+            cb();
+          });
+        });
       });
     });
   });

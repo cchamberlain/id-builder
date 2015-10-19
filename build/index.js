@@ -30,6 +30,8 @@ var _tasks = require('./tasks');
 
 var _tasks2 = _interopRequireDefault(_tasks);
 
+require('babel/register');
+
 exports['default'] = function (inputOptions, cb) {
   if (inputOptions === undefined) inputOptions = {};
 

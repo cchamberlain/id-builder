@@ -93,6 +93,30 @@ describe('Configuration', () => {
             cb();
           });
         });
+
+        describe('when a deeper key contains a variable', () => {
+          it('should return the value of the key, replacing the variable with the value of the key the variable points to.', (cb) => {
+            const configuration = new Configuration({
+              HERP: 'DERP',
+              some: {
+                foo: 'bar',
+                answer: '42',
+                deep: [
+                  {
+                    key: '{HERP}/{some.foo}/{some.answer}value'
+                  }
+                ]
+              }
+            });
+
+            const expected = [ { key: 'DERP/bar/42value' } ];
+            const actual = configuration.get('some.deep');
+
+            assert.deepEqual(expected, actual);
+
+            cb();
+          });
+        });
       });
     });
   });

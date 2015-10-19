@@ -1,6 +1,7 @@
 import events from 'events';
 
 import _ from 'lodash';
+import log from 'loglevel';
 
 /**
  * Contains all the options. Emits events when changes occur.
@@ -49,10 +50,6 @@ export default class Configuration extends events.EventEmitter {
    * @private
    */
   _replaceVariables(value) {
-    if (!_.isString(value)) {
-      return value;
-    }
-
     let variables = value.match(/{(.+?)}/g);
 
     if (!variables || !variables.length) {
@@ -93,7 +90,13 @@ export default class Configuration extends events.EventEmitter {
     let result = _.get(this._values, key);
 
     if (result) {
-      result = this._replaceVariables(result);
+      if (_.isArray(result)) {
+        result = _.map(result, (v, i) => this.get(`${key}[${i}]`));
+      } else if (_.isObject(result)) {
+        result = _.mapValues(result, (v, k) => this.get(`${key}.${k}`));
+      } else if (_.isString(result)) {
+        result = this._replaceVariables(result);
+      }
     }
 
     return result;

@@ -1,3 +1,5 @@
+require('babel/register');
+
 import log from 'loglevel';
 
 import Configuration from './lib/Configuration';

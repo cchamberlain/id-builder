@@ -3,6 +3,31 @@ export default {
     level: 'info'
   },
 
+  paths: {
+    source: 'src',
+    target: 'build',
+
+    client: {
+      source: '{paths.source}/client',
+      target: '{paths.target}/client'
+    },
+
+    common: {
+      source: '{paths.source}/common',
+      target: '{paths.target}/common'
+    },
+
+    server: {
+      source: '{paths.source}/server',
+      target: '{paths.target}/server'
+    },
+
+    test: {
+      source: '{paths.source}/test',
+      target: '{paths.target}/test'
+    }
+  },
+
   tasks: {
     DirectoryCleanerTask: {
       enabled: true,
@@ -10,7 +35,7 @@ export default {
       dependencies: [
       ],
 
-      paths: [ 'build' ]
+      paths: [ '{paths.target}' ]
     },
 
     BabelCodeCompileTask: {
@@ -22,8 +47,8 @@ export default {
 
       sourceFileExtension: 'js',
       targetFileExtension: 'js',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build',
+      sourceDirectoryPath: '{paths.source}',
+      targetDirectoryPath: '{paths.target}',
 
       compiler: {
         sourceMaps: 'inline',
@@ -41,8 +66,8 @@ export default {
 
       sourceFileExtension: 'coffee',
       targetFileExtension: 'js',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build',
+      sourceDirectoryPath: '{paths.source}',
+      targetDirectoryPath: '{paths.target}',
 
       compiler: {
         bare: true
@@ -58,8 +83,8 @@ export default {
 
       sourceFileExtension: 'ls',
       targetFileExtension: 'js',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build',
+      sourceDirectoryPath: '{paths.source}',
+      targetDirectoryPath: '{paths.target}',
 
       compiler: {
         bare: true
@@ -73,16 +98,16 @@ export default {
         'DirectoryCleanerTask'
       ],
 
-      sourceFilePath: 'src/client/less/app.less',
-      targetFilePath: 'build/client/css/app.css',
+      sourceFilePath: '{paths.client.source}/less/app.less',
+      targetFilePath: '{paths.client.target}/css/app.css',
       sourceFileExtension: 'less',
       targetFileExtension: 'css',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build',
+      sourceDirectoryPath: '{paths.source}',
+      targetDirectoryPath: '{paths.target}',
 
       compiler: {
-        rootPath: 'src/client/less',
-        filename: 'src/client/less/app.less'
+        rootPath: '{paths.client.source}/less',
+        filename: '{paths.client.source}/less/app.less'
       }
     },
 
@@ -96,12 +121,12 @@ export default {
         'LiveScriptCompileTask'
       ],
 
-      sourceFilePath: 'build/client/js/app.js',
-      targetFilePath: 'build/client/js/app.bundle.js',
+      sourceFilePath: '{paths.client.target}/js/app.js',
+      targetFilePath: '{paths.client.target}/js/app.bundle.js',
       sourceFileExtension: 'js',
       targetFileExtension: 'js',
-      sourceDirectoryPath: 'build/client',
-      targetDirectoryPath: 'build/client',
+      sourceDirectoryPath: '{paths.client.target}',
+      targetDirectoryPath: '{paths.client.target}',
 
       compiler: {
         fullPaths: true,
@@ -116,12 +141,12 @@ export default {
         'DirectoryCleanerTask'
       ],
 
-      sourceFilePath: 'src/client/stylus/app.styl',
-      targetFilePath: 'build/client/css/app.css',
+      sourceFilePath: '{paths.client.source}/stylus/app.styl',
+      targetFilePath: '{paths.client.target}/css/app.css',
       sourceFileExtension: 'styl',
       targetFileExtension: 'css',
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build',
+      sourceDirectoryPath: '{paths.source}',
+      targetDirectoryPath: '{paths.target}',
 
       compiler: {}
     },
@@ -133,8 +158,8 @@ export default {
         'DirectoryCleanerTask'
       ],
 
-      sourceDirectoryPath: 'src',
-      targetDirectoryPath: 'build'
+      sourceDirectoryPath: '{paths.source}',
+      targetDirectoryPath: '{paths.target}'
     },
 
     BrowserSyncServerTask: {
@@ -145,7 +170,7 @@ export default {
       ],
 
       paths: [
-        'build'
+        '{paths.target}'
       ],
 
       options: {
@@ -171,10 +196,10 @@ export default {
       // paths in the 'common' and 'server' directories are triggering server
       // reloads.
       sourceDirectoryPaths: [
-        'build/server'
+        '{paths.server.target}'
       ],
 
-      paths: [ 'build/server/app.js' ]
+      paths: [ '{paths.server.target}/app.js' ]
     },
 
     TestTask: {
@@ -185,11 +210,11 @@ export default {
       ],
 
       sourceDirectoryPaths: [
-        'build/test'
+        '{paths.test.target}'
       ],
 
       watchDirectoryPaths: [
-        'build'
+        '{paths.target}'
       ],
 
       mocha: {
@@ -204,51 +229,12 @@ export default {
         'TestTask'
       ],
 
-      // sourceDirectoryPath: 'build',
+      // sourceDirectoryPath: '{paths.target}',
 
       paths: [
-        'src',
-        'build'
+        '{paths.source}',
+        '{paths.target}'
       ]
     }
   }
 };
-
-/*
- BabelASTCompileTask: {
- enabled: true,
-
- dependencies: [
- 'DirectoryCleanerTask'
- ],
-
- sourceFileExtension: 'js',
- targetFileExtension: 'js.ast.json',
- sourceDirectoryPath: 'src',
- targetDirectoryPath: 'build',
-
- compiler: {
- sourceMaps: 'inline',
- optional: [
- ]
- }
- },
- */
-
-/*
- PlantUMLCompileTask: {
- enabled: true,
-
- dependencies: [
- 'DirectoryCleanerTask'
- ],
-
- sourceFileExtension: 'js',
- sourceDirectoryPath: 'src',
-
- compiler: {
- ast: true,
- whitelist: []
- }
- },
- */

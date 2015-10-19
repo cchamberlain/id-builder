@@ -24,6 +24,10 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _loglevel = require('loglevel');
+
+var _loglevel2 = _interopRequireDefault(_loglevel);
+
 /**
  * Contains all the options. Emits events when changes occur.
  * @class Options
@@ -81,10 +85,6 @@ var Configuration = (function (_events$EventEmitter) {
   }, {
     key: '_replaceVariables',
     value: function _replaceVariables(value) {
-      if (!_lodash2['default'].isString(value)) {
-        return value;
-      }
-
       var variables = value.match(/{(.+?)}/g);
 
       if (!variables || !variables.length) {
@@ -119,10 +119,22 @@ var Configuration = (function (_events$EventEmitter) {
   }, {
     key: 'get',
     value: function get(key) {
+      var _this = this;
+
       var result = _lodash2['default'].get(this._values, key);
 
       if (result) {
-        result = this._replaceVariables(result);
+        if (_lodash2['default'].isArray(result)) {
+          result = _lodash2['default'].map(result, function (v, i) {
+            return _this.get(key + '[' + i + ']');
+          });
+        } else if (_lodash2['default'].isObject(result)) {
+          result = _lodash2['default'].mapValues(result, function (v, k) {
+            return _this.get(key + '.' + k);
+          });
+        } else if (_lodash2['default'].isString(result)) {
+          result = this._replaceVariables(result);
+        }
       }
 
       return result;
