@@ -30,6 +30,10 @@ var _loglevel = require('loglevel');
 
 var _loglevel2 = _interopRequireDefault(_loglevel);
 
+var _libPromise = require('../lib/promise');
+
+var _libPromise2 = _interopRequireDefault(_libPromise);
+
 var _libCompileTask = require('../lib/CompileTask');
 
 var _libCompileTask2 = _interopRequireDefault(_libCompileTask);
@@ -102,11 +106,7 @@ var WatchTask = (function (_Task) {
         }).value().length;
 
         if (shouldReload) {
-          testTask.runTests(function (error) {
-            if (error) {
-              return logError(error);
-            }
-          });
+          testTask.run()['catch'](logError);
         }
       }
     }
@@ -155,7 +155,7 @@ var WatchTask = (function (_Task) {
   }, {
     key: 'getCompilerTasks',
     value: function getCompilerTasks() {
-      return (0, _lodash2['default'])(this.builder.taskInstances).filter(function (v) {
+      return (0, _lodash2['default'])(this.taskQueue.taskInstances).filter(function (v) {
         return v instanceof _libCompileTask2['default'];
       }).value();
     }
@@ -163,19 +163,19 @@ var WatchTask = (function (_Task) {
     key: 'getTestTask',
     value: function getTestTask() {
       // TODO: Is this horrible?
-      return this.builder.taskInstances.TestTask;
+      return this.taskQueue.taskInstances.TestTask;
     }
   }, {
     key: 'getServerTask',
     value: function getServerTask() {
       // TODO: Is this horrible?
-      return this.builder.taskInstances.ServerTask;
+      return this.taskQueue.taskInstances.ServerTask;
     }
   }, {
     key: 'getBrowserSyncTask',
     value: function getBrowserSyncTask() {
       // TODO: Is this horrible?
-      return this.builder.taskInstances.BrowserSyncServerTask;
+      return this.taskQueue.taskInstances.BrowserSyncServerTask;
     }
   }, {
     key: 'getCompilerTaskForPath',
@@ -198,7 +198,7 @@ var WatchTask = (function (_Task) {
   }, {
     key: 'setWatcher',
     value: function setWatcher() {
-      this.watcher = _chokidar2['default'].watch(this.options.paths, {
+      this.watcher = _chokidar2['default'].watch(this.configuration.paths, {
         atomic: true,
         ignoreInitial: true,
         // ignored: /[\/\/]\./,
@@ -219,8 +219,17 @@ var WatchTask = (function (_Task) {
   }, {
     key: 'run',
     value: function run() {
-      this.setWatcher();
-      this.setEventHandlers();
+      return regeneratorRuntime.async(function run$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            this.setWatcher();
+            this.setEventHandlers();
+
+          case 2:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
   }]);
 

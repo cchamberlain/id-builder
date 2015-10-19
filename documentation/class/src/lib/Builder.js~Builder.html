@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">Builder | API Document</title>
+  <title data-ice="title">TaskQueue | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
+
+
 </head>
 <body class="layout-container">
 
 <header>
   <a href="./">Home</a>
-  
+
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   <a href="test.html" data-ice="testLink">Test</a>
@@ -30,7 +30,7 @@
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
-    
+
   <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-index">index</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">compilers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/compilers/BabelCodeCompiler.js~BabelCodeCompiler.html">BabelCodeCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/compilers/BabelMapCompiler.js~BabelMapCompiler.html">BabelMapCompiler</a></span></span></li>
@@ -48,7 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lessCompiler">lessCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-liveScriptCompiler">liveScriptCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-stylusCompiler">stylusCompiler</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html">Builder</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html">TaskQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/CompileTask.js~CompileTask.html">CompileTask</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Options.js~Options.html">Options</a></span></span></li>
@@ -86,43 +86,43 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Builder from &apos;<span><a href="file/src/lib/Builder.js.html#lineNumber11">id-builder/src/lib/Builder.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import TaskQueue from &apos;<span><a href="file/src/lib/Builder.js.html#lineNumber11">id-builder/src/lib/TaskQueue.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
-  
-  
-  
+
+
+
   <span data-ice="source">| <span><a href="file/src/lib/Builder.js.html#lineNumber11">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
-  <h1 data-ice="name">Builder</h1>
+  <h1 data-ice="name">TaskQueue</h1>
 
-  
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
   <div class="description" data-ice="description"><p>The builder runs the tasks.
 TODO: Find a better solution then format juggling for async.auto.</p>
 </div>
 
-  
 
-  
 
-  
 
-  
+
+
+
+
 </div>
 
 
@@ -130,13 +130,13 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 <div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
   <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
   <tbody>
-  
+
   <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -146,14 +146,14 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
-        
+
+
+
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 </tbody>
@@ -162,13 +162,13 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 <div data-ice="memberSummary"><h2>Member Summary</h2><table class="summary" data-ice="summary">
   <thead><tr><td data-ice="title" colspan="3">Public Members</td></tr></thead>
   <tbody>
-  
+
   <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -178,22 +178,22 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
-        
+
+
+
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -203,22 +203,22 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
-        
+
+
+
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -228,22 +228,22 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
-        
+
+
+
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -253,22 +253,22 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
-        
+
+
+
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -278,14 +278,14 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
-        
+
+
+
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 </tbody>
@@ -294,13 +294,13 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 <div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
   <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
   <tbody>
-  
+
   <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -310,72 +310,72 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
+
+
         <div data-ice="description">Adds a compiler.</div>
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html#instance-method-addTask">addTask</a></span></span><span data-ice="signature">(task: <span><a href="class/src/lib/Task.js~Task.html">Task</a></span>): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html#instance-method-addTaskClass">addTaskClass</a></span></span><span data-ice="signature">(task: <span><a href="class/src/lib/Task.js~Task.html">Task</a></span>): <span>*</span></span>
         </p>
       </div>
       <div>
-        
-        
+
+
         <div data-ice="description">Adds a Task.</div>
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html#instance-method-addTasks">addTasks</a></span></span><span data-ice="signature">(tasks: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html#instance-method-addTaskClasses">addTaskClasses</a></span></span><span data-ice="signature">(tasks: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span>*</span></span>
         </p>
       </div>
       <div>
-        
-        
+
+
         <div data-ice="description">Adds an Array of Task&apos;s.</div>
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -385,22 +385,22 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
+
+
         <div data-ice="description">Removes a compiler.</div>
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 <tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
-      
-      
-      
+
+
+
       <span class="override" data-ice="override"></span>
     </td>
     <td>
@@ -410,14 +410,14 @@ TODO: Find a better solution then format juggling for async.auto.</p>
         </p>
       </div>
       <div>
-        
-        
+
+
         <div data-ice="description">Starts the builder.</div>
       </div>
     </td>
     <td>
-      
-      
+
+
     </td>
   </tr>
 </tbody>
@@ -433,24 +433,24 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-constructor-constructor">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">constructor</span><span data-ice="signature">(options: {})</span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber12">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
-  
 
-  
+
+
+
+
+
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -459,7 +459,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
     </thead>
     <tbody>
-    
+
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">options</td>
       <td data-ice="type">{}</td>
@@ -472,20 +472,20 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 </div>
 </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
 </div>
 </div>
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
@@ -493,202 +493,202 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-asyncTasks">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">asyncTasks</span><span data-ice="signature">: <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber17">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
-  
 
-  
+
+
+
+
+
 
   <div data-ice="properties">
 </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-compilers">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">compilers</span><span data-ice="signature">: <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber19">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
-  
 
-  
+
+
+
+
+
 
   <div data-ice="properties">
 </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-options">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">options</span><span data-ice="signature">: <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber13">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
-  
 
-  
+
+
+
+
+
 
   <div data-ice="properties">
 </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-taskInstances">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">taskInstances</span><span data-ice="signature">: <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber16">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
-  
 
-  
+
+
+
+
+
 
   <div data-ice="properties">
 </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-tasks">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">tasks</span><span data-ice="signature">: <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber15">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
-  
 
-  
+
+
+
+
+
 
   <div data-ice="properties">
 </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
 </div>
 </div>
 <div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
@@ -696,25 +696,25 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-addCompiler">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">addCompiler</span><span data-ice="signature">(compiler: <span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span>): <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber144">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
+
+
+
   <div data-ice="description"><p>Adds a compiler.</p>
 </div>
 
-  
+
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -723,7 +723,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
     </thead>
     <tbody>
-    
+
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">compiler</td>
       <td data-ice="type"><span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span></td>
@@ -741,7 +741,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span>*</span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>Builder The instance.</p>
+        <td class="return-desc" data-ice="returnDescription"><p>TaskQueue The instance.</p>
 </td>
       </tr>
     </table>
@@ -749,41 +749,41 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 </div>
   </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-addTask">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">addTask</span><span data-ice="signature">(task: <span><a href="class/src/lib/Task.js~Task.html">Task</a></span>): <span>*</span></span>
+
+
+
+
+    <span data-ice="name">addTaskClass</span><span data-ice="signature">(task: <span><a href="class/src/lib/Task.js~Task.html">Task</a></span>): <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber122">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
+
+
+
   <div data-ice="description"><p>Adds a Task.</p>
 </div>
 
-  
+
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -792,7 +792,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
     </thead>
     <tbody>
-    
+
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">task</td>
       <td data-ice="type"><span><a href="class/src/lib/Task.js~Task.html">Task</a></span></td>
@@ -810,7 +810,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span>*</span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>Builder The instance.</p>
+        <td class="return-desc" data-ice="returnDescription"><p>TaskQueue The instance.</p>
 </td>
       </tr>
     </table>
@@ -818,41 +818,41 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 </div>
   </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-addTasks">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">addTasks</span><span data-ice="signature">(tasks: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span>*</span></span>
+
+
+
+
+    <span data-ice="name">addTaskClasses</span><span data-ice="signature">(tasks: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>): <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber133">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
+
+
+
   <div data-ice="description"><p>Adds an Array of Task&apos;s.</p>
 </div>
 
-  
+
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -861,7 +861,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
     </thead>
     <tbody>
-    
+
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">tasks</td>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></td>
@@ -879,7 +879,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span>*</span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>Builder The instance.</p>
+        <td class="return-desc" data-ice="returnDescription"><p>TaskQueue The instance.</p>
 </td>
       </tr>
     </table>
@@ -887,41 +887,41 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 </div>
   </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-removeCompiler">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">removeCompiler</span><span data-ice="signature">(compiler: <span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span>): <span>*</span></span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber157">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
+
+
+
   <div data-ice="description"><p>Removes a compiler.</p>
 </div>
 
-  
+
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -930,7 +930,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
     </thead>
     <tbody>
-    
+
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">compiler</td>
       <td data-ice="type"><span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span></td>
@@ -948,7 +948,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span>*</span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>Builder The instance.</p>
+        <td class="return-desc" data-ice="returnDescription"><p>TaskQueue The instance.</p>
 </td>
       </tr>
     </table>
@@ -956,41 +956,41 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 </div>
   </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-start">
     <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
+
+
+
+
     <span data-ice="name">start</span><span data-ice="signature">(cb: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>
     <span class="right-info">
-      
-      
+
+
       <span data-ice="source"><span><a href="file/src/lib/Builder.js.html#lineNumber169">source</a></span></span>
     </span>
   </h3>
 
-  
-  
-  
+
+
+
   <div data-ice="description"><p>Starts the builder.</p>
 </div>
 
-  
+
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -999,7 +999,7 @@ TODO: Find a better solution then format juggling for async.auto.</p>
     <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
     </thead>
     <tbody>
-    
+
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">cb</td>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
@@ -1012,20 +1012,20 @@ TODO: Find a better solution then format juggling for async.auto.</p>
 </div>
 </div>
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
 </div>
 </div>
 </div>

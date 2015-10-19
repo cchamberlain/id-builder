@@ -7,14 +7,14 @@
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
+
+
 </head>
 <body class="layout-container">
 
 <header>
   <a href="./">Home</a>
-  
+
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   <a href="test.html" data-ice="testLink">Test</a>
@@ -30,7 +30,7 @@
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
-    
+
   <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-index">index</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">compilers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/compilers/BabelCodeCompiler.js~BabelCodeCompiler.html">BabelCodeCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/compilers/BabelMapCompiler.js~BabelMapCompiler.html">BabelMapCompiler</a></span></span></li>
@@ -48,7 +48,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lessCompiler">lessCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-liveScriptCompiler">liveScriptCompiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-stylusCompiler">stylusCompiler</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html">Builder</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Builder.js~Builder.html">TaskQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/CompileTask.js~CompileTask.html">CompileTask</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Compiler.js~Compiler.html">Compiler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/Options.js~Options.html">Options</a></span></span></li>
@@ -159,11 +159,11 @@ export default class CompileTask extends Task {
 
   /**
    * Sets the compiler used to compile chunks. Also adds the Compiler to the
-   * Builder but ensures only one Compiler per instance is active in the
-   * Builder.
+   * TaskQueue but ensures only one Compiler per instance is active in the
+   * TaskQueue.
    * TODO: Explain why it&apos;s a good thing to only have one compiler in the
    *       builder per compile task.
-   * TODO: Refactor: Move this to the Builder class.
+   * TODO: Refactor: Move this to the TaskQueue class.
    * @param {Class} CompilerClass The compiler class used to compile chunks.
    * @returns CompileTask The instance.
    */

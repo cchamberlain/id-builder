@@ -10,9 +10,13 @@ var _loglevel = require('loglevel');
 
 var _loglevel2 = _interopRequireDefault(_loglevel);
 
-var _libBuilder = require('./lib/Builder');
+var _libConfiguration = require('./lib/Configuration');
 
-var _libBuilder2 = _interopRequireDefault(_libBuilder);
+var _libConfiguration2 = _interopRequireDefault(_libConfiguration);
+
+var _libTaskQueue = require('./lib/TaskQueue');
+
+var _libTaskQueue2 = _interopRequireDefault(_libTaskQueue);
 
 var _libDefaultOptions = require('./lib/defaultOptions');
 
@@ -26,6 +30,8 @@ var _tasks = require('./tasks');
 
 var _tasks2 = _interopRequireDefault(_tasks);
 
+require('babel/register');
+
 exports['default'] = function (inputOptions, cb) {
   if (inputOptions === undefined) inputOptions = {};
 
@@ -35,11 +41,13 @@ exports['default'] = function (inputOptions, cb) {
     _loglevel2['default'].setLevel(options.logging.level);
   }
 
-  var builder = new _libBuilder2['default'](options);
+  var configuration = new _libConfiguration2['default'](options);
 
-  builder.addTasks(_tasks2['default']);
+  var taskQueue = new _libTaskQueue2['default'](configuration);
 
-  builder.start(cb);
+  taskQueue.addTaskClasses(_tasks2['default']);
+
+  taskQueue.start(cb);
 };
 
 module.exports = exports['default'];

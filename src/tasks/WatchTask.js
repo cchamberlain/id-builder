@@ -3,6 +3,7 @@ import browserSync from 'browser-sync';
 import chokidar from 'chokidar';
 import log from 'loglevel';
 
+import promise from '../lib/promise';
 import CompileTask from '../lib/CompileTask';
 import Task from '../lib/Task';
 
@@ -10,7 +11,7 @@ function logError(error) {
   log.error(error.stack || error.message || error);
 }
 
-class WatchTask extends Task {
+export default class WatchTask extends Task {
   constructor(options = {}) {
     super(options);
 
@@ -68,11 +69,8 @@ class WatchTask extends Task {
         .length;
 
       if (shouldReload) {
-        testTask.runTests(error => {
-          if (error) {
-            return logError(error);
-          }
-        });
+        testTask.run()
+          .catch(logError);
       }
     }
   }
@@ -115,7 +113,7 @@ class WatchTask extends Task {
   }
 
   getCompilerTasks() {
-    return _(this.builder.taskInstances)
+    return _(this.taskQueue.taskInstances)
       .filter(v => {
         return v instanceof CompileTask;
       })
@@ -124,17 +122,17 @@ class WatchTask extends Task {
 
   getTestTask() {
     // TODO: Is this horrible?
-    return this.builder.taskInstances.TestTask;
+    return this.taskQueue.taskInstances.TestTask;
   }
 
   getServerTask() {
     // TODO: Is this horrible?
-    return this.builder.taskInstances.ServerTask;
+    return this.taskQueue.taskInstances.ServerTask;
   }
 
   getBrowserSyncTask() {
     // TODO: Is this horrible?
-    return this.builder.taskInstances.BrowserSyncServerTask;
+    return this.taskQueue.taskInstances.BrowserSyncServerTask;
   }
 
   getCompilerTaskForPath(path) {
@@ -154,7 +152,7 @@ class WatchTask extends Task {
   }
 
   setWatcher() {
-    this.watcher = chokidar.watch(this.options.paths, {
+    this.watcher = chokidar.watch(this.configuration.paths, {
       atomic: true,
       ignoreInitial: true,
       // ignored: /[\/\/]\./,
@@ -172,10 +170,8 @@ class WatchTask extends Task {
     this.watcher.on('error', this._handleError);
   }
 
-  run() {
+  async run() {
     this.setWatcher();
     this.setEventHandlers();
   }
 }
-
-export default WatchTask;

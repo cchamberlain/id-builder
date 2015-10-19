@@ -26,13 +26,17 @@ var _loglevel = require('loglevel');
 
 var _loglevel2 = _interopRequireDefault(_loglevel);
 
+var _libTask = require('../lib/Task');
+
+var _libTask2 = _interopRequireDefault(_libTask);
+
 var _libLogging = require('../lib/logging');
 
 var _libLogging2 = _interopRequireDefault(_libLogging);
 
-var _libTask = require('../lib/Task');
+var _libPromise = require('../lib/promise');
 
-var _libTask2 = _interopRequireDefault(_libTask);
+var _libPromise2 = _interopRequireDefault(_libPromise);
 
 var BrowserSyncServerTask = (function (_Task) {
   _inherits(BrowserSyncServerTask, _Task);
@@ -44,7 +48,7 @@ var BrowserSyncServerTask = (function (_Task) {
 
     _get(Object.getPrototypeOf(BrowserSyncServerTask.prototype), 'constructor', this).call(this, options);
 
-    this.paths = options.paths;
+    this.paths = this.configuration.paths;
   }
 
   _createClass(BrowserSyncServerTask, [{
@@ -64,19 +68,23 @@ var BrowserSyncServerTask = (function (_Task) {
     }
   }, {
     key: 'run',
-    value: function run(cb) {
-      var _this = this;
+    value: function run() {
+      return regeneratorRuntime.async(function run$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromNodeCallback(_browserSync2['default'], this.configuration.options));
 
-      _loglevel2['default'].debug('BrowserSyncServerTask#run');
+          case 2:
 
-      (0, _browserSync2['default'])(this.options.options, function (e) {
-        if (e) {
-          return cb(e);
+            _libLogging2['default'].taskInfo(this.constructor.name, 'API Server running at 127.0.0.1:' + this.configuration.options.port);
+            _libLogging2['default'].taskInfo(this.constructor.name, 'HTTP Server running at 127.0.0.1:' + this.configuration.options.ui.port);
+
+          case 4:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        _libLogging2['default'].taskInfo(_this.constructor.name, 'API Server running at 127.0.0.1:' + _this.options.options.port);
-        _libLogging2['default'].taskInfo(_this.constructor.name, 'HTTP Server running at 127.0.0.1:' + _this.options.options.ui.port);
-      });
+      }, null, this);
     }
   }]);
 

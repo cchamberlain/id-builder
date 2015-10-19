@@ -1,9 +1,11 @@
+import fs from 'fs';
+
 import _ from 'lodash';
-import { exists } from 'fs';
 import log from 'loglevel';
 
 import CompileTask from '../lib/CompileTask';
 import logging from '../lib/logging';
+import promise from '../lib/promise';
 
 import BrowserifyCompiler from '../compilers/BrowserifyCompiler';
 
@@ -11,8 +13,8 @@ class BrowserifyCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.sourceFilePath = options.sourceFilePath;
-    this.targetFilePath = options.targetFilePath;
+    this.sourceFilePath = this.configuration.sourceFilePath;
+    this.targetFilePath = this.configuration.targetFilePath;
 
     this.setCompiler(BrowserifyCompiler);
   }
@@ -25,22 +27,24 @@ class BrowserifyCompileTask extends CompileTask {
     return this.targetFilePath;
   }
 
-  compileFile(sourceFilePath, targetFilePath, cb) {
+  async compileFile() {
+    // log.debug(`BrowserifyCompileTask#compileFile`);
+
     this.compiler.setBundle();
 
-    exists(this.sourceFilePath, (doesExist) => {
-      if (doesExist) {
-        super.compileFile(this.sourceFilePath, this.targetFilePath, cb);
-      } else {
-        logging.taskInfo(this.constructor.name, `skipping ${this.sourceFilePath} (Does not exist)`);
+    const doesExist = await promise.promiseFromCallback(fs.exists, this.sourceFilePath);
 
-        cb();
-      }
-    });
+    if (!doesExist) {
+      logging.taskInfo(this.constructor.name, `skipping ${this.sourceFilePath} (Does not exist)`);
+
+      return;
+    }
+
+    await super.compileFile(this.sourceFilePath, this.targetFilePath);
   }
 
-  run(cb) {
-    this.compileFile(this.sourceFilePath, this.targetFilePath, cb);
+  async run() {
+    await this.compileFile();
   }
 }
 

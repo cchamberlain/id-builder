@@ -1,6 +1,9 @@
+require('babel/register');
+
 import log from 'loglevel';
 
-import Builder from './lib/Builder';
+import Configuration from './lib/Configuration';
+import TaskQueue from './lib/TaskQueue';
 import defaultOptions from './lib/defaultOptions';
 import parseOptions from './lib/parseOptions';
 
@@ -13,9 +16,11 @@ export default function(inputOptions = {}, cb) {
     log.setLevel(options.logging.level);
   }
 
-  const builder = new Builder(options);
+  const configuration = new Configuration(options);
 
-  builder.addTasks(tasks);
+  const taskQueue = new TaskQueue(configuration);
 
-  builder.start(cb);
+  taskQueue.addTaskClasses(tasks);
+
+  taskQueue.start(cb);
 }

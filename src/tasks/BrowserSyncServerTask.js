@@ -1,15 +1,16 @@
 import _ from 'lodash';
-import browserSync from 'browser-sync';
+import browserSyncServer from 'browser-sync';
 import log from 'loglevel';
 
-import logging from '../lib/logging';
 import Task from '../lib/Task';
+import logging from '../lib/logging';
+import promise from '../lib/promise';
 
 class BrowserSyncServerTask extends Task {
   constructor(options = {}) {
     super(options);
 
-    this.paths = options.paths;
+    this.paths = this.configuration.paths;
   }
 
   reload(path) {
@@ -23,23 +24,17 @@ class BrowserSyncServerTask extends Task {
       .length;
 
     if (shouldReload) {
-      browserSync.reload(path);
+      browserSyncServer.reload(path);
 
       logging.taskInfo(this.constructor.name, `Reloaded \`${path}\``);
     }
   }
 
-  run(cb) {
-    log.debug(`BrowserSyncServerTask#run`);
+  async run() {
+    await promise.promiseFromNodeCallback(browserSyncServer, this.configuration.options);
 
-    browserSync(this.options.options, (e) => {
-      if (e) {
-        return cb(e);
-      }
-
-      logging.taskInfo(this.constructor.name, `API Server running at 127.0.0.1:${this.options.options.port}`);
-      logging.taskInfo(this.constructor.name, `HTTP Server running at 127.0.0.1:${this.options.options.ui.port}`);
-    });
+    logging.taskInfo(this.constructor.name, `API Server running at 127.0.0.1:${this.configuration.options.port}`);
+    logging.taskInfo(this.constructor.name, `HTTP Server running at 127.0.0.1:${this.configuration.options.ui.port}`);
   }
 }
 

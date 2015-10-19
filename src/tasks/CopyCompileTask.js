@@ -5,6 +5,7 @@ import { each } from 'async';
 
 import CompileTask from '../lib/CompileTask';
 import getFiles from '../lib/getFiles';
+import promise from '../lib/promise';
 
 import CopyCompiler from '../compilers/CopyCompiler';
 
@@ -36,7 +37,7 @@ class CopyCompileTask extends CompileTask {
   }
 
   get otherCompileTasks() {
-    return _(this.builder.taskInstances)
+    return _(this.taskQueue.taskInstances)
       .filter(this.isCompileTask)
       .filter(this.isntThisTask)
       .value();
@@ -65,40 +66,17 @@ class CopyCompileTask extends CompileTask {
     return result;
   }
 
-  getPaths(cb) {
-    getFiles(this.sourceDirectoryPath, (e, nodes) => {
-      if (e) {
-        return cb(e);
-      }
-
-
-      const paths = _(nodes)
-        .map(v => v.fullPath)
-        .filter(this.doesntMatchOtherTaskSourceFilePath.bind(this))
-        .value();
-
-      cb(null, paths);
-    });
+  async getPaths() {
+    return _(await getFiles(this.sourceDirectoryPath))
+      .map(v => v.fullPath)
+      .filter(this.doesntMatchOtherTaskSourceFilePath.bind(this))
+      .value();
   }
 
-  compileAllFiles(cb) {
-    this.getPaths((e, paths) => {
-      if (e) {
-        return cb(e);
-      }
+  async compileAllFiles() {
+    const paths = await this.getPaths();
 
-      const iteratePath = (currentSourceDirectoryPath, cb) => {
-        const currentTargetDirectoryPath = currentSourceDirectoryPath.replace(this.sourceDirectoryPath, this.targetDirectoryPath);
-
-        this.compileFile(currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
-      };
-
-      each(paths, iteratePath, cb);
-    });
-  }
-
-  run(cb) {
-    this.compileAllFiles(cb);
+    await Promise.all(_.map(paths, (path) => this.compileFile(path, path.replace(this.sourceDirectoryPath, this.targetDirectoryPath))));
   }
 }
 

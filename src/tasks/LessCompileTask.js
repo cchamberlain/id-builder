@@ -1,7 +1,10 @@
-import { exists } from 'fs';
+import fs from 'fs';
 
-import logging from '../lib/logging';
+import log from 'loglevel';
+
 import CompileTask from '../lib/CompileTask';
+import logging from '../lib/logging';
+import promise from '../lib/promise';
 
 import LessCompiler from '../compilers/LessCompiler';
 
@@ -9,8 +12,8 @@ class LessCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.sourceFilePath = options.sourceFilePath;
-    this.targetFilePath = options.targetFilePath;
+    this.sourceFilePath = this.configuration.sourceFilePath;
+    this.targetFilePath = this.configuration.targetFilePath;
 
     this.setCompiler(LessCompiler);
   }
@@ -19,19 +22,20 @@ class LessCompileTask extends CompileTask {
     return new RegExp(`^${this.sourceFilePath}$`);
   }
 
-  compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {
-    exists(sourceFilePath, (doesExist) => {
-      if (doesExist) {
-        super.compileFile(sourceFilePath, targetFilePath, cb);
-      } else {
-        logging.taskInfo(this.constructor.name, `skipping ${sourceFilePath} (Does not exist)`);
-        cb();
-      }
-    });
+  async compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath) {
+    const doesExist = await promise.promiseFromCallback(fs.exists, sourceFilePath);
+
+    if (!doesExist) {
+      logging.taskInfo(this.constructor.name, `skipping ${sourceFilePath} (Does not exist)`);
+
+      return;
+    }
+
+    await super.compileFile(sourceFilePath, targetFilePath);
   }
 
-  run(cb) {
-    this.compileFile(this.sourceFilePath, this.targetFilePath, cb);
+  async run() {
+    await this.compileFile();
   }
 }
 

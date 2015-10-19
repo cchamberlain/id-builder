@@ -1,4 +1,7 @@
+import log from 'loglevel';
+
 import CompileTask from '../lib/CompileTask';
+
 import CoffeeScriptCompiler from '../compilers/CoffeeScriptCompiler';
 
 class CoffeeScriptCompileTask extends CompileTask {
@@ -6,10 +9,6 @@ class CoffeeScriptCompileTask extends CompileTask {
     super(options);
 
     this.setCompiler(CoffeeScriptCompiler);
-  }
-
-  run(cb) {
-    this.compileAllFiles(cb);
   }
 }
 

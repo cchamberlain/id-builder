@@ -114,7 +114,7 @@ class PlantUMLCompile extends CompileTask {
    * @param chunk
    */
   convert(sourceFilePath, chunk) {
-    const ast = transform(chunk, this.options.options).ast;
+    const ast = transform(chunk, this.configuration.options).ast;
 
     if (this.hasClass(ast)) {
       if (DERP) {

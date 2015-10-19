@@ -1,5 +1,8 @@
-import { exists } from 'fs';
+import fs from 'fs';
 
+import log from 'loglevel';
+
+import promise from '../lib/promise';
 import logging from '../lib/logging';
 import CompileTask from '../lib/CompileTask';
 
@@ -9,8 +12,8 @@ class StylusCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
-    this.sourceFilePath = options.sourceFilePath;
-    this.targetFilePath = options.targetFilePath;
+    this.sourceFilePath = this.configuration.sourceFilePath;
+    this.targetFilePath = this.configuration.targetFilePath;
 
     this.setCompiler(StylusCompiler);
   }
@@ -19,19 +22,20 @@ class StylusCompileTask extends CompileTask {
     return new RegExp(`^${this.sourceFilePath}$`);
   }
 
-  compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath, cb) {
-    exists(sourceFilePath, (doesExist) => {
-      if (doesExist) {
-        super.compileFile(sourceFilePath, targetFilePath, cb);
-      } else {
-        logging.taskInfo(this.constructor.name, `skipping ${sourceFilePath} (Does not exist)`);
-        cb();
-      }
-    });
+  async compileFile(sourceFilePath = this.sourceFilePath, targetFilePath = this.targetFilePath) {
+    const doesExist = await promise.promiseFromCallback(fs.exists, sourceFilePath);
+
+    if (!doesExist) {
+      logging.taskInfo(this.constructor.name, `skipping ${sourceFilePath} (Does not exist)`);
+
+      return;
+    }
+
+    await super.compileFile(sourceFilePath, targetFilePath);
   }
 
-  run(cb) {
-    this.compileFile(this.sourceFilePath, this.targetFilePath, cb);
+  async run() {
+    await this.compileFile(this.sourceFilePath, this.targetFilePath);
   }
 }
 

@@ -32,6 +32,10 @@ var _libGetFiles = require('../lib/getFiles');
 
 var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
 
+var _libPromise = require('../lib/promise');
+
+var _libPromise2 = _interopRequireDefault(_libPromise);
+
 var _compilersCopyCompiler = require('../compilers/CopyCompiler');
 
 var _compilersCopyCompiler2 = _interopRequireDefault(_compilersCopyCompiler);
@@ -89,49 +93,58 @@ var CopyCompileTask = (function (_CompileTask) {
     }
   }, {
     key: 'getPaths',
-    value: function getPaths(cb) {
-      var _this = this;
+    value: function getPaths() {
+      return regeneratorRuntime.async(function getPaths$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap((0, _libGetFiles2['default'])(this.sourceDirectoryPath));
 
-      (0, _libGetFiles2['default'])(this.sourceDirectoryPath, function (e, nodes) {
-        if (e) {
-          return cb(e);
+          case 2:
+            context$2$0.t0 = context$2$0.sent;
+
+            context$2$0.t1 = function (v) {
+              return v.fullPath;
+            };
+
+            context$2$0.t2 = this.doesntMatchOtherTaskSourceFilePath.bind(this);
+            return context$2$0.abrupt('return', (0, _lodash2['default'])(context$2$0.t0).map(context$2$0.t1).filter(context$2$0.t2).value());
+
+          case 6:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        var paths = (0, _lodash2['default'])(nodes).map(function (v) {
-          return v.fullPath;
-        }).filter(_this.doesntMatchOtherTaskSourceFilePath.bind(_this)).value();
-
-        cb(null, paths);
-      });
+      }, null, this);
     }
   }, {
     key: 'compileAllFiles',
-    value: function compileAllFiles(cb) {
-      var _this2 = this;
+    value: function compileAllFiles() {
+      var paths;
+      return regeneratorRuntime.async(function compileAllFiles$(context$2$0) {
+        var _this = this;
 
-      this.getPaths(function (e, paths) {
-        if (e) {
-          return cb(e);
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(this.getPaths());
+
+          case 2:
+            paths = context$2$0.sent;
+            context$2$0.next = 5;
+            return regeneratorRuntime.awrap(Promise.all(_lodash2['default'].map(paths, function (path) {
+              return _this.compileFile(path, path.replace(_this.sourceDirectoryPath, _this.targetDirectoryPath));
+            })));
+
+          case 5:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        var iteratePath = function iteratePath(currentSourceDirectoryPath, cb) {
-          var currentTargetDirectoryPath = currentSourceDirectoryPath.replace(_this2.sourceDirectoryPath, _this2.targetDirectoryPath);
-
-          _this2.compileFile(currentSourceDirectoryPath, currentTargetDirectoryPath, cb);
-        };
-
-        (0, _async.each)(paths, iteratePath, cb);
-      });
-    }
-  }, {
-    key: 'run',
-    value: function run(cb) {
-      this.compileAllFiles(cb);
+      }, null, this);
     }
   }, {
     key: 'otherCompileTasks',
     get: function get() {
-      return (0, _lodash2['default'])(this.builder.taskInstances).filter(this.isCompileTask).filter(this.isntThisTask).value();
+      return (0, _lodash2['default'])(this.taskQueue.taskInstances).filter(this.isCompileTask).filter(this.isntThisTask).value();
     }
   }, {
     key: 'sourceFilePathMatchExpression',

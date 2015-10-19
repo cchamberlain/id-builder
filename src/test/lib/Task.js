@@ -1,5 +1,3 @@
-import tape from 'tape';
-
 /**
  * @test {Task}
  */

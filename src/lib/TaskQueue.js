@@ -1,32 +1,32 @@
 import _ from 'lodash';
-import { auto } from 'async';
+import async from 'async';
+import log from 'loglevel';
 
+import Configuration from './Configuration';
 import logging from './logging';
 
 /**
- * The builder runs the tasks.
+ * The taskQueue runs the tasks.
  * TODO: Find a better solution then format juggling for async.auto.
- * @class Builder
+ * @class TaskQueue
  */
-export default class Builder {
-  constructor(options = {}) {
-    this.options = options;
+export default class TaskQueue {
+  constructor(configuration) {
+    // log.debug(`TaskQueue#constructor`);
 
-    this.tasks = {};
+    this.configuration = configuration;
+
+    // TODO: Document.
+    this.taskClasses = {};
+
+    // TODO: Document.
     this.taskInstances = {};
+
+    // TODO: Document.
     this.asyncTasks = {};
 
+    // TODO: Document.
     this.compilers = {};
-  }
-
-  /**
-   * Gets the options belonging to the task of `name`.
-   * @param {String} name The name of the task.
-   * @returns {Object} the options of the task.
-   * @private
-   */
-  _getTaskOptions(name) {
-    return this.options.tasks[name];
   }
 
   /**
@@ -34,23 +34,25 @@ export default class Builder {
    * @private
    */
   _ensureTaskInstances() {
-    _.each(this.tasks, (Task, name) => {
-      const options = this._getTaskOptions(name);
+    // log.debug(`TaskQueue#_ensureTaskInstances`);
 
-      if (!options) {
+    _.each(this.taskClasses, (Task, name) => {
+      // TODO: Refactor: Move this into `Task`.
+      const taskOptions = this.configuration.get(`tasks.${name}`);
+
+      if (!taskOptions) {
         throw new Error(`No options found for task "${name}".`);
       }
 
-      if (!options.enabled) {
+      if (!taskOptions.enabled) {
         // Fake a task that does nothing
         this.taskInstances[name] = {
           dependencies: []
         };
       } else {
-        // Pass the builder to the Task for scope.
-        options.builder = this;
-
-        this.taskInstances[name] = new Task(options);
+        this.taskInstances[name] = new Task({
+          taskQueue: this
+        });
       }
     });
   }
@@ -60,6 +62,8 @@ export default class Builder {
    * @private
    */
   _ensureAsyncTasks() {
+    // log.debug(`TaskQueue#_ensureAsyncTasks`);
+
     _.each(this.taskInstances, (taskInstance, name) => {
       this.asyncTasks[name] = taskInstance.dependencies.concat(this._createTaskCallback(name, taskInstance));
     });
@@ -67,17 +71,26 @@ export default class Builder {
 
   /**
    * Runs all tasks asynchronously and in parallel with dependencies first.
-   * @param {Function} cb The callback function.
    * @private
    */
-  _runTasks(cb) {
+  async _runTasks() {
+    // log.debug(`TaskQueue#_runTasks`);
+
     // First instantiate all tasks with their options.
     this._ensureTaskInstances();
 
     // Then ensure the async tree looks the same.
     this._ensureAsyncTasks();
 
-    auto(this.asyncTasks, cb);
+    return new Promise((resolve, reject) => {
+      async.auto(this.asyncTasks, (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(result);
+      })
+    });
   }
 
   /**
@@ -102,46 +115,52 @@ export default class Builder {
     return (cb) => {
       logging.startTask(name);
 
-      task.start(e => {
-        if (e) {
-          return cb(e);
-        }
+      task.start()
+        .then(() => {
+          logging.finishTask(name);
 
-        logging.finishTask(name);
-
-        cb();
-      });
+          cb();
+        })
+        .catch(error => {
+          cb(error);
+        });
     };
   }
 
   /**
    * Adds a Task.
-   * @param {Task} task The task.
-   * @return Builder The instance.
+   * @param {Task} taskClass The task class.
+   * @return TaskQueue The instance.
    */
-  addTask(task) {
-    this.tasks[task.name] = task;
+  addTaskClass(taskClass) {
+    // log.debug(`TaskQueue#addTaskClass ${taskClass.name}`);
+
+    this.taskClasses[taskClass.name] = taskClass;
 
     return this;
   }
 
   /**
-   * Adds an Array of Task's.
-   * @param {Array} tasks The tasks.
-   * @return Builder The instance.
+   * Adds an Array of Task classes.
+   * @param {Array} tasks The task classes.
+   * @return TaskQueue The instance.
    */
-  addTasks(tasks) {
-    _.each(tasks, this.addTask.bind(this));
+  addTaskClasses(tasks) {
+    // log.debug(`TaskQueue#addTaskClasses`);
+
+    _.each(tasks, this.addTaskClass.bind(this));
 
     return this;
   }
 
   /**
-   * Adds a compiler.
+   * Adds a `Compiler`.
    * @param {Compiler} compiler The compiler.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   addCompiler(compiler) {
+    // log.debug(`TaskQueue#addCompiler`);
+
     const name = compiler.constructor.name;
 
     this.compilers[name] = compiler;
@@ -152,9 +171,11 @@ export default class Builder {
   /**
    * Removes a compiler.
    * @param {Compiler} compiler The compiler.
-   * @return Builder The instance.
+   * @return TaskQueue The instance.
    */
   removeCompiler(compiler) {
+    // log.debug(`TaskQueue#removeCompiler`);
+
     const name = compiler.constructor.name;
 
     delete this.compilers[name];
@@ -163,10 +184,11 @@ export default class Builder {
   }
 
   /**
-   * Starts the builder.
-   * @param {Function} cb The callback function.
+   * Starts the taskQueue.
    */
-  start(cb) {
-    this._runTasks(cb);
+  async start() {
+    // log.debug(`TaskQueue#start`);
+
+    await this._runTasks();
   }
 }

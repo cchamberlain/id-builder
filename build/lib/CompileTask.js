@@ -16,7 +16,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
 
 var _fs = require('fs');
 
+var _fs2 = _interopRequireDefault(_fs);
+
 var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
 
 var _lodash = require('lodash');
 
@@ -32,6 +36,8 @@ var _mkdirp2 = _interopRequireDefault(_mkdirp);
 
 var _async = require('async');
 
+var _async2 = _interopRequireDefault(_async);
+
 var _Compiler = require('./Compiler');
 
 var _Compiler2 = _interopRequireDefault(_Compiler);
@@ -40,13 +46,17 @@ var _Task2 = require('./Task');
 
 var _Task3 = _interopRequireDefault(_Task2);
 
+var _libGetFiles = require('../lib/getFiles');
+
+var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
+
 var _libLogging = require('../lib/logging');
 
 var _libLogging2 = _interopRequireDefault(_libLogging);
 
-var _libGetFiles = require('../lib/getFiles');
+var _libPromise = require('../lib/promise');
 
-var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
+var _libPromise2 = _interopRequireDefault(_libPromise);
 
 /**
  * Compiles code from one language to another using a Compiler. May compile in
@@ -68,10 +78,11 @@ var CompileTask = (function (_Task) {
 
     _get(Object.getPrototypeOf(CompileTask.prototype), 'constructor', this).call(this, options);
 
-    this.sourceFileExtension = options.sourceFileExtension;
-    this.targetFileExtension = options.targetFileExtension;
-    this.sourceDirectoryPath = options.sourceDirectoryPath;
-    this.targetDirectoryPath = options.targetDirectoryPath;
+    this.sourceFileExtension = this.configuration.sourceFileExtension;
+    this.targetFileExtension = this.configuration.targetFileExtension;
+    this.sourceDirectoryPath = this.configuration.sourceDirectoryPath;
+    this.targetDirectoryPath = this.configuration.targetDirectoryPath;
+    this.compilerOptions = this.configuration.compiler;
 
     this.setCompiler(_Compiler2['default']);
   }
@@ -112,27 +123,27 @@ var CompileTask = (function (_Task) {
 
     /**
      * Sets the compiler used to compile chunks. Also adds the Compiler to the
-     * Builder but ensures only one Compiler per instance is active in the
-     * Builder.
+     * TaskQueue but ensures only one Compiler per instance is active in the
+     * TaskQueue.
      * TODO: Explain why it's a good thing to only have one compiler in the
-     *       builder per compile task.
-     * TODO: Refactor: Move this to the Builder class.
+     *       taskQueue per compile task.
+     * TODO: Refactor: Move this to the TaskQueue class.
      * @param {Class} CompilerClass The compiler class used to compile chunks.
      * @returns CompileTask The instance.
      */
   }, {
     key: 'setCompiler',
     value: function setCompiler(CompilerClass) {
-      // First remove the currently set compiler from the builder.
+      // First remove the currently set compiler from the taskqueue.
       if (this.compiler) {
-        this.builder.removeCompiler(this.compiler);
+        this.taskQueue.removeCompiler(this.compiler);
       }
 
       // Then set the the new compiler
-      this.compiler = new CompilerClass(this.options.compiler);
+      this.compiler = new CompilerClass(this.compilerOptions);
 
-      // And add it to the builder
-      this.builder.addCompiler(this.compiler);
+      // And add it to the taskQueue
+      this.taskQueue.addCompiler(this.compiler);
 
       return this;
     }
@@ -141,12 +152,21 @@ var CompileTask = (function (_Task) {
      * Ensures that a directory is available to write a file to. Creates all
      * parent directories of the file path.
      * @param {String} targetFilePath The target file path.
-     * @param {Function} cb The callback function.
      */
   }, {
     key: 'ensureFileDirectory',
-    value: function ensureFileDirectory(targetFilePath, cb) {
-      (0, _mkdirp2['default'])((0, _path.dirname)(targetFilePath), cb);
+    value: function ensureFileDirectory(targetFilePath) {
+      return regeneratorRuntime.async(function ensureFileDirectory$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromNodeCallback(_mkdirp2['default'], _path2['default'].dirname(targetFilePath)));
+
+          case 2:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
 
     /**
@@ -154,70 +174,102 @@ var CompileTask = (function (_Task) {
      * and writes it to the `targetFilePath`.
      * @param {String} sourceFilePath The source file path.
      * @param {String} targetFilePath The target file path.
-     * @param {Function} cb The callback function.
      */
   }, {
     key: 'compileFile',
-    value: function compileFile(sourceFilePath, targetFilePath, cb) {
-      var _this = this;
+    value: function compileFile(sourceFilePath, targetFilePath) {
+      var fileContent, compiledChunk;
+      return regeneratorRuntime.async(function compileFile$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromNodeCallback(_fs2['default'].readFile, sourceFilePath));
 
-      (0, _fs.readFile)(sourceFilePath, function (e, fileContent) {
-        if (e) {
-          return cb(e);
+          case 2:
+            fileContent = context$2$0.sent;
+            context$2$0.prev = 3;
+            context$2$0.next = 6;
+            return regeneratorRuntime.awrap(this.compiler.compileChunk(fileContent.toString(), sourceFilePath));
+
+          case 6:
+            compiledChunk = context$2$0.sent;
+            context$2$0.next = 9;
+            return regeneratorRuntime.awrap(this.ensureFileDirectory(targetFilePath));
+
+          case 9:
+            context$2$0.next = 11;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromNodeCallback(_fs2['default'].writeFile, targetFilePath, compiledChunk));
+
+          case 11:
+
+            _libLogging2['default'].taskInfo(this.constructor.name, sourceFilePath + ' => ' + targetFilePath);
+            context$2$0.next = 17;
+            break;
+
+          case 14:
+            context$2$0.prev = 14;
+            context$2$0.t0 = context$2$0['catch'](3);
+
+            _libLogging2['default'].taskWarn(this.constructor.name, sourceFilePath + ': ' + (context$2$0.t0.stack || context$2$0.t0.message || context$2$0.t0));
+
+          case 17:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        if (!_this.compiler.compileChunk) {
-          console.log(_this.compiler.constructor.name);
-
-          console.trace();
-        }
-
-        _this.compiler.compileChunk(fileContent.toString(), sourceFilePath).then(function (compiledChunk) {
-          _this.ensureFileDirectory(targetFilePath, function (e) {
-            if (e) {
-              return cb(e);
-            }
-
-            (0, _fs.writeFile)(targetFilePath, compiledChunk, function (e) {
-              if (e) {
-                return cb(e);
-              }
-
-              _libLogging2['default'].taskInfo(_this.constructor.name, sourceFilePath + ' => ' + targetFilePath);
-
-              cb(null);
-            });
-          });
-        })['catch'](function (e) {
-          _libLogging2['default'].taskWarn(_this.constructor.name, sourceFilePath + ': ' + (e.stack || e.message || e));
-          return cb();
-        });
-      });
+      }, null, this, [[3, 14]]);
     }
 
     /**
      * Compiles a directory of files recursively from a source path to a target
      * path, compiling all files that match.
-     * @param {Function} cb The callback function.
      */
   }, {
     key: 'compileAllFiles',
-    value: function compileAllFiles(cb) {
-      var _this2 = this;
+    value: function compileAllFiles() {
+      var sourceFiles, matchingSourceFilePaths, compileFilePromises;
+      return regeneratorRuntime.async(function compileAllFiles$(context$2$0) {
+        var _this = this;
 
-      (0, _libGetFiles2['default'])(this.sourceDirectoryPath, function (e, sourceFilePaths) {
-        if (e) {
-          return cb(e);
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap((0, _libGetFiles2['default'])(this.sourceDirectoryPath));
+
+          case 2:
+            sourceFiles = context$2$0.sent;
+            matchingSourceFilePaths = (0, _lodash2['default'])(sourceFiles).map(function (v) {
+              return v.fullPath;
+            }).filter(this.sourceFilePathMatches.bind(this)).value();
+            compileFilePromises = _lodash2['default'].map(matchingSourceFilePaths, function (path) {
+              return _this.compileFile(path, _this.getTargetPath(path));
+            });
+            context$2$0.next = 7;
+            return regeneratorRuntime.awrap(Promise.all(compileFilePromises));
+
+          case 7:
+          case 'end':
+            return context$2$0.stop();
         }
+      }, null, this);
+    }
 
-        var paths = (0, _lodash2['default'])(sourceFilePaths).map(function (v) {
-          return v.fullPath;
-        }).filter(_this2.sourceFilePathMatches.bind(_this2)).value();
+    /**
+     * Runs the task.
+     */
+  }, {
+    key: 'run',
+    value: function run() {
+      return regeneratorRuntime.async(function run$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(this.compileAllFiles());
 
-        (0, _async.each)(paths, function (currentSourceFilePath, cb) {
-          _this2.compileFile(currentSourceFilePath, _this2.getTargetPath(currentSourceFilePath), cb);
-        }, cb);
-      });
+          case 2:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
   }, {
     key: 'sourceFilePathMatchExpression',

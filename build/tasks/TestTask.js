@@ -1,7 +1,3 @@
-// - TestTask sluit niet goed af.
-// - TestTask moet voor ServerTask gebeuren. Eerst valideren dat het werkt,
-//   dan draaien.
-
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -50,6 +46,10 @@ var _libGetFiles = require('../lib/getFiles');
 
 var _libGetFiles2 = _interopRequireDefault(_libGetFiles);
 
+var _libPromise = require('../lib/promise');
+
+var _libPromise2 = _interopRequireDefault(_libPromise);
+
 var pathToMocha = _path2['default'].resolve(__dirname + '/../../node_modules/mocha/bin/_mocha');
 
 var TestTask = (function (_Task) {
@@ -62,72 +62,73 @@ var TestTask = (function (_Task) {
 
     _get(Object.getPrototypeOf(TestTask.prototype), 'constructor', this).call(this, options);
 
-    this.mochaOptions = options.mocha;
+    this.sourceDirectoryPaths = this.configuration.sourceDirectoryPaths;
+    this.watchDirectoryPaths = this.configuration.watchDirectoryPaths;
+    this.mochaOptions = this.configuration.mocha;
 
-    this.sourceDirectoryPaths = options.sourceDirectoryPaths;
-    this.watchDirectoryPaths = options.watchDirectoryPaths;
+    _lodash2['default'].bindAll(this, ['runTestDirectory']);
   }
 
   _createClass(TestTask, [{
-    key: 'getTestFilesPromises',
-    value: function getTestFilesPromises() {
-      var _this = this;
+    key: 'runTestDirectory',
+    value: function runTestDirectory(directoryPath) {
+      var doesExist;
+      return regeneratorRuntime.async(function runTestDirectory$(context$2$0) {
+        var _this = this;
 
-      return (0, _lodash2['default'])(this.sourceDirectoryPaths).map(function (directoryPath) {
-        return new Promise(function (resolve, reject) {
-          _this.runTestDirectory(directoryPath, function (error) {
-            if (error) {
-              return reject(error);
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            context$2$0.next = 2;
+            return regeneratorRuntime.awrap(_libPromise2['default'].promiseFromCallback(_fs2['default'].exists, directoryPath));
+
+          case 2:
+            doesExist = context$2$0.sent;
+
+            if (doesExist) {
+              context$2$0.next = 6;
+              break;
             }
 
-            resolve();
-          });
-        });
-      }).value();
-    }
-  }, {
-    key: 'runTestDirectory',
-    value: function runTestDirectory(directoryPath, cb) {
-      var _this2 = this;
+            logging.taskInfo(this.constructor.name, 'Skipping: Directory "' + directoryPath + '" not found.');
 
-      _fs2['default'].exists(directoryPath, function (exists) {
-        if (!exists) {
-          logging.taskInfo(_this2.constructor.name, 'Skipping: Directory "' + directoryPath + '" not found.');
-          return cb();
+            return context$2$0.abrupt('return');
+
+          case 6:
+            return context$2$0.abrupt('return', new Promise(function (resolve, reject) {
+              var childProcess = _child_process2['default'].spawn('node', [pathToMocha, '--recursive', '--colors', '--reporter', _this.mochaOptions.reporter, directoryPath]);
+
+              childProcess.stdout.on('data', function (chunk) {
+                process.stdout.write(chunk);
+              });
+
+              childProcess.stderr.on('data', function (chunk) {
+                process.stderr.write(chunk);
+              });
+
+              childProcess.on('close', function () {
+                resolve();
+              });
+            }));
+
+          case 7:
+          case 'end':
+            return context$2$0.stop();
         }
-
-        var childProcess = _child_process2['default'].spawn('node', [pathToMocha, '--recursive', '--colors', '--reporter', _this2.mochaOptions.reporter, directoryPath]);
-
-        childProcess.stdout.on('data', function (chunk) {
-          return process.stdout.write(chunk);
-        });
-
-        childProcess.stderr.on('data', function (chunk) {
-          return process.stderr.write(chunk);
-        });
-
-        childProcess.once('close', function () {
-          cb();
-        });
-      });
-    }
-  }, {
-    key: 'runTests',
-    value: function runTests(cb) {
-      Promise.all(this.getTestFilesPromises()).then(function () {
-        cb();
-      })['catch'](cb);
+      }, null, this);
     }
   }, {
     key: 'run',
-    value: function run(cb) {
-      this.runTests(function (error) {
-        if (error) {
-          return cb(error);
-        }
+    value: function run() {
+      return regeneratorRuntime.async(function run$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            return context$2$0.abrupt('return', Promise.all(_lodash2['default'].map(this.sourceDirectoryPaths, this.runTestDirectory)));
 
-        cb();
-      });
+          case 1:
+          case 'end':
+            return context$2$0.stop();
+        }
+      }, null, this);
     }
   }]);
 

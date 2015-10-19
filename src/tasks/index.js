@@ -16,7 +16,7 @@ import WatchTask from './WatchTask';
 export default {
   // BabelASTCompileTask,
   // PlantUMLCompileTask,
-  ServerTask,
+
   BabelCodeCompileTask,
   BrowserSyncServerTask,
   BrowserifyCompileTask,
@@ -25,6 +25,7 @@ export default {
   DirectoryCleanerTask,
   LessCompileTask,
   LiveScriptCompileTask,
+  ServerTask,
   StylusCompileTask,
   TestTask,
   WatchTask
