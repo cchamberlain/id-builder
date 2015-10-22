@@ -190,7 +190,7 @@ exports['default'] = {
       watchDirectoryPaths: ['{paths.target}'],
 
       mocha: {
-        reporter: 'min'
+        reporter: 'spec'
       }
     },
 

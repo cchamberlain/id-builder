@@ -218,7 +218,7 @@ export default {
       ],
 
       mocha: {
-        reporter: 'min'
+        reporter: 'spec'
       }
     },
 
