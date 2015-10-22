@@ -3,7 +3,7 @@ import log from 'loglevel';
 import BabelCodeCompiler from '../compilers/BabelCodeCompiler';
 import CompileTask from '../lib/CompileTask';
 
-class BabelCodeCompileTask extends CompileTask {
+export default class BabelCodeCompileTask extends CompileTask {
   constructor(options = {}) {
     // log.debug(`BabelCodeCompileTask#constructor`);
 
@@ -12,5 +12,3 @@ class BabelCodeCompileTask extends CompileTask {
     this.setCompiler(BabelCodeCompiler);
   }
 }
-
-export default BabelCodeCompileTask;

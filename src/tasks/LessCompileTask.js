@@ -8,7 +8,7 @@ import promise from '../lib/promise';
 
 import LessCompiler from '../compilers/LessCompiler';
 
-class LessCompileTask extends CompileTask {
+export default class LessCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
@@ -38,5 +38,3 @@ class LessCompileTask extends CompileTask {
     await this.compileFile();
   }
 }
-
-export default LessCompileTask;

@@ -1,6 +1,3 @@
-// import BabelASTCompile from './BabelASTCompile';
-// import PlantUMLCompileTask from './PlantUMLCompileTask';
-import ServerTask from './ServerTask';
 import BabelCodeCompileTask from './BabelCodeCompileTask';
 import BrowserSyncServerTask from './BrowserSyncServerTask';
 import BrowserifyCompileTask from './BrowserifyCompileTask';
@@ -9,14 +6,12 @@ import CopyCompileTask from './CopyCompileTask';
 import DirectoryCleanerTask from './DirectoryCleanerTask';
 import LessCompileTask from './LessCompileTask';
 import LiveScriptCompileTask from './LiveScriptCompileTask';
+import ServerTask from './ServerTask';
 import StylusCompileTask from './StylusCompileTask';
 import TestTask from './TestTask';
 import WatchTask from './WatchTask';
 
 export default {
-  // BabelASTCompileTask,
-  // PlantUMLCompileTask,
-
   BabelCodeCompileTask,
   BrowserSyncServerTask,
   BrowserifyCompileTask,

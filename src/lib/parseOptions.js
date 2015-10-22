@@ -3,7 +3,7 @@ import _ from 'lodash';
 function parseOptions(x, y = {}) {
   const z = {};
 
-  _.each(x, function(xValue, xKey) {
+  _.each(x, (xValue, xKey) => {
     const yValue = y[xKey];
 
     if (_.isObject(xValue) && !_.isArray(xValue)) {

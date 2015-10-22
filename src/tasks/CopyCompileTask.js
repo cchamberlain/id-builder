@@ -16,7 +16,7 @@ function getNames(tasks) {
     .value();
 }
 
-class CopyCompileTask extends CompileTask {
+export default class CopyCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
@@ -79,5 +79,3 @@ class CopyCompileTask extends CompileTask {
     await Promise.all(_.map(paths, (path) => this.compileFile(path, path.replace(this.sourceDirectoryPath, this.targetDirectoryPath))));
   }
 }
-
-export default CopyCompileTask;

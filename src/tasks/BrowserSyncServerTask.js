@@ -6,7 +6,7 @@ import Task from '../lib/Task';
 import logging from '../lib/logging';
 import promise from '../lib/promise';
 
-class BrowserSyncServerTask extends Task {
+export default class BrowserSyncServerTask extends Task {
   constructor(options = {}) {
     super(options);
 
@@ -37,5 +37,3 @@ class BrowserSyncServerTask extends Task {
     logging.taskInfo(this.constructor.name, `HTTP Server running at 127.0.0.1:${this.configuration.options.ui.port}`);
   }
 }
-
-export default BrowserSyncServerTask;

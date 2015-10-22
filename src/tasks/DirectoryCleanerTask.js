@@ -16,7 +16,7 @@ import log from 'loglevel';
 import promise from '../lib/promise';
 import Task from '../lib/Task';
 
-class DirectoryCleanerTask extends Task {
+export default class DirectoryCleanerTask extends Task {
   constructor(taskQueue) {
     super(taskQueue);
 
@@ -38,5 +38,3 @@ class DirectoryCleanerTask extends Task {
     await Promise.all(_.map(this.paths, path => this.removeDirectoryContents(path)));
   }
 }
-
-export default DirectoryCleanerTask;

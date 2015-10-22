@@ -3,8 +3,6 @@ import events from 'events';
 import _ from 'lodash';
 import log from 'loglevel';
 
-import Configuration from './Configuration';
-
 /**
  * Represents one thing to be done. May be a long running task.
  * TODO: add a removeDependencies(array) method.

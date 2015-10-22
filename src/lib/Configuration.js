@@ -17,7 +17,7 @@ export default class Configuration extends events.EventEmitter {
       'get',
       'set',
       'del'
-    ])
+    ]);
   }
 
   /**

@@ -9,7 +9,7 @@ import promise from '../lib/promise';
 
 import BrowserifyCompiler from '../compilers/BrowserifyCompiler';
 
-class BrowserifyCompileTask extends CompileTask {
+export default class BrowserifyCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
@@ -47,8 +47,6 @@ class BrowserifyCompileTask extends CompileTask {
     await this.compileFile();
   }
 }
-
-export default BrowserifyCompileTask;
 
 /*
 function watch(options, cb) {

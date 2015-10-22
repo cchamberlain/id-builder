@@ -9,7 +9,7 @@ import promise from '../lib/promise';
 import logging from '../lib/logging';
 import Task from '../lib/Task';
 
-class ServerTask extends Task {
+export default class ServerTask extends Task {
   constructor(options = {}) {
     super(options);
 
@@ -135,5 +135,3 @@ class ServerTask extends Task {
     await Promise.all(_.map(this.configuration.paths, this.startServer));
   }
 }
-
-export default ServerTask;

@@ -8,7 +8,7 @@ import CompileTask from '../lib/CompileTask';
 
 import StylusCompiler from '../compilers/StylusCompiler';
 
-class StylusCompileTask extends CompileTask {
+export default class StylusCompileTask extends CompileTask {
   constructor(options = {}) {
     super(options);
 
@@ -38,5 +38,3 @@ class StylusCompileTask extends CompileTask {
     await this.compileFile(this.sourceFilePath, this.targetFilePath);
   }
 }
-
-export default StylusCompileTask;

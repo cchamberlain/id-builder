@@ -26,10 +26,6 @@ var _loglevel = require('loglevel');
 
 var _loglevel2 = _interopRequireDefault(_loglevel);
 
-var _Configuration = require('./Configuration');
-
-var _Configuration2 = _interopRequireDefault(_Configuration);
-
 /**
  * Represents one thing to be done. May be a long running task.
  * TODO: add a removeDependencies(array) method.

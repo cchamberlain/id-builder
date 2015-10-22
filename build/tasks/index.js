@@ -1,5 +1,3 @@
-// import BabelASTCompile from './BabelASTCompile';
-// import PlantUMLCompileTask from './PlantUMLCompileTask';
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -7,10 +5,6 @@ Object.defineProperty(exports, '__esModule', {
 });
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _ServerTask = require('./ServerTask');
-
-var _ServerTask2 = _interopRequireDefault(_ServerTask);
 
 var _BabelCodeCompileTask = require('./BabelCodeCompileTask');
 
@@ -44,6 +38,10 @@ var _LiveScriptCompileTask = require('./LiveScriptCompileTask');
 
 var _LiveScriptCompileTask2 = _interopRequireDefault(_LiveScriptCompileTask);
 
+var _ServerTask = require('./ServerTask');
+
+var _ServerTask2 = _interopRequireDefault(_ServerTask);
+
 var _StylusCompileTask = require('./StylusCompileTask');
 
 var _StylusCompileTask2 = _interopRequireDefault(_StylusCompileTask);
@@ -57,9 +55,6 @@ var _WatchTask = require('./WatchTask');
 var _WatchTask2 = _interopRequireDefault(_WatchTask);
 
 exports['default'] = {
-  // BabelASTCompileTask,
-  // PlantUMLCompileTask,
-
   BabelCodeCompileTask: _BabelCodeCompileTask2['default'],
   BrowserSyncServerTask: _BrowserSyncServerTask2['default'],
   BrowserifyCompileTask: _BrowserifyCompileTask2['default'],
