@@ -1,21 +1,21 @@
-import log from 'loglevel';
+import gulp from 'gulp';
+import gulpLoadPlugins from 'gulp-load-plugins';
+import taskLoader from 'gulp-commonjs-tasks/task-loader';
 
-import Builder from './lib/Builder';
-import defaultOptions from './lib/defaultOptions';
-import parseOptions from './lib/parseOptions';
+import defaults from './defaults';
 
-import tasks from './tasks';
+export default function start() {
+  const plugins = gulpLoadPlugins();
+  const taskContext = taskLoader.load(`${__dirname}/tasks`, gulp, plugins, defaults);
 
-export default function(inputOptions = {}, cb) {
-  const options = global.options = parseOptions(defaultOptions, inputOptions);
+  taskContext.addHelpTask();
+};
 
-  if (options.logging && typeof options.logging.level === 'string' && options.logging.level.length > 0) {
-    log.setLevel(options.logging.level);
-  }
-
-  const builder = new Builder(options);
-
-  builder.addTasks(tasks);
-
-  builder.start(cb);
-}
+/*
+var condition = true;
+gulp.task('task', () => {
+  gulp.src('./src/*.js')
+    .pipe(plugins.if(condition, plugins.uglify()))
+    .pipe(gulp.dest('./dist/'));
+});
+*/
