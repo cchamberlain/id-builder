@@ -4,7 +4,7 @@
   "description": "DRY project automation for Node.js and javascript frontend projects.",
   "main": "index.js",
   "dependencies": {
-    "babel-register": "*",
+    "babel-core": "*",
     "babel-preset-es2015": "*",
     "babel-preset-react": "*",
     "babel-preset-stage-0": "*"
