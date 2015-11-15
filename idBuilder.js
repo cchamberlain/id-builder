@@ -4,6 +4,6 @@ require('babel-core/register')({
   presets: [ 'es2015', 'react', 'stage-0' ]
 });
 
-var idBuilder = require('./src');
+var idBuilder = require('./src').default;
 
 idBuilder();

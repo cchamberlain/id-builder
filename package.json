@@ -9,7 +9,18 @@
     "babel-preset-react": "*",
     "babel-preset-stage-0": "*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.10.0",
+    "browserify": "^12.0.1",
+    "gulp": "^3.9.0",
+    "gulp-commonjs-tasks": "^1.2.0",
+    "gulp-load-plugins": "^1.1.0",
+    "imagemin-pngquant": "^4.2.0",
+    "proxy-middleware": "^0.15.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.6.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
